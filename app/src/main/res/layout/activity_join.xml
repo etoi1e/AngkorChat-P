@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Auth.JoinActivity">
+
+    <ImageView
+        android:id="@+id/imgJoinLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_marginBottom="39dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvJoinLanguage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/img_logo_splash" />
+
+    <TextView
+        android:id="@+id/tvJoinLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="Language"
+        android:textColor="#111111"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnJoinLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.widget.Button
+        android:id="@+id/btnJoinLogin"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/style_login_btn"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnJoinSignUp"
+        app:layout_constraintEnd_toEndOf="@+id/btnJoinSignUp"
+        app:layout_constraintStart_toStartOf="@+id/btnJoinSignUp" />
+
+    <android.widget.Button
+        android:id="@+id/btnJoinSignUp"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/style_join_btn"
+        android:text="Sign up with SMS"
+        android:textAllCaps="false"
+        android:textColor="@color/textBlack"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

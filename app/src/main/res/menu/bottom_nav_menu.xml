@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab1"
+        android:icon="@drawable/ic_botton_menu_home"
+        android:title="home" />
+    <item
+        android:id="@+id/tab2"
+        android:icon="@drawable/ic_bottom_menu_chats"
+        android:title="chats" />
+    <item
+        android:id="@+id/tab3"
+        android:icon="@drawable/ic_bottom_menu_more"
+        android:title="more" />
+</menu>

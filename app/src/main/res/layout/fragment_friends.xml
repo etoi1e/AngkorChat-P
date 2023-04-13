@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Friends.FriendsFragment" >
+
+    <View
+        android:id="@+id/viewFriendsTopBox"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvtitleFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Friends"
+        android:textColor="@color/textBlack"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFriendsTopBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgAddFriendsFriends"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_user_plus_line_28"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFriendsTopBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewFriendsTopBox" />
+
+    <View
+        android:id="@+id/viewSearchBoxFriends"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:background="#f7f7fb"
+        app:layout_constraintEnd_toEndOf="@+id/imgAddFriendsFriends"
+        app:layout_constraintStart_toStartOf="@+id/tvtitleFriends"
+        app:layout_constraintTop_toBottomOf="@+id/viewFriendsTopBox" />
+
+    <ImageView
+        android:id="@+id/imgSearchFriends"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_search_lightgray_20"
+        app:layout_constraintBottom_toBottomOf="@+id/viewSearchBoxFriends"
+        app:layout_constraintStart_toStartOf="@+id/viewSearchBoxFriends"
+        app:layout_constraintTop_toBottomOf="@+id/viewFriendsTopBox" />
+
+    <EditText
+        android:id="@+id/etSearchFriends"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:hint="Search"
+        android:inputType="textPersonName"
+        android:textColorHint="#929498"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewSearchBoxFriends"
+        app:layout_constraintEnd_toEndOf="@+id/viewSearchBoxFriends"
+        app:layout_constraintStart_toEndOf="@+id/imgSearchFriends"
+        app:layout_constraintTop_toBottomOf="@+id/viewFriendsTopBox" />
+
+    <View
+        android:id="@+id/viewFavoriteBoxFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewSearchBoxFriends" />
+
+    <TextView
+        android:id="@+id/tvFavoriteFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favorite"
+        android:textColor="@color/textBlack"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFavoriteBoxFriends"
+        app:layout_constraintStart_toStartOf="@+id/viewSearchBoxFriends"
+        app:layout_constraintTop_toTopOf="@+id/viewFavoriteBoxFriends" />
+
+    <TextView
+        android:id="@+id/tvCountFavoriteFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="3"
+        android:textColor="#929498"
+        app:layout_constraintBottom_toBottomOf="@+id/tvFavoriteFriends"
+        app:layout_constraintStart_toEndOf="@+id/tvFavoriteFriends"
+        app:layout_constraintTop_toTopOf="@+id/tvFavoriteFriends" />
+
+    <ImageView
+        android:id="@+id/imgFoldFavoriteFriends"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_indecator_up_16"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFavoriteBoxFriends"
+        app:layout_constraintEnd_toEndOf="@+id/viewSearchBoxFriends"
+        app:layout_constraintTop_toTopOf="@+id/viewFavoriteBoxFriends" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFavoriteFriends"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewFavoriteBoxFriends" />
+
+    <View
+        android:id="@+id/viewGrayBoxFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="8dp"
+        android:background="#f7f7fb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvFavoriteFriends" />
+
+    <View
+        android:id="@+id/viewFriendsBoxFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBoxFriends" />
+
+    <TextView
+        android:id="@+id/tvFriendsFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Friends"
+        android:textColor="@color/textBlack"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFriendsBoxFriends"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBoxFriends" />
+
+    <TextView
+        android:id="@+id/tvCountFriendsFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="125"
+        android:textColor="#929498"
+        app:layout_constraintBottom_toBottomOf="@+id/tvFriendsFriends"
+        app:layout_constraintStart_toEndOf="@+id/tvFriendsFriends"
+        app:layout_constraintTop_toTopOf="@+id/tvFriendsFriends" />
+
+    <ImageView
+        android:id="@+id/imgFoldFriendsFriends"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_indecator_up_16"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFriendsBoxFriends"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBoxFriends" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFriendsFriends"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewFriendsBoxFriends" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

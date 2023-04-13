@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="countryCode">
+        <item>855,KH</item>
+        <item>82,KR</item>
+        <item>1,US</item>
+    </string-array>
+
+</resources>
