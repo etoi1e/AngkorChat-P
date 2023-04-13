@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
@@ -31,8 +33,7 @@ class FriendsFragment : Fragment() {
 
 
         //즐겨찾는 친구 부분
-        favoriteList.add(UserVO("유니온모바일","union-mobile.co.kr",R.drawable.style_login_btn,"123-456-789"))
-        favoriteList.add(UserVO("유니온모바일2","union-mobile.co.kr",R.drawable.style_login_btn,"123-456-789"))
+        favoriteList.add(UserVO("유니온모바일","union-mobile@union-mobile.co.kr","test","123-456-789"))
 
         //즐겨찾는 친구 Adapter
         val favoriteAdapter = FriendsAdapter(requireContext(),favoriteList)
@@ -153,7 +154,13 @@ class FriendsFragment : Fragment() {
                 // 사진 정보를 가져오기 위한 URI 생성
                 val photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))
 
-                contactsList.add(UserVO(name, emailAddress, R.drawable.img_flag_south_korea,phoneNumber))
+                if(photoUri != null){
+                    contactsList.add(UserVO(name, emailAddress, photoUri,phoneNumber))
+                }else{
+                    contactsList.add(UserVO(name, emailAddress, "",phoneNumber))
+                }
+
+
             }
             cursor.close()
         }
