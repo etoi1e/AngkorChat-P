@@ -15,12 +15,17 @@ import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.FragmentFriendsBinding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class FriendsFragment : Fragment() {
 
     lateinit var binding: FragmentFriendsBinding
     lateinit var contactsList:ArrayList<UserVO>
+
+    lateinit var database : DatabaseReference
 
 
     override fun onCreateView(
@@ -30,6 +35,13 @@ class FriendsFragment : Fragment() {
 
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
         var favoriteList = arrayListOf<UserVO>()
+
+        database = Firebase.database.reference
+
+        database.child("users").child("test").setValue("check")
+
+        Log.d("TAG",database.toString())
+
 
 
         //즐겨찾는 친구 부분
@@ -68,6 +80,7 @@ class FriendsFragment : Fragment() {
         friendAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent(requireContext(), ProfileActivity::class.java)
+
 
                 intent.putExtra("name",contactsList[position].name)
                 intent.putExtra("number",contactsList[position].phone)

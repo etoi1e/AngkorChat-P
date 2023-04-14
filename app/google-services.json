@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "638611060597",
+    "project_id": "angkorchat-a118e",
+    "storage_bucket": "angkorchat-a118e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638611060597:android:a26dc034ac41886e9e453c",
+        "android_client_info": {
+          "package_name": "com.example.angkorchatproto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638611060597-vdm011afkqqi4vtffrd834ii5spsrhf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1NxNb46O2iwOXFYfIIuDaU7bRx4bugmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638611060597-vdm011afkqqi4vtffrd834ii5spsrhf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
