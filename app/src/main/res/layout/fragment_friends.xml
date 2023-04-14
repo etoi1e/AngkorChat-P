@@ -110,6 +110,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_indecator_up_16"
+        android:tag="true"
         app:layout_constraintBottom_toBottomOf="@+id/viewFavoriteBoxFriends"
         app:layout_constraintEnd_toEndOf="@+id/viewSearchBoxFriends"
         app:layout_constraintTop_toTopOf="@+id/viewFavoriteBoxFriends" />
@@ -168,6 +169,7 @@
         android:layout_height="16dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_indecator_up_16"
+        android:tag="true"
         app:layout_constraintBottom_toBottomOf="@+id/viewFriendsBoxFriends"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewGrayBoxFriends" />

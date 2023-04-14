@@ -37,12 +37,16 @@ class ProfileActivity : AppCompatActivity() {
         //프로필 사진 uri 가져오기
         val profile = intent.getStringExtra("profile")
 
-        if(profile == "union"){ //프로필 사진 링크가 임의 지정한 union인 경우
-            Glide.with(this@ProfileActivity)
+        if(profile == "union"){
+            Glide.with(this)
                 .load(R.drawable.top_logo)
                 .into(binding.imgProfileProfile)
+        }else if(profile == ""){
+            Glide.with(this)
+                .load(R.drawable.profile)
+                .into(binding.imgProfileProfile)
         }else{
-            Glide.with(this@ProfileActivity)
+            Glide.with(this)
                 .load(profile)
                 .into(binding.imgProfileProfile)
         }
