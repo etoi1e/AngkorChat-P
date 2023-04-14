@@ -12,5 +12,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <!-- Cursor 색상 변경   -->
+        <item name="colorControlActivated">@color/mainYellow</item>
+        <item name="colorControlNormal">#f7f7fb</item>
+        <item name="android:textSelectHandle">@color/mainYellow</item>
+        <item name="android:textCursorDrawable">@color/mainYellow</item>
     </style>
 </resources>

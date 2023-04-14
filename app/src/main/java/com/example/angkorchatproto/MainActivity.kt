@@ -1,11 +1,15 @@
 package com.example.angkorchatproto
 
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.angkorchatproto.Friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
+import com.google.firebase.database.FirebaseDatabase
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             R.id.frameLayout,
             FriendsFragment()
         ).commit()
-
+// 어디에있어용
 
         binding.bottomNavigationView.setOnItemSelectedListener{
                 item ->

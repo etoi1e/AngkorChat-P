@@ -6,8 +6,11 @@ import android.content.Intent.ACTION_CALL
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.example.angkorchatproto.Chat.ChatActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
+
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -31,7 +34,30 @@ class ProfileActivity : AppCompatActivity() {
         binding.imgChatProfile.setImageResource(R.drawable.ic_baseline_chat_24)
         binding.imgCallProfile.setImageResource(R.drawable.ic_baseline_call_24)
 
+        //프로필 사진 uri 가져오기
+        val profile = intent.getStringExtra("profile")
 
+        if(profile == "union"){ //프로필 사진 링크가 임의 지정한 union인 경우
+            Glide.with(this@ProfileActivity)
+                .load(R.drawable.top_logo)
+                .into(binding.imgProfileProfile)
+        }else{
+            Glide.with(this@ProfileActivity)
+                .load(profile)
+                .into(binding.imgProfileProfile)
+        }
+
+
+
+
+        //채팅방으로 이동
+        binding.imgChatProfile.setOnClickListener{
+            val intent = Intent(this@ProfileActivity,ChatActivity::class.java)
+            startActivity(intent)
+            intent.putExtra("name",userName)
+        }
+
+        //전화걸기
         binding.imgCallProfile.setOnClickListener{
             val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
             startActivity(intent)

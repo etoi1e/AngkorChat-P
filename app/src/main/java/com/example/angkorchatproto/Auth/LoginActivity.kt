@@ -1,6 +1,7 @@
 package com.example.angkorchatproto.Auth
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,8 +13,11 @@ import android.text.TextWatcher
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityLoginBinding
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
@@ -71,7 +75,13 @@ class LoginActivity : AppCompatActivity() {
         
 
         //SendCode 클릭 시 동작
-        binding.btnSendCodeLogin.setOnClickListener { 
+        binding.btnSendCodeLogin.setOnClickListener {
+
+            //번호로 사용자 정보 firebase 에 저장
+            val database = Firebase.database.reference
+            database.child("user").child(phoneNumber).setValue(JoinVO(phoneNumber,"union@union.co.kr"))
+
+
             val intent = Intent(this@LoginActivity,PasswordActivity::class.java)
             startActivity(intent)
             intent.putExtra("userNumber",phoneNumber)
@@ -116,6 +126,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //디바이스 정보 불러오기
+    @SuppressLint("MissingPermission")
     fun getPhoneNumber() {
         val msg = applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 

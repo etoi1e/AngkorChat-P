@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "638611060597",
-    "project_id": "angkorchat-a118e",
-    "storage_bucket": "angkorchat-a118e.appspot.com"
+    "project_number": "730810090398",
+    "firebase_url": "https://angkor-ae0c0-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    "project_id": "angkor-ae0c0",
+    "storage_bucket": "angkor-ae0c0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:638611060597:android:a26dc034ac41886e9e453c",
+        "mobilesdk_app_id": "1:730810090398:android:dc0626cfb26f338c86cc8f",
         "android_client_info": {
           "package_name": "com.example.angkorchatproto"
         }
       },
       "oauth_client": [
         {
-          "client_id": "638611060597-vdm011afkqqi4vtffrd834ii5spsrhf7.apps.googleusercontent.com",
+          "client_id": "730810090398-ol78odc4pl0vf66uskbug8mgfpsh6lgv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA1NxNb46O2iwOXFYfIIuDaU7bRx4bugmo"
+          "current_key": "AIzaSyCZT2cHEUWoM0muVGyBk0P8Og8PKz9SfvM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "638611060597-vdm011afkqqi4vtffrd834ii5spsrhf7.apps.googleusercontent.com",
+              "client_id": "730810090398-ol78odc4pl0vf66uskbug8mgfpsh6lgv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

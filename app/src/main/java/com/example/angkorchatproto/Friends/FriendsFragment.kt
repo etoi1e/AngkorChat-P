@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.Friends
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
+import com.example.angkorchatproto.Msg
 import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
@@ -24,8 +25,7 @@ class FriendsFragment : Fragment() {
 
     lateinit var binding: FragmentFriendsBinding
     lateinit var contactsList:ArrayList<UserVO>
-
-    lateinit var database : DatabaseReference
+    lateinit var database: DatabaseReference
 
 
     override fun onCreateView(
@@ -36,16 +36,23 @@ class FriendsFragment : Fragment() {
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
         var favoriteList = arrayListOf<UserVO>()
 
+
         database = Firebase.database.reference
 
-        database.child("users").child("test").setValue("check")
 
-        Log.d("TAG",database.toString())
 
+        //firebase 데이터 삽입 테스트
+        binding.imgAddFriendsFriends.setOnClickListener{
+
+
+            database.child("msg").setValue("테스트")
+            val setData = Firebase.database.getReference("msg")
+            setData.push().setValue("테스트2")
+        }
 
 
         //즐겨찾는 친구 부분
-        favoriteList.add(UserVO("유니온모바일","union-mobile@union-mobile.co.kr","test","123-456-789"))
+        favoriteList.add(UserVO("유니온모바일","union-mobile@union-mobile.co.kr", "union","+123456789"))
 
         //즐겨찾는 친구 Adapter
         val favoriteAdapter = FriendsAdapter(requireContext(),favoriteList)
@@ -108,6 +115,10 @@ class FriendsFragment : Fragment() {
 
     }
 
+
+
+
+
     @SuppressLint("Range")
     private fun getContacts(): ArrayList<UserVO> {
         contactsList = ArrayList()
@@ -145,7 +156,15 @@ class FriendsFragment : Fragment() {
 
                 var phoneNumber = ""
                 if (phoneCursor != null && phoneCursor.moveToFirst()) {
-                    phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                    
+                    phoneNumber =phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                    
+                    //firebase 연락처 저장
+//                    val friendsList = phoneNumber.replace("-","")
+//                    val database = Firebase.database.reference
+//                    database.child("user").child(friendsList).setValue(friendsList)
+
+
                     phoneCursor.close()
                 }
 
@@ -167,6 +186,8 @@ class FriendsFragment : Fragment() {
                 // 사진 정보를 가져오기 위한 URI 생성
                 val photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))
 
+
+
                 if(photoUri != null){
                     contactsList.add(UserVO(name, emailAddress, photoUri,phoneNumber))
                 }else{
@@ -177,6 +198,8 @@ class FriendsFragment : Fragment() {
             }
             cursor.close()
         }
+
+
 
         return contactsList
     }

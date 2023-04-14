@@ -64,13 +64,19 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
         val name = friendList[position].name
         val email = friendList[position].email
 
-//        holder.imgProfile.setImageResource(profile)
+
         holder.tvName.text = name
         holder.tvEmail.text = email
 
-        Glide.with(context)
-            .load(profile)
-            .into(holder.imgProfile)
+        if(profile == "union"){
+            Glide.with(context)
+                .load(R.drawable.top_logo)
+                .into(holder.imgProfile)
+        }else{
+            Glide.with(context)
+                .load(profile)
+                .into(holder.imgProfile)
+        }
 
 
     }
