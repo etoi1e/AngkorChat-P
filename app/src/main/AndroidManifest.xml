@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- 디바이스 정보 호출 커미션 -->
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" /> <!-- 주소록 접근 호출 커미션 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 전화 발신 커미션 -->
-    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 갤러리 권한 -->
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <!-- 주소록 접근 호출 커미션 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- 전화 발신 커미션 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- 갤러리 권한 -->
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />

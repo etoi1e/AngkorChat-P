@@ -1,15 +1,27 @@
 package com.example.angkorchatproto.Profile
 
 
+
+import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.annotation.SuppressLint
+import android.content.ContentUris
 import android.content.Intent
 import android.content.Intent.ACTION_CALL
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.Chat.ChatActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
+import java.util.*
+
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -17,6 +29,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var binding: ActivityProfileBinding
 
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -59,19 +72,89 @@ class ProfileActivity : AppCompatActivity() {
             val intent = Intent(this@ProfileActivity,ChatActivity::class.java)
             startActivity(intent)
             intent.putExtra("name",userName)
+            finish()
         }
+
+        //Add/Unfriend 버튼(실제 친구 목록 아니기 때문에 기능X)
+        binding.btnAddProfile.setOnClickListener{
+
+            if(binding.btnAddProfile.tag == "true"){
+                binding.btnAddProfile.text = "Add"
+                binding.btnAddProfile.setBackgroundResource(R.drawable.style_login_btn)
+                binding.btnAddProfile.setTextColor(Color.WHITE)
+                binding.btnAddProfile.tag = "false"
+            }else if(binding.btnAddProfile.tag == "false"){
+                binding.btnAddProfile.text = "Unfriend"
+                binding.btnAddProfile.setBackgroundResource(R.drawable.style_yellow_line_btn)
+                binding.btnAddProfile.setTextColor(getColor(R.color.mainYellow))
+                binding.btnAddProfile.tag = "true"
+            }
+
+        }
+
 
         //전화걸기
         binding.imgCallProfile.setOnClickListener{
             val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
             startActivity(intent)
+            finish()
         }
 
 
+        //갤러리 저장 사진 불러오기
+         val REQUEST_STORAGE_PERMISSION = 100
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_STORAGE_PERMISSION)
+                return
+            }
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_STORAGE_PERMISSION)
+                return
+            }
+        }
+        val projection = arrayOf(
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.DATE_TAKEN
+        )
+        val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
+        val query = applicationContext.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            null,
+            null,
+            sortOrder
+        )
+        var imageUri: Uri? = null
+        query?.use { cursor ->
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+            if (cursor.moveToNext()) {
+                val id = cursor.getLong(idColumn)
+                imageUri = ContentUris.withAppendedId(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    id
+                )
+            }
+        }
+
+        // 이미지 뷰에 이미지 표시하기
+        if (imageUri != null) {
+            binding.imgProfileProfile.setImageURI(imageUri)
+            Log.d("TAG-이미지 로그 불러옴",imageUri.toString())
+        }else{
+            Log.d("TAG-이미지 로그 못불러옴",imageUri.toString())
+        }
     }
-
-
-
-
 }
+
+
+
+
+

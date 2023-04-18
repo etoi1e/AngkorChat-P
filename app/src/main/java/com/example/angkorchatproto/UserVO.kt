@@ -4,4 +4,3 @@ class UserVO(val name : String, val email : String,val profile : String,val phon
 
 class JoinVO(val number : String, val email : String)
 
-class ChatVO(val number : String, val message : String)

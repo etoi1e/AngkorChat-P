@@ -42,7 +42,7 @@
         android:id="@+id/viewSearchBoxFriends"
         android:layout_width="0dp"
         android:layout_height="36dp"
-        android:background="#f7f7fb"
+        android:background="@drawable/round_corner_gray"
         app:layout_constraintEnd_toEndOf="@+id/imgAddFriendsFriends"
         app:layout_constraintStart_toStartOf="@+id/tvtitleFriends"
         app:layout_constraintTop_toBottomOf="@+id/viewFriendsTopBox" />

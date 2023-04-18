@@ -18,5 +18,10 @@
         <item name="colorControlNormal">#f7f7fb</item>
         <item name="android:textSelectHandle">@color/mainYellow</item>
         <item name="android:textCursorDrawable">@color/mainYellow</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+
     </style>
 </resources>

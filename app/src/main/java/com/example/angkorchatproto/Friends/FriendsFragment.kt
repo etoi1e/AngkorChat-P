@@ -100,10 +100,10 @@ class FriendsFragment : Fragment() {
 
         })
 
-        //전체 친구 Adapter
-        binding.rvFriendsFriends.adapter = friendAdapter
-        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(),1)
-
+//        //전체 친구 Adapter
+//        binding.rvFriendsFriends.adapter = friendAdapter
+//        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(),1)
+//
         //전체 친구 Count
         val countFriends = contactsList.size.toString()
         binding.tvCountFriendsFriends.text = countFriends
@@ -113,13 +113,13 @@ class FriendsFragment : Fragment() {
         //친구 목록 접기
         //사용자 지정값 저장해서 다른 페이지 다녀와도 바뀌지 않게 하기
         binding.imgFoldFavoriteFriends.setOnClickListener {
-            if(binding.imgFoldFavoriteFriends.tag==true){
+            if(binding.imgFoldFavoriteFriends.tag==true){ //목록 펼치기
                 binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_up_16)
                 binding.rvFavoriteFriends.visibility = View.VISIBLE
                 binding.imgFoldFavoriteFriends.tag = false
 
-            }else{
-                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_up_16)
+            }else{ //목록 접기
+                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indicator_down_24)
                 binding.rvFavoriteFriends.visibility = View.GONE
                 binding.imgFoldFavoriteFriends.tag = true
 
@@ -127,15 +127,15 @@ class FriendsFragment : Fragment() {
         }
 
         binding.imgFoldFriendsFriends.setOnClickListener {
-            if(binding.imgFoldFavoriteFriends.tag==true){
-                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_up_16)
+            if(binding.imgFoldFriendsFriends.tag==true){ //목록 펼치기
+                binding.imgFoldFriendsFriends.setImageResource(R.drawable.ic_indecator_up_16)
                 binding.rvFriendsFriends.visibility = View.VISIBLE
-                binding.imgFoldFavoriteFriends.tag = false
+                binding.imgFoldFriendsFriends.tag = false
 
-            }else{
-                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_up_16)
+            }else{ //목록 접기
+                binding.imgFoldFriendsFriends.setImageResource(R.drawable.ic_indicator_down_24)
                 binding.rvFriendsFriends.visibility = View.GONE
-                binding.imgFoldFavoriteFriends.tag = true
+                binding.imgFoldFriendsFriends.tag = true
 
             }
         }

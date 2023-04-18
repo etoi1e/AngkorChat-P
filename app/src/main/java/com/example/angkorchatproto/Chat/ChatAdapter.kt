@@ -4,33 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.angkorchatproto.ChatVO
 import com.example.angkorchatproto.R
 
 
-class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>) :
+class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>, val myNumber : String) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            val imgMyProfileChat:ImageView
             val tvMyMessageChat:TextView
 
             init {
 
-                imgMyProfileChat = itemView.findViewById(R.id.imgMyProfileChat)
                 tvMyMessageChat = itemView.findViewById(R.id.tvMyMessageChat)
 
             }
-
-
-
-
 
     }
 
@@ -42,7 +33,10 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvMyMessageChat.text = chatList[position].message
+
+//        if(chatList[position].number == myNumber){
+//        holder.tvMyMessageChat.text = chatList[position].message
+//        }
     }
 
     override fun getItemCount(): Int {
