@@ -1,9 +1,7 @@
 package com.example.angkorchatproto.Profile
 
 
-
 import android.Manifest
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Intent
@@ -17,16 +15,18 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.angkorchatproto.Chat.ChatActivity
+import com.example.angkorchatproto.Chat.ChatBotActivity
+import com.example.angkorchatproto.Chat.ChatVO
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
 import java.util.*
-
+import kotlin.collections.ArrayList
 
 
 class ProfileActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileBinding
+    var chatList= ArrayList<ChatVO>()
 
 
     @SuppressLint("ResourceAsColor")
@@ -43,47 +43,51 @@ class ProfileActivity : AppCompatActivity() {
         //기본 정보 삽입
         binding.tvNameProfile.text = userName
         binding.tvMsgProfile.text = userMsg
-        binding.imgProfileProfile.setImageResource(R.drawable.img_flag_south_korea)
         binding.imgChatProfile.setImageResource(R.drawable.ic_baseline_chat_24)
         binding.imgCallProfile.setImageResource(R.drawable.ic_baseline_call_24)
 
         //프로필 사진 uri 가져오기
         val profile = intent.getStringExtra("profile")
 
-        if(profile == "union"){
+        if (profile == "union") {
             Glide.with(this)
                 .load(R.drawable.top_logo)
                 .into(binding.imgProfileProfile)
-        }else if(profile == ""){
+        } else if (profile == "") {
             Glide.with(this)
                 .load(R.drawable.profile)
                 .into(binding.imgProfileProfile)
-        }else{
+        } else {
             Glide.with(this)
                 .load(profile)
                 .into(binding.imgProfileProfile)
         }
 
 
-
-
         //채팅방으로 이동
-        binding.imgChatProfile.setOnClickListener{
-            val intent = Intent(this@ProfileActivity,ChatActivity::class.java)
-            startActivity(intent)
-            intent.putExtra("name",userName)
-            finish()
+        binding.imgChatProfile.setOnClickListener {
+            if(profile == "union"){
+                val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
+                startActivity(intent)
+                intent.putExtra("name", userName)
+                finish()
+            }
+
         }
 
         //Add/Unfriend 버튼(실제 친구 목록 아니기 때문에 기능X)
-        binding.btnAddProfile.setOnClickListener{
+        binding.btnAddProfile.setOnClickListener {
 
-            if(binding.btnAddProfile.tag == "true"){
+            if (binding.btnAddProfile.tag == "true") {
                 binding.btnAddProfile.text = "Add"
                 binding.btnAddProfile.setBackgroundResource(R.drawable.style_login_btn)
                 binding.btnAddProfile.setTextColor(Color.WHITE)
                 binding.btnAddProfile.tag = "false"
-            }else if(binding.btnAddProfile.tag == "false"){
+            } else if (binding.btnAddProfile.tag == "false") {
                 binding.btnAddProfile.text = "Unfriend"
                 binding.btnAddProfile.setBackgroundResource(R.drawable.style_yellow_line_btn)
                 binding.btnAddProfile.setTextColor(getColor(R.color.mainYellow))
@@ -94,7 +98,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
         //전화걸기
-        binding.imgCallProfile.setOnClickListener{
+        binding.imgCallProfile.setOnClickListener {
             val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
             startActivity(intent)
             finish()
@@ -102,12 +106,15 @@ class ProfileActivity : AppCompatActivity() {
 
 
         //갤러리 저장 사진 불러오기
-         val REQUEST_STORAGE_PERMISSION = 100
+        val REQUEST_STORAGE_PERMISSION = 100
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_STORAGE_PERMISSION)
+                requestPermissions(
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    REQUEST_STORAGE_PERMISSION
+                )
                 return
             }
         }
@@ -115,7 +122,10 @@ class ProfileActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_STORAGE_PERMISSION)
+                requestPermissions(
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    REQUEST_STORAGE_PERMISSION
+                )
                 return
             }
         }
@@ -144,14 +154,18 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
+
         // 이미지 뷰에 이미지 표시하기
         if (imageUri != null) {
             binding.imgProfileProfile.setImageURI(imageUri)
-            Log.d("TAG-이미지 로그 불러옴",imageUri.toString())
-        }else{
-            Log.d("TAG-이미지 로그 못불러옴",imageUri.toString())
+            Log.d("TAG-이미지 로그 불러옴", imageUri.toString())
+        } else {
+            Log.d("TAG-이미지 로그 못불러옴", imageUri.toString())
         }
     }
+
+
+
 }
 
 

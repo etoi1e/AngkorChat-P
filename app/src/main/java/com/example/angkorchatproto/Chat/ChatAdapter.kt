@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
 
 
-class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>, val myNumber : String) :
+class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>, val time : String) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
 

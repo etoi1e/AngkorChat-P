@@ -16,6 +16,7 @@ import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.FragmentFriendsBinding
+import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -37,7 +38,7 @@ class FriendsFragment : Fragment() {
         var favoriteList = arrayListOf<UserVO>()
 
 
-        database = Firebase.database.reference
+        database = FBdataBase.getChatBotRef()
 
 
 
@@ -168,7 +169,8 @@ class FriendsFragment : Fragment() {
             null,
             ContactsContract.Contacts.DISPLAY_NAME + " ASC"
         )
-//        val cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, projection, null, null, null)
+
+
 
         // 가져온 연락처 정보를 리스트에 저장
         if (cursor != null && cursor.count > 0) {
@@ -190,11 +192,6 @@ class FriendsFragment : Fragment() {
                     
                     phoneNumber =phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                     
-                    //firebase 연락처 저장
-//                    val friendsList = phoneNumber.replace("-","")
-//                    val database = Firebase.database.reference
-//                    database.child("user").child(friendsList).setValue(friendsList)
-
 
                     phoneCursor.close()
                 }

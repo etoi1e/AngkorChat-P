@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/chatLayout"
+    android:id="@+id/ChatBotLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.ChatActivity">
+    tools:context=".Chat.ChatBotActivity">
 
     <View
-        android:id="@+id/viewBackGroundChat"
+        android:id="@+id/viewBackGroundChatBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imgMoveBackChat"
+        android:id="@+id/imgMoveBackChatBot"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
@@ -27,18 +27,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/imgProfileChat"
+        android:id="@+id/imgProfileChatBot"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginStart="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgMoveBackChat"
-        app:layout_constraintStart_toEndOf="@+id/imgMoveBackChat"
-        app:layout_constraintTop_toTopOf="@+id/imgMoveBackChat"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMoveBackChatBot"
+        app:layout_constraintStart_toEndOf="@+id/imgMoveBackChatBot"
+        app:layout_constraintTop_toTopOf="@+id/imgMoveBackChatBot"
         app:riv_corner_radius="10dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvNameChat"
+        android:id="@+id/tvNameChatBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -47,22 +47,23 @@
         android:textColor="@color/textBlack"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imgProfileChat"
-        app:layout_constraintStart_toEndOf="@+id/imgProfileChat"
-        app:layout_constraintTop_toTopOf="@+id/imgProfileChat" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgProfileChatBot"
+        app:layout_constraintStart_toEndOf="@+id/imgProfileChatBot"
+        app:layout_constraintTop_toTopOf="@+id/imgProfileChatBot" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvChatListChat"
+        android:id="@+id/rvChatListChatBot"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/viewBottomBoxChat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNameChat" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNameChatBot"
+        android:scrollbarFadeDuration="0"/>
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/viewBottomBoxChat"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:background="#f7f7fb"
@@ -71,93 +72,96 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imgMenuChat"
+        android:id="@+id/imgMenuChatBot"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_menu_line_28"
-        app:layout_constraintBottom_toBottomOf="@+id/tvNameChat"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNameChatBot"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvNameChat" />
+        app:layout_constraintTop_toTopOf="@+id/tvNameChatBot" />
 
     <ImageView
-        android:id="@+id/imgMediaChat"
+        android:id="@+id/imgMediaChatBot"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_clip_line_gray_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvChatListChat" />
+        app:layout_constraintTop_toBottomOf="@+id/rvChatListChatBot" />
 
     <View
-        android:id="@+id/viewMessageBox2"
+        android:id="@+id/viewMessageBox1ChatBot"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_corner_white"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMediaChatBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgMediaChatBot"
+        app:layout_constraintTop_toTopOf="@+id/imgMediaChatBot" />
+
+    <View
+        android:id="@+id/viewMessageBox2ChatBot"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/round_corner_white"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/imgMediaChat"
-        app:layout_constraintEnd_toStartOf="@+id/imgSendMessage"
-        app:layout_constraintStart_toEndOf="@+id/imgMediaChat"
-        app:layout_constraintTop_toTopOf="@+id/imgMediaChat" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgMediaChatBot"
+        app:layout_constraintEnd_toStartOf="@+id/imgSendMessageChatBot"
+        app:layout_constraintStart_toEndOf="@+id/imgMediaChatBot"
+        app:layout_constraintTop_toTopOf="@+id/imgMediaChatBot" />
 
     <ImageView
-        android:id="@+id/imgSendMessage"
+        android:id="@+id/imgSendMessageChatBot"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginEnd="12dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/viewMessageBox2"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMediaChatBot"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewMessageBox2"
-        app:srcCompat="@drawable/ic_send_circle_fill_prime_36" />
-
-    <View
-        android:id="@+id/viewMessageBox1"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/round_corner_white"
-        app:layout_constraintBottom_toBottomOf="@+id/imgMediaChat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgMediaChat"
-        app:layout_constraintTop_toTopOf="@+id/imgMediaChat" />
+        app:layout_constraintTop_toTopOf="@+id/imgMediaChatBot"
+        android:src="@drawable/ic_send_circle_fill_prime_36" />
 
     <ImageView
-        android:id="@+id/imgImogeChat"
+        android:id="@+id/imgImogeChatBot"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="70dp"
         android:src="@drawable/ic_emoji_fill_gray_24"
-        app:layout_constraintBottom_toBottomOf="@+id/imgRecordChat"
-        app:layout_constraintEnd_toStartOf="@+id/imgRecordChat"
-        app:layout_constraintTop_toTopOf="@+id/imgRecordChat" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgMediaChatBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgMediaChatBot"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/imgRecordChat"
+        android:id="@+id/imgRecordChatBot"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_mic_fill_gray_24"
-        app:layout_constraintBottom_toBottomOf="@+id/viewMessageBox1"
-        app:layout_constraintEnd_toEndOf="@+id/viewMessageBox1"
-        app:layout_constraintTop_toTopOf="@+id/viewMessageBox1" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgMediaChatBot"
+        app:layout_constraintEnd_toEndOf="@+id/viewMessageBox1ChatBot"
+        app:layout_constraintTop_toTopOf="@+id/imgMediaChatBot" />
 
     <EditText
-        android:id="@+id/etMessageChat"
+        android:id="@+id/etMessageChatBot"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         android:ems="10"
         android:inputType="textVisiblePassword|textNoSuggestions"
-        app:layout_constraintBottom_toBottomOf="@+id/viewMessageBox1"
-        app:layout_constraintEnd_toStartOf="@+id/imgImogeChat"
-        app:layout_constraintStart_toStartOf="@+id/viewMessageBox1"
-        app:layout_constraintTop_toTopOf="@+id/viewMessageBox1" />
+        app:layout_constraintBottom_toBottomOf="@+id/viewMessageBox1ChatBot"
+        app:layout_constraintEnd_toStartOf="@+id/imgImogeChatBot"
+        app:layout_constraintStart_toStartOf="@+id/viewMessageBox1ChatBot"
+        app:layout_constraintTop_toTopOf="@+id/viewMessageBox1ChatBot" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
