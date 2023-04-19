@@ -10,12 +10,17 @@ import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
 import android.view.View.OnFocusChangeListener
-import android.view.inputmethod.EditorInfo
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.Chat.ChatVO.Companion.SENT_BY_ME
 import com.example.angkorchatproto.databinding.ActivityChatbotBinding
+import com.example.angkorchatproto.utils.FBdataBase
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import org.json.JSONArray
@@ -23,18 +28,18 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 
 class ChatBotActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityChatbotBinding
     var chatList = ArrayList<ChatVO>()
-    lateinit var client: OkHttpClient
-    lateinit var arr: JSONArray
-    lateinit var baseAi: JSONObject
-    lateinit var userMsg: JSONObject
+    var client = OkHttpClient()
+    var arr = JSONArray()
+    var baseAi = JSONObject()
+    var userMsg = JSONObject()
     lateinit var adapter: ChatBotAdapter
+    var chatBotRef = FBdataBase.getChatBotRef()
 
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
@@ -55,7 +60,7 @@ class ChatBotActivity : AppCompatActivity() {
 
         //객체 초기화
         client = OkHttpClient()
-        arr = JSONArray()
+
 
         //현재 사용자 번호 불러오기
         val shared = getSharedPreferences("loginNumber", 0)
@@ -76,16 +81,17 @@ class ChatBotActivity : AppCompatActivity() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onClick(view: View?) {
 
-                nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("a HH:mm"))
+
+                //전송 시 시간 초기화
+                nowTime = LocalDateTime.now().toString()
 
                 //API에 질문 전달
                 val question = binding.etMessageChatBot.getText().toString().trim { it <= ' ' }
-                addToChat(question, SENT_BY_ME, nowTime)
+                addToChat(question, SENT_BY_ME, nowTime, chatList.size)
 
                 //EditEext창 초기화
                 this@ChatBotActivity.binding.etMessageChatBot.setText("")
                 callAPI(question)
-
 
             }
         })
@@ -93,13 +99,18 @@ class ChatBotActivity : AppCompatActivity() {
         //EditText에서 Enter 입력 시 전송
         binding.etMessageChatBot.setOnKeyListener() { v, keyCode, event ->
             var handled = false
+
             if (event.action == KeyEvent.ACTION_UP && keyCode == KEYCODE_ENTER) {
+
+                //전송 시 시간 초기화
+                nowTime = LocalDateTime.now().toString()
+
+                //전송 버튼 클릭효과
                 binding.imgSendMessageChatBot.performClick()
                 handled = true
             }
             handled
         }
-
 
 
         //EditText Focus 감지
@@ -111,19 +122,9 @@ class ChatBotActivity : AppCompatActivity() {
 
                 binding.imgSendMessageChatBot.visibility = View.VISIBLE
                 binding.viewMessageBox2ChatBot.visibility = View.VISIBLE
+
             }
 
-//            else {
-//                //키보드 내리기
-//                val immhide: InputMethodManager =
-//                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-//                immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-//
-//                binding.viewMessageBox1ChatBot.visibility = View.VISIBLE
-//
-//                binding.viewMessageBox2ChatBot.visibility = View.GONE
-//                binding.imgSendMessageChatBot.visibility = View.GONE
-//            }
         }
 
 
@@ -137,6 +138,44 @@ class ChatBotActivity : AppCompatActivity() {
         binding.rvChatListChatBot.setLayoutManager(manager)
 
 
+        //FireBase 데이터 불러와서 chatList에 저장하기
+        chatBotRef.child("+15555215554").addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatItem = snapshot.getValue<ChatVO>() as ChatVO
+
+
+                chatList.add(chatItem)
+
+                adapter.notifyDataSetChanged()
+
+                binding.rvChatListChatBot.scrollToPosition(chatList.size - 1)
+
+
+
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
+
+
+
     }
     //OnCreate 바깥
 
@@ -144,11 +183,16 @@ class ChatBotActivity : AppCompatActivity() {
     //메세지 전송 시 chatList에 쌓기
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("NotifyDataSetChanged")
-    fun addToChat(message: String?, sentBy: String?, time: String) {
+    fun addToChat(message: String?, sentBy: String?, time: String, listSize: Int) {
         runOnUiThread {
-            chatList.add(ChatVO(message, sentBy, nowTime))
+//            chatList.add(ChatVO(message, sentBy, time))
             adapter.notifyDataSetChanged()
-            binding.rvChatListChatBot.smoothScrollToPosition(adapter.itemCount)
+            binding.rvChatListChatBot.smoothScrollToPosition(listSize)
+
+            //GPT로 보낸 채팅 FB에 저장
+            chatBotRef.child("+15555215554").push().setValue(ChatVO(message, sentBy, time))
+
+
         }
 
     }
@@ -156,16 +200,15 @@ class ChatBotActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addResponse(response: String?) {
-        addToChat(response, ChatVO.SENT_BY_BOT, nowTime)
+        nowTime = LocalDateTime.now().toString()
+        addToChat(response, ChatVO.SENT_BY_BOT, nowTime, chatList.size)
+
 
     }
 
     fun callAPI(question: String?) {
         //okhttp
         val `object` = JSONObject()
-        arr = JSONArray()
-        baseAi = JSONObject()
-        userMsg = JSONObject()
         try {
             //AI 속성설정
             baseAi.put("role", "user")
@@ -191,7 +234,7 @@ class ChatBotActivity : AppCompatActivity() {
         val body: RequestBody = RequestBody.Companion.create(JSON, `object`.toString())
         val request: Request = Request.Builder()
             .url("https://api.openai.com/v1/chat/completions")  //url 경로 수정됨
-            .header("Authorization", "Bearer " + MY_SECRET_KEY)
+            .header("Authorization", "Bearer " + MY_SECRET_KEY) //API Key 입력
             .post(body)
             .build()
 

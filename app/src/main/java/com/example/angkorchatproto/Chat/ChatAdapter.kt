@@ -34,9 +34,7 @@ class ChatAdapter(val context: Context, val chatList: ArrayList<ChatVO>, val tim
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-//        if(chatList[position].number == myNumber){
-//        holder.tvMyMessageChat.text = chatList[position].message
-//        }
+
     }
 
     override fun getItemCount(): Int {

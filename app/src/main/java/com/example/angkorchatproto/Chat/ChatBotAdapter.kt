@@ -3,7 +3,6 @@ package com.example.angkorchatproto.Chat
 
 import android.content.Context
 import android.os.Build
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +19,13 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,t
     var chatList: ArrayList<ChatVO>
     var context: Context
     var width: Int
+    var time: String
 
     init {
         this.chatList = chatList
         this.context = context
         this.width = width
+        this.time = time
 
     }
 
@@ -61,17 +62,13 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,t
 
         val message: ChatVO = chatList[position]
 
-        //디바이스 가로 길이 구하기
-        holder.tvMyMessageChat.maxWidth = width - 200
-        holder.tvOtherMessageChat.maxWidth = width - 200
-
-//        val current = LocalDateTime.now()
-//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-//        val time = current.format(formatter)
-//        val database = Firebase.database.reference
+        //디바이스 가로 길이에 맞춰 말풍선 고정
+        holder.tvMyMessageChat.maxWidth = width - 250
+        holder.tvOtherMessageChat.maxWidth = width - 250
 
 
-        if (message.sentBy.equals(ChatVO.SENT_BY_ME)) {
+
+        if (message.sentBy.equals(ChatVO.SENT_BY_ME)) { //내가 보낸 메세지인 경우
             holder.tvOtherMessageChat.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
 
@@ -79,19 +76,14 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,t
             holder.tvTimeRight.setText(message.time)
 
 
-//            database.child("chatBot").child("+15555215554").child(time+message.sentBy)
-//                .setValue(ChatVO(message.message, message.sentBy))
 
-
-        } else {
+        } else { //타인이 보낸 메세지인 경우
             holder.tvMyMessageChat.visibility = View.GONE
             holder.tvTimeRight.visibility = View.GONE
 
             holder.tvOtherMessageChat.setText(message.message)
             holder.tvTimeLeft.setText(message.time)
 
-//            database.child("chatBot").child("+15555215554").child(time+message.sentBy)
-//                .setValue(ChatVO(message.message, message.sentBy))
         }
     }
 
