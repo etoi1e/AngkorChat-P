@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.angkorchatproto.Chat.ChatActivity
 import com.example.angkorchatproto.Chat.ChatBotActivity
 import com.example.angkorchatproto.Chat.ChatVO
 import com.example.angkorchatproto.R
@@ -66,12 +67,12 @@ class ProfileActivity : AppCompatActivity() {
 
         //채팅방으로 이동
         binding.imgChatProfile.setOnClickListener {
-            if(profile == "union"){
+            if(profile == "union"){ //유니온 공식 계정 구분하기
                 val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
                 startActivity(intent)
                 finish()
             }else{
-                val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
+                val intent = Intent(this@ProfileActivity, ChatActivity::class.java)
                 startActivity(intent)
                 intent.putExtra("name", userName)
                 finish()

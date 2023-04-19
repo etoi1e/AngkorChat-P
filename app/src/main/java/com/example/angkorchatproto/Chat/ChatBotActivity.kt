@@ -1,6 +1,5 @@
 package com.example.angkorchatproto.Chat
 
-import android.R
 import android.annotation.SuppressLint
 import android.graphics.Point
 import android.os.Build
@@ -19,7 +18,6 @@ import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -40,6 +38,7 @@ class ChatBotActivity : AppCompatActivity() {
     var userMsg = JSONObject()
     lateinit var adapter: ChatBotAdapter
     var chatBotRef = FBdataBase.getChatBotRef()
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
@@ -185,7 +184,6 @@ class ChatBotActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     fun addToChat(message: String?, sentBy: String?, time: String, listSize: Int) {
         runOnUiThread {
-//            chatList.add(ChatVO(message, sentBy, time))
             adapter.notifyDataSetChanged()
             binding.rvChatListChatBot.smoothScrollToPosition(listSize)
 

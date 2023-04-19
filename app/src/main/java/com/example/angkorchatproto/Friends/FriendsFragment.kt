@@ -5,28 +5,23 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.angkorchatproto.Msg
 import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.FragmentFriendsBinding
-import com.example.angkorchatproto.utils.FBdataBase
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+
 
 
 class FriendsFragment : Fragment() {
 
     lateinit var binding: FragmentFriendsBinding
     lateinit var contactsList:ArrayList<UserVO>
-    lateinit var database: DatabaseReference
+    lateinit var testList:ArrayList<UserVO>
 
 
     override fun onCreateView(
@@ -38,27 +33,24 @@ class FriendsFragment : Fragment() {
         var favoriteList = arrayListOf<UserVO>()
 
 
-        database = FBdataBase.getChatBotRef()
 
 
-
-        //firebase 데이터 삽입 테스트
+        //친구추가 버튼 클릭시
         binding.imgAddFriendsFriends.setOnClickListener{
+            val intent = Intent(requireContext(),AddFriendsActivity::class.java)
+            startActivity(intent)
 
-
-            database.child("msg").setValue("테스트")
-            val setData = Firebase.database.getReference("msg")
-            setData.push().setValue("테스트2")
         }
 
 
-        //즐겨찾는 친구 부분
+        //즐겨찾는 친구에 유니온모바일 무조건 추가
         favoriteList.add(UserVO("유니온모바일","union-mobile@union-mobile.co.kr", "union","+123456789"))
 
         //즐겨찾는 친구 Adapter
         val favoriteAdapter = FriendsAdapter(requireContext(),favoriteList)
         favoriteAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
+
                 val intent = Intent(requireContext(), ProfileActivity::class.java)
 
                 intent.putExtra("name",favoriteList[position].name)
@@ -79,10 +71,19 @@ class FriendsFragment : Fragment() {
         binding.tvCountFavoriteFriends.text = countFavorite
 
 
+
+
+
+
         //주소록 목록 불러오기
         getContacts()
 
-        val friendAdapter = FriendsAdapter(requireContext(), contactsList)
+        //val friendAdapter = FriendsAdapter(requireContext(), contactsList)
+        testList= ArrayList()
+        testList.add(UserVO("일반친구","union-mobile@union-mobile.co.kr", "else","+123456789"))
+        testList.add(UserVO("일반친구2","union-mobile@union-mobile.co.kr", "else","+123456789"))
+        val friendAdapter = FriendsAdapter(requireContext(), testList)
+
 
         //클릭 시 유저 프로필로 이동
         friendAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener{
@@ -90,10 +91,10 @@ class FriendsFragment : Fragment() {
                 val intent = Intent(requireContext(), ProfileActivity::class.java)
 
 
-                intent.putExtra("name",contactsList[position].name)
-                intent.putExtra("number",contactsList[position].phone)
-                intent.putExtra("email",contactsList[position].email)
-                intent.putExtra("profile",contactsList[position].profile)
+                intent.putExtra("name",testList[position].name)
+                intent.putExtra("number",testList[position].phone)
+                intent.putExtra("email",testList[position].email)
+                intent.putExtra("profile",testList[position].profile)
 
                 startActivity(intent)
 
@@ -101,18 +102,23 @@ class FriendsFragment : Fragment() {
 
         })
 
-//        //전체 친구 Adapter
-//        binding.rvFriendsFriends.adapter = friendAdapter
-//        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(),1)
-//
+        //전체 친구 Adapter
+        binding.rvFriendsFriends.adapter = friendAdapter
+        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(),1)
+
+
         //전체 친구 Count
-        val countFriends = contactsList.size.toString()
-        binding.tvCountFriendsFriends.text = countFriends
+        if(testList.size == 0){
+            binding.tvCountFriendsFriends.text = "0"
+        }else{
+            val testList = testList.size.toString()
+            binding.tvCountFriendsFriends.text = testList
+        }
+
 
 
 
         //친구 목록 접기
-        //사용자 지정값 저장해서 다른 페이지 다녀와도 바뀌지 않게 하기
         binding.imgFoldFavoriteFriends.setOnClickListener {
             if(binding.imgFoldFavoriteFriends.tag==true){ //목록 펼치기
                 binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_up_16)

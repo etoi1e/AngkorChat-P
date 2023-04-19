@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
 
 
-class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,time :String) :
+class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, time: String) :
     RecyclerView.Adapter<ChatBotAdapter.ViewHolder>() {
 
     var chatList: ArrayList<ChatVO>
@@ -34,8 +34,8 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,t
         var tvMyMessageChat: TextView
         var tvOtherMessageChat: TextView
         var divChatList: ConstraintLayout
-        var tvTimeRight : TextView
-        var tvTimeLeft : TextView
+        var tvTimeRight: TextView
+        var tvTimeLeft: TextView
 
         init {
 
@@ -62,6 +62,19 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,t
 
         val message: ChatVO = chatList[position]
 
+
+
+        //시간 커스텀
+        var setTime = ""
+        var setDate = message.time?.substring(0, 10)
+        val setAm = message.time?.substring(11, 12)?.toInt()
+        if (setAm!! >= 12) {
+            setTime = "PM" + message.time?.substring(11, 16)
+        } else {
+            setTime = "AM" + message.time?.substring(11, 16)
+        }
+
+
         //디바이스 가로 길이에 맞춰 말풍선 고정
         holder.tvMyMessageChat.maxWidth = width - 250
         holder.tvOtherMessageChat.maxWidth = width - 250
@@ -73,8 +86,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,t
             holder.tvTimeLeft.visibility = View.GONE
 
             holder.tvMyMessageChat.setText(message.message)
-            holder.tvTimeRight.setText(message.time)
-
+            holder.tvTimeRight.setText(setTime)
 
 
         } else { //타인이 보낸 메세지인 경우
@@ -82,9 +94,13 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int,t
             holder.tvTimeRight.visibility = View.GONE
 
             holder.tvOtherMessageChat.setText(message.message)
-            holder.tvTimeLeft.setText(message.time)
+            holder.tvTimeLeft.setText(setTime)
 
         }
+
+        //뷰 재활용 막기(데이터꼬임방지)
+        holder.setIsRecyclable(false);
+
     }
 
     override fun getItemCount(): Int {

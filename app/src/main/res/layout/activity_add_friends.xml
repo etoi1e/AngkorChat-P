@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Friends.AddFriendsActivity">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBarAddFriends" />
+
+    <View
+        android:id="@+id/viewGrayBarAddFriends"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="24dp"
+        android:background="#f7f7fb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNearbyAddFriends" />
+
+    <TextView
+        android:id="@+id/tvSuggestedCountAddFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="26"
+        android:textColor="#929498"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSuggestedAddFriends"
+        app:layout_constraintStart_toEndOf="@+id/tvSuggestedAddFriends"
+        app:layout_constraintTop_toTopOf="@+id/tvSuggestedAddFriends"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tvTitleAddFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:text="Add Friend"
+        android:textColor="@color/textBlack"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMoveBackAddFriends"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgMoveBackAddFriends" />
+
+    <ImageView
+        android:id="@+id/imgMoveBackAddFriends"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_arrow_left_line" />
+
+    <ImageView
+        android:id="@+id/imgNearbyAddFriends"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="38dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgMoveBackAddFriends"
+        android:src="@drawable/ic_location_circle_fill_40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <ImageView
+        android:id="@+id/imgContactAddFriends"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgNearbyAddFriends"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/imgNearbyAddFriends"
+        android:src="@drawable/ic_contact_circle_fill_40" />
+
+    <TextView
+        android:id="@+id/tvNearbyAddFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Nearby"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="@+id/imgNearbyAddFriends"
+        app:layout_constraintStart_toStartOf="@+id/imgNearbyAddFriends"
+        app:layout_constraintTop_toBottomOf="@+id/imgNearbyAddFriends" />
+
+    <TextView
+        android:id="@+id/tvContactAddFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Contact"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="@+id/imgContactAddFriends"
+        app:layout_constraintStart_toStartOf="@+id/imgContactAddFriends"
+        app:layout_constraintTop_toBottomOf="@+id/imgContactAddFriends" />
+
+    <TextView
+        android:id="@+id/tvSuggestedAddFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Suggested for you"
+        android:textColor="@color/textBlack"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBarAddFriends" />
+
+    <ImageView
+        android:id="@+id/imgNoticeAddFriends"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBarAddFriends"
+        android:src="@drawable/ic_info_circle_fill_lightgray_24" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSuggestedListAddFriends"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
