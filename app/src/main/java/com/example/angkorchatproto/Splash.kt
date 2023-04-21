@@ -16,7 +16,7 @@ class Splash : AppCompatActivity() {
         val shared = getSharedPreferences("loginNumber",0)
 
         //로그인 확인
-        val autoLogin = shared.getString("loginNumber","")
+        val autoLogin = shared.getString("userNumber","")
         Log.d("TAG-자동 로그인 확인",autoLogin.toString())
 
         Handler().postDelayed({

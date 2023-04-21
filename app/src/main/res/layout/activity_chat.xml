@@ -35,7 +35,7 @@
         app:layout_constraintStart_toEndOf="@+id/imgMoveBackChat"
         app:layout_constraintTop_toTopOf="@+id/imgMoveBackChat"
         app:riv_corner_radius="10dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/profile" />
 
     <TextView
         android:id="@+id/tvNameChat"

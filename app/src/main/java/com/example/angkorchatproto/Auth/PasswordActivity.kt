@@ -35,8 +35,9 @@ class PasswordActivity : AppCompatActivity() {
         binding.btnLoginPassword.setOnClickListener {
             if(binding.btnLoginPassword.isEnabled){
                 val userNumber = intent.getStringExtra("userNumber").toString()
-                editor.putString("loginNumber", userNumber)
+                editor.putString("userNumber", userNumber)
                 editor.commit()
+                Log.d("TAG-password에서 번호 찍기",userNumber)
 
                 val intent = Intent(this@PasswordActivity, MainActivity::class.java)
                 startActivity(intent)
@@ -63,14 +64,14 @@ class PasswordActivity : AppCompatActivity() {
 //                binding.btnLoginPassword.setClickable(true)
                 binding.viewUnderLinePassword.setBackgroundColor(getColor(R.color.mainYellow))
                 binding.btnLoginPassword.setBackgroundResource(R.drawable.style_login_btn)
-                Log.d("TAG-번호입력", number)
+//                Log.d("TAG-번호입력", number)
 
             } else {
                 binding.btnLoginPassword.isEnabled = false
 //                binding.btnLoginPassword.setClickable(false)
                 binding.viewUnderLinePassword.setBackgroundColor(getColor(R.color.gray))
                 binding.btnLoginPassword.setBackgroundResource(R.drawable.style_disable_btn)
-                Log.d("TAG-번호미입력", p0.toString())
+//                Log.d("TAG-번호미입력", p0.toString())
             }
 
         }

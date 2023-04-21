@@ -79,12 +79,12 @@ class LoginActivity : AppCompatActivity() {
 
             //번호로 사용자 정보 firebase 에 저장
             val database = Firebase.database.reference
-            database.child("user").child(phoneNumber).setValue(JoinVO(phoneNumber,"union@union.co.kr"))
+            database.child("user").child(phoneNumber).setValue(JoinVO(phoneNumber,phoneNumber))
 
 
             val intent = Intent(this@LoginActivity,PasswordActivity::class.java)
-            startActivity(intent)
             intent.putExtra("userNumber",phoneNumber)
+            startActivity(intent)
             finish()
         }
         
@@ -134,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
             phoneNumber = msg.line1Number.toString()
             phoneCountry = msg.simCountryIso.toUpperCase()
 
-            Log.d("TAG-번호/국가", phoneNumber+"/"+phoneCountry)
+            Log.d("TAG-로그인 정보 번호/국가", phoneNumber+"/"+phoneCountry)
         } else {
             Log.d("TAG-번호가져오기", "없음")
         }
@@ -153,7 +153,7 @@ class LoginActivity : AppCompatActivity() {
                 break
             }
         }
-        Log.d("TAG-국가코드",CountryZipCode)
+//        Log.d("TAG-국가코드",CountryZipCode)
         return CountryZipCode
     }
 
@@ -168,13 +168,13 @@ class LoginActivity : AppCompatActivity() {
                 binding.btnSendCodeLogin.setClickable(true)
                 binding.viewUnderLineLogin.setBackgroundColor(getColor(R.color.mainYellow))
                 binding.btnSendCodeLogin.setBackgroundResource(R.drawable.style_login_btn)
-                Log.d("TAG-번호입력",number)
+//                Log.d("TAG-번호입력",number)
 
             } else {
                 binding.btnSendCodeLogin.setClickable(false)
                 binding.viewUnderLineLogin.setBackgroundColor(getColor(R.color.gray))
                 binding.btnSendCodeLogin.setBackgroundResource(R.drawable.style_disable_btn)
-                Log.d("TAG-번호미입력",p0.toString())
+//                Log.d("TAG-번호미입력",p0.toString())
             }
 
         }

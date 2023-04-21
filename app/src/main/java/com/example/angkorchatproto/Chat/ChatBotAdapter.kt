@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
 
 
-class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, time: String) :
+class ChatBotAdapter(context: Context, chatList: ArrayList<ChatBotVO>, width: Int, time: String) :
     RecyclerView.Adapter<ChatBotAdapter.ViewHolder>() {
 
-    var chatList: ArrayList<ChatVO>
+    var chatList: ArrayList<ChatBotVO>
     var context: Context
     var width: Int
     var time: String
@@ -37,6 +37,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, 
         var tvTimeRight: TextView
         var tvTimeLeft: TextView
 
+
         init {
 
             tvMyMessageChat = itemView.findViewById(R.id.tvMyMessageChat)
@@ -44,6 +45,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, 
             divChatList = itemView.findViewById(R.id.divChatList)
             tvTimeRight = itemView.findViewById(R.id.tvTimeRight)
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
+
         }
     }
 
@@ -60,7 +62,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val message: ChatVO = chatList[position]
+        val message: ChatBotVO = chatList[position]
 
 
 
@@ -99,7 +101,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, 
         }
 
         //뷰 재활용 막기(데이터꼬임방지)
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(false)
 
     }
 

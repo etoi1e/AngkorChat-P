@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             R.id.frameLayout,
             FriendsFragment()
         ).commit()
-// 어디에있어용
+
 
         binding.bottomNavigationView.setOnItemSelectedListener{
                 item ->

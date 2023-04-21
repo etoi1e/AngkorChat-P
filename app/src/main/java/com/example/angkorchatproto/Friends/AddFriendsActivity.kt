@@ -1,19 +1,27 @@
 package com.example.angkorchatproto.Friends
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.ActivityAddFriendsBinding
+import com.example.angkorchatproto.utils.FBdataBase
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+
 
 class AddFriendsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityAddFriendsBinding
-    lateinit var suggestList: ArrayList<UserVO>
+    var suggestList: ArrayList<UserVO> = ArrayList()
+    var friendList: ArrayList<String> = ArrayList()
+    var friendRef = FBdataBase.getFriendRef()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         binding = ActivityAddFriendsBinding.inflate(layoutInflater)
@@ -25,13 +33,22 @@ class AddFriendsActivity : AppCompatActivity() {
             finish()
         }
 
-        suggestList= ArrayList()
+        //로그인한 계정 번호 불러오기
+        //SharedPreferences
+        val shared = getSharedPreferences("loginNumber", 0)
+        val userNumber = shared.getString("userNumber","")
+
+
+        Log.d("TAG-실행순서","onCreate,getFirebase 호출 바로 전")
 
         //주소록 친구 불러와서 rv에 출력
         getContacts()
-
-        binding.rvSuggestedListAddFriends.adapter = SuggestedAdapter(this@AddFriendsActivity,suggestList)
+        Log.d("TAG-실행순서","onCreate,어댑터 바로 전")
+        val adapter = SuggestedAdapter(this@AddFriendsActivity,suggestList,userNumber.toString(),friendList)
+        binding.rvSuggestedListAddFriends.adapter = adapter
         binding.rvSuggestedListAddFriends.layoutManager = GridLayoutManager(this@AddFriendsActivity,1)
+
+
 
 
         //추천 친구 Count
@@ -43,8 +60,35 @@ class AddFriendsActivity : AppCompatActivity() {
         }
 
 
+        //FireBase 데이터 불러와서 friendList에 저장하기
+        friendRef.child(userNumber.toString()).addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+
+                val userData = dataSnapshot.value as HashMap<String, Any>?
+                val friendNum = userData!!["phone"] as String
 
 
+                friendList.add(friendNum)
+
+            }
+
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        })
 
     }
     //onCreate바깥
@@ -141,7 +185,6 @@ class AddFriendsActivity : AppCompatActivity() {
             }
             cursor.close()
         }
-        Log.d("TAG-추천리스트",suggestList.toString())
         return suggestList
 
     }

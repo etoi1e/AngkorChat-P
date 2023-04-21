@@ -54,6 +54,7 @@ class ProfileActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(R.drawable.top_logo)
                 .into(binding.imgProfileProfile)
+            Log.d("TAG-프로필","유니온으로 출력구간")
         } else if (profile == "") {
             Glide.with(this)
                 .load(R.drawable.profile)
@@ -73,8 +74,9 @@ class ProfileActivity : AppCompatActivity() {
                 finish()
             }else{
                 val intent = Intent(this@ProfileActivity, ChatActivity::class.java)
-                startActivity(intent)
                 intent.putExtra("name", userName)
+                intent.putExtra("number", number)
+                startActivity(intent)
                 finish()
             }
 
@@ -158,7 +160,7 @@ class ProfileActivity : AppCompatActivity() {
 
         // 이미지 뷰에 이미지 표시하기
         if (imageUri != null) {
-            binding.imgProfileProfile.setImageURI(imageUri)
+            //binding.imgProfileProfile.setImageURI(imageUri)
             Log.d("TAG-이미지 로그 불러옴", imageUri.toString())
         } else {
             Log.d("TAG-이미지 로그 못불러옴", imageUri.toString())

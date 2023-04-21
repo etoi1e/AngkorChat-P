@@ -31,13 +31,14 @@ import java.time.LocalDateTime
 class ChatBotActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityChatbotBinding
-    var chatList = ArrayList<ChatVO>()
+    var chatList = ArrayList<ChatBotVO>()
     var client = OkHttpClient()
     var arr = JSONArray()
     var baseAi = JSONObject()
     var userMsg = JSONObject()
     lateinit var adapter: ChatBotAdapter
     var chatBotRef = FBdataBase.getChatBotRef()
+    lateinit var myNumber:String
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -59,11 +60,11 @@ class ChatBotActivity : AppCompatActivity() {
 
         //객체 초기화
         client = OkHttpClient()
-
+        binding.tvNameChatBot.text="유니온 모바일"
 
         //현재 사용자 번호 불러오기
         val shared = getSharedPreferences("loginNumber", 0)
-        val myNumber = shared.contains("loginNumber")
+        myNumber = shared.getString("userNumber","").toString()
 
         Log.d("TAG-사용자 번호 출력", myNumber.toString())
 
@@ -138,9 +139,9 @@ class ChatBotActivity : AppCompatActivity() {
 
 
         //FireBase 데이터 불러와서 chatList에 저장하기
-        chatBotRef.child("+15555215554").addChildEventListener(object : ChildEventListener {
+        chatBotRef.child(myNumber).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val chatItem = snapshot.getValue<ChatVO>() as ChatVO
+                val chatItem = snapshot.getValue<ChatBotVO>() as ChatBotVO
 
 
                 chatList.add(chatItem)
@@ -188,7 +189,7 @@ class ChatBotActivity : AppCompatActivity() {
             binding.rvChatListChatBot.smoothScrollToPosition(listSize)
 
             //GPT로 보낸 채팅 FB에 저장
-            chatBotRef.child("+15555215554").push().setValue(ChatVO(message, sentBy, time))
+            chatBotRef.child(myNumber).push().setValue(ChatBotVO(message, sentBy, time))
 
 
         }
@@ -199,7 +200,7 @@ class ChatBotActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun addResponse(response: String?) {
         nowTime = LocalDateTime.now().toString()
-        addToChat(response, ChatVO.SENT_BY_BOT, nowTime, chatList.size)
+        addToChat(response, ChatBotVO.SENT_BY_BOT, nowTime, chatList.size)
 
 
     }
