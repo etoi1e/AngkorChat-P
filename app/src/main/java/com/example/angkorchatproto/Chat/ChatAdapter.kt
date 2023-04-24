@@ -10,20 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
 
 
-class ChatAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, time: String,myNumber:String) :
+class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, width: Int, myNumber:String) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
-    var chatList: ArrayList<ChatVO>
+    var chatList: ArrayList<ChatModel.Comment>
     var context: Context
     var width: Int
-    var time: String
     var myNumber: String
 
     init {
         this.chatList = chatList
         this.context = context
         this.width = width
-        this.time = time
         this.myNumber = myNumber
 
     }
@@ -55,13 +53,13 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, tim
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val message: ChatVO = chatList[position]
+        val message: ChatModel.Comment = chatList[position]
 
 
 
         //시간 커스텀
         var setTime = ""
-        var setDate = message.time?.substring(0, 10)
+        //var setDate = message.time?.substring(0, 10)
         val setAm = message.time?.substring(11, 12)?.toInt()
         if (setAm!! >= 12) {
             setTime = "PM" + message.time?.substring(11, 16)
@@ -75,7 +73,7 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatVO>, width: Int, tim
         holder.tvOtherMessageChat.maxWidth = width - 250
 
 
-        if (message.sender.equals(myNumber)) { //내가 보낸 메세지인 경우
+        if (message.user.equals(myNumber)) { //내가 보낸 메세지인 경우
             holder.tvOtherMessageChat.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
 

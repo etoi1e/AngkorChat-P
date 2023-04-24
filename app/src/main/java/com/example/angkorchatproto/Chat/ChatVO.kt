@@ -1,16 +1,19 @@
 package com.example.angkorchatproto.Chat
 
+class ChatModel (val users: HashMap<String, Boolean> = HashMap(),
+                 val comments : HashMap<String, Comment> = HashMap()){
+    class Comment(val user: String? = null, val message: String? = null, val time: String? = null)
+}
+
 class ChatVO : java.io.Serializable {
     var message: String? = null
-    var sender: String? = null
-    var receiver: String? = null
+    var user: String? = null
     var time: String? = null
 
 
-    constructor(message: String?, sender: String?,receiver:String?, time: String?) {
+    constructor(message: String?, user: String?, time: String?) {
         this.message = message
-        this.sender = sender
-        this.receiver = receiver
+        this.user = user
         this.time = time
 
     }
@@ -20,7 +23,7 @@ class ChatVO : java.io.Serializable {
         var SENT_BY_OTHER = "other"
     }
 
-    constructor() : this(null, null,null,null)
+    constructor() : this(null, null,null)
 
 }
 
