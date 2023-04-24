@@ -26,7 +26,7 @@ class ChatActivity : AppCompatActivity() {
     var chatListRec = ArrayList<ChatVO>()
     var client = OkHttpClient()
     lateinit var adapterSend: ChatAdapter
-    lateinit var adapterRec: ChatAdapter
+//    lateinit var adapterRec: ChatAdapter
     var chatRef = FBdataBase.getChatRef()
     lateinit var myNumber:String
     lateinit var receiver:String
@@ -43,11 +43,12 @@ class ChatActivity : AppCompatActivity() {
 
         //상대방 이름 설정
         val receiver_data = intent.getStringExtra("number").toString()
+        val receiver_name = intent.getStringExtra("name").toString()
 
         val receiver_data2  = receiver_data.replace("-","")
         receiver  = receiver_data2.replace(" ","")
 
-        binding.tvNameChat.text = receiver
+        binding.tvNameChat.text = receiver_name
 
 
         //뒤로가기
@@ -126,9 +127,9 @@ class ChatActivity : AppCompatActivity() {
         adapterSend = ChatAdapter(this@ChatActivity, chatListSend, width, nowTime,myNumber)
         binding.rvChatListChat.setAdapter(adapterSend)
 
-        //Chat Adapter 적용 받은 메일
-        adapterRec = ChatAdapter(this@ChatActivity, chatListRec, width, nowTime,receiver)
-        binding.rvChatListChat.setAdapter(adapterRec)
+//        //Chat Adapter 적용 받은 메일
+//        adapterRec = ChatAdapter(this@ChatActivity, chatListRec, width, nowTime,receiver)
+//        binding.rvChatListChat.setAdapter(adapterRec)
 
         //Recycler View 레이아웃 매니저 적용
         binding.rvChatListChat.setHasFixedSize(true)
@@ -147,6 +148,8 @@ class ChatActivity : AppCompatActivity() {
                 adapterSend.notifyDataSetChanged()
 
                 binding.rvChatListChat.scrollToPosition(chatListSend.size - 1)
+
+                Log.d("TAG-채팅기록",chatListSend.toString())
 
 
 
@@ -177,11 +180,11 @@ class ChatActivity : AppCompatActivity() {
                 val chatItem = snapshot.getValue<ChatVO>() as ChatVO
 
 
-                chatListRec.add(chatItem)
+                chatListSend.add(chatItem)
 
-                adapterRec.notifyDataSetChanged()
+                adapterSend.notifyDataSetChanged()
 
-                binding.rvChatListChat.scrollToPosition(chatListRec.size - 1)
+                binding.rvChatListChat.scrollToPosition(chatListSend.size - 1)
 
 
 
@@ -217,10 +220,10 @@ class ChatActivity : AppCompatActivity() {
     fun addToChat(message: String?, sender: String?,receiver:String?, time: String, listSize: Int) {
         runOnUiThread {
             adapterSend.notifyDataSetChanged()
-            adapterRec.notifyDataSetChanged()
+            //adapterRec.notifyDataSetChanged()
             binding.rvChatListChat.smoothScrollToPosition(listSize)
-            Log.d("TAG-저장path receiver",receiver.toString())
-            Log.d("TAG-저장path sender",sender.toString())
+//            Log.d("TAG-저장path receiver",receiver.toString())
+//            Log.d("TAG-저장path sender",sender.toString())
 
             //채팅 FB에 저장
             chatRef.child(sender.toString()).child(receiver.toString()).push().setValue(ChatVO(message,sender,receiver,time))

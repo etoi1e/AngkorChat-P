@@ -164,7 +164,7 @@ class FriendsFragment : Fragment() {
 
         friendRef.child(userNumber).addChildEventListener(object : ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    Log.d("TAG-전체친구목록",snapshot.toString())
+                //Log.d("TAG-전체친구목록",snapshot.toString())
                 val firendItem = snapshot.getValue<UserVO>() as UserVO
                 friendList.add(firendItem)
 
