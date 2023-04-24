@@ -31,10 +31,10 @@ class LoginActivity : AppCompatActivity() {
     )
 
     //디바이스 번호
-    lateinit var phoneNumber: String
+    var phoneNumber: String =""
 
     //디바이스 국가
-    lateinit var phoneCountry: String
+    var phoneCountry: String =""
 
     lateinit var binding : ActivityLoginBinding
 
