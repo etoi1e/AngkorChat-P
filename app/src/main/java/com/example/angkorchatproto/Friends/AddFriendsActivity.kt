@@ -52,7 +52,7 @@ class AddFriendsActivity : AppCompatActivity() {
 
 
         //추천 친구 Count
-        if(suggestList.size == 0){
+        if(suggestList.size == 0 || suggestList.size == null){
             binding.tvSuggestedCountAddFriends.text = "0"
         }else{
             val testList = suggestList.size.toString()

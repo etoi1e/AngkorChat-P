@@ -61,6 +61,8 @@ class LoginActivity : AppCompatActivity() {
             binding.imgFlagLogin.setImageResource(R.drawable.img_flag_south_korea)
         }else if(GetCountryZipCode() == "1"){
             binding.imgFlagLogin.setImageResource(R.drawable.img_flag_united_states)
+        }else{
+            binding.imgFlagLogin.setImageResource(R.drawable.ic_delate_circle_fill_lightgray)
         }
 
         //디바이스 번호 자동 입력
@@ -77,13 +79,15 @@ class LoginActivity : AppCompatActivity() {
         //SendCode 클릭 시 동작
         binding.btnSendCodeLogin.setOnClickListener {
 
+            val joinNumber = binding.etPhoneNumberLogin.text.toString()
+
             //번호로 사용자 정보 firebase 에 저장
             val database = Firebase.database.reference
-            database.child("user").child(phoneNumber).setValue(JoinVO(phoneNumber,phoneNumber))
+            database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,joinNumber))
 
 
             val intent = Intent(this@LoginActivity,PasswordActivity::class.java)
-            intent.putExtra("userNumber",phoneNumber)
+            intent.putExtra("userNumber",joinNumber)
             startActivity(intent)
             finish()
         }
@@ -182,6 +186,11 @@ class LoginActivity : AppCompatActivity() {
         override fun afterTextChanged(p0: Editable?) {}
 
     }
+
+
+
+
+
 
 
 }
