@@ -11,6 +11,8 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot
@@ -19,7 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import okhttp3.OkHttpClient
 import java.time.LocalDateTime
-import java.util.Date
+
 
 class ChatActivity : AppCompatActivity() {
 
@@ -56,6 +58,20 @@ class ChatActivity : AppCompatActivity() {
         //상대방 이름 출력
         val receiver_name = intent.getStringExtra("name").toString()
         binding.tvNameChat.text = receiver_name
+
+        //상대방 프로필 출력
+        val profileImg = intent.getStringExtra("profile")
+
+        if(profileImg == ""){
+            Glide.with(this@ChatActivity)
+                .load(R.drawable.profile)
+                .into(binding.imgProfileChat)
+        }else{
+            Glide.with(this@ChatActivity)
+                .load(profileImg)
+                .into(binding.imgProfileChat)
+        }
+
 
 
         //뒤로가기
@@ -197,8 +213,8 @@ class ChatActivity : AppCompatActivity() {
                     for (data in snapshot.children) {
                         val item = data.getValue<ChatModel.Comment>()
                         commentList.add(item!!)
-                        Log.d("TAG-commentList",commentList.toString())
-                        Log.d("TAG-snapshot",data.toString())
+                        //Log.d("TAG-commentList",commentList.toString())
+                        //Log.d("TAG-snapshot",data.toString())
                     }
                     var adapter = ChatAdapter(this@ChatActivity,commentList,width,myNumber)
                     adapter.notifyDataSetChanged()

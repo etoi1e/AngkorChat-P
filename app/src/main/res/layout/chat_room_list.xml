@@ -55,9 +55,10 @@
     <TextView
         android:id="@+id/tvCountChatChatList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/style_login_btn"
+        android:layout_height="20dp"
+        android:background="@drawable/noti"
         android:fontFamily="@font/poppins"
+        android:gravity="center"
         android:paddingLeft="6dp"
         android:paddingTop="1dp"
         android:paddingRight="6dp"

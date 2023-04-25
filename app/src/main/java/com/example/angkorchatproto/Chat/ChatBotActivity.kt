@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.Chat.ChatVO.Companion.SENT_BY_ME
+import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatbotBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.ChildEventListener
@@ -74,6 +75,9 @@ class ChatBotActivity : AppCompatActivity() {
         val size = Point()
         display.getRealSize(size)
         val width = size.x
+
+        //프로필 사진 적용
+        binding.imgProfileChatBot.setImageResource(R.drawable.top_logo)
 
 
         //전송 버튼 클릭 시

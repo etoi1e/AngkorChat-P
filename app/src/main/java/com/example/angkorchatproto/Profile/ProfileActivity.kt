@@ -27,7 +27,6 @@ import kotlin.collections.ArrayList
 class ProfileActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileBinding
-    var chatList= ArrayList<ChatVO>()
 
 
     @SuppressLint("ResourceAsColor")
@@ -76,6 +75,7 @@ class ProfileActivity : AppCompatActivity() {
                 val intent = Intent(this@ProfileActivity, ChatActivity::class.java)
                 intent.putExtra("name", userName)
                 intent.putExtra("number", number)
+                intent.putExtra("profile", userProfile)
                 startActivity(intent)
                 finish()
             }

@@ -1,12 +1,10 @@
 package com.example.angkorchatproto.Auth
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.MainActivity
@@ -49,6 +47,7 @@ class PasswordActivity : AppCompatActivity() {
             database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,password))
 
                 editor.putString("userNumber", joinNumber)
+                editor.putString("userName","유저이름")
                 editor.commit()
                 //Log.d("TAG-password에서 번호 찍기",userNumber)
 

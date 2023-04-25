@@ -1,6 +1,7 @@
 package com.example.angkorchatproto.Chat
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
 
-class ChatRoomAdapter(val context: Context, val chatRoomList : ArrayList<ChatVO>):
+class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatModel.Comment>):
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
+
+
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -40,20 +43,21 @@ class ChatRoomAdapter(val context: Context, val chatRoomList : ArrayList<ChatVO>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val chatRoomInfo = chatRoomList[position]
+        val chatRoom = chatInfoList[position]
+        Log.d("TAG-chatInfoList[position]",chatInfoList[position].message.toString())
 
         holder.imgProfileChatList.setImageResource(R.drawable.profile)
-        holder.tvNameChatList.text = chatRoomInfo.user
-        holder.tvMessageChatList.text = chatRoomInfo.message
-        holder.tvCountChatChatList.text = chatRoomList.size.toString()
-        holder.tvTimeChatList.text = chatRoomInfo.time
+        holder.tvNameChatList.text = chatRoom.user
+        holder.tvMessageChatList.text = chatRoom.message
+        holder.tvCountChatChatList.text = chatInfoList.size.toString()
+        holder.tvTimeChatList.text = chatRoom.time
 
 
 
     }
 
     override fun getItemCount(): Int {
-        return chatRoomList.size
+        return chatInfoList.size
     }
 
 
