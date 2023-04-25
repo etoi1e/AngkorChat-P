@@ -4,6 +4,7 @@ package com.example.angkorchatproto
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.angkorchatproto.Chat.ChatFragment
 import com.example.angkorchatproto.Friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.tab2 ->{
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frameLayout,
-                        FriendsFragment()
+                        ChatFragment()
                     ).commit()
                 }
 
