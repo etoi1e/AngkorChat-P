@@ -66,13 +66,13 @@ class SuggestedAdapter(
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.suggest_list, null)
 
-        Log.d("TAG-실행순서","어댑터 onCreateViewHolder")
+        Log.d("TAG-실행순서", "어댑터 onCreateViewHolder")
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("TAG-실행순서","어댑터 onBindViewHolder")
+        Log.d("TAG-실행순서", "어댑터 onBindViewHolder")
 
         val profile = suggestList[position].profile
         val name = suggestList[position].name
@@ -135,50 +135,14 @@ class SuggestedAdapter(
                 holder.add.text = "Added"
                 holder.add.tag = "false"
 
-                friendRef.child(userNum).child(phone!!)
-                    .setValue(UserVO(name, email, profile, phone))
+                val removeDash = phone.toString().replace("-", "")
+                val removeSpace = removeDash.replace(" ", "")
+
+                friendRef.child(userNum).child(removeSpace!!)
+                    .setValue(UserVO(name, email, profile, removeSpace))
             }
 
         }
-
-//        //친구 목록 추가/제거c
-//        if (friendList.contains(phone)) { //친구 목록에 추가가 되어있는 경우
-//            Log.d("TAG-목록에포함",friendList.toString())
-//            holder.add.setBackgroundResource(R.drawable.added_btn)
-//            holder.add.text = "Added"
-//
-//            holder.add.setOnClickListener {
-//                //친구 삭제
-//                //버튼 변경
-//                holder.add.setBackgroundResource(R.drawable.add_btn)
-//                holder.add.text = "Add"
-//
-//
-//                //친구 목록에서 제거
-//                friendRef.child(userNum).child(phone.toString()).removeValue()
-//            }
-//
-//
-//        } else {
-//            Log.d("TAG-목록에 비포함","")
-//
-//            holder.add.setBackgroundResource(R.drawable.add_btn)
-//            holder.add.text = "Add"
-//
-//            holder.add.setOnClickListener {
-//                //친구 목록에 추가
-//                friendRef.child(userNum).child(phone!!)
-//                    .setValue(UserVO(name, email, profile, phone))
-//
-//
-//                //버튼 변경
-//                holder.add.setBackgroundResource(R.drawable.added_btn)
-//                holder.add.text = "Added"
-//
-//            }
-
-//       }
-
 
         //뷰 재활용 막기(데이터꼬임방지)
         holder.setIsRecyclable(false);

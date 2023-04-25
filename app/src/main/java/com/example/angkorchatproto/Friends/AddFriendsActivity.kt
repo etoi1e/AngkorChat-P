@@ -39,11 +39,8 @@ class AddFriendsActivity : AppCompatActivity() {
         val userNumber = shared.getString("userNumber","")
 
 
-        Log.d("TAG-실행순서","onCreate,getFirebase 호출 바로 전")
-
         //주소록 친구 불러와서 rv에 출력
         getContacts()
-        Log.d("TAG-실행순서","onCreate,어댑터 바로 전")
         val adapter = SuggestedAdapter(this@AddFriendsActivity,suggestList,userNumber.toString(),friendList)
         binding.rvSuggestedListAddFriends.adapter = adapter
         binding.rvSuggestedListAddFriends.layoutManager = GridLayoutManager(this@AddFriendsActivity,1)
@@ -65,9 +62,8 @@ class AddFriendsActivity : AppCompatActivity() {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
                 val userData = dataSnapshot.value as HashMap<String, Any>?
+
                 val friendNum = userData!!["phone"] as String
-
-
                 friendList.add(friendNum)
 
             }

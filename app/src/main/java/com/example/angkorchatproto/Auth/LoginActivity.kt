@@ -1,32 +1,19 @@
 package com.example.angkorchatproto.Auth
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityLoginBinding
 
 
 class LoginActivity : AppCompatActivity() {
-
-    //권한 응답 처리 코드
-    private val multiplePermissionsCode = 100
-    //권한 리스트
-    private val requiredPermissions = arrayOf(
-        Manifest.permission.READ_PHONE_NUMBERS,
-        Manifest.permission.READ_CONTACTS,
-        Manifest.permission.CALL_PHONE
-    )
 
     //디바이스 번호
     var phoneNumber: String =""
@@ -48,7 +35,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //디바이스 정보 가져오기
-        checkPermissions()
         getPhoneNumber()
         GetCountryZipCode()
 
@@ -93,36 +79,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-
-
-
-    //권한 승인 확인
-    fun checkPermissions() {
-        //거절되었거나 아직 수락하지 않은 권한을 저장할 문자열 배열 리스트
-        var rejectedPermissionList = ArrayList<String>()
-
-        //필요한 퍼미션들을 하나씩 끄집어내서 현재 권한을 받았는지 체크
-        for (permission in requiredPermissions) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    permission
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                //만약 권한이 없다면 rejectedPermissionList에 추가
-                rejectedPermissionList.add(permission)
-            }
-        }
-        //거절된 퍼미션이 있다면
-        if (rejectedPermissionList.isNotEmpty()) {
-            //권한 요청
-            val array = arrayOfNulls<String>(rejectedPermissionList.size)
-            ActivityCompat.requestPermissions(
-                this,
-                rejectedPermissionList.toArray(array),
-                multiplePermissionsCode
-            )
-        }
-    }
 
     //디바이스 정보 불러오기
     @SuppressLint("MissingPermission")

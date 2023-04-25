@@ -80,5 +80,8 @@ dependencies {
     //ChatGPT
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
+    //Permission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+
 
 }

@@ -1,16 +1,22 @@
 package com.example.angkorchatproto
 
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+
 import com.example.angkorchatproto.Auth.JoinActivity
 
 class Splash : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+
 
         //SharedPreferences
         val shared = getSharedPreferences("loginNumber",0)
@@ -35,4 +41,6 @@ class Splash : AppCompatActivity() {
 
     }
 
+
 }
+
