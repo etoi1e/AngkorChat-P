@@ -2,15 +2,11 @@ package com.example.angkorchatproto.Auth
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityJoinBinding
 import com.gun0912.tedpermission.PermissionListener

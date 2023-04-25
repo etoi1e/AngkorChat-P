@@ -1,17 +1,16 @@
 package com.example.angkorchatproto.Friends
 
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.angkorchatproto.Chat.ChatVO
 import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
@@ -82,16 +81,10 @@ class FriendsFragment : Fragment() {
         val countFavorite = favoriteList.size.toString()
         binding.tvCountFavoriteFriends.text = countFavorite
 
-
-        //주소록 목록 불러오기
-        //getContacts()
-
         friendList = getFirebase()
 
-        //val friendAdapter = FriendsAdapter(requireContext(), contactsList)
         friendList = ArrayList()
-//        testList.add(UserVO("일반친구", "union-mobile@union-mobile.co.kr", "", "+123456789"))
-//        testList.add(UserVO("일반친구2", "union-mobile@union-mobile.co.kr", "", "+123456789"))
+
         friendAdapter = FriendsAdapter(requireContext(), friendList)
 
 
@@ -112,9 +105,6 @@ class FriendsFragment : Fragment() {
 
         })
 
-        //전체 친구 Adapter
-        binding.rvFriendsFriends.adapter = friendAdapter
-        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(), 1)
 
 
 
@@ -148,6 +138,27 @@ class FriendsFragment : Fragment() {
         }
 
 
+        // 검색 기능
+        var searchViewTextListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    return false
+                }
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+                    friendAdapter.getFilter().filter(s)
+                    Log.d("test-서치뷰", "SearchViews Text is changed : $s")
+                    return false
+                }
+            }
+
+        binding.svSearchFriendFriends.setOnQueryTextListener(searchViewTextListener)
+
+
+        //전체 친구 Adapter
+        binding.rvFriendsFriends.adapter = friendAdapter
+        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(), 1)
 
         return binding.root
 

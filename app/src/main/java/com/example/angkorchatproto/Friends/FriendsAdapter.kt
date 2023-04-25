@@ -1,18 +1,31 @@
 package com.example.angkorchatproto.Friends
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 
 class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
-    RecyclerView.Adapter<FriendsAdapter.ViewHolder>() {
+    RecyclerView.Adapter<FriendsAdapter.ViewHolder>(), Filterable {
+
+    //필터 기능
+    var initCk = true
+    var initCn = 0
+    var filteredBoard = ArrayList<UserVO>()
+    var unfilteredBoard = friendList
+    var itemFilter = ItemFilter()
 
     // 리스너 커스텀
     interface  OnItemClickListener{
@@ -40,10 +53,23 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
 
             itemView.setOnClickListener {
                 val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION){
-                    // 버그로 인해 -1이 아닐경우에
-                    mOnItemClickListener.onItemClick(itemView,position)
-                }
+                val filterList = filteredBoard[position]
+//                if (position != RecyclerView.NO_POSITION){
+//                    // 버그로 인해 -1이 아닐경우에
+//                    mOnItemClickListener.onItemClick(itemView,position)
+//                }
+
+                val intent = Intent(context, ProfileActivity::class.java)
+
+                intent.putExtra("name", filterList.name)
+                intent.putExtra("number", filterList.phone)
+                intent.putExtra("email", filterList.email)
+                intent.putExtra("profile", filterList.profile)
+
+                context.startActivity(intent)
+
+
+
             }
 
         }
@@ -59,10 +85,14 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val filteredList: UserVO = filteredBoard[position]
 
-        val profile = friendList[position].profile
-        val name = friendList[position].name
-        val email = friendList[position].email
+        initCk = false
+
+        val profile = filteredList.profile
+        val name = filteredList.name
+        val email = filteredList.email
+
 
 
         holder.tvName.text = name
@@ -86,8 +116,53 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
     }
 
     override fun getItemCount(): Int {
-        return friendList.size
+        if(initCk&&initCn==3){ filteredBoard.addAll(friendList)}
+        initCn++
+        return filteredBoard.size
     }
+
+    override fun getFilter(): Filter {
+        return itemFilter
+    }
+
+    inner class ItemFilter : Filter() {
+        override fun performFiltering(charSequence: CharSequence): FilterResults {
+            val filterString = charSequence.toString()
+            val results = FilterResults()
+            initCk = false
+            //검색이 필요없을 경우를 위해 원본 배열을 복제
+            var filterList: ArrayList<UserVO> = ArrayList()
+            //공백제외 아무런 값이 없을 경우 -> 원본 배열
+            if (filterString.trim { it <= ' ' }.isEmpty()) {
+                filterList = friendList
+            } //그 외의 경우 검색
+            else {
+                for (friend in friendList) {
+                    if (friend.name!!.contains(filterString)
+                        || friend.phone!!.contains(filterString)
+                    ) {
+                        filterList.add(friend)
+                    }
+                }
+            }
+            results.values = filterList
+            results.count = filterList.size
+
+            return results
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        override fun publishResults(charSequence: CharSequence?, filterResults: FilterResults) {
+            filteredBoard.clear()
+            filteredBoard.addAll(filterResults.values as ArrayList<UserVO>)
+            notifyDataSetChanged()
+        }
+
+
+    }
+
+
+
 }
 
 
