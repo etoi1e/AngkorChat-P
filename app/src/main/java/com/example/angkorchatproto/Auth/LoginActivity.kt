@@ -13,11 +13,9 @@ import android.text.TextWatcher
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityLoginBinding
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -79,15 +77,12 @@ class LoginActivity : AppCompatActivity() {
         //SendCode 클릭 시 동작
         binding.btnSendCodeLogin.setOnClickListener {
 
-            val joinNumber = binding.etPhoneNumberLogin.text.toString()
-
-            //번호로 사용자 정보 firebase 에 저장
-            val database = Firebase.database.reference
-            database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,joinNumber))
-
+            if(phoneNumber == null || phoneNumber == ""){
+                phoneNumber = binding.etPhoneNumberLogin.text.toString()
+            }
 
             val intent = Intent(this@LoginActivity,PasswordActivity::class.java)
-            intent.putExtra("userNumber",joinNumber)
+            intent.putExtra("userNumber",phoneNumber.replace("+${GetCountryZipCode()}","0"))
             startActivity(intent)
             finish()
         }

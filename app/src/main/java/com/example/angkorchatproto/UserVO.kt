@@ -20,5 +20,5 @@ class UserVO : java.io.Serializable {
 
 
 
-class JoinVO(val number : String, val email : String)
+class JoinVO(val number : String, val password : String)
 

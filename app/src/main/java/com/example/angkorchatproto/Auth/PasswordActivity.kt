@@ -8,9 +8,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
+import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.MainActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityPasswordBinding
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class PasswordActivity : AppCompatActivity() {
 
@@ -35,9 +38,19 @@ class PasswordActivity : AppCompatActivity() {
         binding.btnLoginPassword.setOnClickListener {
             if(binding.btnLoginPassword.isEnabled){
                 val userNumber = intent.getStringExtra("userNumber").toString()
-                editor.putString("userNumber", userNumber)
+
+
+                val joinNumber = userNumber
+                val password = binding.etPasswordPassword.text.toString()
+
+
+            //번호로 사용자 정보 firebase 에 저장
+            val database = Firebase.database.reference
+            database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,password))
+
+                editor.putString("userNumber", joinNumber)
                 editor.commit()
-                Log.d("TAG-password에서 번호 찍기",userNumber)
+                //Log.d("TAG-password에서 번호 찍기",userNumber)
 
                 val intent = Intent(this@PasswordActivity, MainActivity::class.java)
                 startActivity(intent)

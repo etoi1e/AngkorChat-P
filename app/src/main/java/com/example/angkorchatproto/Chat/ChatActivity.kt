@@ -19,12 +19,12 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import okhttp3.OkHttpClient
 import java.time.LocalDateTime
+import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityChatBinding
     lateinit var myNumber: String
-    lateinit var adapter: ChatAdapter
     var receiver: String = ""
     private var chatRoomKey: String? = null
 
@@ -57,8 +57,6 @@ class ChatActivity : AppCompatActivity() {
         val receiver_name = intent.getStringExtra("name").toString()
         binding.tvNameChat.text = receiver_name
 
-        //채팅방 가져오기
-        getMessageList()
 
         //뒤로가기
         binding.imgMoveBackChat.setOnClickListener {
@@ -82,6 +80,14 @@ class ChatActivity : AppCompatActivity() {
 
         //전송 버튼 클릭 시
         binding.imgSendMessageChat.setOnClickListener {
+
+            //전송 시 시간 초기화
+            nowTime = LocalDateTime.now().toString()
+            if(nowTime == null || nowTime == ""){
+                nowTime = System.currentTimeMillis().toString()
+            }
+
+
             if (binding.etMessageChat.text.toString() != "") {
                 val chatModel = ChatModel()
                 chatModel.users.put(myNumber, true)
@@ -119,9 +125,6 @@ class ChatActivity : AppCompatActivity() {
             var handled = false
 
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
-
-                //전송 시 시간 초기화
-                nowTime = LocalDateTime.now().toString()
 
                 //전송 버튼 클릭효과
                 binding.imgSendMessageChat.performClick()
@@ -165,6 +168,8 @@ class ChatActivity : AppCompatActivity() {
                         if (chatModel?.users!!.containsKey(receiver)) {
                             chatRoomKey = item.key.toString()
 
+                            getMessageList()
+
                             binding.rvChatListChat?.layoutManager =
                                 GridLayoutManager(this@ChatActivity, 1)
                             binding.rvChatListChat?.adapter = ChatAdapter(this@ChatActivity,commentList,width,myNumber)
@@ -181,6 +186,7 @@ class ChatActivity : AppCompatActivity() {
 
 
     fun getMessageList() {
+        Log.d("TAG-chatRoomKey",chatRoomKey.toString())
         chatRef.child(chatRoomKey.toString()).child("comments")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
