@@ -14,7 +14,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.example.angkorchatproto.Auth.ProfileAdapter
 import com.example.angkorchatproto.Chat.ChatActivity
 import com.example.angkorchatproto.Chat.ChatBotActivity
 import com.example.angkorchatproto.Chat.ChatVO
@@ -27,6 +30,7 @@ import kotlin.collections.ArrayList
 class ProfileActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileBinding
+    var imgList = ArrayList<Uri?>()
 
 
     @SuppressLint("ResourceAsColor")
@@ -43,8 +47,9 @@ class ProfileActivity : AppCompatActivity() {
         //기본 정보 삽입
         binding.tvNameProfile.text = userName
         binding.tvMsgProfile.text = userMsg
-        binding.imgChatProfile.setImageResource(R.drawable.ic_baseline_chat_24)
-        binding.imgCallProfile.setImageResource(R.drawable.ic_baseline_call_24)
+
+
+
 
         //프로필 사진 uri 가져오기
         val profile = intent.getStringExtra("profile")
@@ -56,7 +61,7 @@ class ProfileActivity : AppCompatActivity() {
             Log.d("TAG-프로필","유니온으로 출력구간")
         } else if (profile == "") {
             Glide.with(this)
-                .load(R.drawable.profile)
+                .load(R.drawable.ic_profile_default_72)
                 .into(binding.imgProfileProfile)
         } else {
             Glide.with(this)
@@ -66,7 +71,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
         //채팅방으로 이동
-        binding.imgChatProfile.setOnClickListener {
+        binding.btnChatProfile.setOnClickListener {
             if(profile == "union"){ //유니온 공식 계정 구분하기
                 val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
                 startActivity(intent)
@@ -100,28 +105,20 @@ class ProfileActivity : AppCompatActivity() {
         }
 
 
-        //전화걸기
-        binding.imgCallProfile.setOnClickListener {
-            val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
-            startActivity(intent)
-            finish()
-        }
+//        //전화걸기
+//        binding.imgCallProfile.setOnClickListener {
+//            val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
+//            startActivity(intent)
+//            finish()
+//        }
+
+        binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity,imgList)
+        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity,3)
+
 
 
         //갤러리 저장 사진 불러오기
         val REQUEST_STORAGE_PERMISSION = 100
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_STORAGE_PERMISSION
-                )
-                return
-            }
-        }
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -148,13 +145,16 @@ class ProfileActivity : AppCompatActivity() {
         var imageUri: Uri? = null
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            if (cursor.moveToNext()) {
+            while (cursor.moveToNext() && imgList.size < 5) { // 5개 이하까지 불러옴
                 val id = cursor.getLong(idColumn)
-                imageUri = ContentUris.withAppendedId(
+                val imageUri = ContentUris.withAppendedId(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     id
                 )
+                imgList.add(imageUri)
             }
+            //사진 count
+            binding.tvCountPhotoProfile.text = imgList.size.toString()
         }
 
 

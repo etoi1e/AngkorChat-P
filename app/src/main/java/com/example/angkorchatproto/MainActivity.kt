@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.angkorchatproto.Chat.ChatFragment
 import com.example.angkorchatproto.Friends.FriendsFragment
+import com.example.angkorchatproto.More.MoreFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.tab3 ->{
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frameLayout,
-                        FriendsFragment()
+                        MoreFragment()
                     ).commit()
                 }
 

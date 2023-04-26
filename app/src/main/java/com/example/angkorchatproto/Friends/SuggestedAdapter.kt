@@ -91,7 +91,7 @@ class SuggestedAdapter(
                 .into(holder.imgProfile)
         } else if (profile == "") {//사진 미등록의 경우
             Glide.with(context)
-                .load(R.drawable.profile)
+                .load(R.drawable.ic_profile_default_72)
                 .into(holder.imgProfile)
         } else {//저장된 사진 가져오기
             Glide.with(context)

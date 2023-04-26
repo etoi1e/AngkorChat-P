@@ -22,7 +22,7 @@
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="14dp"
-        android:src="@drawable/ic_arrow_left_line"
+        android:src="@drawable/ic_arrow_left_line_28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +35,7 @@
         app:layout_constraintStart_toEndOf="@+id/imgMoveBackChat"
         app:layout_constraintTop_toTopOf="@+id/imgMoveBackChat"
         app:riv_corner_radius="10dp"
-        android:src="@drawable/profile" />
+        android:src="@drawable/ic_profile_default_72" />
 
     <TextView
         android:id="@+id/tvNameChat"

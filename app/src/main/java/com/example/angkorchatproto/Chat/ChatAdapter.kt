@@ -73,20 +73,22 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
         holder.tvOtherMessageChat.maxWidth = width - 250
 
 
-        if (message.number.equals(myNumber)) { //타인이 보낸 메세지인 경우
+        if (message.sender.equals(myNumber)) { //내가 보낸 메세지인 경우
+            holder.tvOtherMessageChat.visibility = View.GONE
+            holder.tvTimeLeft.visibility = View.GONE
+
+            holder.tvMyMessageChat.setText(message.message)
+            holder.tvTimeRight.setText(setTime)
+
+
+        } else {//타인이 보낸 메세지인 경우
+
             holder.tvMyMessageChat.visibility = View.GONE
             holder.tvTimeRight.visibility = View.GONE
 
             holder.tvOtherMessageChat.setText(message.message)
             holder.tvTimeLeft.setText(setTime)
 
-
-        } else { //내가 보낸 메세지인 경우
-            holder.tvOtherMessageChat.visibility = View.GONE
-            holder.tvTimeLeft.visibility = View.GONE
-
-            holder.tvMyMessageChat.setText(message.message)
-            holder.tvTimeRight.setText(setTime)
 
 
         }

@@ -96,7 +96,7 @@ class FriendsFragment : Fragment() {
                 binding.imgFoldFavoriteFriends.tag = false
 
             } else { //목록 접기
-                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indicator_down_24)
+                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_up_16)
                 binding.rvFavoriteFriends.visibility = View.GONE
                 binding.imgFoldFavoriteFriends.tag = true
 
@@ -110,7 +110,7 @@ class FriendsFragment : Fragment() {
                 binding.imgFoldFriendsFriends.tag = false
 
             } else { //목록 접기
-                binding.imgFoldFriendsFriends.setImageResource(R.drawable.ic_indicator_down_24)
+                binding.imgFoldFriendsFriends.setImageResource(R.drawable.ic_indecator_up_16)
                 binding.rvFriendsFriends.visibility = View.GONE
                 binding.imgFoldFriendsFriends.tag = true
 

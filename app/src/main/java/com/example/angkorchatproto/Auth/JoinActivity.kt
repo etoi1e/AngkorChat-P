@@ -53,9 +53,6 @@ class JoinActivity : AppCompatActivity() {
                 Manifest.permission.READ_PHONE_NUMBERS,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.CALL_PHONE,
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.INTERNET)
             .check()
     }

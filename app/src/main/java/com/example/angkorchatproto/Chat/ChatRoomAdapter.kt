@@ -57,8 +57,6 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 
                 val intent = Intent(context, ChatActivity::class.java)
 
-                intent.putExtra("name", chatInfoList[position].name)
-                intent.putExtra("number", chatInfoList[position].number)
 
                 context.startActivity(intent)
 
@@ -81,8 +79,7 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
         val chatRoom = chatInfoList[position]
 //        Log.d("TAG-chatInfoList[position]",chatInfoList[position].message.toString())
 
-        holder.imgProfileChatList.setImageResource(R.drawable.profile)
-        holder.tvNameChatList.text = chatRoom.name
+        holder.imgProfileChatList.setImageResource(R.drawable.ic_profile_default_72)
         holder.tvMessageChatList.text = chatRoom.message
         holder.tvCountChatChatList.text = chatInfoList.size.toString()
         holder.tvTimeChatList.text = chatRoom.time

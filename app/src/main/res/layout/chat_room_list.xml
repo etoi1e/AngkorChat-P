@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_corner_radius="10dp"
-        android:src="@drawable/ic_tab_home_active" />
+        android:src="@drawable/ic_tab_user_active_28" />
 
     <TextView
         android:id="@+id/tvNameChatList"

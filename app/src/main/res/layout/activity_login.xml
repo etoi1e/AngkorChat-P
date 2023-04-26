@@ -14,7 +14,7 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_left_line" />
+        app:srcCompat="@drawable/ic_arrow_left_line_28" />
 
     <TextView
         android:id="@+id/tvLoginLogin"
@@ -60,29 +60,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvPhoneNumberLogin" />
 
-    <ImageView
-        android:id="@+id/imgFlagLogin"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
-        app:layout_constraintStart_toStartOf="@+id/viewNumberBoxLogin"
-        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin"
-        app:srcCompat="@drawable/img_flag_cambodia" />
-
     <Spinner
         android:id="@+id/spCountryCodeLogin"
-        android:layout_width="69dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgFlagLogin"
-        app:layout_constraintStart_toEndOf="@+id/imgFlagLogin"
-        app:layout_constraintTop_toTopOf="@+id/imgFlagLogin" />
+        app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintStart_toStartOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin" />
 
     <EditText
         android:id="@+id/etPhoneNumberLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginEnd="70dp"
         android:background="@android:color/transparent"
         android:ems="10"
         android:hint="000 123 4567"
@@ -90,7 +80,7 @@
         android:textColor="@color/textBlack"
         android:textColorHint="#dadde3"
         app:layout_constraintBottom_toBottomOf="@+id/spCountryCodeLogin"
-        app:layout_constraintStart_toEndOf="@+id/spCountryCodeLogin"
+        app:layout_constraintEnd_toEndOf="@+id/viewNumberBoxLogin"
         app:layout_constraintTop_toTopOf="@+id/spCountryCodeLogin" />
 
     <android.widget.Button

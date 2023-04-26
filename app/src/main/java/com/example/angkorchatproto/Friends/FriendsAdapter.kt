@@ -104,7 +104,7 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
                 .into(holder.imgProfile)
         }else if(profile == ""){
             Glide.with(context)
-                .load(R.drawable.profile)
+                .load(R.drawable.ic_profile_default_72)
                 .into(holder.imgProfile)
         }else{
             Glide.with(context)

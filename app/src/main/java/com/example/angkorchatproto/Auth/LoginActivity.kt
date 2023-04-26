@@ -9,8 +9,14 @@ import android.telephony.TelephonyManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityLoginBinding
+import com.example.angkorchatproto.utils.Country
+import com.example.angkorchatproto.utils.CountryAdapter
+import com.example.angkorchatproto.utils.CountryUtils
 
 
 class LoginActivity : AppCompatActivity() {
@@ -38,16 +44,25 @@ class LoginActivity : AppCompatActivity() {
         getPhoneNumber()
         GetCountryZipCode()
 
+        //국가 spinner
+
+        val countries = CountryUtils.getCountries()
+        val adapter = CountryAdapter(this, countries)
+
+        binding.spCountryCodeLogin.adapter = adapter
+
+
+
         //국가 번호 맞춰 국기/번호 출력
-        if(GetCountryZipCode() == "855"){
-            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_cambodia)
-        }else if(GetCountryZipCode() == "82"){
-            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_south_korea)
-        }else if(GetCountryZipCode() == "1"){
-            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_united_states)
-        }else{
-            binding.imgFlagLogin.setImageResource(R.drawable.ic_delate_circle_fill_lightgray)
-        }
+//        if(GetCountryZipCode() == "855"){
+//            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_cambodia)
+//        }else if(GetCountryZipCode() == "82"){
+//            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_south_korea)
+//        }else if(GetCountryZipCode() == "1"){
+//            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_united_states)
+//        }else{
+//            binding.imgFlagLogin.setImageResource(R.drawable.ic_delate_circle_fill_lightgray)
+//        }
 
         //디바이스 번호 자동 입력
         if (phoneNumber != null) {

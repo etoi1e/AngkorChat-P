@@ -1,14 +1,12 @@
 package com.example.angkorchatproto.Chat
 
-import android.content.Intent
+
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.databinding.FragmentChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot
@@ -39,7 +37,6 @@ class ChatFragment : Fragment() {
         myNumber = shared.getString("userNumber", "").toString()
 
         getChatRoomList()
-
         adapter = ChatRoomAdapter(requireContext(), chatInfoList)
         binding.rvChatListChats.adapter = adapter
         binding.rvChatListChats.layoutManager = GridLayoutManager(requireContext(), 1)
@@ -55,12 +52,9 @@ class ChatFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (item in snapshot.children) {
                         chatRoomsKey = item.key.toString()
+
                         getChatRoom()
-//                        val chatModel = item.getValue<ChatModel>()
-//                        if (chatModel?.users!!.containsKey(myNumber)) {
-//                            chatRoomsKey = item.key.toString()
-//                            getChatRoomList()
-//                        }
+
                     }
                 }
 
@@ -86,6 +80,20 @@ class ChatFragment : Fragment() {
 
                     }
                     adapter.notifyDataSetChanged()
+
+                    //채팅 리스트 0 일 때
+                    if ( chatInfoList.size == 0 ){
+
+                        binding.rvChatListChats.visibility = View.GONE
+                        binding.boxNoChat.visibility = View.VISIBLE
+
+                    }else{
+
+                        binding.rvChatListChats.visibility = View.VISIBLE
+                        binding.boxNoChat.visibility = View.GONE
+
+
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

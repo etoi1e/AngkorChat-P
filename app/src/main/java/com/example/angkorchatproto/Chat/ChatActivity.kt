@@ -64,7 +64,7 @@ class ChatActivity : AppCompatActivity() {
 
         if(profileImg == ""){
             Glide.with(this@ChatActivity)
-                .load(R.drawable.profile)
+                .load(R.drawable.ic_profile_default_72)
                 .into(binding.imgProfileChat)
         }else{
             Glide.with(this@ChatActivity)
@@ -110,7 +110,7 @@ class ChatActivity : AppCompatActivity() {
                 chatModel.users.put(receiver, true)
 
                 val comment =
-                    ChatModel.Comment(receiver,receiverName, binding.etMessageChat.text.toString(), nowTime)
+                    ChatModel.Comment(myNumber, binding.etMessageChat.text.toString(), nowTime)
                 if (chatRoomKey == null) {
                     binding.imgSendMessageChat.isEnabled = false
                     chatRef.push().setValue(chatModel).addOnSuccessListener {
