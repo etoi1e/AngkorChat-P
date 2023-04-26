@@ -88,26 +88,6 @@ class FriendsFragment : Fragment() {
         friendAdapter = FriendsAdapter(requireContext(), friendList)
 
 
-        //클릭 시 유저 프로필로 이동
-        friendAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, position: Int) {
-                val intent = Intent(requireContext(), ProfileActivity::class.java)
-
-
-                intent.putExtra("name", friendList[position].name)
-                intent.putExtra("number", friendList[position].phone)
-                intent.putExtra("email", friendList[position].email)
-                intent.putExtra("profile", friendList[position].profile)
-
-                startActivity(intent)
-
-            }
-
-        })
-
-
-
-
         //친구 목록 접기
         binding.imgFoldFavoriteFriends.setOnClickListener {
             if (binding.imgFoldFavoriteFriends.tag == true) { //목록 펼치기

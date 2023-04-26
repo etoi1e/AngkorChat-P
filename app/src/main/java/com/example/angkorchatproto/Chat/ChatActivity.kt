@@ -50,14 +50,14 @@ class ChatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //상대방 번호 저장
-        val receiver_data = intent.getStringExtra("number").toString()
-        val receiver_data2 = receiver_data.replace("-", "")
+        val receiverData = intent.getStringExtra("number").toString()
+        val receiverData2 = receiverData.replace("-", "")
 
-        receiver = receiver_data2.replace(" ", "")
+        receiver = receiverData2.replace(" ", "")
 
         //상대방 이름 출력
-        val receiver_name = intent.getStringExtra("name").toString()
-        binding.tvNameChat.text = receiver_name
+        val receiverName = intent.getStringExtra("name").toString()
+        binding.tvNameChat.text = receiverName
 
         //상대방 프로필 출력
         val profileImg = intent.getStringExtra("profile")
@@ -99,7 +99,7 @@ class ChatActivity : AppCompatActivity() {
 
             //전송 시 시간 초기화
             nowTime = LocalDateTime.now().toString()
-            if(nowTime == null || nowTime == ""){
+            if(nowTime == ""){
                 nowTime = System.currentTimeMillis().toString()
             }
 
@@ -107,10 +107,10 @@ class ChatActivity : AppCompatActivity() {
             if (binding.etMessageChat.text.toString() != "") {
                 val chatModel = ChatModel()
                 chatModel.users.put(myNumber, true)
-                chatModel.users.put(receiver!!, true)
+                chatModel.users.put(receiver, true)
 
                 val comment =
-                    ChatModel.Comment(myNumber, binding.etMessageChat.text.toString(), nowTime)
+                    ChatModel.Comment(receiver,receiverName, binding.etMessageChat.text.toString(), nowTime)
                 if (chatRoomKey == null) {
                     binding.imgSendMessageChat.isEnabled = false
                     chatRef.push().setValue(chatModel).addOnSuccessListener {

@@ -1,18 +1,33 @@
 package com.example.angkorchatproto.Chat
 
 import android.content.Context
-import android.util.Log
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.angkorchatproto.Friends.FriendsAdapter
+import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 
 class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatModel.Comment>):
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
 
+    // 리스너 커스텀
+    interface  OnItemClickListener{
+        fun  onItemClick(view : View, position: Int)
+    }
+
+    // 객체 저장 변수 선언
+    lateinit var mOnItemClickListener : OnItemClickListener
+
+    //객체 전달 메서드
+    fun setOnItemClickListener(OnItemClickListener : OnItemClickListener){
+        mOnItemClickListener = OnItemClickListener
+
+    }
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,7 +38,6 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
         val tvTimeChatList : TextView
         val tvCountChatChatList : TextView
 
-
         init {
 
             imgProfileChatList = itemView.findViewById(R.id.imgProfileChatList)
@@ -31,6 +45,27 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
             tvMessageChatList = itemView.findViewById(R.id.tvMessageChatList)
             tvTimeChatList = itemView.findViewById(R.id.tvTimeChatList)
             tvCountChatChatList = itemView.findViewById(R.id.tvCountChatChatList)
+
+
+            itemView.setOnClickListener {
+                val position = adapterPosition
+
+//                if (position != RecyclerView.NO_POSITION){
+//                    // 버그로 인해 -1이 아닐경우에
+//                    mOnItemClickListener.onItemClick(itemView,position)
+//                }
+
+                val intent = Intent(context, ChatActivity::class.java)
+
+                intent.putExtra("name", chatInfoList[position].name)
+                intent.putExtra("number", chatInfoList[position].number)
+
+                context.startActivity(intent)
+
+
+
+            }
+
 
         }
 
@@ -44,16 +79,13 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chatRoom = chatInfoList[position]
-        Log.d("TAG-chatInfoList[position]",chatInfoList[position].message.toString())
+//        Log.d("TAG-chatInfoList[position]",chatInfoList[position].message.toString())
 
         holder.imgProfileChatList.setImageResource(R.drawable.profile)
-        holder.tvNameChatList.text = chatRoom.user
+        holder.tvNameChatList.text = chatRoom.name
         holder.tvMessageChatList.text = chatRoom.message
         holder.tvCountChatChatList.text = chatInfoList.size.toString()
         holder.tvTimeChatList.text = chatRoom.time
-
-
-
     }
 
     override fun getItemCount(): Int {
