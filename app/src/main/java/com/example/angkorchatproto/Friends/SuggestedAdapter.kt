@@ -99,37 +99,31 @@ class SuggestedAdapter(
         }
 
 
-
         //Log.d("TAG-유저친구목록", sendList.toString())
         //Log.d("TAG-유저추천목록", suggestList.toString())
 
+        val removeDash = phone.toString().replace("-", "")
+        val removeSpace = removeDash.replace(" ", "")
 
 
-        if (sendList.contains(phone)) {
+        if (sendList.contains(removeSpace)) {
             //친구 목록에 있는 경우
             holder.add.setBackgroundResource(R.drawable.added_btn)
             holder.add.text = "Added"
             holder.add.tag = "false"
+        }
 
-            holder.add.setOnClickListener {
-                if (holder.add.tag == "false") {//친구 삭제할 때
-                    holder.add.setBackgroundResource(R.drawable.add_btn)
-                    holder.add.text = "Add"
-                    holder.add.tag = "true"
+        holder.add.setOnClickListener {
+            if (holder.add.tag == "false") {//친구 삭제할 때
+                holder.add.setBackgroundResource(R.drawable.add_btn)
+                holder.add.text = "Add"
+                holder.add.tag = "true"
 
-                    //친구 목록에서 제거
-                    friendRef.child(userNum).child(phone.toString()).removeValue()
+                //친구 목록에서 제거
+                friendRef.child(userNum).child(phone.toString()).removeValue()
 
-                }
-            }
-
-        } else {
-            //친구 목록에 없는 경우
-            holder.add.setBackgroundResource(R.drawable.add_btn)
-            holder.add.text = "Add"
-            holder.add.tag = "true"
-
-            holder.add.setOnClickListener {
+            } else {
+                //친구 목록에 없는 경우
                 holder.add.setBackgroundResource(R.drawable.added_btn)
                 holder.add.text = "Added"
                 holder.add.tag = "false"
@@ -141,14 +135,13 @@ class SuggestedAdapter(
                     .setValue(UserVO(name, email, profile, removeSpace))
             }
 
+
         }
 
         //뷰 재활용 막기(데이터꼬임방지)
         holder.setIsRecyclable(false);
 
-
     }
-
 
     override fun getItemCount(): Int {
         return suggestList.size

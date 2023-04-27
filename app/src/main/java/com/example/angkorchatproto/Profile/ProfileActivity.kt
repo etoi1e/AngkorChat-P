@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,7 +23,9 @@ import com.example.angkorchatproto.Chat.ChatActivity
 import com.example.angkorchatproto.Chat.ChatBotActivity
 import com.example.angkorchatproto.Chat.ChatVO
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
+import com.example.angkorchatproto.utils.FBdataBase
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -39,6 +42,10 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        //SharedPreferences
+        val shared = getSharedPreferences("loginNumber", 0)
+        val userNumber = shared.getString("userNumber", "").toString()
+
         val userName = intent.getStringExtra("name")
         val userMsg = intent.getStringExtra("email")
         val number = intent.getStringExtra("number")
@@ -49,8 +56,6 @@ class ProfileActivity : AppCompatActivity() {
         binding.tvMsgProfile.text = userMsg
 
 
-
-
         //프로필 사진 uri 가져오기
         val profile = intent.getStringExtra("profile")
 
@@ -58,7 +63,7 @@ class ProfileActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(R.drawable.top_logo)
                 .into(binding.imgProfileProfile)
-            Log.d("TAG-프로필","유니온으로 출력구간")
+            Log.d("TAG-프로필", "유니온으로 출력구간")
         } else if (profile == "") {
             Glide.with(this)
                 .load(R.drawable.ic_profile_default_72)
@@ -72,11 +77,11 @@ class ProfileActivity : AppCompatActivity() {
 
         //채팅방으로 이동
         binding.btnChatProfile.setOnClickListener {
-            if(profile == "union"){ //유니온 공식 계정 구분하기
+            if (profile == "union") { //유니온 공식 계정 구분하기
                 val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
                 startActivity(intent)
                 finish()
-            }else{
+            } else {
                 val intent = Intent(this@ProfileActivity, ChatActivity::class.java)
                 intent.putExtra("name", userName)
                 intent.putExtra("number", number)
@@ -90,17 +95,40 @@ class ProfileActivity : AppCompatActivity() {
         //Add/Unfriend 버튼(실제 친구 목록 아니기 때문에 기능X)
         binding.btnAddProfile.setOnClickListener {
 
-            if (binding.btnAddProfile.tag == "true") {
-                binding.btnAddProfile.text = "Add"
-                binding.btnAddProfile.setBackgroundResource(R.drawable.style_login_btn)
-                binding.btnAddProfile.setTextColor(Color.WHITE)
-                binding.btnAddProfile.tag = "false"
-            } else if (binding.btnAddProfile.tag == "false") {
-                binding.btnAddProfile.text = "Unfriend"
-                binding.btnAddProfile.setBackgroundResource(R.drawable.style_yellow_line_btn)
-                binding.btnAddProfile.setTextColor(getColor(R.color.mainYellow))
-                binding.btnAddProfile.tag = "true"
+            val friendRef = FBdataBase.getFriendRef()
+
+            if (profile == "union") {
+                binding.btnAddProfile.isClickable = false
+                Toast.makeText(this@ProfileActivity, "Is not removable friend", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                if (binding.btnAddProfile.tag == "true") {
+                    binding.btnAddProfile.text = "Add"
+                    binding.btnAddProfile.setBackgroundResource(R.drawable.style_login_btn)
+                    binding.btnAddProfile.setTextColor(Color.WHITE)
+                    binding.btnAddProfile.tag = "false"
+
+                    //친구 목록에서 제거
+                    val removeDash = number.toString().replace("-", "")
+                    val removeSpace = removeDash.replace(" ", "")
+                    friendRef.child(userNumber).child(removeSpace).removeValue()
+
+
+                } else if (binding.btnAddProfile.tag == "false") {
+                    binding.btnAddProfile.text = "Unfriend"
+                    binding.btnAddProfile.setBackgroundResource(R.drawable.style_yellow_line_btn)
+                    binding.btnAddProfile.setTextColor(getColor(R.color.mainYellow))
+                    binding.btnAddProfile.tag = "true"
+
+
+                    //친구 추가하기
+                    val removeDash = number.toString().replace("-", "")
+                    val removeSpace = removeDash.replace(" ", "")
+                    friendRef.child(userNumber).child(removeSpace!!)
+                        .setValue(UserVO(userName, userMsg, userProfile, removeSpace))
+                }
             }
+
 
         }
 
@@ -112,9 +140,8 @@ class ProfileActivity : AppCompatActivity() {
 //            finish()
 //        }
 
-        binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity,imgList)
-        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity,3)
-
+        binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
+        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
 
 
         //갤러리 저장 사진 불러오기
@@ -166,7 +193,6 @@ class ProfileActivity : AppCompatActivity() {
             Log.d("TAG-이미지 로그 못불러옴", imageUri.toString())
         }
     }
-
 
 
 }
