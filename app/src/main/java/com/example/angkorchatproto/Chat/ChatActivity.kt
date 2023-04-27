@@ -57,11 +57,17 @@ class ChatActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.etMessageChat.windowToken, 0)
 
+            val etMessageText = binding.etMessageChat.text.toString()
+            val textCheck = etMessageText.replace(" ", "")
+
+            if(textCheck == ""){
             binding.viewMessageBox1Chat.visibility = View.VISIBLE
             binding.imgRecordChat.visibility = View.VISIBLE
 
-            binding.imgSendMessageChat.visibility = View.GONE
-            binding.viewMessageBox2Chat.visibility = View.GONE
+            binding.imgSendMessageChat.visibility = View.INVISIBLE
+            binding.viewMessageBox2Chat.visibility = View.INVISIBLE
+            }
+
         }
         
 
@@ -177,8 +183,9 @@ class ChatActivity : AppCompatActivity() {
         binding.etMessageChat.onFocusChangeListener = View.OnFocusChangeListener { v, gainFocus ->
             //포커스가 주어졌을 때
             if (gainFocus) {
-                binding.viewMessageBox1Chat.visibility = View.GONE
-                binding.imgRecordChat.visibility = View.GONE
+
+                binding.viewMessageBox1Chat.visibility = View.INVISIBLE
+                binding.imgRecordChat.visibility = View.INVISIBLE
 
                 binding.imgSendMessageChat.visibility = View.VISIBLE
                 binding.viewMessageBox2Chat.visibility = View.VISIBLE
