@@ -30,8 +30,6 @@ class AddFriendsActivity : AppCompatActivity() {
 
         //뒤로가기
         binding.imgMoveBackAddFriends.setOnClickListener {
-            var intent = Intent(this@AddFriendsActivity, FriendsFragment::class.java)
-            startActivity(intent)
             finish()
         }
 

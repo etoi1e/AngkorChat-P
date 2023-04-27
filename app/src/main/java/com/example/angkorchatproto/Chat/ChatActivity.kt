@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -68,6 +69,23 @@ class ChatActivity : AppCompatActivity() {
             binding.viewMessageBox2Chat.visibility = View.INVISIBLE
             }
 
+        }
+
+        //파일, 이모지, 녹음, 메모 클릭 시 임의 Toast 출력
+        binding.imgMenuChat.setOnClickListener{
+            Toast.makeText(this@ChatActivity,"메뉴 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgMediaChat.setOnClickListener{
+            Toast.makeText(this@ChatActivity,"미디어 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgImogeChat.setOnClickListener{
+            Toast.makeText(this@ChatActivity,"이모지 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgRecordChat.setOnClickListener{
+            Toast.makeText(this@ChatActivity,"음성녹음 클릭", Toast.LENGTH_SHORT).show()
         }
         
 
@@ -160,8 +178,6 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
-        checkChatRoom()
-
         Log.d("TAG-commentList", commentList.toString())
 
 
@@ -200,34 +216,6 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-
-            val view = currentFocus // 현재 터치 위치
-            if (view != null && (ev?.action == MotionEvent.ACTION_UP
-                        || ev?.action == MotionEvent.ACTION_MOVE)
-                && view is EditText
-                && !view.javaClass.name.startsWith("android.webkit.")
-            ) {
-                // view 의 id 가 명시되어있지 않은 다른 부분을 터치 시
-                val scrcoords = IntArray(2)
-                view.getLocationOnScreen(scrcoords) // 0 은 x 마지막 터치 위치에서 x 값
-                // 1은 y 마지막 터치 위치에서 y 값
-                val x = ev.rawX + view.getLeft() - scrcoords[0]
-                val y = ev.rawY + view.getTop() - scrcoords[1]
-                if (x < view.getLeft() || x > view.getRight() || y < view.getTop() || y > view.getBottom()) (this.getSystemService(
-                    Context.INPUT_METHOD_SERVICE
-                ) as InputMethodManager).hideSoftInputFromWindow(
-                    this.window.decorView.applicationWindowToken, 0
-                )
-            val imm : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
-
-        }
-        Log.d("TAG-클릭","")
-        return super.dispatchTouchEvent(ev)
-
-
-    }
     //onCreate 바깥
 
 

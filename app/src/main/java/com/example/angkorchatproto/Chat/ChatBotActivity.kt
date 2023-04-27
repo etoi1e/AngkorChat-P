@@ -1,6 +1,7 @@
 package com.example.angkorchatproto.Chat
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
 import android.view.View.OnFocusChangeListener
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -52,6 +55,45 @@ class ChatBotActivity : AppCompatActivity() {
         binding = ActivityChatbotBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        //포커스 컨트롤
+        binding.layoutBot.setOnClickListener {
+            binding.etMessageChatBot.clearFocus()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.etMessageChatBot.windowToken, 0)
+
+            val etMessageText = binding.etMessageChatBot.text.toString()
+            val textCheck = etMessageText.replace(" ", "")
+
+            if(textCheck == ""){
+                binding.viewMessageBox1ChatBot.visibility = View.VISIBLE
+                binding.imgRecordChatBot.visibility = View.VISIBLE
+
+                binding.imgSendMessageChatBot.visibility = View.INVISIBLE
+                binding.viewMessageBox2ChatBot.visibility = View.INVISIBLE
+            }
+
+        }
+
+        //파일, 이모지, 녹음, 메모 클릭 시 임의 Toast 출력
+        binding.imgMenuChatBot.setOnClickListener{
+            Toast.makeText(this@ChatBotActivity,"메뉴 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgMediaChatBot.setOnClickListener{
+            Toast.makeText(this@ChatBotActivity,"미디어 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgImogeChatBot.setOnClickListener{
+            Toast.makeText(this@ChatBotActivity,"이모지 클릭",Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgRecordChatBot.setOnClickListener{
+            Toast.makeText(this@ChatBotActivity,"음성녹음 클릭",Toast.LENGTH_SHORT).show()
+        }
+
+
+
 
         binding.tvNameChatBot.text = intent.getStringExtra("name")
 

@@ -1,14 +1,18 @@
 package com.example.angkorchatproto.Friends
 
 
-
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -28,8 +32,7 @@ class FriendsFragment : Fragment() {
 
     lateinit var binding: FragmentFriendsBinding
     lateinit var friendList: ArrayList<UserVO>
-    lateinit var friendAdapter : FriendsAdapter
-
+    lateinit var friendAdapter: FriendsAdapter
 
 
     override fun onCreateView(
@@ -40,6 +43,15 @@ class FriendsFragment : Fragment() {
 
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
         var favoriteList = arrayListOf<UserVO>()
+
+
+        //포커스 컨트롤
+        binding.friendLayout.setOnClickListener {
+            binding.svSearchFriendFriends.clearFocus()
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.svSearchFriendFriends.windowToken, 0)
+
+        }
 
 
         //친구추가 버튼 클릭시
@@ -53,8 +65,6 @@ class FriendsFragment : Fragment() {
         //SharedPreferences
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
         val userNumber = shared.getString("userNumber", "").toString()
-
-
 
 
         //즐겨찾는 친구에 유니온모바일 무조건 추가
@@ -99,7 +109,7 @@ class FriendsFragment : Fragment() {
                 binding.imgFoldFavoriteFriends.tag = false
 
             } else { //목록 접기
-                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_up_16)
+                binding.imgFoldFavoriteFriends.setImageResource(R.drawable.ic_indecator_down_16)
                 binding.rvFavoriteFriends.visibility = View.GONE
                 binding.imgFoldFavoriteFriends.tag = true
 
@@ -113,7 +123,7 @@ class FriendsFragment : Fragment() {
                 binding.imgFoldFriendsFriends.tag = false
 
             } else { //목록 접기
-                binding.imgFoldFriendsFriends.setImageResource(R.drawable.ic_indecator_up_16)
+                binding.imgFoldFriendsFriends.setImageResource(R.drawable.ic_indecator_down_16)
                 binding.rvFriendsFriends.visibility = View.GONE
                 binding.imgFoldFriendsFriends.tag = true
 
@@ -128,13 +138,36 @@ class FriendsFragment : Fragment() {
                 override fun onQueryTextSubmit(s: String): Boolean {
                     return false
                 }
+
                 //텍스트 입력/수정시에 호출
                 override fun onQueryTextChange(s: String): Boolean {
                     friendAdapter.getFilter().filter(s)
-                    Log.d("test-서치뷰", "SearchViews Text is changed : $s")
+                    binding.tvFriendsFriends.text = "Result"
+                    binding.tvFavoriteFriends.visibility = View.GONE
+                    binding.rvFavoriteFriends.visibility = View.GONE
+                    binding.imgFoldFavoriteFriends.visibility = View.GONE
+                    binding.imgFoldFriendsFriends.visibility = View.GONE
+                    binding.tvCountFavoriteFriends.visibility = View.GONE
+                    binding.tvCountFriendsFriends.visibility = View.GONE
+
+                    Log.d("test-서치뷰", friendAdapter.itemCount.toString())
+
+                    if (s == "" || s == null) {
+                        binding.tvFriendsFriends.text = "Friends"
+                        binding.tvFavoriteFriends.visibility = View.VISIBLE
+                        binding.rvFavoriteFriends.visibility = View.VISIBLE
+                        binding.imgFoldFriendsFriends.visibility = View.VISIBLE
+                        binding.imgFoldFavoriteFriends.visibility = View.VISIBLE
+                        binding.tvCountFavoriteFriends.visibility = View.VISIBLE
+                        binding.tvCountFriendsFriends.text = friendList.size.toString()
+
+                    }
                     return false
                 }
+
             }
+
+
 
         binding.svSearchFriendFriends.setOnQueryTextListener(searchViewTextListener)
 
@@ -147,7 +180,7 @@ class FriendsFragment : Fragment() {
 
     }
 
-    fun getFirebase():ArrayList<UserVO>{
+    fun getFirebase(): ArrayList<UserVO> {
         friendList = ArrayList()
 
         //SharedPreferences
@@ -156,7 +189,7 @@ class FriendsFragment : Fragment() {
 
         val friendRef = FBdataBase.getFriendRef()
 
-        friendRef.child(userNumber).addChildEventListener(object : ChildEventListener{
+        friendRef.child(userNumber).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 //Log.d("TAG-전체친구목록",snapshot.toString())
                 val firendItem = snapshot.getValue<UserVO>() as UserVO
@@ -196,7 +229,7 @@ class FriendsFragment : Fragment() {
 
 
 
-     return friendList
+        return friendList
     }
 
 

@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.tab3 ->{
-                    supportFragmentManager.beginTransaction().replace(
-                        R.id.frameLayout,
-                        MoreFragment()
-                    ).commit()
+//                    supportFragmentManager.beginTransaction().replace(
+//                        R.id.frameLayout,
+//                        MoreFragment()
+//                    ).commit()
                 }
 
             }

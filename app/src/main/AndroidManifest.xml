@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AngKorChatProto"
         tools:targetApi="31">
+
         <activity
             android:name=".Friends.AddFriendsActivity"
             android:exported="false">

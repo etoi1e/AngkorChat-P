@@ -105,7 +105,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
 
-//        //전화걸기
+//        //전화걸기 1차 프로토에서는 X
 //        binding.imgCallProfile.setOnClickListener {
 //            val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
 //            startActivity(intent)
