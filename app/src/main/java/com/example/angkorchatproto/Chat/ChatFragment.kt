@@ -81,19 +81,19 @@ class ChatFragment : Fragment() {
                     }
                     adapter.notifyDataSetChanged()
 
-                    //채팅 리스트 0 일 때
-                    if ( chatInfoList.size == 0 ){
-
-                        binding.rvChatListChats.visibility = View.GONE
-                        binding.boxNoChat.visibility = View.VISIBLE
-
-                    }else{
-
-                        binding.rvChatListChats.visibility = View.VISIBLE
-                        binding.boxNoChat.visibility = View.GONE
-
-
-                    }
+//                    //채팅 리스트 0 일 때
+//                    if ( chatInfoList.size == 0 ){
+//
+//                        binding.rvChatListChats.visibility = View.GONE
+//                        binding.boxNoChat.visibility = View.VISIBLE
+//
+//                    }else{
+//
+//                        binding.rvChatListChats.visibility = View.VISIBLE
+//                        binding.boxNoChat.visibility = View.GONE
+//
+//
+//                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

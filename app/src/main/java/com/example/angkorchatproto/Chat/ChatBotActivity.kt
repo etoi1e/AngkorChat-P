@@ -84,18 +84,25 @@ class ChatBotActivity : AppCompatActivity() {
         binding.imgSendMessageChatBot.setOnClickListener(object : View.OnClickListener {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onClick(view: View?) {
+                //공백확인
+                val etMessageText = binding.etMessageChatBot.text.toString()
+                val textCheck = etMessageText.replace(" ","")
 
+                if(textCheck == ""){
 
-                //전송 시 시간 초기화
-                nowTime = LocalDateTime.now().toString()
+                }else{
+                    //전송 시 시간 초기화
+                    nowTime = LocalDateTime.now().toString()
 
-                //API에 질문 전달
-                val question = binding.etMessageChatBot.getText().toString().trim { it <= ' ' }
-                addToChat(question, SENT_BY_ME, nowTime, chatList.size)
+                    //API에 질문 전달
+                    val question = binding.etMessageChatBot.getText().toString().trim { it <= ' ' }
+                    addToChat(question, SENT_BY_ME, nowTime, chatList.size)
 
-                //EditEext창 초기화
-                this@ChatBotActivity.binding.etMessageChatBot.setText("")
-                callAPI(question)
+                    //EditEext창 초기화
+                    this@ChatBotActivity.binding.etMessageChatBot.setText("")
+                    callAPI(question)
+                }
+
 
             }
         })
@@ -104,7 +111,7 @@ class ChatBotActivity : AppCompatActivity() {
         binding.etMessageChatBot.setOnKeyListener() { v, keyCode, event ->
             var handled = false
 
-            if (event.action == KeyEvent.ACTION_UP && keyCode == KEYCODE_ENTER) {
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KEYCODE_ENTER) {
 
                 //전송 시 시간 초기화
                 nowTime = LocalDateTime.now().toString()

@@ -24,7 +24,6 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
     var initCk = true
     var initCn = 0
     var filteredBoard = ArrayList<UserVO>()
-    var unfilteredBoard = friendList
     var itemFilter = ItemFilter()
 
     // 리스너 커스텀

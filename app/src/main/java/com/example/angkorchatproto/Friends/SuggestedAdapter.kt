@@ -22,19 +22,19 @@ class SuggestedAdapter(
 ) :
     RecyclerView.Adapter<SuggestedAdapter.ViewHolder>() {
 
-//    // 리스너 커스텀
-//    interface OnItemClickListener {
-//        fun onItemClick(view: View, position: Int)
-//    }
-//
-//    // 객체 저장 변수 선언
-//    lateinit var mOnItemClickListener: OnItemClickListener
-//
-//
-//    //객체 전달 메서드
-//    fun setOnItemClickListener(OnItemClickListener: OnItemClickListener) {
-//        mOnItemClickListener = OnItemClickListener
-//    }
+    // 리스너 커스텀
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
+    }
+
+    // 객체 저장 변수 선언
+    lateinit var mOnItemClickListener: OnItemClickListener
+
+
+    //객체 전달 메서드
+    fun setOnItemClickListener(OnItemClickListener: OnItemClickListener) {
+        mOnItemClickListener = OnItemClickListener
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgProfile: ImageView
@@ -101,8 +101,8 @@ class SuggestedAdapter(
 
 
 
-        Log.d("TAG-유저친구목록", sendList.toString())
-        Log.d("TAG-유저추천목록", suggestList.toString())
+        //Log.d("TAG-유저친구목록", sendList.toString())
+        //Log.d("TAG-유저추천목록", suggestList.toString())
 
 
 
@@ -112,17 +112,17 @@ class SuggestedAdapter(
             holder.add.text = "Added"
             holder.add.tag = "false"
 
-            holder.add.setOnClickListener {
-                if (holder.add.tag == "false") {//친구 삭제할 때
-                    holder.add.setBackgroundResource(R.drawable.add_btn)
-                    holder.add.text = "Add"
-                    holder.add.tag = "true"
-
-                    //친구 목록에서 제거
-                    friendRef.child(userNum).child(phone.toString()).removeValue()
-
-                }
-            }
+//            holder.add.setOnClickListener {
+//                if (holder.add.tag == "false") {//친구 삭제할 때
+//                    holder.add.setBackgroundResource(R.drawable.add_btn)
+//                    holder.add.text = "Add"
+//                    holder.add.tag = "true"
+//
+//                    //친구 목록에서 제거
+//                    friendRef.child(userNum).child(phone.toString()).removeValue()
+//
+//                }
+//            }
 
         } else {
             //친구 목록에 없는 경우
@@ -130,17 +130,17 @@ class SuggestedAdapter(
             holder.add.text = "Add"
             holder.add.tag = "true"
 
-            holder.add.setOnClickListener {
-                holder.add.setBackgroundResource(R.drawable.added_btn)
-                holder.add.text = "Added"
-                holder.add.tag = "false"
-
-                val removeDash = phone.toString().replace("-", "")
-                val removeSpace = removeDash.replace(" ", "")
-
-                friendRef.child(userNum).child(removeSpace!!)
-                    .setValue(UserVO(name, email, profile, removeSpace))
-            }
+//            holder.add.setOnClickListener {
+//                holder.add.setBackgroundResource(R.drawable.added_btn)
+//                holder.add.text = "Added"
+//                holder.add.tag = "false"
+//
+//                val removeDash = phone.toString().replace("-", "")
+//                val removeSpace = removeDash.replace(" ", "")
+//
+//                friendRef.child(userNum).child(removeSpace!!)
+//                    .setValue(UserVO(name, email, profile, removeSpace))
+//            }
 
         }
 
