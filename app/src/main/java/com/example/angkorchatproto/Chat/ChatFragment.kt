@@ -66,6 +66,8 @@ class ChatFragment : Fragment() {
                                         }
                                         adapter.notifyDataSetChanged()
 
+                                        Log.d("TAG-리스트 값 확인",chatInfoList.toString())
+
 
                                     }
 
@@ -93,6 +95,8 @@ class ChatFragment : Fragment() {
         adapter = ChatRoomAdapter(requireContext(), chatInfoList)
         binding.rvChatListChats.adapter = adapter
         binding.rvChatListChats.layoutManager = GridLayoutManager(requireContext(), 1)
+
+
 
 
 

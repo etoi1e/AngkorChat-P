@@ -54,7 +54,7 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 //                }
 
                 val intent = Intent(context, ChatActivity::class.java)
-
+//                intent.putExtra("chatRoomkey",key)
 
                 context.startActivity(intent)
 
@@ -75,7 +75,6 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chatRoom = chatInfoList[position]
-//        Log.d("TAG-chatInfoList[position]",chatInfoList[position].message.toString())
 
         holder.imgProfileChatList.setImageResource(R.drawable.ic_profile_default_72)
         holder.tvMessageChatList.text = chatRoom.message

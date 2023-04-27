@@ -1,17 +1,14 @@
 package com.example.angkorchatproto.Chat
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +39,7 @@ class ChatActivity : AppCompatActivity() {
     var chatRef = FBdataBase.getChatRef()
     var commentList = ArrayList<ChatModel.Comment>()
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
 
@@ -52,7 +50,6 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
 
 
 
@@ -157,33 +154,35 @@ class ChatActivity : AppCompatActivity() {
                     chatModel.users.put(myNumber, true)
                     chatModel.users.put(receiver, true)
 
-                    val comment =
-                        ChatModel.Comment(myNumber, binding.etMessageChat.text.toString(), nowTime)
+                    val comment = ChatModel.Comment(myNumber, binding.etMessageChat.text.toString(), nowTime)
 
 
-                    if (chatRoomKey == null) {//기본에 존재하지 않는 채팅방이라면
+
+                    if (chatRoomKey == null) {
                         binding.imgSendMessageChat.isEnabled = false
-
-                        //채팅방 생성
                         chatRef.push().setValue(chatModel).addOnSuccessListener {
-                            //메세지 보내기
+                            //채팅방 생성
                             checkChatRoom()
+                            //메세지 보내기
                             Handler().postDelayed({
                                 chatRef.child(chatRoomKey.toString())
                                     .child("comments").push().setValue(comment)
                             }, 1000L)
                             binding.etMessageChat.text = null
                         }
-                    } else {//기존에 존재하는 채팅방이라면
+                    } else {
                         chatRef.child(chatRoomKey.toString()).child("comments")
                             .push().setValue(comment)
                         binding.etMessageChat.text = null
                     }
+
                 }
             }
 
 
         }
+
+           checkChatRoom()
 
         Log.d("TAG-commentList", commentList.toString())
 
@@ -248,6 +247,8 @@ class ChatActivity : AppCompatActivity() {
                                 GridLayoutManager(this@ChatActivity, 1)
                             binding.rvChatListChat?.adapter =
                                 ChatAdapter(this@ChatActivity, commentList, width, myNumber)
+
+
                         }
                     }
                 }
