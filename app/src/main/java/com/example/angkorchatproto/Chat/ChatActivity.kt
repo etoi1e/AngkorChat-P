@@ -1,12 +1,16 @@
 package com.example.angkorchatproto.Chat
 
+import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -46,6 +50,20 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        
+        //포커스 컨트롤
+        binding.layout.setOnClickListener {
+            binding.etMessageChat.clearFocus()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.etMessageChat.windowToken, 0)
+
+            binding.viewMessageBox1Chat.visibility = View.VISIBLE
+            binding.imgRecordChat.visibility = View.VISIBLE
+
+            binding.imgSendMessageChat.visibility = View.GONE
+            binding.viewMessageBox2Chat.visibility = View.GONE
+        }
+        
 
         //상대방 번호 저장
         val receiverData = intent.getStringExtra("number").toString()
@@ -166,14 +184,40 @@ class ChatActivity : AppCompatActivity() {
                 binding.viewMessageBox2Chat.visibility = View.VISIBLE
 
             } else {
-                binding.viewMessageBox1Chat.visibility = View.VISIBLE
-                binding.imgRecordChat.visibility = View.VISIBLE
 
-                binding.imgSendMessageChat.visibility = View.GONE
-                binding.viewMessageBox2Chat.visibility = View.GONE
+                binding.etMessageChat.clearFocus()
             }
 
         }
+
+
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+
+            val view = currentFocus // 현재 터치 위치
+            if (view != null && (ev?.action == MotionEvent.ACTION_UP
+                        || ev?.action == MotionEvent.ACTION_MOVE)
+                && view is EditText
+                && !view.javaClass.name.startsWith("android.webkit.")
+            ) {
+                // view 의 id 가 명시되어있지 않은 다른 부분을 터치 시
+                val scrcoords = IntArray(2)
+                view.getLocationOnScreen(scrcoords) // 0 은 x 마지막 터치 위치에서 x 값
+                // 1은 y 마지막 터치 위치에서 y 값
+                val x = ev.rawX + view.getLeft() - scrcoords[0]
+                val y = ev.rawY + view.getTop() - scrcoords[1]
+                if (x < view.getLeft() || x > view.getRight() || y < view.getTop() || y > view.getBottom()) (this.getSystemService(
+                    Context.INPUT_METHOD_SERVICE
+                ) as InputMethodManager).hideSoftInputFromWindow(
+                    this.window.decorView.applicationWindowToken, 0
+                )
+            val imm : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+
+        }
+        Log.d("TAG-클릭","")
+        return super.dispatchTouchEvent(ev)
 
 
     }
@@ -231,10 +275,6 @@ class ChatActivity : AppCompatActivity() {
                 }
             })
     }
-
-
-
-
 
 
 

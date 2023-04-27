@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.utils.FBdataBase
-import com.google.firebase.database.DatabaseReference
 
 class SuggestedAdapter(
     val context: Context,
@@ -112,17 +111,17 @@ class SuggestedAdapter(
             holder.add.text = "Added"
             holder.add.tag = "false"
 
-//            holder.add.setOnClickListener {
-//                if (holder.add.tag == "false") {//친구 삭제할 때
-//                    holder.add.setBackgroundResource(R.drawable.add_btn)
-//                    holder.add.text = "Add"
-//                    holder.add.tag = "true"
-//
-//                    //친구 목록에서 제거
-//                    friendRef.child(userNum).child(phone.toString()).removeValue()
-//
-//                }
-//            }
+            holder.add.setOnClickListener {
+                if (holder.add.tag == "false") {//친구 삭제할 때
+                    holder.add.setBackgroundResource(R.drawable.add_btn)
+                    holder.add.text = "Add"
+                    holder.add.tag = "true"
+
+                    //친구 목록에서 제거
+                    friendRef.child(userNum).child(phone.toString()).removeValue()
+
+                }
+            }
 
         } else {
             //친구 목록에 없는 경우
@@ -130,17 +129,17 @@ class SuggestedAdapter(
             holder.add.text = "Add"
             holder.add.tag = "true"
 
-//            holder.add.setOnClickListener {
-//                holder.add.setBackgroundResource(R.drawable.added_btn)
-//                holder.add.text = "Added"
-//                holder.add.tag = "false"
-//
-//                val removeDash = phone.toString().replace("-", "")
-//                val removeSpace = removeDash.replace(" ", "")
-//
-//                friendRef.child(userNum).child(removeSpace!!)
-//                    .setValue(UserVO(name, email, profile, removeSpace))
-//            }
+            holder.add.setOnClickListener {
+                holder.add.setBackgroundResource(R.drawable.added_btn)
+                holder.add.text = "Added"
+                holder.add.tag = "false"
+
+                val removeDash = phone.toString().replace("-", "")
+                val removeSpace = removeDash.replace(" ", "")
+
+                friendRef.child(userNum).child(removeSpace!!)
+                    .setValue(UserVO(name, email, profile, removeSpace))
+            }
 
         }
 
