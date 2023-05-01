@@ -54,7 +54,6 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 //                }
 
                 val intent = Intent(context, ChatActivity::class.java)
-//                intent.putExtra("chatRoomkey",key)
 
                 context.startActivity(intent)
 
