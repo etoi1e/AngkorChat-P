@@ -53,7 +53,9 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 //                    mOnItemClickListener.onItemClick(itemView,position)
 //                }
 
+                //클릭 시 채팅창으로 넘겨주는 부분
                 val intent = Intent(context, ChatActivity::class.java)
+                intent.putExtra("chatRoomKey","")
 
                 context.startActivity(intent)
 
