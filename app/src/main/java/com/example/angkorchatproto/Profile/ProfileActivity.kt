@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -41,16 +42,13 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val friendRef = FBdataBase.getFriendRef()
-
-        //현재 사용자 번호 불러오기
+        //SharedPreferences
         val shared = getSharedPreferences("loginNumber", 0)
-        val myNumber = shared.getString("userNumber", "").toString()
+        val userNumber = shared.getString("userNumber", "").toString()
 
-        //클릭한 친구 정보
         val userName = intent.getStringExtra("name")
         val userMsg = intent.getStringExtra("email")
-        val userNum = intent.getStringExtra("number")
+        val number = intent.getStringExtra("number")
         val userProfile = intent.getStringExtra("profile")
 
         //기본 정보 삽입
@@ -86,7 +84,7 @@ class ProfileActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(this@ProfileActivity, ChatActivity::class.java)
                 intent.putExtra("name", userName)
-                intent.putExtra("number", userNum)
+                intent.putExtra("number", number)
                 intent.putExtra("profile", userProfile)
                 startActivity(intent)
                 finish()
@@ -94,35 +92,48 @@ class ProfileActivity : AppCompatActivity() {
 
         }
 
-        //Add/Unfriend 버튼
+        //Add/Unfriend 버튼(실제 친구 목록 아니기 때문에 기능X)
         binding.btnAddProfile.setOnClickListener {
 
-            if (binding.btnAddProfile.tag == "true") { //친구삭제하기
-                //삭제 기능
-                friendRef.child(myNumber).child(userNum.toString()).removeValue()
+            val friendRef = FBdataBase.getFriendRef()
 
-                //버튼 효과
-                binding.btnAddProfile.text = "Add"
-                binding.btnAddProfile.setBackgroundResource(R.drawable.style_login_btn)
-                binding.btnAddProfile.setTextColor(Color.WHITE)
-                binding.btnAddProfile.tag = "false"
+            if (profile == "union") {
+                binding.btnAddProfile.isClickable = false
+                Toast.makeText(this@ProfileActivity, "Is not removable friend", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                if (binding.btnAddProfile.tag == "true") {
+                    binding.btnAddProfile.text = "Add"
+                    binding.btnAddProfile.setBackgroundResource(R.drawable.style_login_btn)
+                    binding.btnAddProfile.setTextColor(Color.WHITE)
+                    binding.btnAddProfile.tag = "false"
 
-            } else if (binding.btnAddProfile.tag == "false") { //친구추가하기
-                //추가기능
-                friendRef.child(myNumber).child(userNum!!)
-                    .setValue(UserVO(userName, userMsg, profile, userNum))
+                    //친구 목록에서 제거
+                    val removeDash = number.toString().replace("-", "")
+                    val removeSpace = removeDash.replace(" ", "")
+                    friendRef.child(userNumber).child(removeSpace).removeValue()
 
-                //버튼효과
-                binding.btnAddProfile.text = "Unfriend"
-                binding.btnAddProfile.setBackgroundResource(R.drawable.style_yellow_line_btn)
-                binding.btnAddProfile.setTextColor(getColor(R.color.mainYellow))
-                binding.btnAddProfile.tag = "true"
+
+                } else if (binding.btnAddProfile.tag == "false") {
+                    binding.btnAddProfile.text = "Unfriend"
+                    binding.btnAddProfile.setBackgroundResource(R.drawable.style_yellow_line_btn)
+                    binding.btnAddProfile.setTextColor(getColor(R.color.mainYellow))
+                    binding.btnAddProfile.tag = "true"
+
+
+                    //친구 추가하기
+                    val removeDash = number.toString().replace("-", "")
+                    val removeSpace = removeDash.replace(" ", "")
+                    friendRef.child(userNumber).child(removeSpace!!)
+                        .setValue(UserVO(userName, userMsg, userProfile, removeSpace))
+                }
             }
+
 
         }
 
 
-//        //전화걸기
+//        //전화걸기 1차 프로토에서는 X
 //        binding.imgCallProfile.setOnClickListener {
 //            val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
 //            startActivity(intent)

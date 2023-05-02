@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.angkorchatproto.Friends.FriendsAdapter
-import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
 
 class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatModel.Comment>):
@@ -58,7 +56,6 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
                 //클릭 시 채팅창으로 넘겨주는 부분
                 val intent = Intent(context, ChatActivity::class.java)
                 intent.putExtra("chatRoomKey","")
-
 
                 context.startActivity(intent)
 

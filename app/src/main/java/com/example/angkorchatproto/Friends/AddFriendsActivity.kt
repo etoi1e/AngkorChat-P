@@ -1,9 +1,9 @@
 package com.example.angkorchatproto.Friends
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.UserVO
@@ -33,25 +33,30 @@ class AddFriendsActivity : AppCompatActivity() {
             finish()
         }
 
+
         //로그인한 계정 번호 불러오기
         //SharedPreferences
         val shared = getSharedPreferences("loginNumber", 0)
-        val userNumber = shared.getString("userNumber","")
+        val userNumber = shared.getString("userNumber", "")
 
 
         //주소록 친구 불러와서 rv에 출력
         getContacts()
-        val adapter = SuggestedAdapter(this@AddFriendsActivity,suggestList,userNumber.toString(),friendList)
+        val adapter = SuggestedAdapter(
+            this@AddFriendsActivity,
+            suggestList,
+            userNumber.toString(),
+            friendList
+        )
         binding.rvSuggestedListAddFriends.adapter = adapter
-        binding.rvSuggestedListAddFriends.layoutManager = GridLayoutManager(this@AddFriendsActivity,1)
-
-
+        binding.rvSuggestedListAddFriends.layoutManager =
+        GridLayoutManager(this@AddFriendsActivity, 1)
 
 
         //추천 친구 Count
-        if(suggestList.size == 0 || suggestList.size == null){
+        if (suggestList.size == 0 || suggestList.size == null) {
             binding.tvSuggestedCountAddFriends.text = "0"
-        }else{
+        } else {
             val testList = suggestList.size.toString()
             binding.tvSuggestedCountAddFriends.text = testList
         }
@@ -184,7 +189,6 @@ class AddFriendsActivity : AppCompatActivity() {
         return suggestList
 
     }
-
 
 
 

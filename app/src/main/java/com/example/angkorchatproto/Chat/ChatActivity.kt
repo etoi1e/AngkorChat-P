@@ -1,16 +1,18 @@
 package com.example.angkorchatproto.Chat
 
+import android.content.Context
 import android.graphics.Point
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatBinding
@@ -29,7 +31,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var myNumber: String
     var receiver: String = ""
     private var chatRoomKey: String? = null
-
+    var chatRoomKeyList = ArrayList<String>()
 
 
     var width = 0
@@ -49,6 +51,45 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+
+        //포커스 컨트롤
+        binding.layout.setOnClickListener {
+            binding.etMessageChat.clearFocus()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.etMessageChat.windowToken, 0)
+
+            val etMessageText = binding.etMessageChat.text.toString()
+            val textCheck = etMessageText.replace(" ", "")
+
+            if (textCheck == "") {
+                binding.viewMessageBox1Chat.visibility = View.VISIBLE
+                binding.imgRecordChat.visibility = View.VISIBLE
+
+                binding.imgSendMessageChat.visibility = View.INVISIBLE
+                binding.viewMessageBox2Chat.visibility = View.INVISIBLE
+            }
+
+        }
+
+        //파일, 이모지, 녹음, 메모 클릭 시 임의 Toast 출력
+        binding.imgMenuChat.setOnClickListener {
+            Toast.makeText(this@ChatActivity, "메뉴 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgMediaChat.setOnClickListener {
+            Toast.makeText(this@ChatActivity, "미디어 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgImogeChat.setOnClickListener {
+            Toast.makeText(this@ChatActivity, "이모지 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imgRecordChat.setOnClickListener {
+            Toast.makeText(this@ChatActivity, "음성녹음 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+
         //상대방 번호 저장
         val receiverData = intent.getStringExtra("number").toString()
         val receiverData2 = receiverData.replace("-", "")
@@ -62,16 +103,15 @@ class ChatActivity : AppCompatActivity() {
         //상대방 프로필 출력
         val profileImg = intent.getStringExtra("profile")
 
-        if(profileImg == ""){
+        if (profileImg == "") {
             Glide.with(this@ChatActivity)
                 .load(R.drawable.ic_profile_default_72)
                 .into(binding.imgProfileChat)
-        }else{
+        } else {
             Glide.with(this@ChatActivity)
                 .load(profileImg)
                 .into(binding.imgProfileChat)
         }
-
 
 
         //뒤로가기
@@ -96,42 +136,53 @@ class ChatActivity : AppCompatActivity() {
 
         //전송 버튼 클릭 시
         binding.imgSendMessageChat.setOnClickListener {
+            //공백확인
+            val etMessageText = binding.etMessageChat.text.toString()
+            val textCheck = etMessageText.replace(" ", "")
+            if (textCheck == "") {
 
-            //전송 시 시간 초기화
-            nowTime = LocalDateTime.now().toString()
-            if(nowTime == ""){
-                nowTime = System.currentTimeMillis().toString()
-            }
+            } else {
+                //전송 시 시간 초기화
+                nowTime = LocalDateTime.now().toString()
+                if (nowTime == "") {
+                    nowTime = System.currentTimeMillis().toString()
+                }
 
 
-            if (binding.etMessageChat.text.toString() != "") {
-                val chatModel = ChatModel()
-                chatModel.users.put(myNumber, true)
-                chatModel.users.put(receiver, true)
+                if (binding.etMessageChat.text.toString() != "") {
+                    val chatModel = ChatModel()
+                    chatModel.users.put(myNumber, true)
+                    chatModel.users.put(receiver, true)
 
-                val comment =
-                    ChatModel.Comment(myNumber, binding.etMessageChat.text.toString(), nowTime)
-                if (chatRoomKey == null) {
-                    binding.imgSendMessageChat.isEnabled = false
-                    chatRef.push().setValue(chatModel).addOnSuccessListener {
-                        //채팅방 생성
-                        checkChatRoom()
-                        //메세지 보내기
-                        Handler().postDelayed({
-                            chatRef.child(chatRoomKey.toString())
-                                .child("comments").push().setValue(comment)
-                        }, 1000L)
+                    val comment = ChatModel.Comment(myNumber, binding.etMessageChat.text.toString(), nowTime)
+
+
+
+                    if (chatRoomKey == null) {
+                        binding.imgSendMessageChat.isEnabled = false
+                        chatRef.push().setValue(chatModel).addOnSuccessListener {
+                            //채팅방 생성
+                            checkChatRoom()
+                            //메세지 보내기
+                            Handler().postDelayed({
+                                chatRef.child(chatRoomKey.toString())
+                                    .child("comments").push().setValue(comment)
+                            }, 1000L)
+                            binding.etMessageChat.text = null
+                        }
+                    } else {
+                        chatRef.child(chatRoomKey.toString()).child("comments")
+                            .push().setValue(comment)
                         binding.etMessageChat.text = null
                     }
-                } else {
-                    chatRef.child(chatRoomKey.toString()).child("comments")
-                        .push().setValue(comment)
-                    binding.etMessageChat.text = null
+
                 }
             }
+
+
         }
 
-        checkChatRoom()
+           checkChatRoom()
 
         Log.d("TAG-commentList", commentList.toString())
 
@@ -140,7 +191,7 @@ class ChatActivity : AppCompatActivity() {
         binding.etMessageChat.setOnKeyListener() { v, keyCode, event ->
             var handled = false
 
-            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
                 //전송 버튼 클릭효과
                 binding.imgSendMessageChat.performClick()
@@ -150,22 +201,28 @@ class ChatActivity : AppCompatActivity() {
         }
 
 
+
         //EditText Focus 감지
         binding.etMessageChat.onFocusChangeListener = View.OnFocusChangeListener { v, gainFocus ->
             //포커스가 주어졌을 때
             if (gainFocus) {
+
                 binding.viewMessageBox1Chat.visibility = View.INVISIBLE
-                binding.imgRecordChat.visibility = View.GONE
+                binding.imgRecordChat.visibility = View.INVISIBLE
 
                 binding.imgSendMessageChat.visibility = View.VISIBLE
                 binding.viewMessageBox2Chat.visibility = View.VISIBLE
 
+            } else {
+
+                binding.etMessageChat.clearFocus()
             }
 
         }
 
 
     }
+
     //onCreate 바깥
 
 
@@ -183,12 +240,16 @@ class ChatActivity : AppCompatActivity() {
                         val chatModel = item.getValue<ChatModel>()
                         if (chatModel?.users!!.containsKey(receiver)) {
                             chatRoomKey = item.key.toString()
+                            chatRoomKeyList.add(item.key.toString())
 
                             getMessageList()
 
                             binding.rvChatListChat?.layoutManager =
                                 GridLayoutManager(this@ChatActivity, 1)
-                            binding.rvChatListChat?.adapter = ChatAdapter(this@ChatActivity,commentList,width,myNumber)
+                            binding.rvChatListChat?.adapter =
+                                ChatAdapter(this@ChatActivity, commentList, width, myNumber)
+
+
                         }
                     }
                 }
@@ -197,12 +258,8 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
     fun getMessageList() {
-        Log.d("TAG-chatRoomKey",chatRoomKey.toString())
+        Log.d("TAG-chatRoomKey", chatRoomKey.toString())
         chatRef.child(chatRoomKey.toString()).child("comments")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -216,21 +273,13 @@ class ChatActivity : AppCompatActivity() {
                         //Log.d("TAG-commentList",commentList.toString())
                         //Log.d("TAG-snapshot",data.toString())
                     }
-                    var adapter = ChatAdapter(this@ChatActivity,commentList,width,myNumber)
+                    var adapter = ChatAdapter(this@ChatActivity, commentList, width, myNumber)
                     adapter.notifyDataSetChanged()
                     //메세지를 보낼 시 화면을 맨 밑으로 내림
                     binding.rvChatListChat?.scrollToPosition(commentList.size - 1)
                 }
             })
     }
-
-
-
-
-
-
-
-
 
 
 }
