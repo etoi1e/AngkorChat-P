@@ -201,6 +201,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
 
+
         //EditText Focus 감지
         binding.etMessageChat.onFocusChangeListener = View.OnFocusChangeListener { v, gainFocus ->
             //포커스가 주어졌을 때
