@@ -229,7 +229,6 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
-
     }
 
     //onCreate 바깥

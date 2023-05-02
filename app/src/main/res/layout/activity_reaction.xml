@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center_horizontal"
+    tools:context=".Chat.ReactionActivity">
+
+    <View
+        android:id="@+id/viewReplyReactrion"
+        android:layout_width="311dp"
+        android:layout_height="40dp"
+        android:background="@drawable/popup_menu_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewCopyReactrion"
+        android:layout_width="311dp"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/viewReplyReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewReplyReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewReplyReactrion" />
+
+    <View
+        android:id="@+id/viewPinReactrion"
+        android:layout_width="311dp"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/viewCopyReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewCopyReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewCopyReactrion" />
+
+    <View
+        android:id="@+id/viewDeleteReactrion"
+        android:layout_width="311dp"
+        android:layout_height="40dp"
+        android:background="@drawable/popup_menu_btm"
+        app:layout_constraintEnd_toEndOf="@+id/viewPinReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewPinReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewPinReactrion" />
+
+    <View
+        android:id="@+id/viewImgReactrionBox"
+        android:layout_width="311dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/popup_emo"
+        app:layout_constraintEnd_toEndOf="@+id/viewDeleteReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewDeleteReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewDeleteReactrion" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins"
+        android:text="Reply"
+        android:textColor="@color/textBlack"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewReplyReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewReplyReactrion"
+        app:layout_constraintTop_toTopOf="@+id/viewReplyReactrion" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewReplyReactrion"
+        app:layout_constraintEnd_toEndOf="@+id/viewReplyReactrion"
+        app:layout_constraintTop_toTopOf="@+id/viewReplyReactrion"
+        app:srcCompat="@drawable/ic_enter_line_prime_20" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins"
+        android:text="Copy"
+        android:textColor="@color/textBlack"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCopyReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewCopyReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewReplyReactrion" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCopyReactrion"
+        app:layout_constraintEnd_toEndOf="@+id/viewCopyReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewReplyReactrion"
+        app:srcCompat="@drawable/ic_copy_line_prime_20" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins"
+        android:text="Pin"
+        android:textColor="@color/textBlack"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPinReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewPinReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewCopyReactrion" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPinReactrion"
+        app:layout_constraintEnd_toEndOf="@+id/viewPinReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewCopyReactrion"
+        app:srcCompat="@drawable/ic_pin_line_prime_20" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins"
+        android:text="Delete"
+        android:textColor="#ff4040"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewDeleteReactrion"
+        app:layout_constraintStart_toStartOf="@+id/viewDeleteReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewPinReactrion" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewDeleteReactrion"
+        app:layout_constraintEnd_toEndOf="@+id/viewDeleteReactrion"
+        app:layout_constraintTop_toBottomOf="@+id/viewPinReactrion"
+        app:srcCompat="@drawable/ic_bin_fill_red_24" />
+
+    <ImageView
+        android:id="@+id/imgHeartReactrion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/img_emoji_red_heart_24"
+        app:layout_constraintBottom_toBottomOf="@+id/viewImgReactrionBox"
+        app:layout_constraintStart_toStartOf="@+id/viewImgReactrionBox"
+        app:layout_constraintTop_toTopOf="@+id/viewImgReactrionBox" />
+
+    <ImageView
+        android:id="@+id/imgThumbReactrion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="27dp"
+        android:src="@drawable/img_emoji_thumbsup_24"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHeartReactrion"
+        app:layout_constraintStart_toEndOf="@+id/imgHeartReactrion"
+        app:layout_constraintTop_toTopOf="@+id/imgHeartReactrion" />
+
+    <ImageView
+        android:id="@+id/imgSmileReactrion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="27dp"
+        android:src="@drawable/img_emoji_slightly_smiling_face_24"
+        app:layout_constraintBottom_toBottomOf="@+id/imgThumbReactrion"
+        app:layout_constraintStart_toEndOf="@+id/imgThumbReactrion"
+        app:layout_constraintTop_toTopOf="@+id/imgThumbReactrion" />
+
+    <ImageView
+        android:id="@+id/imgHappyReactrion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="27dp"
+        android:src="@drawable/img_emoji_grinning_squinting_face_24"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSmileReactrion"
+        app:layout_constraintStart_toEndOf="@+id/imgSmileReactrion"
+        app:layout_constraintTop_toTopOf="@+id/imgSmileReactrion" />
+
+    <ImageView
+        android:id="@+id/imgAngryReactrion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="27dp"
+        android:src="@drawable/img_emoji_angry_face_24"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHappyReactrion"
+        app:layout_constraintStart_toEndOf="@+id/imgHappyReactrion"
+        app:layout_constraintTop_toTopOf="@+id/imgHappyReactrion" />
+
+    <ImageView
+        android:id="@+id/imgCryReactrion"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/img_emoji_loudly_crying_face_24"
+        app:layout_constraintBottom_toBottomOf="@+id/imgAngryReactrion"
+        app:layout_constraintEnd_toEndOf="@+id/viewImgReactrionBox"
+        app:layout_constraintTop_toTopOf="@+id/imgAngryReactrion" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
