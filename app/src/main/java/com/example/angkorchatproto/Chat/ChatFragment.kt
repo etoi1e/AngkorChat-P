@@ -99,9 +99,6 @@ class ChatFragment : Fragment() {
 
 
 
-
-
-
         return binding.root
 
 

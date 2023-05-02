@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.Chat
 
+import android.content.ClipData.Item
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +44,8 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
         }
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
