@@ -22,7 +22,9 @@ import com.example.angkorchatproto.Chat.ChatActivity
 import com.example.angkorchatproto.Chat.ChatBotActivity
 import com.example.angkorchatproto.Chat.ChatVO
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
+import com.example.angkorchatproto.utils.FBdataBase
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -39,16 +41,21 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val friendRef = FBdataBase.getFriendRef()
+
+        //현재 사용자 번호 불러오기
+        val shared = getSharedPreferences("loginNumber", 0)
+        val myNumber = shared.getString("userNumber", "").toString()
+
+        //클릭한 친구 정보
         val userName = intent.getStringExtra("name")
         val userMsg = intent.getStringExtra("email")
-        val number = intent.getStringExtra("number")
+        val userNum = intent.getStringExtra("number")
         val userProfile = intent.getStringExtra("profile")
 
         //기본 정보 삽입
         binding.tvNameProfile.text = userName
         binding.tvMsgProfile.text = userMsg
-
-
 
 
         //프로필 사진 uri 가져오기
@@ -58,7 +65,7 @@ class ProfileActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(R.drawable.top_logo)
                 .into(binding.imgProfileProfile)
-            Log.d("TAG-프로필","유니온으로 출력구간")
+            Log.d("TAG-프로필", "유니온으로 출력구간")
         } else if (profile == "") {
             Glide.with(this)
                 .load(R.drawable.ic_profile_default_72)
@@ -72,14 +79,14 @@ class ProfileActivity : AppCompatActivity() {
 
         //채팅방으로 이동
         binding.btnChatProfile.setOnClickListener {
-            if(profile == "union"){ //유니온 공식 계정 구분하기
+            if (profile == "union") { //유니온 공식 계정 구분하기
                 val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
                 startActivity(intent)
                 finish()
-            }else{
+            } else {
                 val intent = Intent(this@ProfileActivity, ChatActivity::class.java)
                 intent.putExtra("name", userName)
-                intent.putExtra("number", number)
+                intent.putExtra("number", userNum)
                 intent.putExtra("profile", userProfile)
                 startActivity(intent)
                 finish()
@@ -87,15 +94,25 @@ class ProfileActivity : AppCompatActivity() {
 
         }
 
-        //Add/Unfriend 버튼(실제 친구 목록 아니기 때문에 기능X)
+        //Add/Unfriend 버튼
         binding.btnAddProfile.setOnClickListener {
 
-            if (binding.btnAddProfile.tag == "true") {
+            if (binding.btnAddProfile.tag == "true") { //친구삭제하기
+                //삭제 기능
+                friendRef.child(myNumber).child(userNum.toString()).removeValue()
+
+                //버튼 효과
                 binding.btnAddProfile.text = "Add"
                 binding.btnAddProfile.setBackgroundResource(R.drawable.style_login_btn)
                 binding.btnAddProfile.setTextColor(Color.WHITE)
                 binding.btnAddProfile.tag = "false"
-            } else if (binding.btnAddProfile.tag == "false") {
+
+            } else if (binding.btnAddProfile.tag == "false") { //친구추가하기
+                //추가기능
+                friendRef.child(myNumber).child(userNum!!)
+                    .setValue(UserVO(userName, userMsg, profile, userNum))
+
+                //버튼효과
                 binding.btnAddProfile.text = "Unfriend"
                 binding.btnAddProfile.setBackgroundResource(R.drawable.style_yellow_line_btn)
                 binding.btnAddProfile.setTextColor(getColor(R.color.mainYellow))
@@ -112,9 +129,8 @@ class ProfileActivity : AppCompatActivity() {
 //            finish()
 //        }
 
-        binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity,imgList)
-        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity,3)
-
+        binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
+        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
 
 
         //갤러리 저장 사진 불러오기
@@ -166,7 +182,6 @@ class ProfileActivity : AppCompatActivity() {
             Log.d("TAG-이미지 로그 못불러옴", imageUri.toString())
         }
     }
-
 
 
 }

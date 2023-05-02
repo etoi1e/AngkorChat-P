@@ -1,7 +1,9 @@
 package com.example.angkorchatproto.Chat
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +54,6 @@ class ChatFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (item in snapshot.children) {
                         chatRoomsKey = item.key.toString()
-
                         getChatRoom()
 
                     }
@@ -66,8 +67,8 @@ class ChatFragment : Fragment() {
     }
 
 
-    fun getChatRoom() {
-        chatRef.child(chatRoomsKey).child("comments")
+    fun getChatRoom() { //각 채팅방 가장 나중에 보낸 메세지 불러오기
+        chatRef.child(chatRoomsKey).child("comments").limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -79,6 +80,7 @@ class ChatFragment : Fragment() {
                         }
 
                     }
+
                     adapter.notifyDataSetChanged()
 
                     //채팅 리스트 0 일 때
