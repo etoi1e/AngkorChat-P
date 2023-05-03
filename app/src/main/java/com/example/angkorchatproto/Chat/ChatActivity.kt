@@ -2,25 +2,36 @@ package com.example.angkorchatproto.Chat
 
 import android.content.Context
 import android.graphics.Point
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.example.angkorchatproto.Chat.adapter.ChatAdapter
+import com.example.angkorchatproto.Chat.adapter.ChatImogeAdapter
+import com.example.angkorchatproto.Chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
+import com.example.angkorchatproto.utils.Utils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.time.LocalDateTime
 
@@ -33,6 +44,11 @@ class ChatActivity : AppCompatActivity() {
     private var chatRoomKey: String? = null
     var chatRoomKeyList = ArrayList<String>()
 
+    lateinit var imogeAdapter: ChatImogeAdapter
+    lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
+    private lateinit var imm:InputMethodManager
+    private var keyboardHeight:Int = 0
+    private var rootHeight = -1
 
     var width = 0
     var client = OkHttpClient()
@@ -46,6 +62,7 @@ class ChatActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
+
         binding = ActivityChatBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -55,12 +72,36 @@ class ChatActivity : AppCompatActivity() {
         val shared = getSharedPreferences("loginNumber", 0)
         myNumber = shared.getString("userNumber", "").toString()
 
+        //키보드 상태 캐치하는 리스너
+        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        window.decorView.viewTreeObserver.addOnGlobalLayoutListener {
+//            Log.d("키보드 높이", "rootHeight : $rootHeight")
+            if (rootHeight == -1) {
+                rootHeight = window.decorView.height
+            }
+
+            val visibleFrameSize = Rect()
+            window.decorView.getWindowVisibleDisplayFrame(visibleFrameSize)
+            val heightExceptKeyboard = visibleFrameSize.bottom - visibleFrameSize.top
+            // 키보드를 제외한 높이가 디바이스 root_view보다 높거나 같다면, 키보드가 올라왔을 때가 아니므로 거른다.
+            if (heightExceptKeyboard < rootHeight) {
+                if (keyboardHeight == 0 && rootHeight - heightExceptKeyboard - Utils.getStatusBarHeight(
+                        this
+                    ) - Utils.getNavigationBarHeight(this) != 0) {
+                    keyboardHeight = rootHeight - heightExceptKeyboard - Utils.getStatusBarHeight(
+                        this
+                    ) - Utils.getNavigationBarHeight(this)
+                    setImogeLayoutHeight(keyboardHeight)
+                }
+                Log.d("키보드 높이", "$keyboardHeight")
+            }
+        }
+
 
         //포커스 컨트롤
         binding.layout.setOnClickListener {
             binding.etMessageChat.clearFocus()
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.etMessageChat.windowToken, 0)
+            hideKeyboard()
 
             val etMessageText = binding.etMessageChat.text.toString()
             val textCheck = etMessageText.replace(" ", "")
@@ -85,13 +126,36 @@ class ChatActivity : AppCompatActivity() {
         }
 
         binding.imgImogeChat.setOnClickListener {
-            Toast.makeText(this@ChatActivity, "이모지 클릭", Toast.LENGTH_SHORT).show()
+            lifecycleScope.launch {
+                setImogeRecyclerView()
+                if (binding.viewImogeLayout.visibility == View.GONE) { // 키보드가 올라와있는 상황에서 이모티콘 버튼 클릭
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+                    binding.etMessageChat.requestFocus()
+                    showKeyboard()
+                    delay(10)
+                    binding.etMessageChat.clearFocus()
+                    hideKeyboard()
+                    binding.viewImogeLayout.visibility = View.VISIBLE
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                } else { // 이모티콘 컨테이너가 띄워져 있는 상태에서 사용자가 다시 이모티콘 아이콘을 클릭
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+                    binding.etMessageChat.requestFocus()
+                    showKeyboard()
+                    delay(10)
+                    binding.viewImogeLayout.visibility = View.GONE
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                }
+            }
         }
 
         binding.imgRecordChat.setOnClickListener {
             Toast.makeText(this@ChatActivity, "음성녹음 클릭", Toast.LENGTH_SHORT).show()
         }
 
+        binding.imgImogePreviewClose.setOnClickListener {
+            binding.imogePreview.visibility = View.GONE
+            binding.imgImogePreview.setImageDrawable(null)
+        }
 
         //상대방 번호 저장
         val receiverData = intent.getStringExtra("number").toString()
@@ -120,11 +184,7 @@ class ChatActivity : AppCompatActivity() {
         //뒤로가기
         binding.imgMoveBackChat.setOnClickListener {
             finish()
-
         }
-
-
-
 
         //객체 초기화
         client = OkHttpClient()
@@ -222,12 +282,17 @@ class ChatActivity : AppCompatActivity() {
                 binding.imgSendMessageChat.visibility = View.VISIBLE
                 binding.viewMessageBox2Chat.visibility = View.VISIBLE
 
+                if (binding.viewImogeLayout.visibility == View.VISIBLE) {
+                    binding.viewImogeLayout.visibility = View.GONE
+                }
+
             } else {
 
                 binding.etMessageChat.clearFocus()
             }
 
         }
+
 
     }
 
@@ -288,6 +353,76 @@ class ChatActivity : AppCompatActivity() {
             })
     }
 
+    private fun showKeyboard() {
+        imm.showSoftInput(binding.etMessageChat, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private fun hideKeyboard() {
+        imm.hideSoftInputFromWindow(binding.etMessageChat.windowToken, 0);
+    }
+
+    private fun setImogeLayoutHeight(keyboardHeight: Int) {
+        val params = binding.viewImogeLayout.layoutParams
+        params.height = keyboardHeight // 변경할 높이
+        binding.viewImogeLayout.layoutParams = params
+    }
+
+    private fun setImogeRecyclerView() {
+        setImogeGridRecyclerView(0)
+        setImogeShortcutRecyclerView()
+    }
+
+    private fun setImogeGridRecyclerView(arrayId: Int) {
+        //이모티콘
+        val gridLayoutManager = GridLayoutManager(this@ChatActivity, 4)
+        binding.recyclerviewImoge.layoutManager = gridLayoutManager
+        val defaultArrayList = if (arrayId == 0) {
+            arrayListOf()
+        } else {
+            Utils.typedArrayToArrayList(resources.obtainTypedArray(arrayId))
+        }
+        imogeAdapter = ChatImogeAdapter(
+            this@ChatActivity,
+            defaultArrayList,
+            object : ChatImogeAdapter.OnChatImogeAdapterListener {
+                override fun onItemClicked(item: Int) {
+                    Log.d("이모지 선택", "리소스 아이디 : $item")
+                    binding.imogePreview.visibility = View.VISIBLE
+                    Glide.with(this@ChatActivity)
+                        .load(item)
+                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
+                        .into(binding.imgImogePreview)
+                }
+
+            })
+        binding.recyclerviewImoge.adapter = imogeAdapter
+    }
+
+    private fun setImogeShortcutRecyclerView() {
+        //이모티콘 숏컷
+        imogeShortcutAdapter = ChatImogeShortcutAdapter(this@ChatActivity,
+            arrayListOf(R.drawable.ic_star_fill_prime_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24),
+            object: ChatImogeShortcutAdapter.OnChatImogeShortcutAdapterListener {
+                override fun onItemClicked(item: Int) {
+                    Log.d("이모지 쇼컷", "$item 번째 입니다.")
+                    var arrayId = 0
+                    when(item) {
+                        2 -> {
+                            arrayId = R.array.nunuImoge
+                        }
+                        3 -> {
+                            arrayId = R.array.ganaImoge
+                        }
+                        4 -> {
+                            arrayId = R.array.hahaImoge
+                        }
+                    }
+                    setImogeGridRecyclerView(arrayId)
+                }
+            }
+        )
+        binding.recyclerviewImogeShortcut.adapter = imogeShortcutAdapter
+    }
 
 }
 

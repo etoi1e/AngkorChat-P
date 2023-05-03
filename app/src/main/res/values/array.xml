@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="countryCode">
+        <item>855,KH</item>
+        <item>82,KR</item>
+        <item>1,US</item>
+    </string-array>
+
+    <array name="nunuImoge">
+        <item>@drawable/nunu1</item>
+        <item>@drawable/nunu2</item>
+        <item>@drawable/nunu3</item>
+        <item>@drawable/nunu4</item>
+        <item>@drawable/nunu5</item>
+        <item>@drawable/nunu6</item>
+        <item>@drawable/nunu7</item>
+        <item>@drawable/nunu8</item>
+        <item>@drawable/nunu9</item>
+        <item>@drawable/nunu10</item>
+        <item>@drawable/nunu11</item>
+        <item>@drawable/nunu12</item>
+        <item>@drawable/nunu13</item>
+        <item>@drawable/nunu14</item>
+        <item>@drawable/nunu15</item>
+        <item>@drawable/nunu16</item>
+        <item>@drawable/nunu17</item>
+        <item>@drawable/nunu18</item>
+        <item>@drawable/nunu19</item>
+        <item>@drawable/nunu20</item>
+        <item>@drawable/nunu21</item>
+        <item>@drawable/nunu22</item>
+        <item>@drawable/nunu23</item>
+        <item>@drawable/nunu24</item>
+    </array>
+
+    <array name="ganaImoge">
+        <item>@drawable/gana1</item>
+        <item>@drawable/gana2</item>
+        <item>@drawable/gana3</item>
+        <item>@drawable/gana4</item>
+        <item>@drawable/gana5</item>
+        <item>@drawable/gana6</item>
+        <item>@drawable/gana7</item>
+        <item>@drawable/gana8</item>
+        <item>@drawable/gana9</item>
+        <item>@drawable/gana10</item>
+        <item>@drawable/gana11</item>
+        <item>@drawable/gana12</item>
+        <item>@drawable/gana13</item>
+        <item>@drawable/gana14</item>
+        <item>@drawable/gana15</item>
+        <item>@drawable/gana16</item>
+        <item>@drawable/gana17</item>
+        <item>@drawable/gana18</item>
+        <item>@drawable/gana19</item>
+        <item>@drawable/gana20</item>
+        <item>@drawable/gana21</item>
+        <item>@drawable/gana22</item>
+        <item>@drawable/gana23</item>
+        <item>@drawable/gana24</item>
+    </array>
+
+    <array name="hahaImoge">
+        <item>@drawable/haha1</item>
+        <item>@drawable/haha2</item>
+        <item>@drawable/haha3</item>
+        <item>@drawable/haha4</item>
+        <item>@drawable/haha5</item>
+        <item>@drawable/haha6</item>
+        <item>@drawable/haha7</item>
+        <item>@drawable/haha8</item>
+        <item>@drawable/haha9</item>
+        <item>@drawable/haha10</item>
+        <item>@drawable/haha11</item>
+        <item>@drawable/haha12</item>
+        <item>@drawable/haha13</item>
+        <item>@drawable/haha14</item>
+        <item>@drawable/haha15</item>
+        <item>@drawable/haha16</item>
+        <item>@drawable/haha17</item>
+        <item>@drawable/haha18</item>
+        <item>@drawable/haha19</item>
+        <item>@drawable/haha20</item>
+        <item>@drawable/haha21</item>
+        <item>@drawable/haha22</item>
+        <item>@drawable/haha23</item>
+        <item>@drawable/haha24</item>
+    </array>
+
+</resources>
