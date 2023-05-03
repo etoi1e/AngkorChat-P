@@ -46,11 +46,14 @@ class ChatActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         binding = ActivityChatBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+        //현재 사용자 번호 불러오기
+        val shared = getSharedPreferences("loginNumber", 0)
+        myNumber = shared.getString("userNumber", "").toString()
 
 
         //포커스 컨트롤
@@ -117,14 +120,14 @@ class ChatActivity : AppCompatActivity() {
         //뒤로가기
         binding.imgMoveBackChat.setOnClickListener {
             finish()
+
         }
+
+
+
 
         //객체 초기화
         client = OkHttpClient()
-
-        //현재 사용자 번호 불러오기
-        val shared = getSharedPreferences("loginNumber", 0)
-        myNumber = shared.getString("userNumber", "").toString()
 
 
         //디스플레이 가로값 구해 넘겨주기(말풍선 크기 제한)
@@ -154,7 +157,14 @@ class ChatActivity : AppCompatActivity() {
                     chatModel.users.put(myNumber, true)
                     chatModel.users.put(receiver, true)
 
-                    val comment = ChatModel.Comment(myNumber, binding.etMessageChat.text.toString(), nowTime)
+                    val comment = ChatModel.Comment(
+                        profileImg,
+                        myNumber,
+                        binding.etMessageChat.text.toString(),
+                        nowTime,
+                        false,
+                        ""
+                    )
 
 
 
@@ -182,7 +192,7 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
-           checkChatRoom()
+        checkChatRoom()
 
         Log.d("TAG-commentList", commentList.toString())
 
@@ -199,7 +209,6 @@ class ChatActivity : AppCompatActivity() {
             }
             handled
         }
-
 
 
         //EditText Focus 감지
@@ -219,7 +228,6 @@ class ChatActivity : AppCompatActivity() {
             }
 
         }
-
 
     }
 
@@ -270,8 +278,7 @@ class ChatActivity : AppCompatActivity() {
                     for (data in snapshot.children) {
                         val item = data.getValue<ChatModel.Comment>()
                         commentList.add(item!!)
-                        //Log.d("TAG-commentList",commentList.toString())
-                        //Log.d("TAG-snapshot",data.toString())
+
                     }
                     var adapter = ChatAdapter(this@ChatActivity, commentList, width, myNumber)
                     adapter.notifyDataSetChanged()

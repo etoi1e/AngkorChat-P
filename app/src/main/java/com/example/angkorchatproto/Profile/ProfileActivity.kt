@@ -51,9 +51,15 @@ class ProfileActivity : AppCompatActivity() {
         val number = intent.getStringExtra("number")
         val userProfile = intent.getStringExtra("profile")
 
+
         //기본 정보 삽입
         binding.tvNameProfile.text = userName
         binding.tvMsgProfile.text = userMsg
+
+        //뒤로가기 버튼
+        binding.imgMoveBackProfile.setOnClickListener{
+            finish()
+        }
 
 
         //프로필 사진 uri 가져오기
@@ -76,7 +82,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
         //채팅방으로 이동
-        binding.btnChatProfile.setOnClickListener {
+        binding.imgChatProfile.setOnClickListener {
             if (profile == "union") { //유니온 공식 계정 구분하기
                 val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
                 startActivity(intent)
@@ -133,12 +139,12 @@ class ProfileActivity : AppCompatActivity() {
         }
 
 
-//        //전화걸기 1차 프로토에서는 X
-//        binding.imgCallProfile.setOnClickListener {
-//            val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
-//            startActivity(intent)
-//            finish()
-//        }
+        //전화걸기
+        binding.imgCallProfile.setOnClickListener {
+            val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
+            startActivity(intent)
+            finish()
+        }
 
         binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
         binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)

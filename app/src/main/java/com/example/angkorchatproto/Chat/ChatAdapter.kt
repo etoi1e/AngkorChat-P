@@ -1,13 +1,17 @@
 package com.example.angkorchatproto.Chat
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
+import java.util.zip.Inflater
 
 
 class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, width: Int, myNumber:String) :
@@ -43,6 +47,8 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
         }
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -80,7 +86,6 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             holder.tvMyMessageChat.setText(message.message)
             holder.tvTimeRight.setText(setTime)
 
-
         } else {//타인이 보낸 메세지인 경우
 
             holder.tvMyMessageChat.visibility = View.GONE
@@ -89,6 +94,18 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             holder.tvOtherMessageChat.setText(message.message)
             holder.tvTimeLeft.setText(setTime)
 
+            holder.tvOtherMessageChat
+
+            holder.tvOtherMessageChat.setOnClickListener(object : OnClickListener {
+                override fun onClick(p0: View?) {
+
+                    val intent = Intent(context,ReactionActivity::class.java)
+
+                    context.startActivity(intent)
+
+                }
+
+            })
 
 
         }
