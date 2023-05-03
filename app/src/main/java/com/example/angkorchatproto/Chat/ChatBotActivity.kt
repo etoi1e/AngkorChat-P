@@ -53,6 +53,8 @@ class ChatBotActivity : AppCompatActivity() {
     private lateinit var imm:InputMethodManager
 
     var chatList = ArrayList<ChatBotVO>()
+    var selectCharacterName: String? = null
+    var selectCharacterIdx: Int? = null
     private var client = OkHttpClient()
     private var arr = JSONArray()
     private var baseAi = JSONObject()
@@ -397,11 +399,11 @@ class ChatBotActivity : AppCompatActivity() {
     }
 
     private fun setImogeRecyclerView() {
-        setImogeGridRecyclerView(0)
+        setImogeGridRecyclerView(0, "")
         setImogeShortcutRecyclerView()
     }
 
-    private fun setImogeGridRecyclerView(arrayId: Int) {
+    private fun setImogeGridRecyclerView(arrayId: Int, characterName: String) {
         val gridLayoutManager = GridLayoutManager(this@ChatBotActivity, 4)
         binding.recyclerviewImoge.layoutManager = gridLayoutManager
         val defaultArrayList = if (arrayId == 0) {
@@ -411,10 +413,15 @@ class ChatBotActivity : AppCompatActivity() {
         }
         imogeAdapter = ChatImogeAdapter(
             this@ChatBotActivity,
+            characterName,
             defaultArrayList,
             object : ChatImogeAdapter.OnChatImogeAdapterListener {
-                override fun onItemClicked(item: Int) {
+                override fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?) {
                     Log.d("이모지 선택", "리소스 아이디 : $item")
+
+                    selectCharacterName = characterName
+                    selectCharacterIdx = itemIdx
+
                     binding.imogePreview.visibility = View.VISIBLE
                     Glide.with(this@ChatBotActivity)
                         .load(item)
@@ -434,18 +441,22 @@ class ChatBotActivity : AppCompatActivity() {
                 override fun onItemClicked(item: Int) {
                     Log.d("이모지 쇼컷", "$item 번째 입니다.")
                     var arrayId = 0
+                    var characterName = ""
                     when(item) {
                         2 -> {
                             arrayId = R.array.nunuImoge
+                            characterName = "nunu"
                         }
                         3 -> {
                             arrayId = R.array.ganaImoge
+                            characterName = "gana"
                         }
                         4 -> {
                             arrayId = R.array.hahaImoge
+                            characterName = "haha"
                         }
                     }
-                    setImogeGridRecyclerView(arrayId)
+                    setImogeGridRecyclerView(arrayId, characterName)
                 }
             }
         )

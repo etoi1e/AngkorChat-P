@@ -1,6 +1,5 @@
 package com.example.angkorchatproto.Chat
 
-import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -17,7 +16,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.database.ktx.values
 
 
 class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatModel.Comment>):
