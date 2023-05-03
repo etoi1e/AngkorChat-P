@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat
+package com.example.angkorchatproto.Chat.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,8 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.angkorchatproto.Chat.ChatModel
+import com.example.angkorchatproto.Chat.ReactionActivity
 import com.example.angkorchatproto.R
 import java.util.zip.Inflater
 
@@ -99,7 +101,7 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             holder.tvOtherMessageChat.setOnClickListener(object : OnClickListener {
                 override fun onClick(p0: View?) {
 
-                    val intent = Intent(context,ReactionActivity::class.java)
+                    val intent = Intent(context, ReactionActivity::class.java)
 
                     context.startActivity(intent)
 
