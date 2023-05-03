@@ -2,19 +2,31 @@ package com.example.angkorchatproto.Chat
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.View.OnLongClickListener
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
-import java.util.zip.Inflater
+import com.example.angkorchatproto.utils.FBdataBase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 
 
-class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, width: Int, myNumber:String) :
+class ChatAdapter(
+    context: Context,
+    chatList: ArrayList<ChatModel.Comment>,
+    width: Int,
+    myNumber: String
+) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     var chatList: ArrayList<ChatModel.Comment>
@@ -45,9 +57,10 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             divChatList = itemView.findViewById(R.id.divChatList)
             tvTimeRight = itemView.findViewById(R.id.tvTimeRight)
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
+
+
         }
     }
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -60,7 +73,6 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val message: ChatModel.Comment = chatList[position]
-
 
 
         //시간 커스텀
@@ -86,6 +98,27 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             holder.tvMyMessageChat.setText(message.message)
             holder.tvTimeRight.setText(setTime)
 
+
+            //롱탭 팝업 활성화
+            holder.tvMyMessageChat.setOnLongClickListener(object : OnLongClickListener {
+                override fun onLongClick(p0: View?): Boolean {
+                    fun showPopup(v: View) {
+                        val popup = PopupMenu(context, v) // PopupMenu 객체 선언
+                        popup.menuInflater.inflate(
+                            R.menu.reaction_menu,
+                            popup.menu
+                        ) // 메뉴 레이아웃 inflate
+                        popup.show() // 팝업 보여주기
+                    }
+                    showPopup(holder.tvMyMessageChat)
+
+                    Log.d("TAG-chatRoomKey", "활성화")
+                    return true
+                }
+
+            })
+
+
         } else {//타인이 보낸 메세지인 경우
 
             holder.tvMyMessageChat.visibility = View.GONE
@@ -99,7 +132,7 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             holder.tvOtherMessageChat.setOnClickListener(object : OnClickListener {
                 override fun onClick(p0: View?) {
 
-                    val intent = Intent(context,ReactionActivity::class.java)
+                    val intent = Intent(context, ReactionActivity::class.java)
 
                     context.startActivity(intent)
 
@@ -110,6 +143,7 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
 
         }
 
+
         //뷰 재활용 막기(데이터꼬임방지)
         holder.setIsRecyclable(false)
 
@@ -119,4 +153,5 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
     override fun getItemCount(): Int {
         return chatList.size
     }
+
 }

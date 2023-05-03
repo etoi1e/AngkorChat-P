@@ -1,6 +1,6 @@
 package com.example.angkorchatproto.Chat
 
-import android.content.ClipData
+
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -12,27 +12,28 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
-import com.example.angkorchatproto.utils.FBdataBase
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.database.ktx.values
 
 
-class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatModel.Comment>):
+
+class ChatRoomAdapter(
+    val context: Context,
+    val chatInfoList: ArrayList<ChatModel.Comment>,
+    val chatRoomKey: ArrayList<String>,
+    var chatRoomName : String,
+    val chatCount : ArrayList<String>
+) :
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
 
     // 리스너 커스텀
-    interface  OnItemClickListener{
-        fun  onItemClick(view : View, position: Int)
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
     }
 
     // 객체 저장 변수 선언
-    lateinit var mOnItemClickListener : OnItemClickListener
+    lateinit var mOnItemClickListener: OnItemClickListener
 
     //객체 전달 메서드
-    fun setOnItemClickListener(OnItemClickListener : OnItemClickListener){
+    fun setOnItemClickListener(OnItemClickListener: OnItemClickListener) {
         mOnItemClickListener = OnItemClickListener
 
     }
@@ -40,11 +41,11 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val imgProfileChatList : ImageView
-        val tvNameChatList : TextView
-        val tvMessageChatList : TextView
-        val tvTimeChatList : TextView
-        val tvCountChatChatList : TextView
+        val imgProfileChatList: ImageView
+        val tvNameChatList: TextView
+        val tvMessageChatList: TextView
+        val tvTimeChatList: TextView
+        val tvCountChatChatList: TextView
 
         init {
 
@@ -56,19 +57,21 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 
 
             itemView.setOnClickListener {
-                val position = adapterPosition
-
+//                val position = adapterPosition
+//
 //                if (position != RecyclerView.NO_POSITION){
-//                    // 버그로 인해 -1이 아닐경우에
-//                    mOnItemClickListener.onItemClick(itemView,position)
-//                }
+//                 //버그로 인해 -1이 아닐경우에
+//                   mOnItemClickListener.onItemClick(itemView,position)
+//               }
 
 
-                //클릭 시 채팅창으로 넘겨주는 부분
+//                //클릭 시 채팅창으로 넘겨주는 부분
                 val intent = Intent(context, ChatActivity::class.java)
-                intent.putExtra("chatRoomKey","")
+                intent.putExtra("Key",chatInfoList[position].key)
 
                 context.startActivity(intent)
+
+
 
             }
 
@@ -95,7 +98,7 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
             setTime = "AM " + chatRoom.time?.substring(11, 16)
         }
 
-
+        //프로필 사진 셋팅
         if (chatRoom.profile == "") {
             Glide.with(context)
                 .load(R.drawable.ic_profile_default_72)
@@ -105,41 +108,12 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
                 .load(chatRoom.profile)
                 .into(holder.imgProfileChatList)
         }
-
-        //로그인한 계정 번호 불러오기
-        //SharedPreferences
-        val shared = context.getSharedPreferences("loginNumber", 0)
-        val userNumber = shared.getString("userNumber", "").toString()
-
-        val friendRef = FBdataBase.getFriendRef()
-
-        //채팅방 목록 불러오기
-        friendRef.child(userNumber).orderByChild("phone").equalTo(chatRoom.sender)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for (item in snapshot.children) {
-                        val key = item.key
-
-                        friendRef.orderByChild("sender").equalTo(key.toString())
-
-
-
-
-                        val chatModel = item.getValue<ChatModel>()
-
-                    Log.d("TAG-스냅샷 key",key.toString())
-                    Log.d("TAG-스냅샷",snapshot.toString())
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-
+        
+        //채팅방 내용 출력
+        holder.tvNameChatList.text = chatRoom.sender
+        chatRoomName = chatRoom.sender.toString()
         holder.tvMessageChatList.text = chatRoom.message
-        holder.tvCountChatChatList.text = chatInfoList.size.toString()
+        holder.tvCountChatChatList.text = chatCount[position]
         holder.tvTimeChatList.text = setTime
 
 

@@ -83,7 +83,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatBotVO>, width: In
 
 
 
-        if (message.sentBy.equals(ChatVO.SENT_BY_ME)) { //내가 보낸 메세지인 경우
+        if (message.sentBy.equals(ChatBotVO.SENT_BY_ME)) { //내가 보낸 메세지인 경우
             holder.tvOtherMessageChat.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
 

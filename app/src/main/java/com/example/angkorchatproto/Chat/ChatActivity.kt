@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.Chat
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
 import android.os.Build
@@ -43,6 +44,7 @@ class ChatActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
 
+    @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -124,8 +126,6 @@ class ChatActivity : AppCompatActivity() {
         }
 
 
-
-
         //객체 초기화
         client = OkHttpClient()
 
@@ -157,18 +157,7 @@ class ChatActivity : AppCompatActivity() {
                     chatModel.users.put(myNumber, true)
                     chatModel.users.put(receiver, true)
 
-                    val comment = ChatModel.Comment(
-                        profileImg,
-                        myNumber,
-                        binding.etMessageChat.text.toString(),
-                        nowTime,
-                        false,
-                        ""
-                    )
-
-
-
-                    if (chatRoomKey == null) {
+                    if (chatRoomKey == null) { //기채팅방 없는 경우
                         binding.imgSendMessageChat.isEnabled = false
                         chatRef.push().setValue(chatModel).addOnSuccessListener {
                             //채팅방 생성
@@ -176,13 +165,39 @@ class ChatActivity : AppCompatActivity() {
                             //메세지 보내기
                             Handler().postDelayed({
                                 chatRef.child(chatRoomKey.toString())
-                                    .child("comments").push().setValue(comment)
+                                    .child("comments").push()
+                                    .setValue(
+                                        ChatModel.Comment(
+                                            profileImg,
+                                            myNumber,
+                                            etMessageText,
+                                            nowTime,
+                                            false,
+                                            "",
+                                            chatRoomKey
+                                        )
+                                    )
                             }, 1000L)
+
+
+
+
                             binding.etMessageChat.text = null
                         }
-                    } else {
+                    } else { //기채팅방 있는 경우
                         chatRef.child(chatRoomKey.toString()).child("comments")
-                            .push().setValue(comment)
+                            .push()
+                            .setValue(
+                                ChatModel.Comment(
+                                    profileImg,
+                                    myNumber,
+                                    etMessageText,
+                                    nowTime,
+                                    false,
+                                    "",
+                                    chatRoomKey
+                                )
+                            )
                         binding.etMessageChat.text = null
                     }
 
@@ -193,9 +208,6 @@ class ChatActivity : AppCompatActivity() {
         }
 
         checkChatRoom()
-
-        Log.d("TAG-commentList", commentList.toString())
-
 
         //EditText에서 Enter 입력 시 전송
         binding.etMessageChat.setOnKeyListener() { v, keyCode, event ->
@@ -228,6 +240,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
         }
+
 
     }
 
@@ -267,7 +280,9 @@ class ChatActivity : AppCompatActivity() {
 
 
     fun getMessageList() {
+
         Log.d("TAG-chatRoomKey", chatRoomKey.toString())
+
         chatRef.child(chatRoomKey.toString()).child("comments")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -284,6 +299,7 @@ class ChatActivity : AppCompatActivity() {
                     adapter.notifyDataSetChanged()
                     //메세지를 보낼 시 화면을 맨 밑으로 내림
                     binding.rvChatListChat?.scrollToPosition(commentList.size - 1)
+
                 }
             })
     }

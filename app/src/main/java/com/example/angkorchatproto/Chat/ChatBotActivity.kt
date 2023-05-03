@@ -15,7 +15,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.angkorchatproto.Chat.ChatVO.Companion.SENT_BY_ME
+import com.example.angkorchatproto.Chat.ChatBotVO.Companion.SENT_BY_ME
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatbotBinding
 import com.example.angkorchatproto.utils.FBdataBase
