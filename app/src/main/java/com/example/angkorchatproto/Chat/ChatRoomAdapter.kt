@@ -17,22 +17,28 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.database.ktx.values
 
 
-class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatModel.Comment>):
+
+class ChatRoomAdapter(
+    val context: Context,
+    val chatInfoList: ArrayList<ChatModel.Comment>,
+    val chatRoomKey: ArrayList<String>,
+    var chatRoomName : String,
+    val chatCount : ArrayList<String>
+) :
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
 
     // 리스너 커스텀
-    interface  OnItemClickListener{
-        fun  onItemClick(view : View, position: Int)
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
     }
 
     // 객체 저장 변수 선언
-    lateinit var mOnItemClickListener : OnItemClickListener
+    lateinit var mOnItemClickListener: OnItemClickListener
 
     //객체 전달 메서드
-    fun setOnItemClickListener(OnItemClickListener : OnItemClickListener){
+    fun setOnItemClickListener(OnItemClickListener: OnItemClickListener) {
         mOnItemClickListener = OnItemClickListener
 
     }
@@ -40,11 +46,11 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val imgProfileChatList : ImageView
-        val tvNameChatList : TextView
-        val tvMessageChatList : TextView
-        val tvTimeChatList : TextView
-        val tvCountChatChatList : TextView
+        val imgProfileChatList: ImageView
+        val tvNameChatList: TextView
+        val tvMessageChatList: TextView
+        val tvTimeChatList: TextView
+        val tvCountChatChatList: TextView
 
         init {
 
@@ -66,7 +72,8 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
 
                 //클릭 시 채팅창으로 넘겨주는 부분
                 val intent = Intent(context, ChatActivity::class.java)
-                intent.putExtra("chatRoomKey","")
+                intent.putExtra("Key",chatInfoList[position].key)
+                intent.putExtra("chatName",chatInfoList[position].sender)
 
                 context.startActivity(intent)
 
@@ -106,38 +113,9 @@ class ChatRoomAdapter(val context: Context, val chatInfoList : ArrayList<ChatMod
                 .into(holder.imgProfileChatList)
         }
 
-        //로그인한 계정 번호 불러오기
-        //SharedPreferences
-        val shared = context.getSharedPreferences("loginNumber", 0)
-        val userNumber = shared.getString("userNumber", "").toString()
-
-        val friendRef = FBdataBase.getFriendRef()
-
-        //채팅방 목록 불러오기
-        friendRef.child(userNumber).orderByChild("phone").equalTo(chatRoom.sender)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for (item in snapshot.children) {
-                        val key = item.key
-
-                        friendRef.orderByChild("sender").equalTo(key.toString())
-
-
-
-
-                        val chatModel = item.getValue<ChatModel>()
-
-                    Log.d("TAG-스냅샷 key",key.toString())
-                    Log.d("TAG-스냅샷",snapshot.toString())
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-
+        //채팅방 내용 출력
+        holder.tvNameChatList.text = chatRoom.sender
+        chatRoomName = chatRoom.sender.toString()
         holder.tvMessageChatList.text = chatRoom.message
         holder.tvCountChatChatList.text = chatInfoList.size.toString()
         holder.tvTimeChatList.text = setTime
