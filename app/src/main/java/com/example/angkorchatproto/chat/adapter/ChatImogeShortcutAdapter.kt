@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.databinding.ItemShortcutImogeBinding
+import com.example.angkorchatproto.databinding.ItemShortcutEmojiBinding
 
 /**
  * Package Name : com.example.angkorchatproto.Chat.adapter
@@ -36,7 +36,7 @@ class ChatImogeShortcutAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RCViewHolder(
-            ItemShortcutImogeBinding.inflate(
+            ItemShortcutEmojiBinding.inflate(
                 (mContext!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             )
         )
@@ -70,8 +70,8 @@ class ChatImogeShortcutAdapter(
         notifyDataSetChanged()
     }
 
-    class RCViewHolder(b: ItemShortcutImogeBinding) : RecyclerView.ViewHolder(b.root) {
-        var binding: ItemShortcutImogeBinding? = null
+    class RCViewHolder(b: ItemShortcutEmojiBinding) : RecyclerView.ViewHolder(b.root) {
+        var binding: ItemShortcutEmojiBinding? = null
 
         init {
             binding = b

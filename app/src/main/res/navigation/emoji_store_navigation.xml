@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/emojiStoreMainFragment">
+
+    <fragment
+        android:id="@+id/emojiStoreMainFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreMainFragment"
+        android:label="fragment_emoji_store_main"
+        tools:layout="@layout/fragment_emoji_store_main" >
+        <action
+            android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreSearchFragment"
+            app:destination="@id/emojiStoreSearchFragment" />
+        <action
+            android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreMyEmojiFragment"
+            app:destination="@id/emojiStoreMyEmojiFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emojiStoreMyEmojiFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreMyEmojiFragment"
+        android:label="fragment_emoji_store_my_emoji"
+        tools:layout="@layout/fragment_emoji_store_my_emoji" />
+    <fragment
+        android:id="@+id/emojiStoreSearchFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreSearchFragment"
+        android:label="fragment_emoji_store_search"
+        tools:layout="@layout/fragment_emoji_store_search" />
+</navigation>
