@@ -1,7 +1,8 @@
-package com.example.angkorchatproto.Chat
+package com.example.angkorchatproto.chat
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.databinding.FragmentChatBinding
+import com.example.angkorchatproto.emojistore.EmojiStoreActivity
+import com.example.angkorchatproto.friends.AddFriendsActivity
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -95,9 +98,13 @@ class ChatFragment : Fragment() {
         adapter = ChatRoomAdapter(requireContext(), chatInfoList)
         binding.rvChatListChats.adapter = adapter
         binding.rvChatListChats.layoutManager = GridLayoutManager(requireContext(), 1)
+        binding.imgEmojiChats.setOnClickListener {
+            val intent = Intent(requireContext(), EmojiStoreActivity::class.java)
+            startActivity(intent)
+        }
+        binding.imgAddChatChats.setOnClickListener {
 
-
-
+        }
 
         return binding.root
 

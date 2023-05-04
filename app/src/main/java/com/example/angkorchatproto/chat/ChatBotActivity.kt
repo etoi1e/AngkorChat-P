@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat
+package com.example.angkorchatproto.chat
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.Chat.ChatVO.Companion.SENT_BY_ME
-import com.example.angkorchatproto.Chat.adapter.ChatImogeAdapter
-import com.example.angkorchatproto.Chat.adapter.ChatImogeShortcutAdapter
+import com.example.angkorchatproto.chat.ChatVO.Companion.SENT_BY_ME
+import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
+import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatbotBinding
 import com.example.angkorchatproto.utils.FBdataBase

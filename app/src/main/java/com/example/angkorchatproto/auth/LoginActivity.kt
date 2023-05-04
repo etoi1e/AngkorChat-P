@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Auth
+package com.example.angkorchatproto.auth
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,12 +9,8 @@ import android.telephony.TelephonyManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityLoginBinding
-import com.example.angkorchatproto.utils.Country
 import com.example.angkorchatproto.utils.CountryAdapter
 import com.example.angkorchatproto.utils.CountryUtils
 

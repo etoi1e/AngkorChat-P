@@ -5,7 +5,7 @@
     android:id="@+id/layoutBot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.ChatBotActivity">
+    tools:context=".chat.ChatBotActivity">
 
     <View
         android:id="@+id/viewBackGroundChatBot"

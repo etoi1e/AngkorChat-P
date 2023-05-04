@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Auth
+package com.example.angkorchatproto.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
