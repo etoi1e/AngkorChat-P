@@ -1,6 +1,6 @@
 package com.example.angkorchatproto.Chat
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
@@ -44,16 +44,18 @@ class ChatActivity : AppCompatActivity() {
     private var chatRoomKey: String? = null
     var chatRoomKeyList = ArrayList<String>()
 
-    lateinit var imogeAdapter: ChatImogeAdapter
-    lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
+    private lateinit var imogeAdapter: ChatImogeAdapter
+    private lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
     private lateinit var imm:InputMethodManager
     private var keyboardHeight:Int = 0
     private var rootHeight = -1
 
     var width = 0
-    var client = OkHttpClient()
-    var chatRef = FBdataBase.getChatRef()
+    private var client = OkHttpClient()
+    private var chatRef = FBdataBase.getChatRef()
     var commentList = ArrayList<ChatModel.Comment>()
+    var selectCharacterName: String? = null
+    var selectCharacterIdx: String? = null
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -153,7 +155,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         binding.imgImogePreviewClose.setOnClickListener {
-            binding.imogePreview.visibility = View.GONE
+            initImogePreview()
             binding.imgImogePreview.setImageDrawable(null)
         }
 
@@ -202,54 +204,55 @@ class ChatActivity : AppCompatActivity() {
             //공백확인
             val etMessageText = binding.etMessageChat.text.toString()
             val textCheck = etMessageText.replace(" ", "")
-            if (textCheck == "") {
-
-            } else {
                 //전송 시 시간 초기화
-                nowTime = LocalDateTime.now().toString()
-                if (nowTime == "") {
-                    nowTime = System.currentTimeMillis().toString()
-                }
-
-
-                if (binding.etMessageChat.text.toString() != "") {
-                    val chatModel = ChatModel()
-                    chatModel.users.put(myNumber, true)
-                    chatModel.users.put(receiver, true)
-
-                    val comment = ChatModel.Comment(
-                        profileImg,
-                        myNumber,
-                        binding.etMessageChat.text.toString(),
-                        nowTime,
-                        false,
-                        ""
-                    )
-
-
-
-                    if (chatRoomKey == null) {
-                        binding.imgSendMessageChat.isEnabled = false
-                        chatRef.push().setValue(chatModel).addOnSuccessListener {
-                            //채팅방 생성
-                            checkChatRoom()
-                            //메세지 보내기
-                            Handler().postDelayed({
-                                chatRef.child(chatRoomKey.toString())
-                                    .child("comments").push().setValue(comment)
-                            }, 1000L)
-                            binding.etMessageChat.text = null
-                        }
-                    } else {
-                        chatRef.child(chatRoomKey.toString()).child("comments")
-                            .push().setValue(comment)
-                        binding.etMessageChat.text = null
-                    }
-
-                }
+            nowTime = LocalDateTime.now().toString()
+            if (nowTime == "") {
+                nowTime = System.currentTimeMillis().toString()
             }
 
 
+            if (textCheck != "" ||
+                binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
+                val chatModel = ChatModel()
+                chatModel.users.put(myNumber, true)
+                chatModel.users.put(receiver, true)
+
+                val comment = ChatModel.Comment(
+                    profileImg,
+                    myNumber,
+                    binding.etMessageChat.text.toString(),
+                    nowTime,
+                    false,
+                    "",
+                    "",
+                    if (binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
+                        "$selectCharacterName$$$selectCharacterIdx"
+                    } else {
+                        ""
+                    }
+                )
+
+                initImogePreview()
+
+                if (chatRoomKey == null) {
+                    binding.imgSendMessageChat.isEnabled = false
+                    chatRef.push().setValue(chatModel).addOnSuccessListener {
+                        //채팅방 생성
+                        checkChatRoom()
+                        //메세지 보내기
+                        Handler().postDelayed({
+                            chatRef.child(chatRoomKey.toString())
+                                .child("comments").push().setValue(comment)
+                        }, 1000L)
+                        binding.etMessageChat.text = null
+                    }
+                } else {
+                    chatRef.child(chatRoomKey.toString()).child("comments")
+                        .push().setValue(comment)
+                    binding.etMessageChat.text = null
+                }
+
+            }
         }
 
         checkChatRoom()
@@ -270,9 +273,8 @@ class ChatActivity : AppCompatActivity() {
             handled
         }
 
-
         //EditText Focus 감지
-        binding.etMessageChat.onFocusChangeListener = View.OnFocusChangeListener { v, gainFocus ->
+        binding.etMessageChat.onFocusChangeListener = View.OnFocusChangeListener { _, gainFocus ->
             //포커스가 주어졌을 때
             if (gainFocus) {
 
@@ -317,9 +319,9 @@ class ChatActivity : AppCompatActivity() {
 
                             getMessageList()
 
-                            binding.rvChatListChat?.layoutManager =
+                            binding.rvChatListChat.layoutManager =
                                 GridLayoutManager(this@ChatActivity, 1)
-                            binding.rvChatListChat?.adapter =
+                            binding.rvChatListChat.adapter =
                                 ChatAdapter(this@ChatActivity, commentList, width, myNumber)
 
 
@@ -338,6 +340,7 @@ class ChatActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {
                 }
 
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     commentList.clear()
                     for (data in snapshot.children) {
@@ -345,20 +348,20 @@ class ChatActivity : AppCompatActivity() {
                         commentList.add(item!!)
 
                     }
-                    var adapter = ChatAdapter(this@ChatActivity, commentList, width, myNumber)
+                    val adapter = ChatAdapter(this@ChatActivity, commentList, width, myNumber)
                     adapter.notifyDataSetChanged()
                     //메세지를 보낼 시 화면을 맨 밑으로 내림
-                    binding.rvChatListChat?.scrollToPosition(commentList.size - 1)
+                    binding.rvChatListChat.scrollToPosition(commentList.size - 1)
                 }
             })
     }
 
     private fun showKeyboard() {
-        imm.showSoftInput(binding.etMessageChat, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(binding.etMessageChat, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun hideKeyboard() {
-        imm.hideSoftInputFromWindow(binding.etMessageChat.windowToken, 0);
+        imm.hideSoftInputFromWindow(binding.etMessageChat.windowToken, 0)
     }
 
     private fun setImogeLayoutHeight(keyboardHeight: Int) {
@@ -368,11 +371,11 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun setImogeRecyclerView() {
-        setImogeGridRecyclerView(0)
+        setImogeGridRecyclerView(0, "")
         setImogeShortcutRecyclerView()
     }
 
-    private fun setImogeGridRecyclerView(arrayId: Int) {
+    private fun setImogeGridRecyclerView(arrayId: Int, characterName: String) {
         //이모티콘
         val gridLayoutManager = GridLayoutManager(this@ChatActivity, 4)
         binding.recyclerviewImoge.layoutManager = gridLayoutManager
@@ -383,10 +386,15 @@ class ChatActivity : AppCompatActivity() {
         }
         imogeAdapter = ChatImogeAdapter(
             this@ChatActivity,
+            characterName,
             defaultArrayList,
             object : ChatImogeAdapter.OnChatImogeAdapterListener {
-                override fun onItemClicked(item: Int) {
+                override fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?) {
                     Log.d("이모지 선택", "리소스 아이디 : $item")
+                    if (itemIdx != null) {
+                        selectCharacterIdx = (itemIdx+1).toString()
+                    }
+                    selectCharacterName = characterName
                     binding.imogePreview.visibility = View.VISIBLE
                     Glide.with(this@ChatActivity)
                         .load(item)
@@ -401,29 +409,38 @@ class ChatActivity : AppCompatActivity() {
     private fun setImogeShortcutRecyclerView() {
         //이모티콘 숏컷
         imogeShortcutAdapter = ChatImogeShortcutAdapter(this@ChatActivity,
-            arrayListOf(R.drawable.ic_star_fill_prime_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24),
+            arrayListOf(R.drawable.ic_star_fill_prime_24,R.drawable.ic_clock_line_gray_24,R.drawable.img_emoticon_shortcut_nunu_selected,R.drawable.img_emoticon_shortcut_gana_selected,R.drawable.img_emoticon_shortcut_haha_selected),
             object: ChatImogeShortcutAdapter.OnChatImogeShortcutAdapterListener {
                 override fun onItemClicked(item: Int) {
                     Log.d("이모지 쇼컷", "$item 번째 입니다.")
                     var arrayId = 0
+                    var characterName = ""
                     when(item) {
                         2 -> {
                             arrayId = R.array.nunuImoge
+                            characterName = "nunu"
                         }
                         3 -> {
                             arrayId = R.array.ganaImoge
+                            characterName = "gana"
                         }
                         4 -> {
                             arrayId = R.array.hahaImoge
+                            characterName = "haha"
                         }
                     }
-                    setImogeGridRecyclerView(arrayId)
+                    setImogeGridRecyclerView(arrayId, characterName)
                 }
             }
         )
         binding.recyclerviewImogeShortcut.adapter = imogeShortcutAdapter
     }
 
+    private fun initImogePreview() {
+        selectCharacterName = null
+        selectCharacterIdx = null
+        binding.imogePreview.visibility = View.GONE
+    }
 }
 
 

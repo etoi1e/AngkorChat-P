@@ -18,19 +18,22 @@ import com.example.angkorchatproto.databinding.ItemImogeBinding
  */
 class ChatImogeAdapter(
     context: Context?,
+    characterName: String?,
     items: ArrayList<Int>?,
     listener: OnChatImogeAdapterListener?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     interface OnChatImogeAdapterListener {
-        fun onItemClicked(item: Int)
+        fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?)
     }
 
     private val mContext: Context?
+    private var mCharacterName: String?
     private var mItems: ArrayList<Int>? = null
     private var mListener: OnChatImogeAdapterListener? = null
 
     init {
         mContext = context
+        mCharacterName = characterName
         mItems = items
         mListener = listener
     }
@@ -53,7 +56,7 @@ class ChatImogeAdapter(
                 .into(it)
         }
         holder.itemView.setOnClickListener {
-            mItems?.get(position)?.let { it1 -> mListener?.onItemClicked(it1) }
+            mListener?.onItemClicked(mItems?.get(position), position, mCharacterName)
         }
     }
 
