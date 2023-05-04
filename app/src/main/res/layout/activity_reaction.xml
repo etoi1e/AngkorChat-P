@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:gravity="center_horizontal"
-    tools:context=".Chat.ReactionActivity">
+    tools:context=".chat.ReactionActivity">
 
     <View
         android:id="@+id/viewReplyReactrion"

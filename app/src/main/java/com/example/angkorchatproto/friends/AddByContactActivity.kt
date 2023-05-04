@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Friends
+package com.example.angkorchatproto.friends
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

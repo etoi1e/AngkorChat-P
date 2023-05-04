@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat.adapter
+package com.example.angkorchatproto.chat.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.R
-import com.example.angkorchatproto.databinding.ItemShortcutImogeBinding
+import com.example.angkorchatproto.databinding.ItemImogeBinding
 
 /**
  * Package Name : com.example.angkorchatproto.Chat.adapter
@@ -16,28 +15,31 @@ import com.example.angkorchatproto.databinding.ItemShortcutImogeBinding
  * Description :
  * Created by de5ember on 2023/05/03.
  */
-class ChatImogeShortcutAdapter(
+class ChatImogeAdapter(
     context: Context?,
+    characterName: String?,
     items: ArrayList<Int>?,
-    listener: OnChatImogeShortcutAdapterListener?
+    listener: OnChatImogeAdapterListener?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-    interface OnChatImogeShortcutAdapterListener {
-        fun onItemClicked(item: Int)
+    interface OnChatImogeAdapterListener {
+        fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?)
     }
 
     private val mContext: Context?
+    private var mCharacterName: String?
     private var mItems: ArrayList<Int>? = null
-    private var mListener: OnChatImogeShortcutAdapterListener? = null
+    private var mListener: OnChatImogeAdapterListener? = null
 
     init {
         mContext = context
+        mCharacterName = characterName
         mItems = items
         mListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RCViewHolder(
-            ItemShortcutImogeBinding.inflate(
+            ItemImogeBinding.inflate(
                 (mContext!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             )
         )
@@ -53,7 +55,7 @@ class ChatImogeShortcutAdapter(
                 .into(it)
         }
         holder.itemView.setOnClickListener {
-            mListener?.onItemClicked(position)
+            mListener?.onItemClicked(mItems?.get(position), position, mCharacterName)
         }
     }
 
@@ -71,13 +73,13 @@ class ChatImogeShortcutAdapter(
         notifyDataSetChanged()
     }
 
-    class RCViewHolder(b: ItemShortcutImogeBinding) : RecyclerView.ViewHolder(b.root) {
-        var binding: ItemShortcutImogeBinding? = null
+    class RCViewHolder(b: ItemImogeBinding) : RecyclerView.ViewHolder(b.root) {
+        var binding: ItemImogeBinding? = null
 
         init {
             binding = b
             val layoutParams = RecyclerView.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             binding?.root?.layoutParams = layoutParams

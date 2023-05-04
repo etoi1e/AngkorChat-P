@@ -1,11 +1,7 @@
-package com.example.angkorchatproto.Chat
+package com.example.angkorchatproto.chat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
-import com.example.angkorchatproto.R
-import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.databinding.ActivityReactionBinding
 
 class ReactionActivity : AppCompatActivity() {

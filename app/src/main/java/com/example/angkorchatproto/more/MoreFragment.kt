@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.More
+package com.example.angkorchatproto.more
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

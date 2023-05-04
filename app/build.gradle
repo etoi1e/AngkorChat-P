@@ -17,6 +17,7 @@ android {
     }
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.example.angkorchatproto"
         minSdk 23
         targetSdk 33

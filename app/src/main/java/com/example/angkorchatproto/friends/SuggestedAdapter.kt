@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Friends
+package com.example.angkorchatproto.friends
 
 import android.content.Context
 import android.util.Log

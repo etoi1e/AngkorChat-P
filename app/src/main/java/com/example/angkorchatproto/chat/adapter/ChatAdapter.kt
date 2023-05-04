@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat.adapter
+package com.example.angkorchatproto.chat.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -8,15 +8,13 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.angkorchatproto.Chat.ChatModel
-import com.example.angkorchatproto.Chat.ReactionActivity
+import com.example.angkorchatproto.chat.ChatModel
+import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
-import java.util.zip.Inflater
 
 
 class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, width: Int, myNumber:String) :

@@ -1,7 +1,6 @@
-package com.example.angkorchatproto.Friends
+package com.example.angkorchatproto.friends
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.appcompat.app.AppCompatActivity

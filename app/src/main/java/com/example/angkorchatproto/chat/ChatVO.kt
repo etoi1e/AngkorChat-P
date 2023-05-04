@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat
+package com.example.angkorchatproto.chat
 
 class ChatModel (val users: HashMap<String, Boolean> = HashMap(),
                  val comments : HashMap<String, Comment> = HashMap()) {

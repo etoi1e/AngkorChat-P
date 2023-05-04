@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat
+package com.example.angkorchatproto.chat
 
 import android.annotation.SuppressLint
 import android.graphics.Point
@@ -9,6 +9,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -19,9 +20,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.Chat.adapter.ChatAdapter
-import com.example.angkorchatproto.Chat.adapter.ChatImogeAdapter
-import com.example.angkorchatproto.Chat.adapter.ChatImogeShortcutAdapter
+import com.example.angkorchatproto.chat.adapter.ChatAdapter
+import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
+import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
@@ -98,7 +99,6 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("키보드 높이", "$keyboardHeight")
             }
         }
-
 
         //포커스 컨트롤
         binding.layout.setOnClickListener {

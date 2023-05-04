@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.ChatFragment">
+    tools:context=".chat.ChatFragment">
 
     <View
         android:id="@+id/viewChatTopBox2"
@@ -33,11 +33,22 @@
         android:id="@+id/imgAddChatChats"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_marginEnd="23dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_chat_plus_line_28"
         app:layout_constraintBottom_toBottomOf="@+id/tvtitleChatChats"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvtitleChatChats" />
+        app:layout_constraintEnd_toStartOf="@+id/imgEmojiChats"
+        app:layout_constraintTop_toTopOf="@+id/tvtitleChatChats"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imgEmojiChats"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="23dp"
+        android:src="@drawable/ic_emoji_line_28"
+        app:layout_constraintBottom_toBottomOf="@+id/imgAddChatChats"
+        app:layout_constraintEnd_toEndOf="@+id/viewChatTopBox2"
+        app:layout_constraintTop_toTopOf="@+id/imgAddChatChats"/>
 
     <LinearLayout
         android:id="@+id/boxNoChat"
@@ -49,7 +60,8 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewChatTopBox2">
+        app:layout_constraintTop_toBottomOf="@+id/viewChatTopBox2"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/imgNunuNoChatChats"
