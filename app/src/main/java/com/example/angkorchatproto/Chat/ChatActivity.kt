@@ -94,16 +94,26 @@ class ChatActivity : AppCompatActivity() {
             Toast.makeText(this@ChatActivity, "음성녹음 클릭", Toast.LENGTH_SHORT).show()
         }
 
+        val chatName= intent.getStringExtra("chatName")
 
-        //상대방 번호 저장
-        val receiverData = intent.getStringExtra("number").toString()
-        val receiverData2 = receiverData.replace("-", "")
+        if(chatName!="" && chatName!=null){
+            receiver = chatName.toString()
+            Log.d("TAG-가져온 번호",receiver)
+        }else {
+            //상대방 번호 저장
+            val receiverData = intent.getStringExtra("number").toString()
+            val receiverData2 = receiverData.replace("-", "")
 
-        receiver = receiverData2.replace(" ", "")
+            receiver = receiverData2.replace(" ", "")
+            Log.d("TAG-친구창에서 이동 번호",receiver)
 
-        //상대방 이름 출력
-        val receiverName = intent.getStringExtra("name").toString()
-        binding.tvNameChat.text = receiverName
+            //상대방 이름 출력
+            val receiverName = intent.getStringExtra("name").toString()
+            binding.tvNameChat.text = receiverName
+        }
+
+
+
 
         //상대방 프로필 출력
         val profileImg = intent.getStringExtra("profile")

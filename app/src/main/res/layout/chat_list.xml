@@ -51,7 +51,9 @@
         android:text="PM 03:35"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvMyMessageChat"
-        app:layout_constraintEnd_toStartOf="@+id/tvMyMessageChat" />
+        app:layout_constraintEnd_toStartOf="@+id/tvMyMessageChat"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvTimeLeft"
