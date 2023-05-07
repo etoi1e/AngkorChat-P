@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:background="#f7f7fb"
-        app:layout_constraintBottom_toTopOf="@+id/viewImogeLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -89,9 +89,9 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:src="@drawable/ic_clip_line_gray_24"
-        app:layout_constraintBottom_toBottomOf="@+id/viewBottomBoxChat"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewBottomBoxChat" />
+        app:layout_constraintTop_toBottomOf="@+id/rvChatListChat" />
 
     <View
         android:id="@+id/viewMessageBox1Chat"

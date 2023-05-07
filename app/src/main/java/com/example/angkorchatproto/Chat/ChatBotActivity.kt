@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.angkorchatproto.Chat.ChatBotVO.Companion.SENT_BY_ME
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -151,6 +152,9 @@ class ChatBotActivity : AppCompatActivity() {
         binding.imgRecordChatBot.setOnClickListener{
             Toast.makeText(this@ChatBotActivity,"음성녹음 클릭",Toast.LENGTH_SHORT).show()
         }
+
+
+
 
         binding.tvNameChatBot.text = intent.getStringExtra("name")
 
@@ -419,47 +423,5 @@ class ChatBotActivity : AppCompatActivity() {
                 override fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?) {
                     Log.d("이모지 선택", "리소스 아이디 : $item")
 
-                    selectCharacterName = characterName
-                    selectCharacterIdx = itemIdx
 
-                    binding.imogePreview.visibility = View.VISIBLE
-                    Glide.with(this@ChatBotActivity)
-                        .load(item)
-                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-                        .into(binding.imgImogePreview)
-                }
-
-            })
-        binding.recyclerviewImoge.adapter = imogeAdapter
-    }
-
-    private fun setImogeShortcutRecyclerView() {
-        //이모티콘 숏컷
-        imogeShortcutAdapter = ChatImogeShortcutAdapter(this@ChatBotActivity,
-            arrayListOf(R.drawable.ic_star_fill_prime_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24,R.drawable.ic_clock_line_gray_24),
-            object: ChatImogeShortcutAdapter.OnChatImogeShortcutAdapterListener {
-                override fun onItemClicked(item: Int) {
-                    Log.d("이모지 쇼컷", "$item 번째 입니다.")
-                    var arrayId = 0
-                    var characterName = ""
-                    when(item) {
-                        2 -> {
-                            arrayId = R.array.nunuImoge
-                            characterName = "nunu"
-                        }
-                        3 -> {
-                            arrayId = R.array.ganaImoge
-                            characterName = "gana"
-                        }
-                        4 -> {
-                            arrayId = R.array.hahaImoge
-                            characterName = "haha"
-                        }
-                    }
-                    setImogeGridRecyclerView(arrayId, characterName)
-                }
-            }
-        )
-        binding.recyclerviewImogeShortcut.adapter = imogeShortcutAdapter
-    }
 }
