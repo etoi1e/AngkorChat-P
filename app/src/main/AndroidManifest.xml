@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- 디바이스 정보 호출 커미션 -->
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" /> <!-- 주소록 접근 호출 커미션 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 전화 발신 커미션 -->
@@ -14,23 +15,24 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/top_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AngKorChatProto"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/filepaths" />
 
         <activity
             android:name=".Chat.ReactionActivity"
             android:exported="false"
             android:theme="@style/Theme.Material3.Light.Dialog">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".Friends.AddFriendsActivity"
             android:exported="false">

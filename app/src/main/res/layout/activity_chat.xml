@@ -63,49 +63,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNameChat" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/imogePreview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#65111111"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/rvChatListChat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
-
-        <ImageView
-            android:id="@+id/imgImogePreview"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgImogePreviewClose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_close_line_wh_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgImogePreviewFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/ic_star_fill_wh_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <View
         android:id="@+id/viewBottomBoxChat"
         android:layout_width="wrap_content"
@@ -113,6 +70,7 @@
         android:background="#f7f7fb"
         app:layout_constraintBottom_toTopOf="@+id/viewImogeLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -206,28 +164,71 @@
         app:layout_constraintTop_toTopOf="@+id/viewMessageBox1Chat" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/imogePreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#65111111"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rvChatListChat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imgImogePreview"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgImogePreviewClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_close_line_wh_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgImogePreviewFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_star_fill_wh_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewImogeLayout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/viewBackGroundChat"
+        app:layout_constraintBottom_toTopOf="@+id/mediaLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewImogeShortcut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:importantForAccessibility="yes"
             android:orientation="horizontal"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="16dp"
             tools:listitem="@layout/item_shortcut_imoge" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -242,6 +243,332 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerviewImogeShortcut" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mediaLayout"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:background="#f7f7fb"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mediaMenuLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imgMediaChatMedia"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/border18_white"
+                android:elevation="5dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_photo_line_prime_36"
+                app:layout_constraintBottom_toBottomOf="@+id/imgCameraChatMedia"
+                app:layout_constraintEnd_toStartOf="@+id/imgCameraChatMedia"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imgCameraChatMedia" />
+
+            <ImageView
+                android:id="@+id/imgCameraChatMedia"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/border18_white"
+                android:elevation="5dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_camera_line_prime_36"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgFileChatMedia"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/border18_white"
+                android:elevation="5dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_file_line_prime_36"
+                app:layout_constraintBottom_toBottomOf="@+id/imgCameraChatMedia"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgCameraChatMedia"
+                app:layout_constraintTop_toTopOf="@+id/imgCameraChatMedia" />
+
+            <TextView
+                android:id="@+id/tvMediaChatMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="Media"
+                android:textColor="#111111"
+                app:layout_constraintEnd_toEndOf="@+id/imgMediaChatMedia"
+                app:layout_constraintStart_toStartOf="@+id/imgMediaChatMedia"
+                app:layout_constraintTop_toBottomOf="@+id/imgMediaChatMedia" />
+
+            <TextView
+                android:id="@+id/tvCameraChatMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="Camera"
+                android:textColor="#111111"
+                app:layout_constraintEnd_toEndOf="@+id/imgCameraChatMedia"
+                app:layout_constraintStart_toStartOf="@+id/imgCameraChatMedia"
+                app:layout_constraintTop_toBottomOf="@+id/imgCameraChatMedia" />
+
+            <TextView
+                android:id="@+id/tvFileChatMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="File"
+                android:textColor="#111111"
+                app:layout_constraintEnd_toEndOf="@+id/imgFileChatMedia"
+                app:layout_constraintStart_toStartOf="@+id/imgFileChatMedia"
+                app:layout_constraintTop_toBottomOf="@+id/imgFileChatMedia" />
+
+            <ImageView
+                android:id="@+id/imgProfileChatMedia"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/border18_white"
+                android:elevation="5dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_profile_line_prime_36"
+                app:layout_constraintBottom_toBottomOf="@+id/imgLocationChatMedia"
+                app:layout_constraintEnd_toStartOf="@+id/imgLocationChatMedia"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imgLocationChatMedia" />
+
+            <ImageView
+                android:id="@+id/imgLocationChatMedia"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/border18_white"
+                android:elevation="5dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_location_2_line_prime_36"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCameraChatMedia" />
+
+            <ImageView
+                android:id="@+id/imgCaptureChatMedia"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/border18_white"
+                android:elevation="5dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_capture_line_prime_36"
+                app:layout_constraintBottom_toBottomOf="@+id/imgLocationChatMedia"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgLocationChatMedia"
+                app:layout_constraintTop_toTopOf="@+id/imgLocationChatMedia" />
+
+            <TextView
+                android:id="@+id/tvProfileChatMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="Profile"
+                android:textColor="#111111"
+                app:layout_constraintEnd_toEndOf="@+id/imgProfileChatMedia"
+                app:layout_constraintStart_toStartOf="@+id/imgProfileChatMedia"
+                app:layout_constraintTop_toBottomOf="@+id/imgProfileChatMedia" />
+
+            <TextView
+                android:id="@+id/tvLocationChatMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="Location"
+                android:textColor="#111111"
+                app:layout_constraintEnd_toEndOf="@+id/imgLocationChatMedia"
+                app:layout_constraintStart_toStartOf="@+id/imgLocationChatMedia"
+                app:layout_constraintTop_toBottomOf="@+id/imgLocationChatMedia" />
+
+            <TextView
+                android:id="@+id/tvCaptureChatMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="Capture"
+                android:textColor="#111111"
+                app:layout_constraintEnd_toEndOf="@+id/imgCaptureChatMedia"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/imgCaptureChatMedia"
+                app:layout_constraintTop_toBottomOf="@+id/imgCaptureChatMedia" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mediaMediaLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMediaImgList"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/viewMediabottomBox"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/viewMediabottomBox"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_all_fill_24"
+                app:layout_constraintBottom_toBottomOf="@+id/viewMediabottomBox"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvMediaImgList" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="All"
+                android:textColor="#111111"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView12"
+                app:layout_constraintStart_toEndOf="@+id/imageView12"
+                app:layout_constraintTop_toTopOf="@+id/imageView12" />
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_effect_fill_bk_24"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView14"
+                app:layout_constraintEnd_toStartOf="@+id/imageView14"
+                app:layout_constraintTop_toTopOf="@+id/imageView14" />
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_more_vertical_fill_28"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvMediaImgList" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/photoPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgMoveBackPhotoPreview"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_arrow_left_wh_28"
+            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgPhotoPhotoPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/top_logo"
+            app:layout_constraintBottom_toTopOf="@+id/view3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintVertical_bias="0.503" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="wrap_content"
+            android:layout_height="88dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnSendPhotoPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/style_login_btn"
+            android:fontFamily="@font/poppins"
+            android:gravity="center"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp"
+            android:text="Send"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_send_fill_wh_24"
+            app:iconGravity="end"
+            app:iconPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/view3"
+            app:layout_constraintTop_toTopOf="@+id/view3"
+            app:layout_constraintVertical_bias="0.479" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
