@@ -176,7 +176,7 @@
         android:layout_height="wrap_content"
         android:background="#65111111"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/rvChatListChat"
+        app:layout_constraintBottom_toBottomOf="@+id/layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="gone">
@@ -236,7 +236,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="16dp"
-            tools:listitem="@layout/item_shortcut_imoge" />
+            tools:listitem="@layout/item_shortcut_imoge"
+            tools:ignore="MissingConstraints" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewImoge"
