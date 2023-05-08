@@ -17,9 +17,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.example.angkorchatproto.Auth.ProfileAdapter
-import com.example.angkorchatproto.Chat.ChatActivity
 import com.example.angkorchatproto.Chat.ChatBotActivity
+import com.example.angkorchatproto.auth.ProfileAdapter
+import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.ActivityProfileBinding

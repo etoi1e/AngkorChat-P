@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.chat.adapter.ChatAdapter
+import com.example.angkorchatproto.Chat.adapter.ChatAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.R

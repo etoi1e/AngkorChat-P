@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.angkorchatproto.chat.ChatModel
+import com.example.angkorchatproto.chat.ChatRoomAdapter
 import com.example.angkorchatproto.databinding.FragmentChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot

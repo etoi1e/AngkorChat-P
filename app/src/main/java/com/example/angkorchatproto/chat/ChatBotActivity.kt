@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.chat.ChatVO.Companion.SENT_BY_ME
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.chat.ChatBotAdapter
+import com.example.angkorchatproto.chat.ChatBotVO
+import com.example.angkorchatproto.chat.ChatBotVO.Companion.SENT_BY_ME
 import com.example.angkorchatproto.databinding.ActivityChatbotBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils.getNavigationBarHeight

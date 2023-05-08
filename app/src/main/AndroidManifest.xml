@@ -35,7 +35,6 @@
             android:name=".chat.ReactionActivity"
             android:exported="false"
             android:theme="@style/Theme.Material3.Light.Dialog">
-            android:theme="@style/Theme.Material3.Light.Dialog" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -64,14 +63,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".chat.ChatBotActivity"
+            android:name=".Chat.ChatBotActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".profile.ProfileActivity"
+            android:name=".Profile.ProfileActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
