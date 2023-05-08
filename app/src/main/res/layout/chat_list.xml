@@ -30,7 +30,7 @@
         android:layout_height="134dp"
         android:layout_marginTop="12dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/tvMyMessageChat"
+        app:layout_constraintEnd_toStartOf="@+id/tvMyMessageChat"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/add_btn"
         tools:visibility="visible" />
@@ -58,7 +58,7 @@
         android:layout_height="134dp"
         android:layout_marginTop="12dp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@+id/tvOtherMessageChat"
+        app:layout_constraintStart_toEndOf="@+id/tvOtherMessageChat"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/add_btn"
         tools:visibility="visible" />

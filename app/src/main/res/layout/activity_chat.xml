@@ -235,9 +235,9 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteY="16dp"
-            tools:listitem="@layout/item_shortcut_imoge"
-            tools:ignore="MissingConstraints" />
+            tools:listitem="@layout/item_shortcut_emoji" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewImoge"
