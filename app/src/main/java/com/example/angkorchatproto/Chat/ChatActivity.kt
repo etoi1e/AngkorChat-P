@@ -81,7 +81,7 @@ class ChatActivity : AppCompatActivity() {
     val FLAG_PERM_STORAGE = 99
 
     //카메라와 갤러리를 호출하는 플래그
-    val FLAG_REQ_CAMERA = 101
+    val FLAG_REQ_CAMERA = 1001
     val FLAG_REA_STORAGE = 102
 
     var photoUri = ""
@@ -206,12 +206,7 @@ class ChatActivity : AppCompatActivity() {
                     //미디어 메뉴 내 Camera 클릭 시
                     binding.imgCameraChatMedia.setOnClickListener {
 
-                        if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
-                            binding.imgCameraChatMedia.setOnClickListener {
-                                //카메라 호출 메소드
-                                openCamera()
-                            }
-                        }
+                        openCamera()
 
                         binding.btnSendPhotoPreview.setOnClickListener{
                             //전송 버튼 클릭효과
@@ -626,7 +621,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    //카메라 권한 확인
+//카메라 권한 확인
     private fun openCamera() {
         //카메라 권한이 있는지 확인
         if (checkPermission(CAMERA_PERMISSION, FLAG_PERM_CAMERA)) {
@@ -634,13 +629,15 @@ class ChatActivity : AppCompatActivity() {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
             startActivityForResult(intent, FLAG_REQ_CAMERA)
+        } else {
+            //권한이 없으면 권한 요청을 합니다.
+            ActivityCompat.requestPermissions(this, CAMERA_PERMISSION, FLAG_PERM_CAMERA)
         }
     }
 
     //카메라 권한이 있는지 체크하는 메소드
     fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
         //안드로이드 버전이 마쉬멜로우 이상일때
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (permission in permissions) {
                 //만약 권한이 승인되어 있지 않다면 권한승인 요청을 사용에 화면에 호출합니다.
                 if (ContextCompat.checkSelfPermission(
@@ -652,35 +649,8 @@ class ChatActivity : AppCompatActivity() {
                     return false
                 }
             }
-        }
         return true
     }
-
-    //촬영 이미지 FB Storage 에 저장
-    fun imgUpload(key: String) {
-
-        val storage = Firebase.storage
-        val storageRef = storage.reference
-        val imgRef = storageRef.child("$key.png")
-
-        binding.imgProfileChat.isDrawingCacheEnabled = true
-        binding.imgProfileChat.buildDrawingCache()
-        val bitmap = (binding.imgProfileChat.drawable as BitmapDrawable).bitmap
-        val baos = ByteArrayOutputStream()
-        //quality:압축 퀄리티 1~100.
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos)
-        val data = baos.toByteArray()
-
-        //imgRef : 스토리지 경로 지정하는 키워드.
-        var uploadTask = imgRef.putBytes(data)
-        uploadTask.addOnFailureListener {
-            // Handle unsuccessful uploads
-        }.addOnSuccessListener { taskSnapshot ->
-            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-            // ...
-        }
-    }
-
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -689,9 +659,6 @@ class ChatActivity : AppCompatActivity() {
             when (requestCode) {
                 FLAG_REQ_CAMERA -> {
                     if (data?.extras?.get("data") != null) {
-
-                        photoUri = data?.extras?.get("data").toString()
-
 
                         binding.photoPreview.visibility = View.VISIBLE
 
@@ -706,7 +673,9 @@ class ChatActivity : AppCompatActivity() {
                         val storage = Firebase.storage
                         val storageRef = storage.reference
 
-                        val imgRef = storageRef.child("${data?.extras?.get("data")}.png")
+
+                        photoUri = myNumber+LocalDateTime.now()
+                        val imgRef = storageRef.child("$photoUri.png")
 
                         binding.imgPhotoPhotoPreview.isDrawingCacheEnabled = true
                         binding.imgPhotoPhotoPreview.buildDrawingCache()
