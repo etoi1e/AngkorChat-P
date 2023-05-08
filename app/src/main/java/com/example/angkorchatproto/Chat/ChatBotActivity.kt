@@ -17,10 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.Chat.ChatBotVO.Companion.SENT_BY_ME
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.Chat.ChatVO.Companion.SENT_BY_ME
 import com.example.angkorchatproto.Chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.Chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.R
@@ -50,8 +46,8 @@ class ChatBotActivity : AppCompatActivity() {
     lateinit var adapter: ChatBotAdapter
     lateinit var imogeAdapter: ChatImogeAdapter
     lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
-    private lateinit var myNumber:String
-    private lateinit var imm:InputMethodManager
+    private lateinit var myNumber: String
+    private lateinit var imm: InputMethodManager
 
     var chatList = ArrayList<ChatBotVO>()
     var selectCharacterName: String? = null
@@ -61,7 +57,7 @@ class ChatBotActivity : AppCompatActivity() {
     private var baseAi = JSONObject()
     private var userMsg = JSONObject()
     private var chatBotRef = FBdataBase.getChatBotRef()
-    private var keyboardHeight:Int = 0
+    private var keyboardHeight: Int = 0
     private var rootHeight = -1
 
 
@@ -86,8 +82,14 @@ class ChatBotActivity : AppCompatActivity() {
             val heightExceptKeyboard = visibleFrameSize.bottom - visibleFrameSize.top
             // 키보드를 제외한 높이가 디바이스 root_view보다 높거나 같다면, 키보드가 올라왔을 때가 아니므로 거른다.
             if (heightExceptKeyboard < rootHeight) {
-                if (keyboardHeight == 0 && rootHeight - heightExceptKeyboard - getStatusBarHeight(this) - getNavigationBarHeight(this) != 0) {
-                    keyboardHeight = rootHeight - heightExceptKeyboard - getStatusBarHeight(this) - getNavigationBarHeight(this)
+                if (keyboardHeight == 0 && rootHeight - heightExceptKeyboard - getStatusBarHeight(
+                        this
+                    ) - getNavigationBarHeight(this) != 0
+                ) {
+                    keyboardHeight =
+                        rootHeight - heightExceptKeyboard - getStatusBarHeight(this) - getNavigationBarHeight(
+                            this
+                        )
                     setImogeLayoutHeight(keyboardHeight)
                 }
                 Log.d("키보드 높이", "$keyboardHeight")
@@ -102,7 +104,7 @@ class ChatBotActivity : AppCompatActivity() {
             val etMessageText = binding.etMessageChatBot.text.toString()
             val textCheck = etMessageText.replace(" ", "")
 
-            if(textCheck == ""){
+            if (textCheck == "") {
                 binding.viewMessageBox1ChatBot.visibility = View.VISIBLE
                 binding.imgRecordChatBot.visibility = View.VISIBLE
 
@@ -113,15 +115,15 @@ class ChatBotActivity : AppCompatActivity() {
         }
 
         //파일, 이모지, 녹음, 메모 클릭 시 임의 Toast 출력
-        binding.imgMenuChatBot.setOnClickListener{
-            Toast.makeText(this@ChatBotActivity,"메뉴 클릭", Toast.LENGTH_SHORT).show()
+        binding.imgMenuChatBot.setOnClickListener {
+            Toast.makeText(this@ChatBotActivity, "메뉴 클릭", Toast.LENGTH_SHORT).show()
         }
 
-        binding.imgMediaChatBot.setOnClickListener{
-            Toast.makeText(this@ChatBotActivity,"미디어 클릭", Toast.LENGTH_SHORT).show()
+        binding.imgMediaChatBot.setOnClickListener {
+            Toast.makeText(this@ChatBotActivity, "미디어 클릭", Toast.LENGTH_SHORT).show()
         }
 
-        binding.imgImogeChatBot.setOnClickListener{
+        binding.imgImogeChatBot.setOnClickListener {
             lifecycleScope.launch {
                 setImogeRecyclerView()
                 if (binding.viewImogeLayout.visibility == View.GONE) { // 키보드가 올라와있는 상황에서 이모티콘 버튼 클릭
@@ -149,8 +151,8 @@ class ChatBotActivity : AppCompatActivity() {
             binding.imgImogePreview.setImageDrawable(null)
         }
 
-        binding.imgRecordChatBot.setOnClickListener{
-            Toast.makeText(this@ChatBotActivity,"음성녹음 클릭",Toast.LENGTH_SHORT).show()
+        binding.imgRecordChatBot.setOnClickListener {
+            Toast.makeText(this@ChatBotActivity, "음성녹음 클릭", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -164,11 +166,11 @@ class ChatBotActivity : AppCompatActivity() {
 
         //객체 초기화
         client = OkHttpClient()
-        binding.tvNameChatBot.text="유니온 모바일"
+        binding.tvNameChatBot.text = "유니온 모바일"
 
         //현재 사용자 번호 불러오기
         val shared = getSharedPreferences("loginNumber", 0)
-        myNumber = shared.getString("userNumber","").toString()
+        myNumber = shared.getString("userNumber", "").toString()
 
         Log.d("TAG-사용자 번호 출력", myNumber.toString())
 
@@ -189,11 +191,11 @@ class ChatBotActivity : AppCompatActivity() {
             override fun onClick(view: View?) {
                 //공백확인
                 val etMessageText = binding.etMessageChatBot.text.toString()
-                val textCheck = etMessageText.replace(" ","")
+                val textCheck = etMessageText.replace(" ", "")
 
-                if(textCheck == ""){
+                if (textCheck == "") {
 
-                }else{
+                } else {
                     //전송 시 시간 초기화
                     nowTime = LocalDateTime.now().toString()
 
@@ -268,7 +270,6 @@ class ChatBotActivity : AppCompatActivity() {
                 binding.rvChatListChatBot.scrollToPosition(chatList.size - 1)
 
 
-
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
@@ -288,9 +289,6 @@ class ChatBotActivity : AppCompatActivity() {
             }
 
         })
-
-
-
 
 
     }
@@ -388,6 +386,7 @@ class ChatBotActivity : AppCompatActivity() {
         //API Key
         private const val MY_SECRET_KEY = "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"
     }
+
     private fun showKeyboard() {
         imm.showSoftInput(binding.etMessageChatBot, InputMethodManager.SHOW_IMPLICIT);
     }
@@ -404,7 +403,7 @@ class ChatBotActivity : AppCompatActivity() {
 
     private fun setImogeRecyclerView() {
         setImogeGridRecyclerView(0, "")
-        setImogeShortcutRecyclerView()
+//        setImogeShortcutRecyclerView()
     }
 
     private fun setImogeGridRecyclerView(arrayId: Int, characterName: String) {
@@ -424,4 +423,7 @@ class ChatBotActivity : AppCompatActivity() {
                     Log.d("이모지 선택", "리소스 아이디 : $item")
 
 
+                }
+            })
+    }
 }
