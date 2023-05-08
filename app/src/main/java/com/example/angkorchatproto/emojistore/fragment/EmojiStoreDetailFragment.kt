@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.databinding.FragmentEmojiStoreDetailBinding
+import com.example.angkorchatproto.databinding.FragmentEmojiStoreMainBinding
 
-class EmojiStoreMyEmojiFragment : Fragment() {
+class EmojiStoreDetailFragment : Fragment() {
+    lateinit var binding: FragmentEmojiStoreDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -16,7 +20,7 @@ class EmojiStoreMyEmojiFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_emoji_store_my_emoji, container, false)
+        binding = FragmentEmojiStoreDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 }

@@ -15,12 +15,20 @@
         <action
             android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreMyEmojiFragment"
             app:destination="@id/emojiStoreMyEmojiFragment" />
+        <action
+            android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreDetailFragment"
+            app:destination="@id/emojiStoreDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/emojiStoreMyEmojiFragment"
         android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreMyEmojiFragment"
         android:label="fragment_emoji_store_my_emoji"
         tools:layout="@layout/fragment_emoji_store_my_emoji" />
+    <fragment
+        android:id="@+id/emojiStoreDetailFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreDetailFragment"
+        android:label="fragment_emoji_store_detail"
+        tools:layout="@layout/fragment_emoji_store_detail" />
     <fragment
         android:id="@+id/emojiStoreSearchFragment"
         android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreSearchFragment"
