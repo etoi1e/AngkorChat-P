@@ -9,36 +9,39 @@ package com.example.angkorchatproto.emojistore.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ItemNewEmojiBinding
 import com.example.angkorchatproto.databinding.ItemPopularityEmojiBinding
+import com.example.angkorchatproto.emojistore.data.Data
 
 class PopularityEmojiAdapter(
     context: Context,
-    characterName: ArrayList<String>?,
-    characterMakeCorp: ArrayList<String>?,
-    coin: ArrayList<Int>?,
-    items: ArrayList<Int>?,
+    mode: String,
+    searchWord: String?,
+    items: ArrayList<Data.EmojiInfo>?,
     listener: OnPopularityEmojiListener?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     interface OnPopularityEmojiListener {
-        fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?)
+        fun onItemClicked(item: Data.EmojiInfo?)
     }
 
     private val mContext: Context?
-    private var mCharacterName: ArrayList<String>?
-    private var mCharacterMakeCorp: ArrayList<String>?
-    private var mCoin: ArrayList<Int>?
-    private var mItems: ArrayList<Int>? = null
+    private val mMode: String?
+    private val mSearchWord: String?
+    private var mItems: ArrayList<Data.EmojiInfo>? = null
     private var mListener: OnPopularityEmojiListener? = null
 
     init {
         mContext = context
-        mCharacterName = characterName
-        mCharacterMakeCorp = characterMakeCorp
-        mCoin = coin
+        mMode = mode
+        mSearchWord = searchWord
         mItems = items
         mListener = listener
     }
@@ -55,25 +58,51 @@ class PopularityEmojiAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tag = position
         holder as RCViewHolder
-        holder.binding?.tvEmojiNum?.text = (position+1).toString()
-        mItems?.get(position)?.let { holder.binding?.imageView?.setImageResource(it) }
+        mItems?.get(position)?.let { it.imageId?.let { it1 ->
+            holder.binding?.imageView?.setImageResource(
+                it1
+            )
+        } }
         holder.itemView.setOnClickListener {
-            mListener?.onItemClicked(mItems?.get(position), position, mCharacterName?.get(position))
+            mListener?.onItemClicked(mItems?.get(position))
         }
-        holder.binding?.tvEmojiName?.text = mCharacterName?.get(position)
-        holder.binding?.tvMakeEmoji?.text = mCharacterMakeCorp?.get(position)
-        holder.binding?.tvCoin?.text = mCoin?.get(position).toString()
+        holder.binding?.tvMakeEmoji?.text = mItems?.get(position)?.make
+        if (mMode == "search") {
+            holder.binding?.ivCoin?.visibility = View.GONE
+            holder.binding?.tvCoin?.visibility = View.GONE
+            holder.binding?.tvEmojiNum?.visibility = View.GONE
+            if (mSearchWord != null) {
+                val spannable = SpannableStringBuilder(mItems?.get(position)?.title)
+                val color = mContext?.getColor(R.color.mainYellow)!!
+                val start = mItems?.get(position)?.title?.indexOf(mSearchWord)
+                if (start != null && start != -1) {
+                    spannable.setSpan(ForegroundColorSpan(color), start, start+mSearchWord.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    holder.binding?.tvEmojiName?.text = spannable
+                } else {
+                    holder.binding?.tvEmojiName?.text = mItems?.get(position)?.title
+                }
+            } else {
+                holder.binding?.tvEmojiName?.text = mItems?.get(position)?.title
+            }
+        } else {
+            holder.binding?.ivCoin?.visibility = View.VISIBLE
+            holder.binding?.tvCoin?.visibility = View.VISIBLE
+            holder.binding?.tvEmojiNum?.visibility = View.VISIBLE
+            holder.binding?.tvEmojiNum?.text = (position+1).toString()
+            holder.binding?.tvCoin?.text = mItems?.get(position)?.coin.toString()
+            holder.binding?.tvEmojiName?.text = mItems?.get(position)?.title
+        }
     }
 
     override fun getItemCount(): Int {
         return mItems?.size!!
     }
 
-    private fun getItem(position: Int): Int? {
+    private fun getItem(position: Int): Data.EmojiInfo? {
         return mItems?.get(position)!!
     }
 
-    private fun setItem(items: ArrayList<Int>) {
+    private fun setItem(items: ArrayList<Data.EmojiInfo>) {
         mItems?.clear()
         mItems?.addAll(items)
         notifyDataSetChanged()

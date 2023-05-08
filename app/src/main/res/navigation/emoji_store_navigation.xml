@@ -28,7 +28,14 @@
         android:id="@+id/emojiStoreDetailFragment"
         android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreDetailFragment"
         android:label="fragment_emoji_store_detail"
-        tools:layout="@layout/fragment_emoji_store_detail" />
+        tools:layout="@layout/fragment_emoji_store_detail" >
+        <action
+            android:id="@+id/action_emojiStoreDetailFragment_to_emojiStoreMainFragment"
+            app:destination="@id/emojiStoreMainFragment"
+            app:popUpTo="@id/emojiStoreMainFragment"
+            app:popUpToInclusive="false"
+            />
+    </fragment>
     <fragment
         android:id="@+id/emojiStoreSearchFragment"
         android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreSearchFragment"

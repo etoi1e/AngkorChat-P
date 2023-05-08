@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
+import androidx.core.view.GravityCompat
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityEmojiStoreBinding
@@ -12,15 +16,12 @@ import com.example.angkorchatproto.databinding.FragmentEmojiStoreMainBinding
 import com.example.angkorchatproto.databinding.FragmentFriendsBinding
 import com.example.angkorchatproto.emojistore.adapter.NewEmojiAdapter
 import com.example.angkorchatproto.emojistore.adapter.PopularityEmojiAdapter
+import com.example.angkorchatproto.emojistore.data.Data
+import com.example.angkorchatproto.emojistore.viewmodel.EmojiStoreViewModel
 
 class EmojiStoreMainFragment : Fragment() {
     lateinit var binding: FragmentEmojiStoreMainBinding
-    private var testNewEmojiImageList = arrayListOf(R.drawable.gana1, R.drawable.haha1, R.drawable.nunu1)
-    private var testNewEmojiTextList = arrayListOf("Emoticon","Emoticon","Emoticon")
-    private var testPopularityEmojiImageList = arrayListOf(R.drawable.gana1, R.drawable.haha1, R.drawable.nunu1)
-    private var testPopularityEmojiCoinList = arrayListOf(100, 200, 100)
-    private var testPopularityEmojiCorpList = arrayListOf("Union","Union","Union")
-    private var testPopularityEmojiTextList = arrayListOf("Emoticon","Emoticon","Emoticon")
+    private val activityViewModel: EmojiStoreViewModel? by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,28 +32,45 @@ class EmojiStoreMainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentEmojiStoreMainBinding.inflate(inflater, container, false)
+        val menuItems = listOf("Menu 1", "Menu 2", "Menu 3")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, menuItems)
+        binding.lvDrawer.adapter = adapter
+
+        // 드로어 메뉴 아이템 클릭 이벤트 처리
+        binding.lvDrawer.setOnItemClickListener { _, _, position, _ ->
+            // TODO: 메뉴 아이템 클릭 이벤트 처리
+        }
+
         binding.ivClose.setOnClickListener {
             requireActivity().finish()
         }
+        binding.ivSearch.setOnClickListener {
+            view?.findNavController()?.navigate(R.id.emojiStoreSearchFragment)
+        }
+        binding.ivMenu.setOnClickListener {
+            if (binding.dl.isDrawerOpen(GravityCompat.END)) {
+                binding.dl.closeDrawer(GravityCompat.END)
+            } else {
+                binding.dl.openDrawer(GravityCompat.END)
+            }
+        }
 
         binding.rvNewEmojiList.adapter = NewEmojiAdapter(requireContext(),
-            testNewEmojiTextList,
-            testNewEmojiImageList,
+            activityViewModel?.testEmojiList,
             object: NewEmojiAdapter.OnNewEmojiListener {
-                override fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?) {
-                    view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment)
+                override fun onItemClicked(item: Data.EmojiInfo) {
+                    view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment, bundleOf("data" to item))
                 }
             }
         )
 
         binding.rvPopularityLabelList.adapter = PopularityEmojiAdapter(requireContext(),
-            testPopularityEmojiTextList,
-            testPopularityEmojiCorpList,
-            testPopularityEmojiCoinList,
-            testPopularityEmojiImageList,
+        "popularity",
+            null,
+            activityViewModel?.testEmojiList,
             object : PopularityEmojiAdapter.OnPopularityEmojiListener {
-                override fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?) {
-                    view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment)
+                override fun onItemClicked(item: Data.EmojiInfo?) {
+                    view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment, bundleOf("data" to item))
                 }
             }
         )
