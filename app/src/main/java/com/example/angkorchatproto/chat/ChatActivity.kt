@@ -1,11 +1,17 @@
 package com.example.angkorchatproto.chat
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Point
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -15,6 +21,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -27,10 +35,13 @@ import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -47,8 +58,8 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var imogeAdapter: ChatImogeAdapter
     private lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
-    private lateinit var imm:InputMethodManager
-    private var keyboardHeight:Int = 0
+    private lateinit var imm: InputMethodManager
+    private var keyboardHeight: Int = 0
     private var rootHeight = -1
 
     var width = 0
@@ -57,6 +68,24 @@ class ChatActivity : AppCompatActivity() {
     var commentList = ArrayList<ChatModel.Comment>()
     var selectCharacterName: String? = null
     var selectCharacterIdx: String? = null
+
+
+    //Manifest 에서 설정한 권한을 가지고 온다.
+    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+    val STORAGE_PERMISSION = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
+    //권한 플래그값 정의
+    val FLAG_PERM_CAMERA = 98
+    val FLAG_PERM_STORAGE = 99
+
+    //카메라와 갤러리를 호출하는 플래그
+    val FLAG_REQ_CAMERA = 1001
+    val FLAG_REA_STORAGE = 102
+
+    var photoUri = ""
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -86,15 +115,18 @@ class ChatActivity : AppCompatActivity() {
             val visibleFrameSize = Rect()
             window.decorView.getWindowVisibleDisplayFrame(visibleFrameSize)
             val heightExceptKeyboard = visibleFrameSize.bottom - visibleFrameSize.top
+
             // 키보드를 제외한 높이가 디바이스 root_view보다 높거나 같다면, 키보드가 올라왔을 때가 아니므로 거른다.
             if (heightExceptKeyboard < rootHeight) {
                 if (keyboardHeight == 0 && rootHeight - heightExceptKeyboard - Utils.getStatusBarHeight(
                         this
-                    ) - Utils.getNavigationBarHeight(this) != 0) {
+                    ) - Utils.getNavigationBarHeight(this) != 0
+                ) {
                     keyboardHeight = rootHeight - heightExceptKeyboard - Utils.getStatusBarHeight(
                         this
                     ) - Utils.getNavigationBarHeight(this)
                     setImogeLayoutHeight(keyboardHeight)
+                    setMediaLayoutHeight(keyboardHeight)
                 }
                 Log.d("키보드 높이", "$keyboardHeight")
             }
@@ -102,8 +134,16 @@ class ChatActivity : AppCompatActivity() {
 
         //포커스 컨트롤
         binding.layout.setOnClickListener {
+
             binding.etMessageChat.clearFocus()
+
             hideKeyboard()
+
+            binding.mediaLayout.visibility = View.GONE
+            binding.mediaMenuLayout.visibility = View.GONE
+            binding.viewImogeLayout.visibility = View.GONE
+
+            binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
 
             val etMessageText = binding.etMessageChat.text.toString()
             val textCheck = etMessageText.replace(" ", "")
@@ -118,13 +158,120 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
+
         //파일, 이모지, 녹음, 메모 클릭 시 임의 Toast 출력
         binding.imgMenuChat.setOnClickListener {
             Toast.makeText(this@ChatActivity, "메뉴 클릭", Toast.LENGTH_SHORT).show()
         }
 
         binding.imgMediaChat.setOnClickListener {
-            Toast.makeText(this@ChatActivity, "미디어 클릭", Toast.LENGTH_SHORT).show()
+
+            lifecycleScope.launch {
+                if (binding.mediaLayout.visibility == View.GONE) { //미디어 메뉴 열기
+
+                    binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+
+                    binding.etMessageChat.requestFocus()
+
+                    if (keyboardHeight == 0) {
+                        showKeyboard()
+                    }
+
+                    delay(10)
+                    binding.etMessageChat.clearFocus()
+                    hideKeyboard()
+
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+
+                    binding.mediaLayout.visibility = View.VISIBLE
+                    binding.mediaMenuLayout.visibility = View.VISIBLE
+
+                    binding.mediaMediaLayout.visibility = View.GONE
+                    binding.viewImogeLayout.visibility = View.GONE
+
+                    binding.imgMediaChat.setImageResource(R.drawable.ic_close_line_gray_24)
+
+                    binding.viewBottomBoxChat
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+                    //미디어 메뉴 내 Media 클릭 시
+                    binding.imgMediaChatMedia.setOnClickListener {
+
+                        binding.mediaMenuLayout.visibility = View.GONE
+                        binding.mediaMediaLayout.visibility = View.VISIBLE
+
+
+                    }
+
+                    //미디어 메뉴 내 Camera 클릭 시
+                    binding.imgCameraChatMedia.setOnClickListener {
+
+                        openCamera()
+
+                        binding.btnSendPhotoPreview.setOnClickListener{
+                            //전송 버튼 클릭효과
+                            binding.imgSendMessageChat.performClick()
+                            binding.photoPreview.visibility = View.GONE
+
+                        }
+
+
+                    }
+
+                    //미디어 메뉴 내 Profile 클릭 시
+                    binding.imgProfileChatMedia.setOnClickListener {
+
+                    }
+
+                    //프로토 타입 내 지원하지 않는 기능 Toast만 출력
+                    //미디어 메뉴 내 File 클릭 시
+                    binding.imgFileChatMedia.setOnClickListener {
+                        Toast.makeText(
+                            this@ChatActivity,
+                            "This feature is not supported by Prototype",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+
+                    //미디어 메뉴 내 Location 클릭 시
+                    binding.imgLocationChatMedia.setOnClickListener {
+                        Toast.makeText(
+                            this@ChatActivity,
+                            "This feature is not supported by Prototype",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    //미디어 메뉴 내 Capture 클릭 시
+                    binding.imgCaptureChatMedia.setOnClickListener {
+                        Toast.makeText(
+                            this@ChatActivity,
+                            "This feature is not supported by Prototype",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+
+                } else { //미디어 메뉴 닫기
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+                    binding.etMessageChat.requestFocus()
+                    binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+
+                    binding.mediaLayout.visibility = View.GONE
+                    binding.mediaMenuLayout.visibility = View.GONE
+                    binding.viewImogeLayout.visibility = View.GONE
+
+                    if (keyboardHeight == 0) {
+                        showKeyboard()
+                    }
+
+                    delay(10)
+
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                }
+
+            }
         }
 
         binding.imgImogeChat.setOnClickListener {
@@ -133,18 +280,32 @@ class ChatActivity : AppCompatActivity() {
                 if (binding.viewImogeLayout.visibility == View.GONE) { // 키보드가 올라와있는 상황에서 이모티콘 버튼 클릭
                     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
                     binding.etMessageChat.requestFocus()
-                    showKeyboard()
+                    if (keyboardHeight == 0) {
+                        showKeyboard()
+                    }
                     delay(10)
                     binding.etMessageChat.clearFocus()
                     hideKeyboard()
                     binding.viewImogeLayout.visibility = View.VISIBLE
+
+                    //미디어 창이 꺼지면 X->클립으로 변경
+                    binding.mediaLayout.visibility = View.GONE
+                    binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+
                     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                 } else { // 이모티콘 컨테이너가 띄워져 있는 상태에서 사용자가 다시 이모티콘 아이콘을 클릭
                     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
                     binding.etMessageChat.requestFocus()
-                    showKeyboard()
+                    if (keyboardHeight == 0) {
+                        showKeyboard()
+                    }
                     delay(10)
                     binding.viewImogeLayout.visibility = View.GONE
+
+                    //미디어 창이 꺼지면 X->클립으로 변경
+                    binding.mediaLayout.visibility = View.GONE
+                    binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+
                     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                 }
             }
@@ -204,7 +365,7 @@ class ChatActivity : AppCompatActivity() {
             //공백확인
             val etMessageText = binding.etMessageChat.text.toString()
             val textCheck = etMessageText.replace(" ", "")
-                //전송 시 시간 초기화
+            //전송 시 시간 초기화
             nowTime = LocalDateTime.now().toString()
             if (nowTime == "") {
                 nowTime = System.currentTimeMillis().toString()
@@ -212,7 +373,9 @@ class ChatActivity : AppCompatActivity() {
 
 
             if (textCheck != "" ||
-                binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
+                binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null
+                || photoUri != ""
+            ) {
                 val chatModel = ChatModel()
                 chatModel.users.put(myNumber, true)
                 chatModel.users.put(receiver, true)
@@ -223,8 +386,8 @@ class ChatActivity : AppCompatActivity() {
                     binding.etMessageChat.text.toString(),
                     nowTime,
                     false,
-                    "",
-                    "",
+                    photoUri,
+                    chatRoomKey,
                     if (binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
                         "$selectCharacterName$$$selectCharacterIdx"
                     } else {
@@ -288,13 +451,16 @@ class ChatActivity : AppCompatActivity() {
                     binding.viewImogeLayout.visibility = View.GONE
                 }
 
-            } else {
+                if (binding.mediaLayout.visibility == View.VISIBLE) {
+                    binding.mediaLayout.visibility = View.GONE
+                    binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+                }
 
+            } else {
                 binding.etMessageChat.clearFocus()
             }
 
         }
-
 
     }
 
@@ -370,6 +536,12 @@ class ChatActivity : AppCompatActivity() {
         binding.viewImogeLayout.layoutParams = params
     }
 
+    private fun setMediaLayoutHeight(keyboardHeight: Int) {
+        val params = binding.mediaLayout.layoutParams
+        params.height = keyboardHeight // 변경할 높이
+        binding.mediaLayout.layoutParams = params
+    }
+
     private fun setImogeRecyclerView() {
         setImogeGridRecyclerView(0, "")
         setImogeShortcutRecyclerView()
@@ -392,7 +564,7 @@ class ChatActivity : AppCompatActivity() {
                 override fun onItemClicked(item: Int?, itemIdx: Int?, characterName: String?) {
                     Log.d("이모지 선택", "리소스 아이디 : $item")
                     if (itemIdx != null) {
-                        selectCharacterIdx = (itemIdx+1).toString()
+                        selectCharacterIdx = (itemIdx + 1).toString()
                     }
                     selectCharacterName = characterName
                     binding.imogePreview.visibility = View.VISIBLE
@@ -409,13 +581,19 @@ class ChatActivity : AppCompatActivity() {
     private fun setImogeShortcutRecyclerView() {
         //이모티콘 숏컷
         imogeShortcutAdapter = ChatImogeShortcutAdapter(this@ChatActivity,
-            arrayListOf(R.drawable.ic_star_fill_prime_24,R.drawable.ic_clock_line_gray_24,R.drawable.img_emoticon_shortcut_nunu_selected,R.drawable.img_emoticon_shortcut_gana_selected,R.drawable.img_emoticon_shortcut_haha_selected),
-            object: ChatImogeShortcutAdapter.OnChatImogeShortcutAdapterListener {
+            arrayListOf(
+                R.drawable.ic_star_fill_prime_24,
+                R.drawable.ic_clock_line_gray_24,
+                R.drawable.img_emoticon_shortcut_nunu_selected,
+                R.drawable.img_emoticon_shortcut_gana_selected,
+                R.drawable.img_emoticon_shortcut_haha_selected
+            ),
+            object : ChatImogeShortcutAdapter.OnChatImogeShortcutAdapterListener {
                 override fun onItemClicked(item: Int) {
                     Log.d("이모지 쇼컷", "$item 번째 입니다.")
                     var arrayId = 0
                     var characterName = ""
-                    when(item) {
+                    when (item) {
                         2 -> {
                             arrayId = R.array.nunuImoge
                             characterName = "nunu"
@@ -441,6 +619,90 @@ class ChatActivity : AppCompatActivity() {
         selectCharacterIdx = null
         binding.imogePreview.visibility = View.GONE
     }
+
+
+//카메라 권한 확인
+    private fun openCamera() {
+        //카메라 권한이 있는지 확인
+        if (checkPermission(CAMERA_PERMISSION, FLAG_PERM_CAMERA)) {
+            //권한이 있으면 카메라를 실행시킵니다.
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            startActivityForResult(intent, FLAG_REQ_CAMERA)
+        } else {
+            //권한이 없으면 권한 요청을 합니다.
+            ActivityCompat.requestPermissions(this, CAMERA_PERMISSION, FLAG_PERM_CAMERA)
+        }
+    }
+
+    //카메라 권한이 있는지 체크하는 메소드
+    fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
+        //안드로이드 버전이 마쉬멜로우 이상일때
+            for (permission in permissions) {
+                //만약 권한이 승인되어 있지 않다면 권한승인 요청을 사용에 화면에 호출합니다.
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(this, permissions, flag)
+                    return false
+                }
+            }
+        return true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                FLAG_REQ_CAMERA -> {
+                    if (data?.extras?.get("data") != null) {
+
+                        binding.photoPreview.visibility = View.VISIBLE
+
+                        binding.imgPhotoPhotoPreview.setImageBitmap(data?.extras?.get("data") as Bitmap)
+
+                        //카메라로 촬영한 이미지 가져와서 Image View 에 적용
+
+                        //카메라로 방금 촬영한 이미지를 파이어 베이스 스토리지에 전달
+                        val bitmap = data?.extras?.get("data") as Bitmap
+                        binding.imgPhotoPhotoPreview.setImageBitmap(bitmap)
+
+                        val storage = Firebase.storage
+                        val storageRef = storage.reference
+
+
+                        photoUri = myNumber+LocalDateTime.now()
+                        val imgRef = storageRef.child("$photoUri.png")
+
+                        binding.imgPhotoPhotoPreview.isDrawingCacheEnabled = true
+                        binding.imgPhotoPhotoPreview.buildDrawingCache()
+
+                        val baos = ByteArrayOutputStream()
+                        //quality:압축 퀄리티 1~100.
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                        val data = baos.toByteArray()
+
+                        //imgRef : 스토리지 경로 지정하는 키워드.
+                        var uploadTask = imgRef.putBytes(data)
+                        uploadTask.addOnFailureListener {
+                            // Handle unsuccessful uploads
+                        }.addOnSuccessListener { taskSnapshot ->
+                            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                            // ...
+                        }
+
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
 }
 
 

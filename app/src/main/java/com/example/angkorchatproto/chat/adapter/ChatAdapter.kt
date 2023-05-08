@@ -1,13 +1,16 @@
-package com.example.angkorchatproto.chat.adapter
+package com.example.angkorchatproto.Chat.adapter
 
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +18,21 @@ import com.bumptech.glide.Glide
 import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import java.lang.Exception
+import java.util.zip.Inflater
 
 
-class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, width: Int, myNumber:String) :
+class ChatAdapter(
+    context: Context,
+    chatList: ArrayList<ChatModel.Comment>,
+    width: Int,
+    myNumber: String
+) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     var chatList: ArrayList<ChatModel.Comment>
@@ -96,12 +111,47 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             holder.tvTimeRight.setText(setTime)
 
             if (message.emo != null &&
-                message.emo != "") {
+                message.emo != ""
+            ) {
                 holder.ivMyImoge.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(parseImogeString(message.emo))
                     .into(holder.ivMyImoge)
             }
+
+            if (message.url != "" && message.url != null) {
+
+                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+//                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com/android.graphics.Bitmap@54bfad0.png")
+
+                val storageRef = storage.getReference()
+                val imgRef = storageRef.child("${message.url}.png")
+
+                Log.d("TAG-imgRef", imgRef.toString())
+
+                imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
+                    override fun onSuccess(p0: Uri?) {
+
+                        holder.ivMyImoge.visibility = View.VISIBLE
+
+                        Glide.with(context)
+                            .load(p0)
+                            .into(holder.ivMyImoge)
+
+                        Log.d("TAG-Uri", p0.toString())
+                    }
+
+                }).addOnFailureListener(object : OnFailureListener {
+                    override fun onFailure(p0: Exception) {
+                        Log.d("TAG-onFailure", p0.toString())
+                    }
+
+                })
+
+            }
+
+
+
         } else {//타인이 보낸 메세지인 경우
 
             holder.tvMyMessageChat.visibility = View.GONE
@@ -129,11 +179,43 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
             })
 
             if (message.emo != null &&
-                message.emo != "") {
+                message.emo != ""
+            ) {
                 holder.ivOtherImoge.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(parseImogeString(message.emo))
                     .into(holder.ivOtherImoge)
+            }
+
+            if (message.url != "" && message.url != null) {
+
+                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+//                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com/android.graphics.Bitmap@54bfad0.png")
+
+                val storageRef = storage.getReference()
+                val imgRef = storageRef.child("${message.url}.png")
+
+                Log.d("TAG-imgRef", imgRef.toString())
+
+                imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
+                    override fun onSuccess(p0: Uri?) {
+
+                        holder.ivOtherImoge.visibility = View.VISIBLE
+
+                        Glide.with(context)
+                            .load(p0)
+                            .into(holder.ivOtherImoge)
+
+                        Log.d("TAG-Uri", p0.toString())
+                    }
+
+                }).addOnFailureListener(object : OnFailureListener {
+                    override fun onFailure(p0: Exception) {
+                        Log.d("TAG-onFailure", p0.toString())
+                    }
+
+                })
+
             }
         }
 
@@ -151,7 +233,7 @@ class ChatAdapter(context: Context, chatList: ArrayList<ChatModel.Comment>, widt
         //haha$$3
         val imogeStrArray = str?.split("$$")
         val array: TypedArray =
-            when(imogeStrArray?.get(0)) {
+            when (imogeStrArray?.get(0)) {
                 "gana" -> {
                     context.resources.obtainTypedArray(R.array.ganaImoge)
                 }

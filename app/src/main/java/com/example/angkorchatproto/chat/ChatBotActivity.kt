@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.chat
+package com.example.angkorchatproto.Chat
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -49,8 +49,8 @@ class ChatBotActivity : AppCompatActivity() {
     lateinit var adapter: ChatBotAdapter
     lateinit var imogeAdapter: ChatImogeAdapter
     lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
-    private lateinit var myNumber:String
-    private lateinit var imm:InputMethodManager
+    private lateinit var myNumber: String
+    private lateinit var imm: InputMethodManager
 
     var chatList = ArrayList<ChatBotVO>()
     var selectCharacterName: String? = null
@@ -60,7 +60,7 @@ class ChatBotActivity : AppCompatActivity() {
     private var baseAi = JSONObject()
     private var userMsg = JSONObject()
     private var chatBotRef = FBdataBase.getChatBotRef()
-    private var keyboardHeight:Int = 0
+    private var keyboardHeight: Int = 0
     private var rootHeight = -1
 
 
@@ -85,8 +85,14 @@ class ChatBotActivity : AppCompatActivity() {
             val heightExceptKeyboard = visibleFrameSize.bottom - visibleFrameSize.top
             // 키보드를 제외한 높이가 디바이스 root_view보다 높거나 같다면, 키보드가 올라왔을 때가 아니므로 거른다.
             if (heightExceptKeyboard < rootHeight) {
-                if (keyboardHeight == 0 && rootHeight - heightExceptKeyboard - getStatusBarHeight(this) - getNavigationBarHeight(this) != 0) {
-                    keyboardHeight = rootHeight - heightExceptKeyboard - getStatusBarHeight(this) - getNavigationBarHeight(this)
+                if (keyboardHeight == 0 && rootHeight - heightExceptKeyboard - getStatusBarHeight(
+                        this
+                    ) - getNavigationBarHeight(this) != 0
+                ) {
+                    keyboardHeight =
+                        rootHeight - heightExceptKeyboard - getStatusBarHeight(this) - getNavigationBarHeight(
+                            this
+                        )
                     setImogeLayoutHeight(keyboardHeight)
                 }
                 Log.d("키보드 높이", "$keyboardHeight")
@@ -101,7 +107,7 @@ class ChatBotActivity : AppCompatActivity() {
             val etMessageText = binding.etMessageChatBot.text.toString()
             val textCheck = etMessageText.replace(" ", "")
 
-            if(textCheck == ""){
+            if (textCheck == "") {
                 binding.viewMessageBox1ChatBot.visibility = View.VISIBLE
                 binding.imgRecordChatBot.visibility = View.VISIBLE
 
@@ -112,15 +118,15 @@ class ChatBotActivity : AppCompatActivity() {
         }
 
         //파일, 이모지, 녹음, 메모 클릭 시 임의 Toast 출력
-        binding.imgMenuChatBot.setOnClickListener{
-            Toast.makeText(this@ChatBotActivity,"메뉴 클릭", Toast.LENGTH_SHORT).show()
+        binding.imgMenuChatBot.setOnClickListener {
+            Toast.makeText(this@ChatBotActivity, "메뉴 클릭", Toast.LENGTH_SHORT).show()
         }
 
-        binding.imgMediaChatBot.setOnClickListener{
-            Toast.makeText(this@ChatBotActivity,"미디어 클릭", Toast.LENGTH_SHORT).show()
+        binding.imgMediaChatBot.setOnClickListener {
+            Toast.makeText(this@ChatBotActivity, "미디어 클릭", Toast.LENGTH_SHORT).show()
         }
 
-        binding.imgImogeChatBot.setOnClickListener{
+        binding.imgImogeChatBot.setOnClickListener {
             lifecycleScope.launch {
                 setImogeRecyclerView()
                 if (binding.viewImogeLayout.visibility == View.GONE) { // 키보드가 올라와있는 상황에서 이모티콘 버튼 클릭
@@ -148,8 +154,8 @@ class ChatBotActivity : AppCompatActivity() {
             binding.imgImogePreview.setImageDrawable(null)
         }
 
-        binding.imgRecordChatBot.setOnClickListener{
-            Toast.makeText(this@ChatBotActivity,"음성녹음 클릭",Toast.LENGTH_SHORT).show()
+        binding.imgRecordChatBot.setOnClickListener {
+            Toast.makeText(this@ChatBotActivity, "음성녹음 클릭", Toast.LENGTH_SHORT).show()
         }
 
         binding.tvNameChatBot.text = intent.getStringExtra("name")
