@@ -15,13 +15,18 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.angkorchatproto.Chat.ChatBotActivity
+import com.example.angkorchatproto.chat.ChatBotActivity
 import com.example.angkorchatproto.auth.ProfileAdapter
 import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
+import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import java.util.*
@@ -32,6 +37,21 @@ class ProfileActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileBinding
     var imgList = ArrayList<Uri?>()
+
+    //Manifest 에서 설정한 권한을 가지고 온다.
+    val STORAGE_PERMISSION = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_MEDIA_IMAGES,
+        Manifest.permission.READ_MEDIA_VIDEO
+
+    )
+
+
+
+    //권한 플래그값 정의
+    val FLAG_PERM_STORAGE = 99
+
 
 
     @SuppressLint("ResourceAsColor")
@@ -48,6 +68,8 @@ class ProfileActivity : AppCompatActivity() {
         val userMsg = intent.getStringExtra("email")
         val number = intent.getStringExtra("number")
         val userProfile = intent.getStringExtra("profile")
+
+        getImage()
 
 
         //기본 정보 삽입
@@ -148,18 +170,15 @@ class ProfileActivity : AppCompatActivity() {
         binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
 
 
-        //갤러리 저장 사진 불러오기
-        val REQUEST_STORAGE_PERMISSION = 100
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_STORAGE_PERMISSION
-                )
-                return
-            }
+        if (checkPermission(STORAGE_PERMISSION,FLAG_PERM_STORAGE)) {
+
+        } else {
+            //권한이 없으면 권한 요청을 합니다.
+            ActivityCompat.requestPermissions(this, STORAGE_PERMISSION,FLAG_PERM_STORAGE)
         }
+
+
         val projection = arrayOf(
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DISPLAY_NAME,
@@ -173,7 +192,6 @@ class ProfileActivity : AppCompatActivity() {
             null,
             sortOrder
         )
-        var imageUri: Uri? = null
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
             while (cursor.moveToNext() && imgList.size < 5) { // 5개 이하까지 불러옴
@@ -189,14 +207,77 @@ class ProfileActivity : AppCompatActivity() {
         }
 
 
-        // 이미지 뷰에 이미지 표시하기
-        if (imageUri != null) {
-            //binding.imgProfileProfile.setImageURI(imageUri)
-            Log.d("TAG-이미지 로그 불러옴", imageUri.toString())
-        } else {
-            Log.d("TAG-이미지 로그 못불러옴", imageUri.toString())
-        }
     }
+
+    fun getImage(){
+
+        //권한 확인
+
+        if (checkPermission(STORAGE_PERMISSION,FLAG_PERM_STORAGE)) {
+
+            val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+            startActivity(intent)
+            Log.d("TAG-사진권한","사진권한체크1")
+        } else {
+            //권한이 없으면 권한 요청을 합니다.
+            ActivityCompat.requestPermissions(this@ProfileActivity,STORAGE_PERMISSION,FLAG_PERM_STORAGE)
+            Log.d("TAG-사진권한","사진권한체크2")
+
+        }
+
+
+        val projection = arrayOf(
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.DATE_TAKEN
+        )
+        val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
+
+        val query = applicationContext.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            null,
+            null,
+            sortOrder
+        )
+        query?.use { cursor ->
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+            while (cursor.moveToNext() && imgList.size < 10) { // 5개 이하까지 불러옴
+                val id = cursor.getLong(idColumn)
+                val imageUri = ContentUris.withAppendedId(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    id
+                )
+                imgList.add(imageUri)
+                Log.d("imgList", imgList.toString())
+            }
+        }
+        val adapter = ProfileAdapter(this@ProfileActivity, imgList)
+        binding.rvPhotoListProfile.adapter =  adapter
+        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
+
+        adapter.notifyDataSetChanged()
+
+
+    }
+
+
+    fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
+        for (permission in permissions) {
+            //만약 권한이 승인되어 있지 않다면 권한승인 요청을 사용에 화면에 호출합니다.
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(this, permissions, flag)
+                return false
+            }
+        }
+        return true
+    }
+
+
 
 
 }

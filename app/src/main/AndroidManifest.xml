@@ -6,8 +6,12 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 전화 발신 커미션 -->
     <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 갤러리 권한 -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -55,16 +59,16 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".friends.AddFriendsActivity"
-            android:exported="false"
-            tools:ignore="DuplicateActivity" >
+            android:name=".chat.ChatBotActivity"
+            android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Chat.ChatBotActivity"
-            android:exported="false" >
+            android:name=".friends.AddFriendsActivity"
+            android:exported="false"
+            tools:ignore="DuplicateActivity" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

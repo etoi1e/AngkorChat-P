@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat
+package com.example.angkorchatproto.chat
 
 import android.annotation.SuppressLint
 import android.content.Context

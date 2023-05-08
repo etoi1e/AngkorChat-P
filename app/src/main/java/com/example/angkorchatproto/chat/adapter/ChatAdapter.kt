@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Chat.adapter
+package com.example.angkorchatproto.chat.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -122,10 +122,9 @@ class ChatAdapter(
             if (message.url != "" && message.url != null) {
 
                 val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
-//                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com/android.graphics.Bitmap@54bfad0.png")
 
                 val storageRef = storage.getReference()
-                val imgRef = storageRef.child("${message.url}.png")
+                val imgRef = storageRef.child("/${message.url}.png")
 
                 Log.d("TAG-imgRef", imgRef.toString())
 
@@ -165,8 +164,6 @@ class ChatAdapter(
 
             holder.tvTimeLeft.setText(setTime)
 
-            holder.tvOtherMessageChat
-
             holder.tvOtherMessageChat.setOnClickListener(object : OnClickListener {
                 override fun onClick(p0: View?) {
 
@@ -190,7 +187,6 @@ class ChatAdapter(
             if (message.url != "" && message.url != null) {
 
                 val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
-//                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com/android.graphics.Bitmap@54bfad0.png")
 
                 val storageRef = storage.getReference()
                 val imgRef = storageRef.child("${message.url}.png")
