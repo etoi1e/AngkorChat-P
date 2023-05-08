@@ -1,4 +1,4 @@
-package com.example.angkorchatproto.Profile
+package com.example.angkorchatproto.profile
 
 
 import android.Manifest

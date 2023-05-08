@@ -1,8 +1,6 @@
 package com.example.angkorchatproto.chat.adapter
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,11 +10,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.angkorchatproto.Profile.ProfileActivity
 import com.example.angkorchatproto.R
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 class MediaImgAdapter(private val context: Context, private val imgList: ArrayList<Uri?>) :
     RecyclerView.Adapter<MediaImgAdapter.ViewHolder>() {
