@@ -20,6 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31" >
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/filepaths" />
+
         <activity
             android:name=".emojistore.EmojiStoreActivity"
             android:exported="false" >
@@ -35,6 +39,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".friends.AddFriendsActivity"
             android:exported="false" >

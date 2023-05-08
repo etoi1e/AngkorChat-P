@@ -3,7 +3,7 @@ package com.example.angkorchatproto
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.angkorchatproto.chat.ChatFragment
+import com.example.angkorchatproto.Chat.ChatFragment
 import com.example.angkorchatproto.friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
 

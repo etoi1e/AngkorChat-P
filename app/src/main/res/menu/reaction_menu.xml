@@ -3,15 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menuReply"
         android:icon="@drawable/ic_enter_line_prime_20"
         android:title="Reply" />
     <item
+        android:id="@+id/menuCopy"
         android:icon="@drawable/ic_copy_line_prime_20"
         android:title="Copy" />
     <item
+        android:id="@+id/menuPin"
         android:icon="@drawable/ic_pin_line_prime_20"
         android:title="Pin" />
     <item
+        android:id="@+id/menuDel"
         android:icon="@drawable/ic_bin_fill_red_24"
         android:title="Delete" />
 </menu>
