@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.databinding.ItemImogeBinding
+import com.example.angkorchatproto.databinding.ItemEmojiBinding
 
 /**
  * Package Name : com.example.angkorchatproto.Chat.adapter
@@ -39,7 +39,7 @@ class ChatImogeAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RCViewHolder(
-            ItemImogeBinding.inflate(
+            ItemEmojiBinding.inflate(
                 (mContext!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             )
         )
@@ -73,8 +73,8 @@ class ChatImogeAdapter(
         notifyDataSetChanged()
     }
 
-    class RCViewHolder(b: ItemImogeBinding) : RecyclerView.ViewHolder(b.root) {
-        var binding: ItemImogeBinding? = null
+    class RCViewHolder(b: ItemEmojiBinding) : RecyclerView.ViewHolder(b.root) {
+        var binding: ItemEmojiBinding? = null
 
         init {
             binding = b
