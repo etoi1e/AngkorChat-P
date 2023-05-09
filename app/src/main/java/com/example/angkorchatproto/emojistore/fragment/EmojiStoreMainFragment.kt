@@ -1,6 +1,7 @@
 package com.example.angkorchatproto.emojistore.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,33 +15,33 @@ import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityEmojiStoreBinding
 import com.example.angkorchatproto.databinding.FragmentEmojiStoreMainBinding
 import com.example.angkorchatproto.databinding.FragmentFriendsBinding
+import com.example.angkorchatproto.emojistore.adapter.DrawerEmojiAdapter
 import com.example.angkorchatproto.emojistore.adapter.NewEmojiAdapter
-import com.example.angkorchatproto.emojistore.adapter.PopularityEmojiAdapter
+import com.example.angkorchatproto.emojistore.adapter.ListEmojiAdapter
 import com.example.angkorchatproto.emojistore.data.Data
 import com.example.angkorchatproto.emojistore.viewmodel.EmojiStoreViewModel
 
 class EmojiStoreMainFragment : Fragment() {
     lateinit var binding: FragmentEmojiStoreMainBinding
+    private var data: ArrayList<Data.EmojiInfo> = ArrayList()
     private val activityViewModel: EmojiStoreViewModel? by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        data = activityViewModel?.testEmojiList?.let { ArrayList(it) }!!
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("EmojiStoreMainFragment", "onResume")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("EmojiStoreMainFragment", "onCreateView")
         binding = FragmentEmojiStoreMainBinding.inflate(inflater, container, false)
-        val menuItems = listOf("Menu 1", "Menu 2", "Menu 3")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, menuItems)
-        binding.lvDrawer.adapter = adapter
-
-        // 드로어 메뉴 아이템 클릭 이벤트 처리
-        binding.lvDrawer.setOnItemClickListener { _, _, position, _ ->
-            // TODO: 메뉴 아이템 클릭 이벤트 처리
-        }
-
         binding.ivClose.setOnClickListener {
             requireActivity().finish()
         }
@@ -55,8 +56,20 @@ class EmojiStoreMainFragment : Fragment() {
             }
         }
 
+        binding.rvDrawer.adapter = DrawerEmojiAdapter(requireContext(),
+            arrayListOf("My Emoticon", "Gift Box", "Likes", "Purchase history"),
+            object: DrawerEmojiAdapter.OnDrawerEmojiListener {
+                override fun onItemClicked(item: String) {
+                    view?.findNavController()?.navigate(R.id.emojiStoreEmojiListFragment, bundleOf("type" to item))
+                }
+        })
+
+        binding.btnSeeAll.setOnClickListener {
+            view?.findNavController()?.navigate(R.id.emojiStoreEmojiListFragment, bundleOf("type" to "New"))
+        }
+
         binding.rvNewEmojiList.adapter = NewEmojiAdapter(requireContext(),
-            activityViewModel?.testEmojiList,
+            data,
             object: NewEmojiAdapter.OnNewEmojiListener {
                 override fun onItemClicked(item: Data.EmojiInfo) {
                     view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment, bundleOf("data" to item))
@@ -64,11 +77,11 @@ class EmojiStoreMainFragment : Fragment() {
             }
         )
 
-        binding.rvPopularityLabelList.adapter = PopularityEmojiAdapter(requireContext(),
+        binding.rvPopularityLabelList.adapter = ListEmojiAdapter(requireContext(),
         "popularity",
             null,
-            activityViewModel?.testEmojiList,
-            object : PopularityEmojiAdapter.OnPopularityEmojiListener {
+            data,
+            object : ListEmojiAdapter.OnPopularityEmojiListener {
                 override fun onItemClicked(item: Data.EmojiInfo?) {
                     view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment, bundleOf("data" to item))
                 }

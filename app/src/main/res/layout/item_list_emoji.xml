@@ -67,6 +67,20 @@
         app:layout_constraintTop_toTopOf="@+id/tvCoin"
         app:srcCompat="@drawable/ic_coin_15" />
 
+    <ToggleButton
+        android:id="@+id/ivHeart"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/selector_emoji_store_list_like"
+        android:checked="true"
+        android:textOff=""
+        android:textOn=""
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCoin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvCoin" />
+
     <TextView
         android:id="@+id/tvCoin"
         android:layout_width="wrap_content"

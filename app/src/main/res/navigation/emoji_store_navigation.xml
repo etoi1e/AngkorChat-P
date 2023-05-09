@@ -14,16 +14,22 @@
             app:destination="@id/emojiStoreSearchFragment" />
         <action
             android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreMyEmojiFragment"
-            app:destination="@id/emojiStoreMyEmojiFragment" />
+            app:destination="@id/emojiStoreEmojiListFragment" />
         <action
             android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreDetailFragment"
             app:destination="@id/emojiStoreDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/emojiStoreMyEmojiFragment"
-        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreMyEmojiFragment"
-        android:label="fragment_emoji_store_my_emoji"
-        tools:layout="@layout/fragment_emoji_store_my_emoji" />
+        android:id="@+id/emojiStoreEmojiListFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreEmojiListFragment"
+        android:label="fragment_emoji_store_emoji_list"
+        tools:layout="@layout/fragment_emoji_store_emoji_list" >
+        <action
+            android:id="@+id/action_emojiStoreEmojiListFragment_to_emojiStoreMainFragment"
+            app:destination="@id/emojiStoreMainFragment"
+            app:popUpTo="@id/emojiStoreMainFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/emojiStoreDetailFragment"
         android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreDetailFragment"
@@ -33,8 +39,7 @@
             android:id="@+id/action_emojiStoreDetailFragment_to_emojiStoreMainFragment"
             app:destination="@id/emojiStoreMainFragment"
             app:popUpTo="@id/emojiStoreMainFragment"
-            app:popUpToInclusive="false"
-            />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/emojiStoreSearchFragment"

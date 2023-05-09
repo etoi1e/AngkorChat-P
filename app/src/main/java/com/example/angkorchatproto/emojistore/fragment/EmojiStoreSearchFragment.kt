@@ -16,7 +16,7 @@ import androidx.navigation.findNavController
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentEmojiStoreMainBinding
 import com.example.angkorchatproto.databinding.FragmentEmojiStoreSearchBinding
-import com.example.angkorchatproto.emojistore.adapter.PopularityEmojiAdapter
+import com.example.angkorchatproto.emojistore.adapter.ListEmojiAdapter
 import com.example.angkorchatproto.emojistore.data.Data
 import com.example.angkorchatproto.emojistore.viewmodel.EmojiStoreViewModel
 
@@ -34,11 +34,11 @@ class EmojiStoreSearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentEmojiStoreSearchBinding.inflate(inflater, container, false)
-        binding.rvSearchLabelList.adapter = PopularityEmojiAdapter(requireContext(),
+        binding.rvSearchLabelList.adapter = ListEmojiAdapter(requireContext(),
             "search",
             null,
             activityViewModel?.testEmojiList,
-            object : PopularityEmojiAdapter.OnPopularityEmojiListener {
+            object : ListEmojiAdapter.OnPopularityEmojiListener {
                 override fun onItemClicked(item: Data.EmojiInfo?) {
                     view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment, bundleOf("data" to item))
                 }
@@ -72,11 +72,11 @@ class EmojiStoreSearchFragment : Fragment() {
                     it.title != null
                 } as ArrayList
                 Log.d("search", result.toString())
-                binding.rvSearchLabelList.adapter = PopularityEmojiAdapter(requireContext(),
+                binding.rvSearchLabelList.adapter = ListEmojiAdapter(requireContext(),
                     "search",
                     charSequence.toString(),
                     result,
-                    object : PopularityEmojiAdapter.OnPopularityEmojiListener {
+                    object : ListEmojiAdapter.OnPopularityEmojiListener {
                         override fun onItemClicked(item: Data.EmojiInfo?) {
                             view?.findNavController()?.navigate(R.id.emojiStoreDetailFragment, bundleOf("data" to item))
                         }
