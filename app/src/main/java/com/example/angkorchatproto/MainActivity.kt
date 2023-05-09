@@ -2,8 +2,9 @@ package com.example.angkorchatproto
 
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.angkorchatproto.Chat.ChatFragment
+import com.example.angkorchatproto.chat.ChatFragment
 import com.example.angkorchatproto.friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
 
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.tab3 ->{
+                    Toast.makeText(this,"This feature is not supported by Prototype",Toast.LENGTH_SHORT).show()
 //                    supportFragmentManager.beginTransaction().replace(
 //                        R.id.frameLayout,
 //                        MoreFragment()

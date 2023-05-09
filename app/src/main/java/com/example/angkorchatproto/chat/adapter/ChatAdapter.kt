@@ -18,10 +18,13 @@ import com.bumptech.glide.Glide
 import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.ktx.storage
 import java.lang.Exception
 import java.util.zip.Inflater
@@ -70,7 +73,6 @@ class ChatAdapter(
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.chat_list, null)
@@ -81,7 +83,6 @@ class ChatAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val message: ChatModel.Comment = chatList[position]
-
 
 
         //시간 커스텀
@@ -119,36 +120,84 @@ class ChatAdapter(
                     .into(holder.ivMyImoge)
             }
 
+
+            //이미지 적용시키는 부분
             if (message.url != "" && message.url != null) {
 
-                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+                if (message.url.contains("content://media/")) {
+                    val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
 
-                val storageRef = storage.getReference()
-                val imgRef = storageRef.child("/${message.url}.png")
+                    val storageRef = storage.getReference()
+                    val imgRef = storageRef.child("/${message.url}.png")
 
-                Log.d("TAG-imgRef", imgRef.toString())
+                    Log.d("TAG-imgRef", imgRef.toString())
 
-                imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
-                    override fun onSuccess(p0: Uri?) {
 
-                        holder.ivMyImoge.visibility = View.VISIBLE
+                    imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
+                        override fun onSuccess(p0: Uri?) {
 
-                        Glide.with(context)
-                            .load(p0)
-                            .into(holder.ivMyImoge)
+                            holder.ivMyImoge.visibility = View.VISIBLE
 
-                        Log.d("TAG-Uri", p0.toString())
-                    }
+                            Glide.with(context)
+                                .load(p0)
+                                .into(holder.ivMyImoge)
 
-                }).addOnFailureListener(object : OnFailureListener {
-                    override fun onFailure(p0: Exception) {
-                        Log.d("TAG-onFailure", p0.toString())
-                    }
+                            Log.d("TAG-Uri", p0.toString())
+                        }
 
-                })
+                    }).addOnFailureListener(object : OnFailureListener {
+                        override fun onFailure(p0: Exception) {
+                            Log.d("TAG-onFailure", p0.toString())
+                        }
+
+                    })
+                } else { //그룹 이미지
+                    val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+
+                    val storageRef = storage.getReference()
+                    val imgRef = storageRef.child("/${message.url}")
+
+                    imgRef.listAll()
+                        .addOnSuccessListener(object : OnSuccessListener<ListResult> {
+                            override fun onSuccess(p0: ListResult?) {
+                                holder.ivMyImoge.visibility = View.VISIBLE
+
+                                val selectedPhotoList = p0!!.items
+
+                                selectedPhotoList.get(0).downloadUrl.addOnCompleteListener(object : OnCompleteListener<Uri>{
+                                    override fun onComplete(p0: Task<Uri>) {
+                                        if(p0.isSuccessful){
+                                            Glide.with(context)
+                                                .load(p0.getResult())
+                                                .into(holder.ivMyImoge)
+                                        }
+
+                                    }
+                                }).addOnFailureListener(object : OnFailureListener {
+                                    override fun onFailure(p0: Exception) {
+                                        Log.d("TAG-onFailure1",p0.toString())
+                                    }
+
+                                })
+
+
+
+                            }
+
+
+                        })
+
+                        .addOnFailureListener(object : OnFailureListener {
+                            override fun onFailure(p0: Exception) {
+                                Log.d("TAG-onFailure2",p0.toString())
+                            }
+
+                        })
+
+                }
+
 
             }
-
 
 
         } else {//타인이 보낸 메세지인 경우
@@ -184,33 +233,76 @@ class ChatAdapter(
                     .into(holder.ivOtherImoge)
             }
 
+            //이미지 적용시키는 부분
             if (message.url != "" && message.url != null) {
 
-                val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+                if (message.url.contains("content://media/")) {
+                    val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
 
-                val storageRef = storage.getReference()
-                val imgRef = storageRef.child("${message.url}.png")
+                    val storageRef = storage.getReference()
+                    val imgRef = storageRef.child("/${message.url}.png")
 
-                Log.d("TAG-imgRef", imgRef.toString())
+                    Log.d("TAG-imgRef", imgRef.toString())
 
-                imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
-                    override fun onSuccess(p0: Uri?) {
 
-                        holder.ivOtherImoge.visibility = View.VISIBLE
+                    imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
+                        override fun onSuccess(p0: Uri?) {
 
-                        Glide.with(context)
-                            .load(p0)
-                            .into(holder.ivOtherImoge)
+                            holder.ivOtherImoge.visibility = View.VISIBLE
 
-                        Log.d("TAG-Uri", p0.toString())
-                    }
+                            Glide.with(context)
+                                .load(p0)
+                                .into(holder.ivOtherImoge)
 
-                }).addOnFailureListener(object : OnFailureListener {
-                    override fun onFailure(p0: Exception) {
-                        Log.d("TAG-onFailure", p0.toString())
-                    }
+                            Log.d("TAG-Uri", p0.toString())
+                        }
 
-                })
+                    }).addOnFailureListener(object : OnFailureListener {
+                        override fun onFailure(p0: Exception) {
+                            Log.d("TAG-onFailure", p0.toString())
+                        }
+
+                    })
+                } else { //그룹 이미지
+                    val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+
+                    val storageRef = storage.getReference()
+                    val imgRef = storageRef.child("/${message.url}")
+
+                    imgRef.listAll()
+                        .addOnSuccessListener(object : OnSuccessListener<ListResult> {
+                            override fun onSuccess(p0: ListResult?) {
+                                holder.ivOtherImoge.visibility = View.VISIBLE
+
+                                val selectedPhotoList = p0!!.items
+
+                                selectedPhotoList.get(1).downloadUrl.addOnCompleteListener(object : OnCompleteListener<Uri>{
+                                    override fun onComplete(p0: Task<Uri>) {
+                                        if(p0.isSuccessful){
+                                            Glide.with(context)
+                                                .load(p0.getResult())
+                                                .into(holder.ivOtherImoge)
+                                        }
+
+                                    }
+                                })
+
+
+
+                            }
+
+
+                        })
+
+                        .addOnFailureListener(object : OnFailureListener {
+                            override fun onFailure(p0: Exception) {
+                                Log.d("TAG-ListAll Failure",p0.toString())
+                            }
+
+                        })
+
+                }
+
 
             }
         }

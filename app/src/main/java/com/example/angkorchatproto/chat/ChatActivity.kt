@@ -2,7 +2,6 @@ package com.example.angkorchatproto.chat
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -39,8 +38,6 @@ import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
-import com.google.android.material.internal.ViewUtils.hideKeyboard
-import com.google.android.material.internal.ViewUtils.showKeyboard
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -51,6 +48,8 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import java.io.File
+import java.text.FieldPosition
 import java.time.LocalDateTime
 
 
@@ -62,9 +61,12 @@ class ChatActivity : AppCompatActivity() {
     private var chatRoomKey: String? = null
     var chatRoomKeyList = ArrayList<String>()
     var imgList = ArrayList<Uri?>()
+    var selectImgList = ArrayList<Uri?>()
+    var selectedDirectory = ""
 
     private lateinit var imogeAdapter: ChatImogeAdapter
     private lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
+    lateinit var mediaImgAdapter: MediaImgAdapter
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var imm: InputMethodManager
     private var keyboardHeight: Int = 0
@@ -80,6 +82,8 @@ class ChatActivity : AppCompatActivity() {
 
     //Manifest 에서 설정한 권한을 가지고 온다.
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     val STORAGE_PERMISSION = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -101,6 +105,7 @@ class ChatActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
 
+    @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -214,6 +219,14 @@ class ChatActivity : AppCompatActivity() {
 
                         getImage()
 
+                        binding.viewMessageBox2Chat.visibility = View.GONE
+                        binding.etMessageChat.visibility = View.GONE
+                        binding.imgRecordChat.visibility = View.GONE
+                        binding.imgImogeChat.visibility = View.GONE
+                        binding.imgSendMessageChat.visibility = View.GONE
+
+                        binding.btnChatSendMedia.visibility = View.VISIBLE
+
                     }
 
                     //미디어 메뉴 내 Camera 클릭 시
@@ -221,7 +234,7 @@ class ChatActivity : AppCompatActivity() {
 
                         openCamera()
 
-                        binding.btnSendPhotoPreview.setOnClickListener{
+                        binding.btnSendPhotoPreview.setOnClickListener {
                             //전송 버튼 클릭효과
                             binding.imgSendMessageChat.performClick()
                             binding.photoPreview.visibility = View.GONE
@@ -272,6 +285,7 @@ class ChatActivity : AppCompatActivity() {
 
 
                     binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+                    binding.btnChatSendMedia.visibility = View.GONE
                     binding.mediaLayout.visibility = View.GONE
                     binding.mediaMenuLayout.visibility = View.GONE
                     binding.viewImogeLayout.visibility = View.GONE
@@ -392,11 +406,17 @@ class ChatActivity : AppCompatActivity() {
             //입력한 text가 공백이 아닌 경우 전송
             if (textCheck != "" ||
                 binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null
-                || photoUri != ""
+                || photoUri != "" || selectImgList.size != 0
             ) {
                 val chatModel = ChatModel()
                 chatModel.users.put(myNumber, true)
                 chatModel.users.put(receiver, true)
+
+                val photos = if (selectImgList.size != 0 && selectImgList != null) {
+                    selectedDirectory
+                } else {
+                    photoUri
+                }
 
                 val comment = ChatModel.Comment(
                     profileImg,
@@ -404,7 +424,7 @@ class ChatActivity : AppCompatActivity() {
                     binding.etMessageChat.text.toString(),
                     nowTime,
                     false,
-                    photoUri,
+                    photos,
                     chatRoomKey,
                     if (binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
                         "$selectCharacterName$$$selectCharacterIdx"
@@ -412,6 +432,7 @@ class ChatActivity : AppCompatActivity() {
                         ""
                     }
                 )
+                Log.d("TAG-adapter -> Activity2", selectImgList.toString())
 
                 initImogePreview()
 
@@ -488,6 +509,65 @@ class ChatActivity : AppCompatActivity() {
             binding.photoPreview.visibility = View.GONE
 
         }
+
+        //미디어 내 send 버튼 클릭 시
+        binding.btnChatSendMedia.setOnClickListener {
+
+            selectedDirectory = "$myNumber${LocalDateTime.now()}"
+
+            val storage = Firebase.storage
+            val storageRef = storage.reference
+            val imagesRef = storageRef.child(selectedDirectory)
+            var fileName = ""
+
+            if(selectImgList.size != 0){
+                for (item in selectImgList) {
+                    for (i in 0 until selectImgList.size) {
+                        // 업로드할 파일의 이름 설정
+                        fileName = "$myNumber$i"
+
+                        Log.d("TAG-selectImgList", selectImgList.toString())
+
+                        // 파일 업로드
+                        val imageRef = imagesRef.child(fileName)
+                        val file = Uri.fromFile(File(item.toString()))
+                        val uploadTask = imageRef.putFile(file)
+
+                        // 파일 업로드 상태 모니터링
+                        uploadTask.addOnSuccessListener { taskSnapshot ->
+                            // 업로드 성공 후 처리할 내용
+                            binding.imgSendMessageChat.performClick()
+                            Log.d("FirebaseStorage", "Upload Success: ${taskSnapshot.metadata?.path}")
+
+
+
+
+                        }.addOnFailureListener { exception ->
+                            // 업로드 실패 시 처리할 내용
+                            Log.e("FirebaseStorage", "Upload Failed: $exception")
+                        }
+                    }
+
+                }
+            }
+
+            //전송 버튼 클릭효과
+            Log.d("TAG-selectedDirectory", selectedDirectory.toString())
+
+
+
+
+            binding.mediaMenuLayout.visibility = View.VISIBLE
+
+            binding.viewMessageBox2Chat.visibility = View.VISIBLE
+            binding.etMessageChat.visibility = View.VISIBLE
+            binding.imgImogeChat.visibility = View.VISIBLE
+            binding.imgSendMessageChat.visibility = View.VISIBLE
+
+            binding.btnChatSendMedia.visibility = View.GONE
+            binding.mediaMediaLayout.visibility = View.GONE
+        }
+
 
     }
 
@@ -733,7 +813,6 @@ class ChatActivity : AppCompatActivity() {
                         }.addOnSuccessListener { taskSnapshot ->
                             // Upload succeeded, get the download URL
                             imgRef.downloadUrl.addOnSuccessListener { uri ->
-                                val absolutePath = uri.toString()
 
                             }
                         }
@@ -746,6 +825,9 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
+    //갤러리에서 사진 호출하여 리스트로 출력
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @SuppressLint("NotifyDataSetChanged")
     fun getImage() {
 
         //권한 확인
@@ -760,9 +842,10 @@ class ChatActivity : AppCompatActivity() {
 
         val projection = arrayOf(
             MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATE_TAKEN
-        )
+            MediaStore.Images.Media.DATA,
+            MediaStore.Images.Media.DATE_TAKEN,
+
+            )
         val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
 
         val query = applicationContext.contentResolver.query(
@@ -773,22 +856,34 @@ class ChatActivity : AppCompatActivity() {
             sortOrder
         )
         query?.use { cursor ->
-            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            while (cursor.moveToNext() && imgList.size < 10) { // 5개 이하까지 불러옴
-                val id = cursor.getLong(idColumn)
-                val imageUri = ContentUris.withAppendedId(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    id
-                )
-                imgList.add(imageUri)
-                Log.d("imgList", imgList.toString())
+            val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            while (cursor.moveToNext() && imgList.size < 10) { // 10개 이하까지 불러옴
+                val data = Uri.parse(cursor.getString(dataColumn))
+
+                // 이미지 파일의 Uri 생성
+                imgList.add(data)
+
+
             }
         }
 
-        val mediaImgAdapter = MediaImgAdapter(this@ChatActivity, imgList)
+        mediaImgAdapter = MediaImgAdapter(this@ChatActivity, imgList)
         binding.rvMediaImgList.adapter = mediaImgAdapter
         binding.rvMediaImgList.layoutManager =
             LinearLayoutManager(this@ChatActivity, RecyclerView.HORIZONTAL, false)
+
+        if (imgList.size != 0) {
+
+        }
+
+        mediaImgAdapter.setOnImageSelectListener(object : MediaImgAdapter.OnImageSelectListener {
+            override fun onImageSelect(selectImg: ArrayList<Uri?>) {
+                //선택한사진가져오기
+                selectImgList = selectImg
+
+            }
+
+        })
 
         mediaImgAdapter.notifyDataSetChanged()
 
