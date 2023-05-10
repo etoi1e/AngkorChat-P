@@ -79,17 +79,12 @@ class MediaImgAdapter(private val context: Context, private val imgList: ArrayLi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-
         val uri = imgList[position].toString()
-
-//        holder.imgMediaImgList.setImageBitmap(BitmapFactory.decodeFile(uri))
-        Log.d("TAG-Glide 내 uri", uri.toString())
 
         if (imgList.size != 0) {
             Glide.with(context)
                 .load(uri)
                 .into(holder.imgMediaImgList)
-            Log.d("TAG-Glide 내 uri", uri.toString())
         }
     }
 

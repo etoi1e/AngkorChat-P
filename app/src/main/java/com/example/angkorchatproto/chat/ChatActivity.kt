@@ -113,15 +113,37 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
         //현재 사용자 번호 불러오기
         val shared = getSharedPreferences("loginNumber", 0)
         myNumber = shared.getString("userNumber", "").toString()
 
+        //상대방 번호 저장
+        val receiverData = intent.getStringExtra("number").toString()
+        val receiverData2 = receiverData.replace("-", "")
+
+        receiver = receiverData2.replace(" ", "")
+
+        //상대방 이름 출력
+        val receiverName = intent.getStringExtra("name").toString()
+        binding.tvNameChat.text = receiverName
+
+
+        //상대방 프로필 출력
+        val profileImg = intent.getStringExtra("profile")
+
+        if (profileImg == "") {
+            Glide.with(this@ChatActivity)
+                .load(R.drawable.ic_profile_default_72)
+                .into(binding.imgProfileChat)
+        } else {
+            Glide.with(this@ChatActivity)
+                .load(profileImg)
+                .into(binding.imgProfileChat)
+        }
+
         //키보드 상태 캐치하는 리스너
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         window.decorView.viewTreeObserver.addOnGlobalLayoutListener {
-//            Log.d("키보드 높이", "rootHeight : $rootHeight")
             if (rootHeight == -1) {
                 rootHeight = window.decorView.height
             }
@@ -359,28 +381,30 @@ class ChatActivity : AppCompatActivity() {
             binding.imgImogePreview.setImageDrawable(null)
         }
 
-        //상대방 번호 저장
-        val receiverData = intent.getStringExtra("number").toString()
-        val receiverData2 = receiverData.replace("-", "")
 
-        receiver = receiverData2.replace(" ", "")
-
-        //상대방 이름 출력
-        val receiverName = intent.getStringExtra("name").toString()
-        binding.tvNameChat.text = receiverName
-
-        //상대방 프로필 출력
-        val profileImg = intent.getStringExtra("profile")
-
-        if (profileImg == "") {
-            Glide.with(this@ChatActivity)
-                .load(R.drawable.ic_profile_default_72)
-                .into(binding.imgProfileChat)
-        } else {
-            Glide.with(this@ChatActivity)
-                .load(profileImg)
-                .into(binding.imgProfileChat)
-        }
+//        //상대방 번호 저장
+//        val receiverData = intent.getStringExtra("number").toString()
+//        val receiverData2 = receiverData.replace("-", "")
+//
+//        receiver = receiverData2.replace(" ", "")
+//
+//        //상대방 이름 출력
+//        val receiverName = intent.getStringExtra("name").toString()
+//        binding.tvNameChat.text = receiverName
+//
+//
+//        //상대방 프로필 출력
+//        val profileImg = intent.getStringExtra("profile")
+//
+//        if (profileImg == "") {
+//            Glide.with(this@ChatActivity)
+//                .load(R.drawable.ic_profile_default_72)
+//                .into(binding.imgProfileChat)
+//        } else {
+//            Glide.with(this@ChatActivity)
+//                .load(profileImg)
+//                .into(binding.imgProfileChat)
+//        }
 
 
         //뒤로가기
@@ -419,11 +443,16 @@ class ChatActivity : AppCompatActivity() {
                 chatModel.users.put(myNumber, true)
                 chatModel.users.put(receiver, true)
 
-                val photos = if (selectImgList.size != 0 && selectImgList != null) {
-                    selectedDirectory
-                } else {
-                    photoUri
+                var photos = ""
+
+                if (selectImgList.size != 0) {
+                    photos = selectedDirectory
+                    if (selectedDirectory == "") {
+                        photos = photoUri
+                    }
+
                 }
+
 
                 val comment = ChatModel.Comment(
                     profileImg,
@@ -439,7 +468,6 @@ class ChatActivity : AppCompatActivity() {
                         ""
                     }
                 )
-                Log.d("TAG-adapter -> Activity2", selectImgList.toString())
 
                 initImogePreview()
 
@@ -466,8 +494,6 @@ class ChatActivity : AppCompatActivity() {
         }
 
         checkChatRoom()
-
-        Log.d("TAG-commentList", commentList.toString())
 
 
         //EditText에서 Enter 입력 시 전송
@@ -527,13 +553,11 @@ class ChatActivity : AppCompatActivity() {
             val imagesRef = storageRef.child(selectedDirectory)
             var fileName = ""
 
-            if(selectImgList.size != 0){
+            if (selectImgList.size != 0) {
                 for (item in selectImgList) {
                     for (i in 0 until selectImgList.size) {
                         // 업로드할 파일의 이름 설정
                         fileName = "$myNumber$i"
-
-                        Log.d("TAG-selectImgList", selectImgList.toString())
 
                         // 파일 업로드
                         val imageRef = imagesRef.child(fileName)
@@ -543,26 +567,26 @@ class ChatActivity : AppCompatActivity() {
                         // 파일 업로드 상태 모니터링
                         uploadTask.addOnSuccessListener { taskSnapshot ->
                             // 업로드 성공 후 처리할 내용
+
+                            //전송 버튼 클릭효과
                             binding.imgSendMessageChat.performClick()
-                            Log.d("FirebaseStorage", "Upload Success: ${taskSnapshot.metadata?.path}")
-
-
-
+                            selectedDirectory = ""
+                            Log.d(
+                                "TAG- FirebaseStorage",
+                                "Upload Success: ${taskSnapshot.metadata?.path}"
+                            )
 
                         }.addOnFailureListener { exception ->
                             // 업로드 실패 시 처리할 내용
-                            Log.e("FirebaseStorage", "Upload Failed: $exception")
+                            selectedDirectory = ""
+                            Log.e(" TAG- FirebaseStorage", "Upload Failed: $exception")
                         }
                     }
 
                 }
             }
 
-            //전송 버튼 클릭효과
-            Log.d("TAG-selectedDirectory", selectedDirectory.toString())
-
-
-
+            //갤러리 파일 전송 후 레이아웃 복원
 
             binding.mediaMenuLayout.visibility = View.VISIBLE
 
@@ -573,6 +597,7 @@ class ChatActivity : AppCompatActivity() {
 
             binding.btnChatSendMedia.visibility = View.GONE
             binding.mediaMediaLayout.visibility = View.GONE
+
         }
 
 
@@ -583,7 +608,6 @@ class ChatActivity : AppCompatActivity() {
 
     //보낸 사용자, 받은 사용자 확인 메소드
     private fun checkChatRoom() {
-
         chatRef.orderByChild("users/$myNumber").equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
 
@@ -597,7 +621,9 @@ class ChatActivity : AppCompatActivity() {
                             chatRoomKey = item.key.toString()
                             chatRoomKeyList.add(item.key.toString())
 
-                            getMessageList()
+
+                            getMessageList(chatRoomKey!!)
+
 
                             binding.rvChatListChat.layoutManager =
                                 GridLayoutManager(this@ChatActivity, 1)
@@ -609,15 +635,14 @@ class ChatActivity : AppCompatActivity() {
                     }
                 }
             })
-
     }
 
-
-    fun getMessageList() {
-        Log.d("TAG-chatRoomKey", chatRoomKey.toString())
-        chatRef.child(chatRoomKey.toString()).child("comments")
+    fun getMessageList(chatKey:String) {
+        Log.d("TAG-chatRoomKey", chatKey)
+        chatRef.child(chatKey).child("comments")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
+                    Log.d("TAG-error", error.toString())
                 }
 
                 @SuppressLint("NotifyDataSetChanged")

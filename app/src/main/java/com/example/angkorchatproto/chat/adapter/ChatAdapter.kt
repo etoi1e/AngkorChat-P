@@ -164,22 +164,19 @@ class ChatAdapter(
 
                                 val selectedPhotoList = p0!!.items
 
-                                selectedPhotoList.get(0).downloadUrl.addOnCompleteListener(object : OnCompleteListener<Uri>{
-                                    override fun onComplete(p0: Task<Uri>) {
-                                        if(p0.isSuccessful){
-                                            Glide.with(context)
-                                                .load(p0.getResult())
-                                                .into(holder.ivMyImoge)
-                                        }
+                                if (selectedPhotoList.size > 0) {
+                                    selectedPhotoList.get(0).downloadUrl.addOnCompleteListener(
+                                        object : OnCompleteListener<Uri> {
+                                            override fun onComplete(p0: Task<Uri>) {
+                                                if (p0.isSuccessful) {
+                                                    Glide.with(context)
+                                                        .load(p0.getResult())
+                                                        .into(holder.ivMyImoge)
+                                                }
 
-                                    }
-                                }).addOnFailureListener(object : OnFailureListener {
-                                    override fun onFailure(p0: Exception) {
-                                        Log.d("TAG-onFailure1",p0.toString())
-                                    }
-
-                                })
-
+                                            }
+                                        })
+                                }
 
 
                             }
@@ -189,7 +186,7 @@ class ChatAdapter(
 
                         .addOnFailureListener(object : OnFailureListener {
                             override fun onFailure(p0: Exception) {
-                                Log.d("TAG-onFailure2",p0.toString())
+                                Log.d("TAG-onFailure2", p0.toString())
                             }
 
                         })
@@ -276,9 +273,10 @@ class ChatAdapter(
 
                                 val selectedPhotoList = p0!!.items
 
-                                selectedPhotoList.get(1).downloadUrl.addOnCompleteListener(object : OnCompleteListener<Uri>{
+                                selectedPhotoList.get(0).downloadUrl.addOnCompleteListener(object :
+                                    OnCompleteListener<Uri> {
                                     override fun onComplete(p0: Task<Uri>) {
-                                        if(p0.isSuccessful){
+                                        if (p0.isSuccessful) {
                                             Glide.with(context)
                                                 .load(p0.getResult())
                                                 .into(holder.ivOtherImoge)
@@ -288,7 +286,6 @@ class ChatAdapter(
                                 })
 
 
-
                             }
 
 
@@ -296,7 +293,7 @@ class ChatAdapter(
 
                         .addOnFailureListener(object : OnFailureListener {
                             override fun onFailure(p0: Exception) {
-                                Log.d("TAG-ListAll Failure",p0.toString())
+                                Log.d("TAG-ListAll Failure", p0.toString())
                             }
 
                         })

@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.chat
 
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
@@ -9,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -19,15 +22,16 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
 
-
 class ChatRoomAdapter(
     val context: Context,
     val chatInfoList: ArrayList<ChatModel.Comment>,
     val chatRoomKey: ArrayList<String>,
-    var chatRoomName : String,
-    val chatCount : ArrayList<String>
+    var myNumber: String,
+    val chatCount: ArrayList<String>
 ) :
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
+
+    var sender = ""
 
     // 리스너 커스텀
     interface OnItemClickListener {
@@ -51,6 +55,7 @@ class ChatRoomAdapter(
         val tvMessageChatList: TextView
         val tvTimeChatList: TextView
         val tvCountChatChatList: TextView
+        val layout: ConstraintLayout
 
         init {
 
@@ -59,25 +64,8 @@ class ChatRoomAdapter(
             tvMessageChatList = itemView.findViewById(R.id.tvMessageChatList)
             tvTimeChatList = itemView.findViewById(R.id.tvTimeChatList)
             tvCountChatChatList = itemView.findViewById(R.id.tvCountChatChatList)
+            layout = itemView.findViewById(R.id.layout)
 
-
-            itemView.setOnClickListener {
-                val position = adapterPosition
-
-//                if (position != RecyclerView.NO_POSITION){
-//                    // 버그로 인해 -1이 아닐경우에
-//                    mOnItemClickListener.onItemClick(itemView,position)
-//                }
-
-
-                //클릭 시 채팅창으로 넘겨주는 부분
-                val intent = Intent(context, ChatActivity::class.java)
-                intent.putExtra("Key",chatInfoList[position].key)
-                intent.putExtra("chatName",chatInfoList[position].sender)
-
-                context.startActivity(intent)
-
-            }
 
         }
 
@@ -102,6 +90,25 @@ class ChatRoomAdapter(
             setTime = "AM " + chatRoom.time?.substring(11, 16)
         }
 
+        val usersRef = FBdataBase.getChatRef().child(chatRoomKey[position]).child("users")
+
+        //상대방 번호
+        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val users = snapshot.getValue() as Map<String, Boolean>
+                for (user in users.keys) {
+                    if (user != myNumber) {
+                        sender = user
+                        holder.tvNameChatList.text = sender
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // 에러 처리
+            }
+        })
+
 
         if (chatRoom.profile == "") {
             Glide.with(context)
@@ -113,11 +120,25 @@ class ChatRoomAdapter(
                 .into(holder.imgProfileChatList)
         }
 
+
+
+        holder.layout .setOnClickListener {
+//                if (position != RecyclerView.NO_POSITION){
+//                    // 버그로 인해 -1이 아닐경우에
+//                    mOnItemClickListener.onItemClick(itemView,position)
+//                }
+
+
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("name", holder.tvNameChatList.text)
+            intent.putExtra("number", holder.tvNameChatList.text)
+            context.startActivity(intent)
+        }
+
         //채팅방 내용 출력
-        holder.tvNameChatList.text = chatRoom.sender
-        chatRoomName = chatRoom.sender.toString()
+
         holder.tvMessageChatList.text = chatRoom.message
-        holder.tvCountChatChatList.text = chatInfoList.size.toString()
+        holder.tvCountChatChatList.text = chatCount.size.toString()
         holder.tvTimeChatList.text = setTime
 
 
