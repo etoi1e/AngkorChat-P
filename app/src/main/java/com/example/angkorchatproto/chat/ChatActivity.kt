@@ -285,6 +285,13 @@ class ChatActivity : AppCompatActivity() {
 
 
                     binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+
+                    binding.viewMessageBox2Chat.visibility = View.VISIBLE
+                    binding.etMessageChat.visibility = View.VISIBLE
+                    binding.imgImogeChat.visibility = View.VISIBLE
+                    binding.imgSendMessageChat.visibility = View.VISIBLE
+
+
                     binding.btnChatSendMedia.visibility = View.GONE
                     binding.mediaLayout.visibility = View.GONE
                     binding.mediaMenuLayout.visibility = View.GONE

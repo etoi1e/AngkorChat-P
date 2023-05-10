@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
@@ -40,9 +41,14 @@ class MediaImgAdapter(private val context: Context, private val imgList: ArrayLi
             itemView.setOnClickListener {
 
                 if (imgMediaImgList.tag == "false") {//사진 선택
-                    imgMediaImgList.setBackgroundResource(R.drawable.select_photo)
-                    imgMediaImgList.tag = "true"
-                    selectImg.add(imgList[adapterPosition])
+
+                    if (selectImg.size < 1) {
+                        selectImg.add(imgList[adapterPosition])
+                        imgMediaImgList.setBackgroundResource(R.drawable.select_photo)
+                        imgMediaImgList.tag = "true"
+                    } else {
+                        Toast.makeText(context, "사진은 1장만 선택 가능합니다", Toast.LENGTH_SHORT).show()
+                    }
                 } else {//사진 선택 해제
                     imgMediaImgList.setBackgroundResource(Color.TRANSPARENT)
                     imgMediaImgList.tag = "false"
@@ -77,13 +83,13 @@ class MediaImgAdapter(private val context: Context, private val imgList: ArrayLi
         val uri = imgList[position].toString()
 
 //        holder.imgMediaImgList.setImageBitmap(BitmapFactory.decodeFile(uri))
-        Log.d("TAG-Glide 내 uri",uri.toString())
+        Log.d("TAG-Glide 내 uri", uri.toString())
 
         if (imgList.size != 0) {
             Glide.with(context)
                 .load(uri)
                 .into(holder.imgMediaImgList)
-        Log.d("TAG-Glide 내 uri",uri.toString())
+            Log.d("TAG-Glide 내 uri", uri.toString())
         }
     }
 
