@@ -217,11 +217,9 @@ class ProfileActivity : AppCompatActivity() {
 
             val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
             startActivity(intent)
-            Log.d("TAG-사진권한","사진권한체크1")
         } else {
             //권한이 없으면 권한 요청을 합니다.
             ActivityCompat.requestPermissions(this@ProfileActivity,STORAGE_PERMISSION,FLAG_PERM_STORAGE)
-            Log.d("TAG-사진권한","사진권한체크2")
 
         }
 

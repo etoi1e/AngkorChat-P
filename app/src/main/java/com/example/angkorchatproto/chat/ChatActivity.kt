@@ -419,11 +419,16 @@ class ChatActivity : AppCompatActivity() {
                 chatModel.users.put(myNumber, true)
                 chatModel.users.put(receiver, true)
 
-                val photos = if (selectImgList.size != 0 && selectImgList != null) {
-                    selectedDirectory
-                } else {
-                    photoUri
+                var photos = ""
+
+                if (selectImgList.size != 0) {
+                    photos = selectedDirectory
+                    if (selectedDirectory == "") {
+                        photos = photoUri
+                    }
+
                 }
+
 
                 val comment = ChatModel.Comment(
                     profileImg,
@@ -527,7 +532,7 @@ class ChatActivity : AppCompatActivity() {
             val imagesRef = storageRef.child(selectedDirectory)
             var fileName = ""
 
-            if(selectImgList.size != 0){
+            if (selectImgList.size != 0) {
                 for (item in selectImgList) {
                     for (i in 0 until selectImgList.size) {
                         // 업로드할 파일의 이름 설정
@@ -544,13 +549,15 @@ class ChatActivity : AppCompatActivity() {
                         uploadTask.addOnSuccessListener { taskSnapshot ->
                             // 업로드 성공 후 처리할 내용
                             binding.imgSendMessageChat.performClick()
-                            Log.d("FirebaseStorage", "Upload Success: ${taskSnapshot.metadata?.path}")
-
-
-
+                            selectedDirectory = ""
+                            Log.d(
+                                "FirebaseStorage",
+                                "Upload Success: ${taskSnapshot.metadata?.path}"
+                            )
 
                         }.addOnFailureListener { exception ->
                             // 업로드 실패 시 처리할 내용
+                            selectedDirectory = ""
                             Log.e("FirebaseStorage", "Upload Failed: $exception")
                         }
                     }
@@ -573,6 +580,7 @@ class ChatActivity : AppCompatActivity() {
 
             binding.btnChatSendMedia.visibility = View.GONE
             binding.mediaMediaLayout.visibility = View.GONE
+
         }
 
 
