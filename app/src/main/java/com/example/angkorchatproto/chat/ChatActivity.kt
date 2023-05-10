@@ -502,7 +502,7 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
-        //이미지 전송 버튼 클릭효과
+        //이미지 전송 버튼 클릭효과!
         binding.btnSendPhotoPreview.setOnClickListener {
 
             binding.imgSendMessageChat.performClick()
