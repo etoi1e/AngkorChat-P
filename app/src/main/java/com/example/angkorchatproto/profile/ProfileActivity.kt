@@ -85,11 +85,10 @@ class ProfileActivity : AppCompatActivity() {
         //프로필 사진 uri 가져오기
         val profile = intent.getStringExtra("profile")
 
-        if (profile == "union") {
+        if (profile == "union") { //챗봇프로필 출력 조건
             Glide.with(this)
                 .load(R.drawable.top_logo)
                 .into(binding.imgProfileProfile)
-            Log.d("TAG-프로필", "유니온으로 출력구간")
         } else if (profile == "") {
             Glide.with(this)
                 .load(R.drawable.ic_profile_default_72)
@@ -103,7 +102,7 @@ class ProfileActivity : AppCompatActivity() {
 
         //채팅방으로 이동
         binding.imgChatProfile.setOnClickListener {
-            if (profile == "union") { //유니온 공식 계정 구분하기
+            if (profile == "union") { //챗봇으로 이동 조건
                 val intent = Intent(this@ProfileActivity, ChatBotActivity::class.java)
                 startActivity(intent)
                 finish()

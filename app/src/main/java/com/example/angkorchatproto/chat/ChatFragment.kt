@@ -60,27 +60,6 @@ class ChatFragment : Fragment() {
                             chatRoomsKeys.add(item.key.toString())
 
 
-                            //채팅창 내 채팅 갯수 불러오기
-                            chatRef.child(item.key.toString()).child("comments")
-                                .orderByChild("state").equalTo(false)
-                                .addListenerForSingleValueEvent(object : ValueEventListener {
-                                    override fun onDataChange(snapshot: DataSnapshot) {
-                                        for (chats in snapshot.children) {
-                                            val item = chats.getValue<ChatModel.Comment>()
-                                            if (item != null) {
-                                                chatCountList.add(item)
-                                            }
-                                        }
-                                        chatCount.add(chatCountList.size.toString())
-                                        chatCountList.clear()
-                                    }
-
-                                    override fun onCancelled(error: DatabaseError) {
-                                        TODO("Not yet implemented")
-                                    }
-
-                                })
-
                             //시간 기준 정렬
                             chatRef.child(item.key.toString()).child("comments")
                                 .orderByChild("time").limitToLast(1)
@@ -115,7 +94,8 @@ class ChatFragment : Fragment() {
                 }
             })
 
-        adapter = ChatRoomAdapter(requireContext(), chatInfoList, chatRoomsKeys, sender, chatCount)
+
+        adapter = ChatRoomAdapter(requireContext(), chatInfoList, chatRoomsKeys, myNumber, chatCount)
         binding.rvChatListChats.adapter = adapter
         binding.rvChatListChats.layoutManager = GridLayoutManager(requireContext(), 1)
         binding.imgEmojiChats.setOnClickListener {
