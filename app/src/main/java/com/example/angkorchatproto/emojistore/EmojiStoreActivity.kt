@@ -2,12 +2,18 @@ package com.example.angkorchatproto.emojistore
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityEmojiStoreBinding
+import com.example.angkorchatproto.dialog.CustomDialog
 import com.example.angkorchatproto.emojistore.viewmodel.EmojiStoreViewModel
+import kr.co.kdnavien.naviensmart.presentation.custom.DialogNegativeBtnListener
+import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 
 class EmojiStoreActivity : AppCompatActivity() {
     lateinit var binding: ActivityEmojiStoreBinding
