@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
+import android.content.Intent.ACTION_OPEN_DOCUMENT
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Point
@@ -13,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -30,27 +32,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
+import com.example.angkorchatproto.R
 import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
-import com.example.angkorchatproto.R
+import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.io.File
-import java.text.FieldPosition
 import java.time.LocalDateTime
+import java.util.*
 
 
 class ChatActivity : AppCompatActivity() {
@@ -63,6 +67,7 @@ class ChatActivity : AppCompatActivity() {
     var imgList = ArrayList<Uri?>()
     var selectImgList = ArrayList<Uri?>()
     var selectedDirectory = ""
+    var sendFileDirectory = ""
 
     private lateinit var imogeAdapter: ChatImogeAdapter
     private lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
@@ -98,6 +103,7 @@ class ChatActivity : AppCompatActivity() {
 
     //카메라와 갤러리를 호출하는 플래그
     val FLAG_REQ_CAMERA = 1001
+    val FLAG_REQ_OPEN_DIRECTORY = 1002
 
     var photoUri = ""
 
@@ -274,11 +280,15 @@ class ChatActivity : AppCompatActivity() {
                     //프로토 타입 내 지원하지 않는 기능 Toast만 출력
                     //미디어 메뉴 내 File 클릭 시
                     binding.imgFileChatMedia.setOnClickListener {
-                        Toast.makeText(
-                            this@ChatActivity,
-                            "This feature is not supported by Prototype",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                        val intent = Intent(ACTION_OPEN_DOCUMENT)
+
+                        intent.addCategory(Intent.CATEGORY_OPENABLE)
+                        intent.type = "*/*"
+
+                        startActivityForResult(intent, FLAG_REQ_OPEN_DIRECTORY)
+
+
                     }
 
 
@@ -381,32 +391,6 @@ class ChatActivity : AppCompatActivity() {
             binding.imgImogePreview.setImageDrawable(null)
         }
 
-
-//        //상대방 번호 저장
-//        val receiverData = intent.getStringExtra("number").toString()
-//        val receiverData2 = receiverData.replace("-", "")
-//
-//        receiver = receiverData2.replace(" ", "")
-//
-//        //상대방 이름 출력
-//        val receiverName = intent.getStringExtra("name").toString()
-//        binding.tvNameChat.text = receiverName
-//
-//
-//        //상대방 프로필 출력
-//        val profileImg = intent.getStringExtra("profile")
-//
-//        if (profileImg == "") {
-//            Glide.with(this@ChatActivity)
-//                .load(R.drawable.ic_profile_default_72)
-//                .into(binding.imgProfileChat)
-//        } else {
-//            Glide.with(this@ChatActivity)
-//                .load(profileImg)
-//                .into(binding.imgProfileChat)
-//        }
-
-
         //뒤로가기
         binding.imgMoveBackChat.setOnClickListener {
             finish()
@@ -437,7 +421,7 @@ class ChatActivity : AppCompatActivity() {
             //입력한 text가 공백이 아닌 경우 전송
             if (textCheck != "" ||
                 binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null
-                || photoUri != "" || selectImgList.size != 0
+                || photoUri != "" || selectImgList.size != 0 || sendFileDirectory != ""
             ) {
                 val chatModel = ChatModel()
                 chatModel.users.put(myNumber, true)
@@ -455,18 +439,14 @@ class ChatActivity : AppCompatActivity() {
 
 
                 val comment = ChatModel.Comment(
-                    profileImg,
-                    myNumber,
-                    binding.etMessageChat.text.toString(),
-                    nowTime,
-                    false,
-                    photos,
-                    chatRoomKey,
+                    profileImg, myNumber, binding.etMessageChat.text.toString(),
+                    nowTime,false, photos, chatRoomKey,
                     if (binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
                         "$selectCharacterName$$$selectCharacterIdx"
-                    } else {
-                        ""
-                    }
+                    } else {  "" },
+                    if(sendFileDirectory != ""){
+                    sendFileDirectory
+                    }else{""}
                 )
 
                 initImogePreview()
@@ -637,7 +617,7 @@ class ChatActivity : AppCompatActivity() {
             })
     }
 
-    fun getMessageList(chatKey:String) {
+    fun getMessageList(chatKey: String) {
         Log.d("TAG-chatRoomKey", chatKey)
         chatRef.child(chatKey).child("comments")
             .addValueEventListener(object : ValueEventListener {
@@ -791,10 +771,10 @@ class ChatActivity : AppCompatActivity() {
         return true
     }
 
+    @SuppressLint("Range")
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 FLAG_REQ_CAMERA -> {
@@ -852,10 +832,55 @@ class ChatActivity : AppCompatActivity() {
 
                     }
                 }
+                FLAG_REQ_OPEN_DIRECTORY -> {
+                    //작업중
+
+                    val fileUri = data!!.getData();
+
+                    selectedDirectory = "$myNumber${LocalDateTime.now()}"
+
+                    // 파일 이름 디바이스 저장명으로 바꾸기
+                    var result: String? = null
+                    if (fileUri != null) {
+                        if (fileUri.getScheme().equals("content")) {
+                            val cursor = contentResolver.query(fileUri, null, null, null, null)
+                            try {
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    result =
+                                        cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                }
+                            } finally {
+                                cursor?.close()
+                            }
+                        }
+                    }
+                    if (result == null) {
+                        if (fileUri != null) {
+                            result = fileUri.getLastPathSegment()
+                        }
+                    }
+
+
+                    // Firebase Storage에 파일 업로드
+                    val fileRef =
+                        Firebase.storage.getReference().child("$selectedDirectory/$result")
+                    if (fileUri != null) {
+                        fileRef.putFile(fileUri).addOnSuccessListener { //성공시
+                            sendFileDirectory = "$fileRef$fileUri"
+                            selectedDirectory = ""
+                            binding.imgSendMessageChat.performClick()
+                        }
+
+
+                    }
+
+
+                }
             }
         }
-    }
 
+
+    }
 
     //갤러리에서 사진 호출하여 리스트로 출력
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -908,7 +933,8 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
-        mediaImgAdapter.setOnImageSelectListener(object : MediaImgAdapter.OnImageSelectListener {
+        mediaImgAdapter.setOnImageSelectListener(object :
+            MediaImgAdapter.OnImageSelectListener {
             override fun onImageSelect(selectImg: ArrayList<Uri?>) {
                 //선택한사진가져오기
                 selectImgList = selectImg
@@ -920,8 +946,6 @@ class ChatActivity : AppCompatActivity() {
         mediaImgAdapter.notifyDataSetChanged()
 
     }
-
-
 }
 
 
