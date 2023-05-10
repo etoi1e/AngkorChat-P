@@ -67,10 +67,11 @@
         android:id="@+id/tvTimeRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:text="PM 03:35"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvMyMessageChat"
-        app:layout_constraintEnd_toStartOf="@+id/ivMyImoge"
+        app:layout_constraintEnd_toStartOf="@+id/tvMyMessageChat"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -78,9 +79,10 @@
         android:id="@+id/tvTimeLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:text="PM 03:35"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvOtherMessageChat"
-        app:layout_constraintStart_toEndOf="@+id/ivOtherImoge" />
+        app:layout_constraintStart_toEndOf="@+id/tvOtherMessageChat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

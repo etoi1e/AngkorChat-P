@@ -121,34 +121,35 @@ class ChatBotActivity : AppCompatActivity() {
 
         //파일, 이모지, 녹음, 메모 클릭 시 임의 Toast 출력
         binding.imgMenuChatBot.setOnClickListener {
-            Toast.makeText(this@ChatBotActivity, "메뉴 클릭", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ChatBotActivity, "챗봇에서 지원하지 않는 기능입니다", Toast.LENGTH_SHORT).show()
         }
 
         binding.imgMediaChatBot.setOnClickListener {
-            Toast.makeText(this@ChatBotActivity, "미디어 클릭", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ChatBotActivity, "챗봇에서 지원하지 않는 기능입니다", Toast.LENGTH_SHORT).show()
         }
 
         binding.imgImogeChatBot.setOnClickListener {
-            lifecycleScope.launch {
-                setImogeRecyclerView()
-                if (binding.viewImogeLayout.visibility == View.GONE) { // 키보드가 올라와있는 상황에서 이모티콘 버튼 클릭
-                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-                    binding.etMessageChatBot.requestFocus()
-                    showKeyboard()
-                    delay(10)
-                    binding.etMessageChatBot.clearFocus()
-                    hideKeyboard()
-                    binding.viewImogeLayout.visibility = View.VISIBLE
-                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-                } else { // 이모티콘 컨테이너가 띄워져 있는 상태에서 사용자가 다시 이모티콘 아이콘을 클릭
-                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-                    binding.etMessageChatBot.requestFocus()
-                    showKeyboard()
-                    delay(10)
-                    binding.viewImogeLayout.visibility = View.GONE
-                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-                }
-            }
+            Toast.makeText(this@ChatBotActivity, "챗봇에서 지원하지 않는 기능입니다", Toast.LENGTH_SHORT).show()
+//            lifecycleScope.launch {
+//                setImogeRecyclerView()
+//                if (binding.viewImogeLayout.visibility == View.GONE) { // 키보드가 올라와있는 상황에서 이모티콘 버튼 클릭
+//                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+//                    binding.etMessageChatBot.requestFocus()
+//                    showKeyboard()
+//                    delay(10)
+//                    binding.etMessageChatBot.clearFocus()
+//                    hideKeyboard()
+//                    binding.viewImogeLayout.visibility = View.VISIBLE
+//                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+//                } else { // 이모티콘 컨테이너가 띄워져 있는 상태에서 사용자가 다시 이모티콘 아이콘을 클릭
+//                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+//                    binding.etMessageChatBot.requestFocus()
+//                    showKeyboard()
+//                    delay(10)
+//                    binding.viewImogeLayout.visibility = View.GONE
+//                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+//                }
+//            }
         }
 
         binding.imgImogePreviewClose.setOnClickListener {
@@ -157,7 +158,7 @@ class ChatBotActivity : AppCompatActivity() {
         }
 
         binding.imgRecordChatBot.setOnClickListener {
-            Toast.makeText(this@ChatBotActivity, "음성녹음 클릭", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ChatBotActivity, "챗봇에서 지원하지 않는 기능입니다", Toast.LENGTH_SHORT).show()
         }
 
         binding.tvNameChatBot.text = intent.getStringExtra("name")

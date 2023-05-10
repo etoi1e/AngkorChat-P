@@ -235,9 +235,9 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteY="16dp"
-            tools:listitem="@layout/item_shortcut_imoge"
-            tools:ignore="MissingConstraints" />
+            tools:listitem="@layout/item_shortcut_emoji" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewImoge"
@@ -263,7 +263,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mediaMenuLayout"
@@ -274,7 +274,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone">
+            tools:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imgMediaChatMedia"
@@ -442,7 +442,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMediaImgList"
@@ -451,7 +451,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/viewMediabottomBox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+            </androidx.recyclerview.widget.RecyclerView>
 
             <View
                 android:id="@+id/viewMediabottomBox"
@@ -462,7 +464,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/imgMediaMediaAll"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
@@ -480,22 +482,22 @@
                 android:text="All"
                 android:textColor="#111111"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView12"
-                app:layout_constraintStart_toEndOf="@+id/imageView12"
-                app:layout_constraintTop_toTopOf="@+id/imageView12" />
+                app:layout_constraintBottom_toBottomOf="@+id/imgMediaMediaAll"
+                app:layout_constraintStart_toEndOf="@+id/imgMediaMediaAll"
+                app:layout_constraintTop_toTopOf="@+id/imgMediaMediaAll" />
 
             <ImageView
-                android:id="@+id/imageView13"
+                android:id="@+id/imgEffectMedia"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_effect_fill_bk_24"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView14"
-                app:layout_constraintEnd_toStartOf="@+id/imageView14"
-                app:layout_constraintTop_toTopOf="@+id/imageView14" />
+                app:layout_constraintBottom_toBottomOf="@+id/imgMoreMedia"
+                app:layout_constraintEnd_toStartOf="@+id/imgMoreMedia"
+                app:layout_constraintTop_toTopOf="@+id/imgMoreMedia" />
 
             <ImageView
-                android:id="@+id/imageView14"
+                android:id="@+id/imgMoreMedia"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
@@ -575,7 +577,7 @@
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            app:icon="@drawable/ic_send_fill_wh_24"
+            android:drawableEnd="@drawable/ic_send_fill_wh_24"
             app:iconGravity="end"
             app:iconPadding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -584,5 +586,27 @@
             app:layout_constraintVertical_bias="0.479" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btnChatSendMedia"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/style_login_btn"
+        android:drawableEnd="@drawable/ic_send_fill_wh_24"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="Send  "
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:iconGravity="end"
+        app:iconSize="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewBottomBoxChat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
