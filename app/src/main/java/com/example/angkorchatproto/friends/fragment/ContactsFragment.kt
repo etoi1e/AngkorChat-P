@@ -1,81 +1,43 @@
-package com.example.angkorchatproto.friends
+package com.example.angkorchatproto.friends.fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.provider.ContactsContract
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import android.text.SpannableStringBuilder
+import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
+import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
-import com.example.angkorchatproto.databinding.ActivityAddFriendsBinding
+import com.example.angkorchatproto.databinding.FragmentContactsBinding
+import com.example.angkorchatproto.dialog.CustomDialog
+import com.example.angkorchatproto.utils.CountryAdapter
+import com.example.angkorchatproto.utils.CountryUtils
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 
-
-class AddFriendsActivity : AppCompatActivity() {
-
-    lateinit var binding: ActivityAddFriendsBinding
-    var suggestList: ArrayList<UserVO> = ArrayList()
-    var friendList: ArrayList<String> = ArrayList()
-    var friendRef = FBdataBase.getFriendRef()
-
-
+class ContactsFragment : Fragment() {
+    lateinit var binding: FragmentContactsBinding
+    private var friendList: ArrayList<String> = ArrayList()
+    private var friendRef = FBdataBase.getFriendRef()
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        binding = ActivityAddFriendsBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
-        //뒤로가기
-        binding.imgMoveBackAddFriends.setOnClickListener {
-            finish()
-        }
-
-        binding.imgContactAddFriends.setOnClickListener {
-            val intent = Intent(this, AddByContactActivity::class.java)
-            startActivity(intent)
-        }
-
-
-        //로그인한 계정 번호 불러오기
-        //SharedPreferences
-        val shared = getSharedPreferences("loginNumber", 0)
-        val userNumber = shared.getString("userNumber", "")
-
-
-        //주소록 친구 불러와서 rv에 출력
-        getContacts()
-        val adapter = SuggestedAdapter(
-            this@AddFriendsActivity,
-            suggestList,
-            userNumber.toString(),
-            friendList
-        )
-        binding.rvSuggestedListAddFriends.adapter = adapter
-        binding.rvSuggestedListAddFriends.layoutManager =
-        GridLayoutManager(this@AddFriendsActivity, 1)
-
-
-        //추천 친구 Count
-        if (suggestList.size == 0 || suggestList.size == null) {
-            binding.tvSuggestedCountAddFriends.text = "0"
-        } else {
-            val testList = suggestList.size.toString()
-            binding.tvSuggestedCountAddFriends.text = testList
-        }
-
-
-        //FireBase 데이터 불러와서 friendList에 저장하기
+        val userNumber = requireActivity().getSharedPreferences("loginNumber", 0).getString("userNumber", "")
         friendRef.child(userNumber.toString()).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-
                 val userData = dataSnapshot.value as HashMap<String, Any>?
-
                 val friendNum = userData!!["phone"] as String
                 friendList.add(friendNum)
-
             }
 
 
@@ -95,18 +57,76 @@ class AddFriendsActivity : AppCompatActivity() {
 
             }
         })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.etPhoneNumberLogin.requestFocus()
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.etPhoneNumberLogin, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentContactsBinding.inflate(inflater, container, false)
+        val countries = CountryUtils.getCountries()
+        val adapter = CountryAdapter(requireContext(), countries)
+        binding.spCountryCodeLogin.adapter = adapter
+        binding.imgMoveBackLogin.setOnClickListener {
+            view?.findNavController()?.popBackStack()
+        }
+        binding.etPhoneNumberLogin.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val resultPhoneNum = validateUser()
+                val userNumber = requireActivity().getSharedPreferences("loginNumber", 0).getString("userNumber", "")
+                val removeDash = resultPhoneNum?.phone.toString().replace("-", "")
+                val removeSpace = removeDash.replace(" ", "")
+                resultPhoneNum?.phone = removeSpace
+
+                val resultPhoneNumAdded = friendList.contains(resultPhoneNum?.phone)
+                if (resultPhoneNum != null) {
+                    view?.findNavController()?.navigate(R.id.resultFragment, bundleOf(
+                        "user" to resultPhoneNum,
+                        "phoneNumberAdded" to resultPhoneNumAdded,
+                        "userNumber" to userNumber
+                    ))
+                } else {
+                    CustomDialog.create(requireActivity())
+                        ?.setDesc(SpannableStringBuilder("Invalid phone number. Please\nenter a valid phone number."))
+                        ?.setCancelable(true)
+                        ?.setPositiveButtonText(SpannableStringBuilder("Done"))
+                        ?.setPositiveBtnListener(object: DialogPositiveBtnListener {
+                            override fun confirm(division: Int) {
+                            }
+                        })
+                        ?.showOneButton()
+                }
+                true
+            } else {
+                false
+            }
+        }
+        return binding.root
+    }
+
+    private fun validateUser(): UserVO? {
+        Log.d("ContactsFragment","${binding.etPhoneNumberLogin.text}")
+        return getContacts().find {
+            it.phone == binding.etPhoneNumberLogin.text.toString()
+        }
+    }
+
+    private fun isUserAdded() {
 
     }
-    //onCreate바깥
-
-
-    //디바이스 주소록 가져오기
 
     @SuppressLint("Range")
     private fun getContacts(): ArrayList<UserVO> {
-
+        val suggestList: ArrayList<UserVO> = ArrayList()
         // 주소록에 접근하기 위한 ContentResolver 생성
-        val cr = this.contentResolver
+        val cr = requireActivity().contentResolver
 
         // 주소록에 저장된 연락처 정보를 가져오기 위한 URI 생성
         val uri = ContactsContract.Contacts.CONTENT_URI
@@ -194,8 +214,4 @@ class AddFriendsActivity : AppCompatActivity() {
         return suggestList
 
     }
-
-
-
-
 }
