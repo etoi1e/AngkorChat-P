@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".auth.LoginActivity">
+
+    <ImageView
+        android:id="@+id/imgMoveBackLogin"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close_line_28" />
+
+    <TextView
+        android:id="@+id/tvContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact"
+        android:textColor="@color/textBlack"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMoveBackLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgMoveBackLogin" />
+
+    <View
+        android:id="@+id/viewNumberBoxLogin"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvContact" />
+
+    <View
+        android:id="@+id/viewUnderLineLogin"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#dadde3"
+        app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/spCountryCodeLogin"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintStart_toStartOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin" />
+
+    <EditText
+        android:id="@+id/etPhoneNumberLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:hint="000 123 4567"
+        android:inputType="number"
+        android:textColor="@color/textBlack"
+        android:textColorHint="#dadde3"
+        app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintStart_toEndOf="@+id/spCountryCodeLogin"
+        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
