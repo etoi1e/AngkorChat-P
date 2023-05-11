@@ -10,7 +10,6 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -88,9 +87,17 @@ class ChatAdapter(
         //시간 커스텀
         var setTime = ""
         //var setDate = message.time?.substring(0, 10)
-        val setAm = message.time?.substring(11, 12)?.toInt()
+        val setAm = message.time?.substring(11, 13)?.toInt()
+        Log.d("TAG-시간체크", setAm.toString())
         if (setAm!! >= 12) {
-            setTime = "PM" + message.time?.substring(11, 16)
+            val setHour = message.time?.substring(11, 13)?.toInt()
+            val setMin = message.time?.substring(14, 16)
+            if (setHour!!-12 >= 10) {
+                setTime = "PM${setHour!! - 12}:$setMin"
+                Log.d("TAG-시간체크2", setTime.toString())
+            } else {
+                setTime = "PM0${setHour!! - 12}:$setMin"
+            }
         } else {
             setTime = "AM" + message.time?.substring(11, 16)
         }
