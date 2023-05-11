@@ -40,7 +40,7 @@
     <TextView
         android:id="@+id/tvTitleAddFriends"
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
+        android:layout_height="wrap_content"
         android:text="Add Friend"
         android:textColor="@color/textBlack"
         android:textSize="18sp"

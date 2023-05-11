@@ -16,7 +16,7 @@ import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 class CustomDialog private constructor() {
     private var dialog: Dialog? = null
     private var context: Context? = null
-    private var title: SpannableStringBuilder? = null
+    private var titleText: SpannableStringBuilder? = null
     private var descText: SpannableStringBuilder? = null
     private var desc2Text: SpannableStringBuilder? = null
     private var positiveBtnText: SpannableStringBuilder? = null
@@ -68,7 +68,7 @@ class CustomDialog private constructor() {
      * @return CustomDialog
      */
     fun setTitle(title: SpannableStringBuilder?): CustomDialog {
-        this.title = title
+        this.titleText = title
         return this
     }
 
@@ -166,7 +166,12 @@ class CustomDialog private constructor() {
                 val view: View =
                     LayoutInflater.from(context).inflate(R.layout.dialog_one_button, null)
                 dialog?.setContentView(view)
-                (view.findViewById<View>(R.id.title) as TextView).text = title
+
+                if (titleText != null) {
+                    val title = (view.findViewById<View>(R.id.title) as TextView)
+                    title.visibility = View.VISIBLE
+                    title.text = titleText
+                }
 
                 if (descText != null) {
                     val desc = (view.findViewById<View>(R.id.desc1) as TextView)
@@ -203,7 +208,12 @@ class CustomDialog private constructor() {
             val view: View =
                 LayoutInflater.from(context).inflate(R.layout.dialog_two_button, null)
             dialog?.setContentView(view)
-            (view.findViewById<View>(R.id.title) as TextView).text = title
+
+            if (titleText != null) {
+                val title = (view.findViewById<View>(R.id.title) as TextView)
+                title.visibility = View.VISIBLE
+                title.text = titleText
+            }
 
             if (descText != null) {
                 val desc = (view.findViewById<View>(R.id.desc1) as TextView)
