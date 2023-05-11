@@ -866,10 +866,11 @@ class ChatActivity : AppCompatActivity() {
                         Firebase.storage.getReference().child("$selectedDirectory/$result")
                     if (fileUri != null) {
                         fileRef.putFile(fileUri).addOnSuccessListener { //성공시
-                            sendFileDirectory = "$fileRef$fileUri"
+                            sendFileDirectory = "$fileRef"
                             selectedDirectory = ""
                             photoUri = ""
                             selectedDirectory = ""
+
                             binding.imgSendMessageChat.performClick()
                             sendFileDirectory = ""
                         }

@@ -1,10 +1,14 @@
 package com.example.angkorchatproto.chat.adapter
 
-import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.os.Environment.DIRECTORY_DOWNLOADS
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,20 +17,23 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
-import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.chat.ImgViewActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
+import com.google.firebase.storage.ktx.storage
+import java.io.File
 import java.lang.Exception
 
 
@@ -215,8 +222,8 @@ class ChatAdapter(
                                 holder.ivMySendImg.setOnClickListener {
 
 
-                                    val intent = Intent(context,ImgViewActivity::class.java)
-                                    intent.putExtra("imgPath",p0.toString())
+                                    val intent = Intent(context, ImgViewActivity::class.java)
+                                    intent.putExtra("imgPath", p0.toString())
 
                                     context.startActivity(intent)
 
@@ -258,10 +265,16 @@ class ChatAdapter(
                                                     //이미지 클릭 시 전체 화면으로 보여주기
                                                     if (holder.ivMySendImg.visibility == View.VISIBLE) {
                                                         holder.ivMySendImg.setOnClickListener {
-                                                            
 
-                                                            val intent = Intent(context,ImgViewActivity::class.java)
-                                                            intent.putExtra("imgPath",p0.getResult().toString())
+
+                                                            val intent = Intent(
+                                                                context,
+                                                                ImgViewActivity::class.java
+                                                            )
+                                                            intent.putExtra(
+                                                                "imgPath",
+                                                                p0.getResult().toString()
+                                                            )
                                                             context.startActivity(intent)
 
                                                         }
@@ -294,6 +307,73 @@ class ChatAdapter(
             //파일
             if (message.file != "") {
                 holder.myFileLayout.visibility = View.VISIBLE
+
+                holder.myFileLayout.setOnClickListener {
+
+                    val storageReference = Firebase.storage.reference
+                    val fileRef = storageReference.child(message.file.toString())
+
+                    fileRef.downloadUrl.addOnSuccessListener{
+
+                    }
+                    
+                    //다운로드 주소로 변환
+                    var downloadReference = Firebase.storage.getReferenceFromUrl(message.file.toString().
+                    replace("gs://angkor-ae0c0.appspot.com/","https://firebasestorage.googleapis.com/v0/b/angkor-ae0c0.appspot.com/o/"))
+
+                    //파일의 확장자
+                    var fileType = downloadReference.name.substring(downloadReference.name.indexOf("."),downloadReference.name.lastIndex+1)
+
+                    val destinationPath = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
+
+                    //내부 저장소에 저장되는 이름
+                    val localFile = File.createTempFile("AngkorChat",fileType,destinationPath)
+
+                    downloadReference.getFile(localFile).addOnCompleteListener{
+                        Log.d("TAG-downloadReference", downloadReference.toString())
+                        Toast.makeText(context, "다운로드 완료",Toast.LENGTH_LONG).show()
+                        Log.d("TAG-파일이름", "name: ${downloadReference.name}")
+                    }.addOnProgressListener {
+                        Log.d("TAG-addOnProgressListener", "OnProgressListener")
+                    }.addOnFailureListener{
+                            Log.e("TAG-저장실패",it.message.toString())
+                        }
+
+//
+//
+//
+//
+//                    val storageRef = Firebase.storage.reference
+//                Log.d("TAG-파일경로2",message.file.toString())
+//
+//                    val file = Uri.parse(message.file.toString())
+//                    val fileRef = storageRef.child("files/${file.lastPathSegment}")
+//                    // 다운로드할 파일의 적절한 디렉토리 경로 지정
+//                    val downloadsDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) // Android 11 이상 버전에서는 권한 필요
+//
+//                    Log.d("TAG-file",file.toString())
+//                Log.d("TAG-fileRef",fileRef.toString())
+//
+//                    fileRef.getFile(file)
+//                        .addOnSuccessListener {
+//                            //저장완료 Toast 출력
+//                            Toast.makeText(
+//                                context,
+//                                "파일이 저장되었습니다.",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                        .addOnFailureListener {
+//                            // 파일 업로드 실패
+//                            Toast.makeText(
+//                                context,
+//                                "파일 업로드 실패.",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//
+
+                }
             }
 
 
@@ -355,8 +435,8 @@ class ChatAdapter(
                                 holder.ivOtherSendImg.setOnClickListener {
 
 
-                                    val intent = Intent(context,ImgViewActivity::class.java)
-                                    intent.putExtra("imgPath",p0.toString())
+                                    val intent = Intent(context, ImgViewActivity::class.java)
+                                    intent.putExtra("imgPath", p0.toString())
 
                                     context.startActivity(intent)
 
@@ -400,8 +480,14 @@ class ChatAdapter(
                                                         holder.ivOtherSendImg.setOnClickListener {
 
 
-                                                            val intent = Intent(context,ImgViewActivity::class.java)
-                                                            intent.putExtra("imgPath",p0.getResult().toString())
+                                                            val intent = Intent(
+                                                                context,
+                                                                ImgViewActivity::class.java
+                                                            )
+                                                            intent.putExtra(
+                                                                "imgPath",
+                                                                p0.getResult().toString()
+                                                            )
                                                             context.startActivity(intent)
 
                                                         }
@@ -426,7 +512,6 @@ class ChatAdapter(
                         })
 
                 }
-
 
 
             }
