@@ -40,14 +40,12 @@ import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -106,6 +104,7 @@ class ChatActivity : AppCompatActivity() {
     val FLAG_REQ_OPEN_DIRECTORY = 1002
 
     var photoUri = ""
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -431,10 +430,10 @@ class ChatActivity : AppCompatActivity() {
 
                 if (selectImgList.size != 0) {
                     photos = selectedDirectory
-                    if (selectedDirectory == "") {
-                        photos = photoUri
-                    }
+                }
 
+                if (selectedDirectory == "") {
+                    photos = photoUri
                 }
 
 
@@ -515,11 +514,12 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
-        //이미지 전송 버튼 클릭효과!
+        //촬영 후 이미지 전송 버튼 클릭효과
         binding.btnSendPhotoPreview.setOnClickListener {
 
             binding.imgSendMessageChat.performClick()
             binding.photoPreview.visibility = View.GONE
+            photoUri = ""
 
         }
 
@@ -868,7 +868,10 @@ class ChatActivity : AppCompatActivity() {
                         fileRef.putFile(fileUri).addOnSuccessListener { //성공시
                             sendFileDirectory = "$fileRef$fileUri"
                             selectedDirectory = ""
+                            photoUri = ""
+                            selectedDirectory = ""
                             binding.imgSendMessageChat.performClick()
+                            sendFileDirectory = ""
                         }
 
 

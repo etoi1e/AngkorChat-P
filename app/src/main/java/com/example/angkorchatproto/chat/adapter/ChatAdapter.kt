@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.chat.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -17,16 +19,15 @@ import com.bumptech.glide.Glide
 import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.chat.ChatActivity
+import com.example.angkorchatproto.chat.ImgViewActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
-import com.google.firebase.storage.ktx.storage
 import java.lang.Exception
-import java.util.zip.Inflater
 
 
 class ChatAdapter(
@@ -52,21 +53,78 @@ class ChatAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var tvMyMessageChat: TextView
-        var tvOtherMessageChat: TextView
-        var ivMyImoge: ImageView
-        var ivOtherImoge: ImageView
         var divChatList: ConstraintLayout
+
+        //내가 보낸 채팅 views
+        var myChatLayout: LinearLayout
+
+        //파일부분
+        var myFileLayout: ConstraintLayout
+        var tvMyFileName: TextView
+        var tvMyFileDate: TextView
+        var tvMyFileSize: TextView
+
+        //이미지
+        var ivMySendImg: ImageView
+
+        //이모티콘
+        var ivMyImoge: ImageView
+
+        //텍스트
+        var tvMyMessageChat: TextView
         var tvTimeRight: TextView
+
+        //상대방이 보낸 채팅 views
+        var otherChatLayout: LinearLayout
+
+        //파일부분
+        var otherFileLayout: ConstraintLayout
+        var tvOtherFileName: TextView
+        var tvOtherFileDate: TextView
+        var tvOtherFileSize: TextView
+
+        //이미지
+        var ivOtherSendImg: ImageView
+
+        //이모티콘
+        var ivOtherImoge: ImageView
+
+        //텍스트
+        var tvOtherMessageChat: TextView
         var tvTimeLeft: TextView
 
+
         init {
-            tvMyMessageChat = itemView.findViewById(R.id.tvMyMessageChat)
-            tvOtherMessageChat = itemView.findViewById(R.id.tvOtherMessageChat)
-            ivMyImoge = itemView.findViewById(R.id.ivMyImoge)
-            ivOtherImoge = itemView.findViewById(R.id.ivOtherImoge)
             divChatList = itemView.findViewById(R.id.divChatList)
+
+            myChatLayout = itemView.findViewById(R.id.myChatLayout)
+
+            myFileLayout = itemView.findViewById(R.id.myFileLayout)
+            tvMyFileName = itemView.findViewById(R.id.tvMyFileName)
+            tvMyFileDate = itemView.findViewById(R.id.tvMyFileDate)
+            tvMyFileSize = itemView.findViewById(R.id.tvMyFileSize)
+
+            ivMySendImg = itemView.findViewById(R.id.ivMySendImg)
+
+            ivMyImoge = itemView.findViewById(R.id.ivMyImoge)
+
+            tvMyMessageChat = itemView.findViewById(R.id.tvMyMessageChat)
             tvTimeRight = itemView.findViewById(R.id.tvTimeRight)
+
+
+
+            otherChatLayout = itemView.findViewById(R.id.otherChatLayout)
+
+            otherFileLayout = itemView.findViewById(R.id.otherFileLayout)
+            tvOtherFileName = itemView.findViewById(R.id.tvOtherFileName)
+            tvOtherFileDate = itemView.findViewById(R.id.tvOtherFileDate)
+            tvOtherFileSize = itemView.findViewById(R.id.tvOtherFileSize)
+
+            ivOtherSendImg = itemView.findViewById(R.id.ivOtherSendImg)
+
+            ivOtherImoge = itemView.findViewById(R.id.ivOtherImoge)
+
+            tvOtherMessageChat = itemView.findViewById(R.id.tvOtherMessageChat)
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
         }
     }
@@ -88,13 +146,11 @@ class ChatAdapter(
         var setTime = ""
         //var setDate = message.time?.substring(0, 10)
         val setAm = message.time?.substring(11, 13)?.toInt()
-        Log.d("TAG-시간체크", setAm.toString())
         if (setAm!! >= 12) {
             val setHour = message.time?.substring(11, 13)?.toInt()
             val setMin = message.time?.substring(14, 16)
-            if (setHour!!-12 >= 10) {
+            if (setHour!! - 12 >= 10) {
                 setTime = "PM${setHour!! - 12}:$setMin"
-                Log.d("TAG-시간체크2", setTime.toString())
             } else {
                 setTime = "PM0${setHour!! - 12}:$setMin"
             }
@@ -108,16 +164,23 @@ class ChatAdapter(
         holder.tvOtherMessageChat.maxWidth = width - 250
 
 
-        if (message.sender.equals(myNumber)) { //내가 보낸 메세지인 경우
-            holder.tvOtherMessageChat.visibility = View.GONE
+        //내가 보낸 메세지인 경우
+        if (message.sender.equals(myNumber)) {
+
+            holder.otherChatLayout.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
+
+            //메세지
             if (message.message == "") {
                 holder.tvMyMessageChat.visibility = View.GONE
             } else {
                 holder.tvMyMessageChat.setText(message.message)
             }
+
+            //시간
             holder.tvTimeRight.setText(setTime)
 
+            //이모티콘
             if (message.emo != null &&
                 message.emo != ""
             ) {
@@ -127,29 +190,40 @@ class ChatAdapter(
                     .into(holder.ivMyImoge)
             }
 
-
-            //이미지 적용시키는 부분
+            //이미지
             if (message.url != "" && message.url != null) {
 
+                //카메라 촬영 후 전송할 때
                 if (message.url.contains("content://media/")) {
                     val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
 
                     val storageRef = storage.getReference()
                     val imgRef = storageRef.child("/${message.url}.png")
 
-                    Log.d("TAG-imgRef", imgRef.toString())
-
-
                     imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
                         override fun onSuccess(p0: Uri?) {
 
-                            holder.ivMyImoge.visibility = View.VISIBLE
+                            holder.ivMySendImg.visibility = View.VISIBLE
+
 
                             Glide.with(context)
                                 .load(p0)
-                                .into(holder.ivMyImoge)
+                                .into(holder.ivMySendImg)
 
-                            Log.d("TAG-Uri", p0.toString())
+                            //이미지 클릭 시 전체 화면으로 보여주기
+                            if (holder.ivMySendImg.visibility == View.VISIBLE) {
+                                holder.ivMySendImg.setOnClickListener {
+
+
+                                    val intent = Intent(context,ImgViewActivity::class.java)
+                                    intent.putExtra("imgPath",p0.toString())
+
+                                    context.startActivity(intent)
+
+                                }
+                            }
+
+
                         }
 
                     }).addOnFailureListener(object : OnFailureListener {
@@ -158,7 +232,8 @@ class ChatAdapter(
                         }
 
                     })
-                } else { //그룹 이미지
+
+                } else { //갤러리에서 선택해서 전송할 때
                     val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
 
                     val storageRef = storage.getReference()
@@ -167,7 +242,7 @@ class ChatAdapter(
                     imgRef.listAll()
                         .addOnSuccessListener(object : OnSuccessListener<ListResult> {
                             override fun onSuccess(p0: ListResult?) {
-                                holder.ivMyImoge.visibility = View.VISIBLE
+                                holder.ivMySendImg.visibility = View.VISIBLE
 
                                 val selectedPhotoList = p0!!.items
 
@@ -178,16 +253,28 @@ class ChatAdapter(
                                                 if (p0.isSuccessful) {
                                                     Glide.with(context)
                                                         .load(p0.getResult())
-                                                        .into(holder.ivMyImoge)
+                                                        .into(holder.ivMySendImg)
+
+                                                    //이미지 클릭 시 전체 화면으로 보여주기
+                                                    if (holder.ivMySendImg.visibility == View.VISIBLE) {
+                                                        holder.ivMySendImg.setOnClickListener {
+                                                            
+
+                                                            val intent = Intent(context,ImgViewActivity::class.java)
+                                                            intent.putExtra("imgPath",p0.getResult().toString())
+                                                            context.startActivity(intent)
+
+                                                        }
+                                                    }
+
+
                                                 }
 
                                             }
                                         })
                                 }
 
-
                             }
-
 
                         })
 
@@ -201,6 +288,12 @@ class ChatAdapter(
                 }
 
 
+            }
+
+
+            //파일
+            if (message.file != "") {
+                holder.myFileLayout.visibility = View.VISIBLE
             }
 
 
@@ -237,28 +330,40 @@ class ChatAdapter(
                     .into(holder.ivOtherImoge)
             }
 
-            //이미지 적용시키는 부분
+            //이미지
             if (message.url != "" && message.url != null) {
 
+                //카메라 촬영 후 전송할 때
                 if (message.url.contains("content://media/")) {
                     val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
 
                     val storageRef = storage.getReference()
                     val imgRef = storageRef.child("/${message.url}.png")
 
-                    Log.d("TAG-imgRef", imgRef.toString())
-
-
                     imgRef.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri> {
                         override fun onSuccess(p0: Uri?) {
 
-                            holder.ivOtherImoge.visibility = View.VISIBLE
+                            holder.ivOtherSendImg.visibility = View.VISIBLE
+
 
                             Glide.with(context)
                                 .load(p0)
-                                .into(holder.ivOtherImoge)
+                                .into(holder.ivOtherSendImg)
 
-                            Log.d("TAG-Uri", p0.toString())
+                            //이미지 클릭 시 전체 화면으로 보여주기
+                            if (holder.ivOtherSendImg.visibility == View.VISIBLE) {
+                                holder.ivOtherSendImg.setOnClickListener {
+
+
+                                    val intent = Intent(context,ImgViewActivity::class.java)
+                                    intent.putExtra("imgPath",p0.toString())
+
+                                    context.startActivity(intent)
+
+                                }
+                            }
+
+
                         }
 
                     }).addOnFailureListener(object : OnFailureListener {
@@ -267,7 +372,8 @@ class ChatAdapter(
                         }
 
                     })
-                } else { //그룹 이미지
+
+                } else { //갤러리에서 선택해서 전송할 때
                     val storage = FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
 
                     val storageRef = storage.getReference()
@@ -276,36 +382,51 @@ class ChatAdapter(
                     imgRef.listAll()
                         .addOnSuccessListener(object : OnSuccessListener<ListResult> {
                             override fun onSuccess(p0: ListResult?) {
-                                holder.ivOtherImoge.visibility = View.VISIBLE
+                                holder.ivOtherSendImg.visibility = View.VISIBLE
 
                                 val selectedPhotoList = p0!!.items
 
-                                selectedPhotoList.get(0).downloadUrl.addOnCompleteListener(object :
-                                    OnCompleteListener<Uri> {
-                                    override fun onComplete(p0: Task<Uri>) {
-                                        if (p0.isSuccessful) {
-                                            Glide.with(context)
-                                                .load(p0.getResult())
-                                                .into(holder.ivOtherImoge)
-                                        }
+                                if (selectedPhotoList.size > 0) {
+                                    selectedPhotoList.get(0).downloadUrl.addOnCompleteListener(
+                                        object : OnCompleteListener<Uri> {
+                                            override fun onComplete(p0: Task<Uri>) {
+                                                if (p0.isSuccessful) {
+                                                    Glide.with(context)
+                                                        .load(p0.getResult())
+                                                        .into(holder.ivOtherSendImg)
 
-                                    }
-                                })
+                                                    //이미지 클릭 시 전체 화면으로 보여주기
+                                                    if (holder.ivOtherSendImg.visibility == View.VISIBLE) {
+                                                        holder.ivOtherSendImg.setOnClickListener {
 
+
+                                                            val intent = Intent(context,ImgViewActivity::class.java)
+                                                            intent.putExtra("imgPath",p0.getResult().toString())
+                                                            context.startActivity(intent)
+
+                                                        }
+                                                    }
+
+
+                                                }
+
+                                            }
+                                        })
+                                }
 
                             }
-
 
                         })
 
                         .addOnFailureListener(object : OnFailureListener {
                             override fun onFailure(p0: Exception) {
-                                Log.d("TAG-ListAll Failure", p0.toString())
+                                Log.d("TAG-onFailure2", p0.toString())
                             }
 
                         })
 
                 }
+
 
 
             }
