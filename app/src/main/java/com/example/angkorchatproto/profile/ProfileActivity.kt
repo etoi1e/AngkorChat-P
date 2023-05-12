@@ -48,10 +48,8 @@ class ProfileActivity : AppCompatActivity() {
     )
 
 
-
     //권한 플래그값 정의
     val FLAG_PERM_STORAGE = 99
-
 
 
     @SuppressLint("ResourceAsColor")
@@ -77,7 +75,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.tvMsgProfile.text = userMsg
 
         //뒤로가기 버튼
-        binding.imgMoveBackProfile.setOnClickListener{
+        binding.imgMoveBackProfile.setOnClickListener {
             finish()
         }
 
@@ -160,6 +158,9 @@ class ProfileActivity : AppCompatActivity() {
 
         //전화걸기
         binding.imgCallProfile.setOnClickListener {
+
+
+
             val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
             startActivity(intent)
             finish()
@@ -170,11 +171,11 @@ class ProfileActivity : AppCompatActivity() {
 
 
 
-        if (checkPermission(STORAGE_PERMISSION,FLAG_PERM_STORAGE)) {
+        if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
 
         } else {
             //권한이 없으면 권한 요청을 합니다.
-            ActivityCompat.requestPermissions(this, STORAGE_PERMISSION,FLAG_PERM_STORAGE)
+            ActivityCompat.requestPermissions(this, STORAGE_PERMISSION, FLAG_PERM_STORAGE)
         }
 
 
@@ -208,17 +209,21 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
-    fun getImage(){
+    fun getImage() {
 
         //권한 확인
 
-        if (checkPermission(STORAGE_PERMISSION,FLAG_PERM_STORAGE)) {
+        if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
 
             val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
             startActivity(intent)
         } else {
             //권한이 없으면 권한 요청을 합니다.
-            ActivityCompat.requestPermissions(this@ProfileActivity,STORAGE_PERMISSION,FLAG_PERM_STORAGE)
+            ActivityCompat.requestPermissions(
+                this@ProfileActivity,
+                STORAGE_PERMISSION,
+                FLAG_PERM_STORAGE
+            )
 
         }
 
@@ -239,18 +244,20 @@ class ProfileActivity : AppCompatActivity() {
         )
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            while (cursor.moveToNext() && imgList.size < 10) { // 5개 이하까지 불러옴
+            while (cursor.moveToNext()) { // 5개 이하까지 불러옴
                 val id = cursor.getLong(idColumn)
                 val imageUri = ContentUris.withAppendedId(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     id
                 )
-                imgList.add(imageUri)
+                if (imgList.size < 5) {
+                    imgList.add(imageUri)
+                }
                 Log.d("imgList", imgList.toString())
             }
         }
         val adapter = ProfileAdapter(this@ProfileActivity, imgList)
-        binding.rvPhotoListProfile.adapter =  adapter
+        binding.rvPhotoListProfile.adapter = adapter
         binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
 
         adapter.notifyDataSetChanged()
@@ -273,8 +280,6 @@ class ProfileActivity : AppCompatActivity() {
         }
         return true
     }
-
-
 
 
 }

@@ -125,7 +125,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="TextView"
             android:textColor="@color/textBlack"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
             android:textSize="14sp"
             android:visibility="visible"
             tools:visibility="visible" />
@@ -259,7 +259,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="TextView"
             android:textColor="@color/textBlack"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
             android:textSize="14sp" />
     </LinearLayout>
 
