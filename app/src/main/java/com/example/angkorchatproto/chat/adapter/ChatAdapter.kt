@@ -1,18 +1,15 @@
 package com.example.angkorchatproto.chat.adapter
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.os.Environment.DIRECTORY_DOWNLOADS
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -151,7 +148,6 @@ class ChatAdapter(
 
         //시간 커스텀
         var setTime = ""
-        //var setDate = message.time?.substring(0, 10)
         val setAm = message.time?.substring(11, 13)?.toInt()
         if (setAm!! >= 12) {
             val setHour = message.time?.substring(11, 13)?.toInt()
@@ -183,6 +179,21 @@ class ChatAdapter(
             } else {
                 holder.tvMyMessageChat.setText(message.message)
             }
+
+            // 롱클릭 이벤트
+            holder.tvOtherMessageChat.setOnLongClickListener(object : OnLongClickListener {
+                override fun onLongClick(p0: View?): Boolean {
+
+                    val intent = Intent(context, ReactionActivity::class.java)
+
+                    context.startActivity(intent)
+
+                    return false
+
+                }
+
+            })
+
 
             //시간
             holder.tvTimeRight.setText(setTime)
@@ -228,6 +239,17 @@ class ChatAdapter(
                                     context.startActivity(intent)
 
                                 }
+                                holder.ivMySendImg.setOnLongClickListener(object : OnLongClickListener{
+                                    override fun onLongClick(p0: View?): Boolean {
+
+                                        val intent = Intent(context, ReactionActivity::class.java)
+
+                                        context.startActivity(intent)
+
+                                        return false
+
+                                    }
+                                })
                             }
 
 
@@ -278,6 +300,17 @@ class ChatAdapter(
                                                             context.startActivity(intent)
 
                                                         }
+                                                        holder.ivMySendImg.setOnLongClickListener(object : OnLongClickListener{
+                                                            override fun onLongClick(p0: View?): Boolean {
+
+                                                                val intent = Intent(context, ReactionActivity::class.java)
+
+                                                                context.startActivity(intent)
+
+                                                                return false
+
+                                                            }
+                                                        })
                                                     }
 
 
@@ -338,42 +371,19 @@ class ChatAdapter(
                     }.addOnFailureListener{
                             Log.e("TAG-저장실패",it.message.toString())
                         }
-
-//
-//
-//
-//
-//                    val storageRef = Firebase.storage.reference
-//                Log.d("TAG-파일경로2",message.file.toString())
-//
-//                    val file = Uri.parse(message.file.toString())
-//                    val fileRef = storageRef.child("files/${file.lastPathSegment}")
-//                    // 다운로드할 파일의 적절한 디렉토리 경로 지정
-//                    val downloadsDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) // Android 11 이상 버전에서는 권한 필요
-//
-//                    Log.d("TAG-file",file.toString())
-//                Log.d("TAG-fileRef",fileRef.toString())
-//
-//                    fileRef.getFile(file)
-//                        .addOnSuccessListener {
-//                            //저장완료 Toast 출력
-//                            Toast.makeText(
-//                                context,
-//                                "파일이 저장되었습니다.",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }
-//                        .addOnFailureListener {
-//                            // 파일 업로드 실패
-//                            Toast.makeText(
-//                                context,
-//                                "파일 업로드 실패.",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }
-//
-
                 }
+
+                holder.myFileLayout.setOnLongClickListener(object : OnLongClickListener{
+                    override fun onLongClick(p0: View?): Boolean {
+
+                        val intent = Intent(context, ReactionActivity::class.java)
+
+                        context.startActivity(intent)
+
+                        return false
+
+                    }
+                })
             }
 
 
@@ -390,12 +400,15 @@ class ChatAdapter(
 
             holder.tvTimeLeft.setText(setTime)
 
-            holder.tvOtherMessageChat.setOnClickListener(object : OnClickListener {
-                override fun onClick(p0: View?) {
+            //롱클릭 이벤트
+            holder.tvOtherMessageChat.setOnLongClickListener(object : OnLongClickListener {
+                override fun onLongClick(p0: View?): Boolean {
 
                     val intent = Intent(context, ReactionActivity::class.java)
 
                     context.startActivity(intent)
+
+                    return false
 
                 }
 
@@ -441,6 +454,18 @@ class ChatAdapter(
                                     context.startActivity(intent)
 
                                 }
+
+                                holder.ivOtherSendImg.setOnLongClickListener(object : OnLongClickListener{
+                                    override fun onLongClick(p0: View?): Boolean {
+
+                                        val intent = Intent(context, ReactionActivity::class.java)
+
+                                        context.startActivity(intent)
+
+                                        return false
+
+                                    }
+                                })
                             }
 
 
@@ -491,6 +516,17 @@ class ChatAdapter(
                                                             context.startActivity(intent)
 
                                                         }
+                                                        holder.ivOtherSendImg.setOnLongClickListener(object : OnLongClickListener{
+                                                            override fun onLongClick(p0: View?): Boolean {
+
+                                                                val intent = Intent(context, ReactionActivity::class.java)
+
+                                                                context.startActivity(intent)
+
+                                                                return false
+
+                                                            }
+                                                        })
                                                     }
 
 
@@ -515,10 +551,61 @@ class ChatAdapter(
 
 
             }
+
+            //파일
+            if (message.file != "") {
+                holder.otherFileLayout.visibility = View.VISIBLE
+
+                holder.otherFileLayout.setOnClickListener {
+
+                    val storageReference = Firebase.storage.reference
+                    val fileRef = storageReference.child(message.file.toString())
+
+                    fileRef.downloadUrl.addOnSuccessListener{
+
+                    }
+
+                    //다운로드 주소로 변환
+                    var downloadReference = Firebase.storage.getReferenceFromUrl(message.file.toString().
+                    replace("gs://angkor-ae0c0.appspot.com/","https://firebasestorage.googleapis.com/v0/b/angkor-ae0c0.appspot.com/o/"))
+
+                    //파일의 확장자
+                    var fileType = downloadReference.name.substring(downloadReference.name.indexOf("."),downloadReference.name.lastIndex+1)
+
+                    val destinationPath = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
+
+                    //내부 저장소에 저장되는 이름
+                    val localFile = File.createTempFile("AngkorChat",fileType,destinationPath)
+
+                    downloadReference.getFile(localFile).addOnCompleteListener{
+                        Log.d("TAG-downloadReference", downloadReference.toString())
+                        Toast.makeText(context, "다운로드 완료",Toast.LENGTH_LONG).show()
+                        Log.d("TAG-파일이름", "name: ${downloadReference.name}")
+                    }.addOnProgressListener {
+                        Log.d("TAG-addOnProgressListener", "OnProgressListener")
+                    }.addOnFailureListener{
+                        Log.e("TAG-저장실패",it.message.toString())
+                    }
+                }
+
+                holder.otherFileLayout.setOnLongClickListener(object : OnLongClickListener{
+                    override fun onLongClick(p0: View?): Boolean {
+
+                        val intent = Intent(context, ReactionActivity::class.java)
+
+                        context.startActivity(intent)
+
+                        return false
+
+                    }
+                })
+            }
+
         }
 
         //뷰 재활용 막기(데이터꼬임방지)
         holder.setIsRecyclable(false)
+
 
 
     }

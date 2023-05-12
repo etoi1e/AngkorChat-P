@@ -580,7 +580,6 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
-
     }
 
     //onCreate 바깥
@@ -604,12 +603,12 @@ class ChatActivity : AppCompatActivity() {
 
                             getMessageList(chatRoomKey!!)
 
+                            chatAdapter=ChatAdapter(this@ChatActivity, commentList, width, myNumber)
+
 
                             binding.rvChatListChat.layoutManager =
                                 GridLayoutManager(this@ChatActivity, 1)
-                            binding.rvChatListChat.adapter =
-                                ChatAdapter(this@ChatActivity, commentList, width, myNumber)
-
+                            binding.rvChatListChat.adapter = chatAdapter
 
                         }
                     }
@@ -918,24 +917,28 @@ class ChatActivity : AppCompatActivity() {
         )
         query?.use { cursor ->
             val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            while (cursor.moveToNext() && imgList.size < 10) { // 10개 이하까지 불러옴
+            imgList.clear()
+            while (cursor.moveToNext() ){
                 val data = Uri.parse(cursor.getString(dataColumn))
 
                 // 이미지 파일의 Uri 생성
                 imgList.add(data)
-
+                Log.d("TAG-imgList크기 확인1",imgList.size.toString())
+                Log.d("TAG-data 확인1",data.toString())
 
             }
+
         }
 
         mediaImgAdapter = MediaImgAdapter(this@ChatActivity, imgList)
+        Log.d("TAG-imgList크기 확인2",imgList.size.toString())
         binding.rvMediaImgList.adapter = mediaImgAdapter
         binding.rvMediaImgList.layoutManager =
             LinearLayoutManager(this@ChatActivity, RecyclerView.HORIZONTAL, false)
 
-        if (imgList.size != 0) {
-
-        }
+//        if (imgList.size != 0) {
+//
+//        }
 
         mediaImgAdapter.setOnImageSelectListener(object :
             MediaImgAdapter.OnImageSelectListener {

@@ -90,5 +90,6 @@ class MediaImgAdapter(private val context: Context, private val imgList: ArrayLi
 
     override fun getItemCount(): Int {
         return imgList.size
+
     }
 }
