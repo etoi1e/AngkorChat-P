@@ -23,8 +23,10 @@ class ReactionActivity : AppCompatActivity() {
 
     val chatRef = FBdataBase.getChatRef()
 
+
     lateinit var getKey :String
     lateinit var getCommkey :String
+
 
 
 
@@ -52,7 +54,9 @@ class ReactionActivity : AppCompatActivity() {
 
         //답장기능
         binding.viewReplyReactrion.setOnClickListener {
+
             editor.putString("replyKey",getCommkey)
+
             editor.commit()
 
             finish()
@@ -145,9 +149,6 @@ class ReactionActivity : AppCompatActivity() {
             Toast.makeText(this@ReactionActivity, "😭", Toast.LENGTH_SHORT).show()
         }
 
-
-
-
     }
     //onCreate 바깥
 
@@ -157,15 +158,34 @@ class ReactionActivity : AppCompatActivity() {
         val clipData = ClipData.newPlainText("label", text)
         clipboardManager.setPrimaryClip(clipData)
     }
-    fun setReaction(reaction:String){
-        chatRef.child("$getKey/comments").child(getCommkey).child("reaction").setValue(reaction)
+
+    fun setReaction(reaction: String) {
+
+
+        chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("TAG-oldReaction", snapshot.toString())
+
+                    if(snapshot.value == reaction){
+                        chatRef.child("$getKey/comments").child(getCommkey).child("reaction").removeValue()
+                    }else{
+                        chatRef.child("$getKey/comments").child(getCommkey).child("reaction").setValue(reaction)
+                    }
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
         finish()
     }
 
-    fun setReply(reply:String){
-        chatRef.child("$getKey/comments").child(getCommkey).child("reply").setValue(reply)
-        finish()
+    fun setReply(reply: String) {
+
+
+
     }
-
-
-}
