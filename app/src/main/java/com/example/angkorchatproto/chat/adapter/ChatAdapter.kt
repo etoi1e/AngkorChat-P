@@ -188,6 +188,7 @@ class ChatAdapter(
             holder.tvTimeLeft.visibility = View.GONE
 
             //리액션
+
             Log.d("TAG-reaction",message.reaction.toString())
             holder.tvMyCharReaction.visibility = View.GONE
             if(message.reaction != "" ){
@@ -200,6 +201,7 @@ class ChatAdapter(
 
             //메세지
             if (message.message == "" ) {
+
                 holder.myMessageLayout.visibility = View.GONE
             } else {
                 holder.tvMyMessageChat.setText(message.message)

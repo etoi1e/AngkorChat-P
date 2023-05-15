@@ -23,8 +23,11 @@ class ReactionActivity : AppCompatActivity() {
 
     val chatRef = FBdataBase.getChatRef()
 
-    lateinit var getKey: String
-    lateinit var getCommkey: String
+
+    lateinit var getKey :String
+    lateinit var getCommkey :String
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +54,9 @@ class ReactionActivity : AppCompatActivity() {
 
         //답장기능
         binding.viewReplyReactrion.setOnClickListener {
-            editor.putString("replyKey", getCommkey)
+
+            editor.putString("replyKey",getCommkey)
+
             editor.commit()
 
             finish()
@@ -144,7 +149,6 @@ class ReactionActivity : AppCompatActivity() {
             Toast.makeText(this@ReactionActivity, "😭", Toast.LENGTH_SHORT).show()
         }
 
-
     }
     //onCreate 바깥
 
@@ -181,9 +185,7 @@ class ReactionActivity : AppCompatActivity() {
     }
 
     fun setReply(reply: String) {
-        chatRef.child("$getKey/comments").child(getCommkey).child("reply").setValue(reply)
-        finish()
+
+
+
     }
-
-
-}
