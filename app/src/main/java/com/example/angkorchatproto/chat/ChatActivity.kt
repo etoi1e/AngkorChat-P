@@ -79,6 +79,7 @@ class ChatActivity : AppCompatActivity() {
     private var client = OkHttpClient()
     private var chatRef = FBdataBase.getChatRef()
     var commentList = ArrayList<ChatModel.Comment>()
+    var commentKeyList = ArrayList<String>()
     var selectCharacterName: String? = null
     var selectCharacterIdx: String? = null
 
@@ -104,11 +105,23 @@ class ChatActivity : AppCompatActivity() {
     val FLAG_REQ_OPEN_DIRECTORY = 1002
 
     var photoUri = ""
-
+    var replyKey =""
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
+
+
+    override fun onResume() {
+        super.onResume()
+        checkChatRoom()
+        binding.replyLayout.visibility = View.GONE
+
+        if(replyKey != ""){
+            //답장 정보가 있다면
+//            binding.replyLayout.visibility = View.VISIBLE
+        }
+    }
 
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -122,6 +135,10 @@ class ChatActivity : AppCompatActivity() {
         val shared = getSharedPreferences("loginNumber", 0)
         myNumber = shared.getString("userNumber", "").toString()
 
+        //답장 정보 가져오기
+        val sharedReply = getSharedPreferences("reply",0)
+        replyKey = sharedReply.getString("replyKey","").toString()
+
         //상대방 번호 저장
         val receiverData = intent.getStringExtra("number").toString()
         val receiverData2 = receiverData.replace("-", "")
@@ -131,7 +148,6 @@ class ChatActivity : AppCompatActivity() {
         //상대방 이름 출력
         val receiverName = intent.getStringExtra("name").toString()
         binding.tvNameChat.text = receiverName
-
 
         //상대방 프로필 출력
         val profileImg = intent.getStringExtra("profile")
@@ -145,6 +161,14 @@ class ChatActivity : AppCompatActivity() {
                 .load(profileImg)
                 .into(binding.imgProfileChat)
         }
+
+
+        //답장 정보 가져오기
+
+
+
+
+
 
         //키보드 상태 캐치하는 리스너
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -184,6 +208,12 @@ class ChatActivity : AppCompatActivity() {
             binding.mediaLayout.visibility = View.GONE
             binding.mediaMenuLayout.visibility = View.GONE
             binding.viewImogeLayout.visibility = View.GONE
+            binding.replyLayout.visibility = View.GONE
+
+            //저장된 reply 정보 지우기
+            sharedReply.edit().clear()
+            
+            
 
             binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
 
@@ -438,33 +468,55 @@ class ChatActivity : AppCompatActivity() {
 
 
                 val comment = ChatModel.Comment(
-                    profileImg, myNumber, binding.etMessageChat.text.toString(),
-                    nowTime,false, photos, chatRoomKey,
-                    if (binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
+                    profile = profileImg,
+                    sender = myNumber,
+                    message = binding.etMessageChat.text.toString(),
+                    time = nowTime,
+                    state = false,
+                    url = photos,
+                    key = chatRoomKey,
+                    emo = if (binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null) {
                         "$selectCharacterName$$$selectCharacterIdx"
-                    } else {  "" },
-                    if(sendFileDirectory != ""){
-                    sendFileDirectory
-                    }else{""}
+                    } else {
+                        ""
+                    },
+                    file = if (sendFileDirectory != "") {
+                        sendFileDirectory
+                    } else {
+                        ""
+                    }, reaction = "",
+                    reply = ""
                 )
 
                 initImogePreview()
 
                 if (chatRoomKey == null) {
                     binding.imgSendMessageChat.isEnabled = false
-                    chatRef.push().setValue(chatModel).addOnSuccessListener {
+                    val newChat = chatRef.push()
+                    if (comment.key == "" || comment.key == null) {
+                        comment.key = newChat.key
+                    }
+                    newChat.setValue(chatModel).addOnSuccessListener {
                         //채팅방 생성
                         checkChatRoom()
+
                         //메세지 보내기
                         Handler().postDelayed({
                             chatRef.child(chatRoomKey.toString())
                                 .child("comments").push().setValue(comment)
+
                         }, 1000L)
+
+
+
                         binding.etMessageChat.text = null
                     }
                 } else {
-                    chatRef.child(chatRoomKey.toString()).child("comments")
-                        .push().setValue(comment)
+
+                    chatRef.child(chatRoomKey.toString())
+                        .child("comments").push().setValue(comment)
+
+
                     binding.etMessageChat.text = null
                 }
 
@@ -595,15 +647,25 @@ class ChatActivity : AppCompatActivity() {
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (item in snapshot.children) {
+
                         val chatModel = item.getValue<ChatModel>()
                         if (chatModel?.users!!.containsKey(receiver)) {
+
                             chatRoomKey = item.key.toString()
                             chatRoomKeyList.add(item.key.toString())
 
 
+
                             getMessageList(chatRoomKey!!)
 
-                            chatAdapter=ChatAdapter(this@ChatActivity, commentList, width, myNumber)
+                            chatAdapter =
+                                ChatAdapter(
+                                    this@ChatActivity,
+                                    commentList,
+                                    commentKeyList,
+                                    width,
+                                    myNumber
+                                )
 
 
                             binding.rvChatListChat.layoutManager =
@@ -630,9 +692,11 @@ class ChatActivity : AppCompatActivity() {
                     for (data in snapshot.children) {
                         val item = data.getValue<ChatModel.Comment>()
                         commentList.add(item!!)
+                        commentKeyList.add(data.key.toString())
 
                     }
-                    chatAdapter = ChatAdapter(this@ChatActivity, commentList, width, myNumber)
+                    chatAdapter =
+                        ChatAdapter(this@ChatActivity, commentList, commentKeyList, width, myNumber)
                     chatAdapter.notifyDataSetChanged()
                     //메세지를 보낼 시 화면을 맨 밑으로 내림
                     binding.rvChatListChat.scrollToPosition(commentList.size - 1)
@@ -918,27 +982,24 @@ class ChatActivity : AppCompatActivity() {
         query?.use { cursor ->
             val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             imgList.clear()
-            while (cursor.moveToNext() ){
+            while (cursor.moveToNext()) {
                 val data = Uri.parse(cursor.getString(dataColumn))
 
                 // 이미지 파일의 Uri 생성
                 imgList.add(data)
-                Log.d("TAG-imgList크기 확인1",imgList.size.toString())
-                Log.d("TAG-data 확인1",data.toString())
+                Log.d("TAG-imgList크기 확인1", imgList.size.toString())
+                Log.d("TAG-data 확인1", data.toString())
 
             }
 
         }
 
         mediaImgAdapter = MediaImgAdapter(this@ChatActivity, imgList)
-        Log.d("TAG-imgList크기 확인2",imgList.size.toString())
+        Log.d("TAG-imgList크기 확인2", imgList.size.toString())
         binding.rvMediaImgList.adapter = mediaImgAdapter
         binding.rvMediaImgList.layoutManager =
             LinearLayoutManager(this@ChatActivity, RecyclerView.HORIZONTAL, false)
 
-//        if (imgList.size != 0) {
-//
-//        }
 
         mediaImgAdapter.setOnImageSelectListener(object :
             MediaImgAdapter.OnImageSelectListener {
