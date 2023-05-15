@@ -564,6 +564,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
+            style="@style/MyButtonStyle"
             android:id="@+id/btnSendPhotoPreview"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -574,7 +575,6 @@
             android:paddingLeft="36dp"
             android:paddingRight="36dp"
             android:text="Send"
-            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:drawableEnd="@drawable/ic_send_fill_wh_24"
@@ -588,6 +588,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        style="@style/MyButtonStyle"
         android:id="@+id/btnChatSendMedia"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -598,7 +599,6 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:text="Send  "
-        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:visibility="gone"

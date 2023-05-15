@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.MainActivity
+import com.example.angkorchatproto.auth.LoginActivity
 import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ChatRoomAdapter
 import com.example.angkorchatproto.databinding.FragmentChatBinding
@@ -102,7 +103,10 @@ class ChatFragment : Fragment() {
             val intent = Intent(requireContext(), EmojiStoreActivity::class.java)
             startActivity(intent)
         }
-
+        binding.imgAddChatChats.setOnClickListener {
+            val intent = Intent(requireActivity(), SelectUserActivity::class.java)
+            startActivity(intent)
+        }
 
         return binding.root
 

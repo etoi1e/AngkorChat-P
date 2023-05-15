@@ -112,6 +112,7 @@
         app:layout_constraintTop_toTopOf="@+id/tvCoin2" />
 
     <Button
+        style="@style/MyButtonStyle"
         android:id="@+id/ibGift"
         android:layout_width="104dp"
         android:layout_height="40dp"
@@ -126,6 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ivEmoji" />
 
     <Button
+        style="@style/MyButtonStyle"
         android:id="@+id/ibBuy"
         android:layout_width="0dp"
         android:layout_height="40dp"
