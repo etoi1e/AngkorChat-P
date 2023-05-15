@@ -21,8 +21,11 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
 
-
+    <style name="MyButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:textAllCaps">false</item>
+        <!-- 필요한 다른 속성들도 추가 가능 -->
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
