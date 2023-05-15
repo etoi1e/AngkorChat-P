@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.chat.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
@@ -37,18 +38,21 @@ import java.lang.Exception
 class ChatAdapter(
     context: Context,
     chatList: ArrayList<ChatModel.Comment>,
+    commentKeyList: ArrayList<String>,
     width: Int,
     myNumber: String
 ) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     var chatList: ArrayList<ChatModel.Comment>
+    var commentKeyList: ArrayList<String>
     var context: Context
     var width: Int
     var myNumber: String
 
     init {
         this.chatList = chatList
+        this.commentKeyList = commentKeyList
         this.context = context
         this.width = width
         this.myNumber = myNumber
@@ -75,6 +79,7 @@ class ChatAdapter(
         var ivMyImoge: ImageView
 
         //텍스트
+        var myMessageLayout: ConstraintLayout
         var tvMyMessageChat: TextView
         var tvTimeRight: TextView
 
@@ -94,8 +99,12 @@ class ChatAdapter(
         var ivOtherImoge: ImageView
 
         //텍스트
+        var messageLayoutOther: ConstraintLayout
         var tvOtherMessageChat: TextView
         var tvTimeLeft: TextView
+
+        var tvMyCharReaction: TextView
+        var tvOtherCharReaction: TextView
 
 
         init {
@@ -112,8 +121,10 @@ class ChatAdapter(
 
             ivMyImoge = itemView.findViewById(R.id.ivMyImoge)
 
+            myMessageLayout = itemView.findViewById(R.id.myMessageLayout)
             tvMyMessageChat = itemView.findViewById(R.id.tvMyMessageChat)
             tvTimeRight = itemView.findViewById(R.id.tvTimeRight)
+            tvMyCharReaction = itemView.findViewById(R.id.tvMyChatReaction)
 
 
 
@@ -128,8 +139,10 @@ class ChatAdapter(
 
             ivOtherImoge = itemView.findViewById(R.id.ivOtherImoge)
 
+            messageLayoutOther = itemView.findViewById(R.id.messageLayoutOther)
             tvOtherMessageChat = itemView.findViewById(R.id.tvOtherMessageChat)
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
+            tvOtherCharReaction = itemView.findViewById(R.id.tvOtherChatReaction)
         }
     }
 
@@ -141,9 +154,10 @@ class ChatAdapter(
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
 
         val message: ChatModel.Comment = chatList[position]
+        val commentKey = commentKeyList[position]
 
 
         //시간 커스텀
@@ -173,19 +187,27 @@ class ChatAdapter(
             holder.otherChatLayout.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
 
+            //리액션
+            holder.tvMyCharReaction.visibility = View.GONE
+            if(message.reaction != ""){
+                holder.tvMyCharReaction.visibility = View.VISIBLE
+                holder.tvMyCharReaction.text=message.reaction
+            }
+
             //메세지
             if (message.message == "") {
-                holder.tvMyMessageChat.visibility = View.GONE
+                holder.myMessageLayout.visibility = View.GONE
             } else {
                 holder.tvMyMessageChat.setText(message.message)
             }
 
             // 롱클릭 이벤트
-            holder.tvOtherMessageChat.setOnLongClickListener(object : OnLongClickListener {
+            holder.tvMyMessageChat.setOnLongClickListener(object : OnLongClickListener {
                 override fun onLongClick(p0: View?): Boolean {
 
                     val intent = Intent(context, ReactionActivity::class.java)
-
+                    intent.putExtra("commkey",commentKey)
+                    intent.putExtra("key",message.key)
                     context.startActivity(intent)
 
                     return false
@@ -243,7 +265,8 @@ class ChatAdapter(
                                     override fun onLongClick(p0: View?): Boolean {
 
                                         val intent = Intent(context, ReactionActivity::class.java)
-
+                                        intent.putExtra("commkey",commentKey)
+                                        intent.putExtra("key",message.key)
                                         context.startActivity(intent)
 
                                         return false
@@ -304,7 +327,8 @@ class ChatAdapter(
                                                             override fun onLongClick(p0: View?): Boolean {
 
                                                                 val intent = Intent(context, ReactionActivity::class.java)
-
+                                                                intent.putExtra("commkey",commentKey)
+                                                                intent.putExtra("key",message.key)
                                                                 context.startActivity(intent)
 
                                                                 return false
@@ -377,7 +401,8 @@ class ChatAdapter(
                     override fun onLongClick(p0: View?): Boolean {
 
                         val intent = Intent(context, ReactionActivity::class.java)
-
+                        intent.putExtra("commkey",commentKey)
+                        intent.putExtra("key",message.key)
                         context.startActivity(intent)
 
                         return false
@@ -389,7 +414,15 @@ class ChatAdapter(
 
         } else {//타인이 보낸 메세지인 경우
 
-            holder.tvMyMessageChat.visibility = View.GONE
+            //리액션
+            holder.tvOtherCharReaction.visibility = View.GONE
+
+            if(message.reaction != "" ){
+                holder.tvOtherCharReaction.visibility = View.VISIBLE
+                holder.tvOtherCharReaction.text=message.reaction
+            }
+
+            holder.myMessageLayout.visibility = View.GONE
             holder.tvTimeRight.visibility = View.GONE
 
             if (message.message == "") {
@@ -405,7 +438,8 @@ class ChatAdapter(
                 override fun onLongClick(p0: View?): Boolean {
 
                     val intent = Intent(context, ReactionActivity::class.java)
-
+                    intent.putExtra("commkey",commentKey)
+                    intent.putExtra("key",message.key)
                     context.startActivity(intent)
 
                     return false
@@ -459,7 +493,8 @@ class ChatAdapter(
                                     override fun onLongClick(p0: View?): Boolean {
 
                                         val intent = Intent(context, ReactionActivity::class.java)
-
+                                        intent.putExtra("commkey",commentKey)
+                                        intent.putExtra("key",message.key)
                                         context.startActivity(intent)
 
                                         return false
@@ -520,7 +555,8 @@ class ChatAdapter(
                                                             override fun onLongClick(p0: View?): Boolean {
 
                                                                 val intent = Intent(context, ReactionActivity::class.java)
-
+                                                                intent.putExtra("commkey",commentKey)
+                                                                intent.putExtra("key",message.key)
                                                                 context.startActivity(intent)
 
                                                                 return false
@@ -592,7 +628,8 @@ class ChatAdapter(
                     override fun onLongClick(p0: View?): Boolean {
 
                         val intent = Intent(context, ReactionActivity::class.java)
-
+                        intent.putExtra("commkey",commentKey)
+                        intent.putExtra("key",message.key)
                         context.startActivity(intent)
 
                         return false
@@ -635,4 +672,10 @@ class ChatAdapter(
 
         return array.getResourceId(imogeStrArray?.get(1)?.toInt()?.minus(1)!!, -1)
     }
+
+    fun reply(key:String){
+
+    }
+
+
 }

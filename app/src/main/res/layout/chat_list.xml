@@ -11,10 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="2dp"
         android:gravity="right"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/tvMyChatReaction"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/myFileLayout"
@@ -115,20 +116,81 @@
             app:srcCompat="@drawable/add_btn"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/tvMyMessageChat"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/myMessageLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/chat_bubble_me"
-            android:fontFamily="@font/poppins_medium"
-            android:text="TextView"
-            android:textColor="@color/textBlack"
-            android:textIsSelectable="false"
-            android:textSize="14sp"
-            android:visibility="visible"
-            tools:visibility="visible" />
+            android:background="@drawable/chat_bubble_me">
+
+            <TextView
+                android:id="@+id/tvMyMessageChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="TextView"
+                android:textColor="@color/textBlack"
+                android:textIsSelectable="false"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/replyLayoutMy" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/replyLayoutMy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/ivMyReplyImg"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <View
+                    android:id="@+id/view6"
+                    android:layout_width="2dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivMyReplyImg"
+                    app:layout_constraintStart_toEndOf="@+id/ivMyReplyImg"
+                    app:layout_constraintTop_toTopOf="@+id/ivMyReplyImg" />
+
+                <TextView
+                    android:id="@+id/tvReplyToUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Reply to NAME"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/view6"
+                    app:layout_constraintTop_toTopOf="@+id/view6" />
+
+                <TextView
+                    android:id="@+id/tvReplyToComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="TextView"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view6"
+                    app:layout_constraintStart_toStartOf="@+id/tvReplyToUser" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
@@ -142,14 +204,31 @@
         app:layout_constraintBottom_toBottomOf="@+id/myChatLayout"
         app:layout_constraintEnd_toStartOf="@+id/myChatLayout" />
 
+    <TextView
+        android:id="@+id/tvMyChatReaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_box_lightgray"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="❤️"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/myChatLayout"
+        tools:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/otherChatLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="2dp"
         android:gravity="left"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/tvOtherChatReaction"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/otherFileLayout"
@@ -249,18 +328,80 @@
             app:srcCompat="@drawable/add_btn"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/tvOtherMessageChat"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/messageLayoutOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/chat_bubble_other"
-            android:fontFamily="@font/poppins_medium"
-            android:text="TextView"
-            android:textColor="@color/textBlack"
-            android:textIsSelectable="false"
-            android:textSize="14sp" />
+            android:background="@drawable/chat_bubble_other">
+
+            <TextView
+                android:id="@+id/tvOtherMessageChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="TextView"
+                android:textColor="@color/textBlack"
+                android:textIsSelectable="false"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/replyLayoutOther" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/replyLayoutOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/ivOtherReplyImg"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <View
+                    android:id="@+id/view7"
+                    android:layout_width="2dp"
+                    android:layout_height="34dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/textBlack"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivOtherReplyImg"
+                    app:layout_constraintEnd_toStartOf="@+id/ivOtherReplyImg"
+                    app:layout_constraintTop_toTopOf="@+id/ivOtherReplyImg" />
+
+                <TextView
+                    android:id="@+id/tvReplyToMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Reply to NAME"
+                    android:textColor="@color/textBlack"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@+id/view7"
+                    app:layout_constraintTop_toTopOf="@+id/view7" />
+
+                <TextView
+                    android:id="@+id/tvReplyToCommentOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="TextView"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view7"
+                    app:layout_constraintEnd_toEndOf="@+id/tvReplyToMe" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 
     <TextView
@@ -271,5 +412,19 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/otherChatLayout"
         app:layout_constraintStart_toEndOf="@+id/otherChatLayout" />
+
+    <TextView
+        android:id="@+id/tvOtherChatReaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_box_lightgray"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="❤️"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/otherChatLayout"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
