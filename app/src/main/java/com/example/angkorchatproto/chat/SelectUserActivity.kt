@@ -1,43 +1,84 @@
-package com.example.angkorchatproto.friends.fragment
+package com.example.angkorchatproto.chat
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.text.SpannableStringBuilder
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
-import com.example.angkorchatproto.databinding.FragmentContactsBinding
-import com.example.angkorchatproto.dialog.CustomDialog
-import com.example.angkorchatproto.utils.CountryAdapter
-import com.example.angkorchatproto.utils.CountryUtils
+import com.example.angkorchatproto.chat.adapter.SelectUsersAdapter
+import com.example.angkorchatproto.databinding.ActivitySelectUserBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 
-class ContactsFragment : Fragment() {
-    lateinit var binding: FragmentContactsBinding
-    private var friendList: ArrayList<String> = ArrayList()
-    private var friendRef = FBdataBase.getFriendRef()
+/**
+ * Package Name : com.example.angkorchatproto.chat
+ * Class Name : SelectUser
+ * Description :
+ * Created by de5ember on 2023/05/15.
+ */
+class SelectUserActivity : AppCompatActivity() {
+    lateinit var binding: ActivitySelectUserBinding
+    var mSuggestList: ArrayList<UserVO> = ArrayList()
+    var mFriendList: ArrayList<String> = ArrayList()
+    var mSelectUser: UserVO? = null
+    var friendRef = FBdataBase.getFriendRef()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val userNumber = requireActivity().getSharedPreferences("loginNumber", 0).getString("userNumber", "")
+        binding = ActivitySelectUserBinding.inflate(layoutInflater)
+        val shared = getSharedPreferences("loginNumber", 0)
+        val userNumber = shared.getString("userNumber", "")
+        getContacts()
+        val adapter = SelectUsersAdapter(
+            this@SelectUserActivity,
+            mSuggestList,
+            mFriendList,
+            object: SelectUsersAdapter.OnSelectUsersListener {
+                @SuppressLint("ResourceAsColor")
+                override fun onItemClicked(user: UserVO) {
+                    mSelectUser = user
+                    binding.btnNext.setTextColor(getColor(R.color.mainYellow))
+                }
+            }
+        )
+        binding.btnNext.setOnClickListener {
+            if (binding.btnNext.currentTextColor == getColor(R.color.mainYellow)) {
+                Log.d("SelectUserActivity","채팅방을 열어주세요")
+                //채팅방으로 이동
+                if (mSelectUser != null) {
+                    val intent = Intent(this, ChatActivity::class.java)
+                    intent.putExtra("name", mSelectUser?.name)
+                    intent.putExtra("number", mSelectUser?.phone)
+                    intent.putExtra("profile", mSelectUser?.profile)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
+        binding.imgMoveBack.setOnClickListener {
+            finish()
+        }
+        binding.rvSuggestedListAddFriends.adapter = adapter
+        binding.rvSuggestedListAddFriends.layoutManager =
+            GridLayoutManager(this@SelectUserActivity, 1)
+
+        //FireBase 데이터 불러와서 mFriendList에 저장하기
         friendRef.child(userNumber.toString()).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+
                 val userData = dataSnapshot.value as HashMap<String, Any>?
+
                 val friendNum = userData!!["phone"] as String
-                friendList.add(friendNum)
+                mFriendList.add(friendNum)
+
             }
 
 
@@ -57,80 +98,57 @@ class ContactsFragment : Fragment() {
 
             }
         })
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.etPhoneNumberLogin.requestFocus()
-        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.etPhoneNumberLogin, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentContactsBinding.inflate(inflater, container, false)
-        val countries = CountryUtils.getCountries()
-        val adapter = CountryAdapter(requireContext(), countries)
-        binding.spCountryCodeLogin.adapter = adapter
-        binding.imgMoveBackLogin.setOnClickListener {
-            requireActivity().finish()
-        }
-        binding.etPhoneNumberLogin.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val resultPhoneNum = validateUser()
-                val userNumber = requireActivity().getSharedPreferences("loginNumber", 0).getString("userNumber", "")
-                val removeDash = resultPhoneNum?.phone.toString().replace("-", "")
-                val removeSpace = removeDash.replace(" ", "")
-                resultPhoneNum?.phone = removeSpace
-
-                val resultPhoneNumAdded = friendList.contains(resultPhoneNum?.phone)
-                if (resultPhoneNum != null) {
-                    view?.findNavController()?.navigate(R.id.resultFragment, bundleOf(
-                        "user" to resultPhoneNum,
-                        "phoneNumberAdded" to resultPhoneNumAdded,
-                        "userNumber" to userNumber
-                    ))
-                } else {
-                    CustomDialog.create(requireActivity())
-                        ?.setDesc(SpannableStringBuilder("Invalid phone number. Please\nenter a valid phone number."))
-                        ?.setCancelable(true)
-                        ?.setPositiveButtonText(SpannableStringBuilder("Done"))
-                        ?.setPositiveBtnListener(object: DialogPositiveBtnListener {
-                            override fun confirm(division: Int) {
-                            }
-                        })
-                        ?.showOneButton()
-                }
-                true
-            } else {
-                false
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                Log.d("search", charSequence.toString())
+                if (charSequence.toString().isNotEmpty()) {
+                    binding.ibDelete.visibility = View.VISIBLE
+                } else {
+                    binding.ibDelete.visibility = View.GONE
+                }
+
+                val suggestList = mSuggestList.map {
+                    if (it.name?.contains(charSequence.toString()) == true) {
+                        it
+                    } else {
+                        UserVO()
+                    }
+                }.filter {
+                    it.name != null
+                } as ArrayList
+
+                val friendList = mFriendList.mapNotNull {
+                    if (it.contains(charSequence.toString())) {
+                        it
+                    } else {
+                        null
+                    }
+                } as ArrayList
+
+                adapter.setItem(suggestList, friendList)
+            }
+
+            override fun afterTextChanged(charSequence: Editable?) {
+            }
+        })
+        binding.ibDelete.setOnClickListener {
+            binding.etSearch.text.clear()
         }
-        return binding.root
-    }
 
-    private fun validateUser(): UserVO? {
-        Log.d("ContactsFragment","${binding.etPhoneNumberLogin.text}")
-        return getContacts().find {
-            it.phone == binding.etPhoneNumberLogin.text.toString()
-        }
-    }
-
-    private fun isUserAdded() {
-
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
     }
 
     @SuppressLint("Range")
     private fun getContacts(): ArrayList<UserVO> {
-        val suggestList: ArrayList<UserVO> = ArrayList()
         // 주소록에 접근하기 위한 ContentResolver 생성
-        val cr = requireActivity().contentResolver
-
+        val cr = this.contentResolver
         // 주소록에 저장된 연락처 정보를 가져오기 위한 URI 생성
         val uri = ContactsContract.Contacts.CONTENT_URI
-
         // 연락처 정보를 가져오기 위한 쿼리문 실행
         val cursor = cr.query(
             uri,
@@ -140,20 +158,16 @@ class ContactsFragment : Fragment() {
             ContactsContract.Contacts.DISPLAY_NAME + " ASC"
         )
 
-
         // 가져온 연락처 정보를 리스트에 저장
         if (cursor != null && cursor.count > 0) {
             while (cursor.moveToNext()) {
                 val id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
                 val name =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-
                 // 전화번호 정보를 가져오기 위한 URI 생성
                 val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-
                 // 가져올 전화번호 정보의 컬럼 정보
                 val phoneProjection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
-
                 // 전화번호 정보를 가져오기 위한 쿼리문 실행
                 val phoneCursor = cr.query(
                     phoneUri,
@@ -162,23 +176,18 @@ class ContactsFragment : Fragment() {
                     arrayOf(id),
                     null
                 )
-
                 var phoneNumber = ""
-                if (phoneCursor != null && phoneCursor.moveToFirst()) {
 
+                if (phoneCursor != null && phoneCursor.moveToFirst()) {
                     phoneNumber =
                         phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-
                     phoneCursor.close()
                 }
 
                 // 이메일 정보를 가져오기 위한 URI 생성
                 val emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI
-
                 // 가져올 이메일 정보의 컬럼 정보
                 val emailProjection = arrayOf(ContactsContract.CommonDataKinds.Email.DATA)
-
                 // 이메일 정보를 가져오기 위한 쿼리문 실행
                 val emailCursor = cr.query(
                     emailUri,
@@ -199,19 +208,15 @@ class ContactsFragment : Fragment() {
                 val photoUri =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))
 
-
-
                 if (photoUri != null) {
-                    suggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber))
+                    mSuggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber))
                 } else {
-                    suggestList.add(UserVO(name, emailAddress, "", phoneNumber))
+                    mSuggestList.add(UserVO(name, emailAddress, "", phoneNumber))
                 }
-
-
             }
             cursor.close()
         }
-        return suggestList
+        return mSuggestList
 
     }
 }

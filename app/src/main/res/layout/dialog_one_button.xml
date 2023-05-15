@@ -95,6 +95,7 @@
                 android:background="#edeef5" />
 
             <Button
+                style="@style/MyButtonStyle"
                 android:id="@+id/positiveButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
