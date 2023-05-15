@@ -35,10 +35,14 @@ class ReactionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        //SharedPreferences
+        val shared = getSharedPreferences("reply", 0)
+        val editor = shared.edit()
+
+
         //chatActivity에서 intent로 값 받아오기
         getKey = intent.getStringExtra("key").toString()
         getCommkey = intent.getStringExtra("commkey").toString()
-
 
 
         Log.d("TAG-key", getKey)
@@ -48,9 +52,10 @@ class ReactionActivity : AppCompatActivity() {
 
         //답장기능
         binding.viewReplyReactrion.setOnClickListener {
-            Toast.makeText(this@ReactionActivity, "Reply Clicked", Toast.LENGTH_SHORT).show()
+            editor.putString("replyKey",getCommkey)
+            editor.commit()
 
-
+            finish()
         }
 
         //복사
@@ -154,6 +159,11 @@ class ReactionActivity : AppCompatActivity() {
     }
     fun setReaction(reaction:String){
         chatRef.child("$getKey/comments").child(getCommkey).child("reaction").setValue(reaction)
+        finish()
+    }
+
+    fun setReply(reply:String){
+        chatRef.child("$getKey/comments").child(getCommkey).child("reply").setValue(reply)
         finish()
     }
 

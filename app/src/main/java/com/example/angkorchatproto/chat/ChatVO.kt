@@ -9,7 +9,7 @@ data class ChatModel (val users: HashMap<String, Boolean> = HashMap(),
     class Comment(
         val profile: String? = null, val sender: String? = null, val message: String? = null,
         val time: String? = null, val state:Boolean?=false, val url: String? = null, var key: String? = null,
-        val emo:String? = null, val file:String? = null, val reaction:String? = null) {
+        val emo:String? = null, val file:String? = null, val reaction:String? = null, val reply:String? =null) {
     }
 }
 

@@ -83,9 +83,6 @@ class ChatActivity : AppCompatActivity() {
     var selectCharacterName: String? = null
     var selectCharacterIdx: String? = null
 
-    //리액션 정보 가져오기
-
-
 
     //Manifest 에서 설정한 권한을 가지고 온다.
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
@@ -108,6 +105,7 @@ class ChatActivity : AppCompatActivity() {
     val FLAG_REQ_OPEN_DIRECTORY = 1002
 
     var photoUri = ""
+    var replyKey =""
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -117,6 +115,12 @@ class ChatActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         checkChatRoom()
+        binding.replyLayout.visibility = View.GONE
+
+        if(replyKey != ""){
+            //답장 정보가 있다면
+//            binding.replyLayout.visibility = View.VISIBLE
+        }
     }
 
     @SuppressLint("NewApi")
@@ -130,6 +134,10 @@ class ChatActivity : AppCompatActivity() {
         //현재 사용자 번호 불러오기
         val shared = getSharedPreferences("loginNumber", 0)
         myNumber = shared.getString("userNumber", "").toString()
+
+        //답장 정보 가져오기
+        val sharedReply = getSharedPreferences("reply",0)
+        replyKey = sharedReply.getString("replyKey","").toString()
 
         //상대방 번호 저장
         val receiverData = intent.getStringExtra("number").toString()
@@ -153,6 +161,14 @@ class ChatActivity : AppCompatActivity() {
                 .load(profileImg)
                 .into(binding.imgProfileChat)
         }
+
+
+        //답장 정보 가져오기
+
+
+
+
+
 
         //키보드 상태 캐치하는 리스너
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -192,6 +208,12 @@ class ChatActivity : AppCompatActivity() {
             binding.mediaLayout.visibility = View.GONE
             binding.mediaMenuLayout.visibility = View.GONE
             binding.viewImogeLayout.visibility = View.GONE
+            binding.replyLayout.visibility = View.GONE
+
+            //저장된 reply 정보 지우기
+            sharedReply.edit().clear()
+            
+            
 
             binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
 
@@ -462,7 +484,8 @@ class ChatActivity : AppCompatActivity() {
                         sendFileDirectory
                     } else {
                         ""
-                    }, reaction = ""
+                    }, reaction = "",
+                    reply = ""
                 )
 
                 initImogePreview()
@@ -977,9 +1000,6 @@ class ChatActivity : AppCompatActivity() {
         binding.rvMediaImgList.layoutManager =
             LinearLayoutManager(this@ChatActivity, RecyclerView.HORIZONTAL, false)
 
-//        if (imgList.size != 0) {
-//
-//        }
 
         mediaImgAdapter.setOnImageSelectListener(object :
             MediaImgAdapter.OnImageSelectListener {
