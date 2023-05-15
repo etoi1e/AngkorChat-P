@@ -24,10 +24,8 @@ class ReactionActivity : AppCompatActivity() {
     val chatRef = FBdataBase.getChatRef()
 
 
-    lateinit var getKey :String
-    lateinit var getCommkey :String
-
-
+    lateinit var getKey: String
+    lateinit var getCommkey: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +53,7 @@ class ReactionActivity : AppCompatActivity() {
         //답장기능
         binding.viewReplyReactrion.setOnClickListener {
 
-            editor.putString("replyKey",getCommkey)
+            editor.putString("replyKey", getCommkey)
 
             editor.commit()
 
@@ -167,10 +165,12 @@ class ReactionActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d("TAG-oldReaction", snapshot.toString())
 
-                    if(snapshot.value == reaction){
-                        chatRef.child("$getKey/comments").child(getCommkey).child("reaction").removeValue()
-                    }else{
-                        chatRef.child("$getKey/comments").child(getCommkey).child("reaction").setValue(reaction)
+                    if (snapshot.value == reaction) {
+                        chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
+                            .removeValue()
+                    } else {
+                        chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
+                            .setValue(reaction)
                     }
 
                 }
@@ -184,8 +184,4 @@ class ReactionActivity : AppCompatActivity() {
         finish()
     }
 
-    fun setReply(reply: String) {
-
-
-
-    }
+}
