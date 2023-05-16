@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_medium"
             android:text="Cindy"
             android:textColor="@color/textBlack"
             android:textSize="20sp"
@@ -92,13 +93,13 @@
         tools:visibility="visible">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tvReplySelectText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="-8dp"
-            android:fontFamily="sans-serif"
-            android:text="Reply to NAME"
+            android:fontFamily="@font/poppins"
+            android:text="UserName"
             android:textColor="@color/textBlack"
             app:layout_constraintStart_toEndOf="@+id/imageView13"
             app:layout_constraintTop_toTopOf="@+id/imageView13" />
@@ -114,18 +115,18 @@
             android:src="@drawable/ic_enter_line_prime_20" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/tvReplyText"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/poppins"
             android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/imageView14"
-            app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintEnd_toStartOf="@+id/ivReplyClose"
+            app:layout_constraintStart_toStartOf="@+id/tvReplySelectText"
+            app:layout_constraintTop_toBottomOf="@+id/tvReplySelectText" />
 
         <ImageView
-            android:id="@+id/imageView14"
+            android:id="@+id/ivReplyClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"

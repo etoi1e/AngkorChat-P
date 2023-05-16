@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +38,9 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatBotVO>, width: In
         var tvTimeRight: TextView
         var tvTimeLeft: TextView
 
+        var myChatLayout: LinearLayout
+        var otherChatLayout: LinearLayout
+
 
         init {
 
@@ -45,6 +49,8 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatBotVO>, width: In
             divChatList = itemView.findViewById(R.id.divChatList)
             tvTimeRight = itemView.findViewById(R.id.tvTimeRight)
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
+            myChatLayout = itemView.findViewById(R.id.myChatLayout)
+            otherChatLayout = itemView.findViewById(R.id.otherChatLayout)
 
         }
     }
@@ -84,7 +90,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatBotVO>, width: In
 
 
         if (message.sentBy.equals(ChatBotVO.SENT_BY_ME)) { //내가 보낸 메세지인 경우
-            holder.tvOtherMessageChat.visibility = View.GONE
+            holder.otherChatLayout.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
 
             holder.tvMyMessageChat.setText(message.message)
@@ -92,7 +98,7 @@ class ChatBotAdapter(context: Context, chatList: ArrayList<ChatBotVO>, width: In
 
 
         } else { //타인이 보낸 메세지인 경우
-            holder.tvMyMessageChat.visibility = View.GONE
+            holder.myChatLayout.visibility = View.GONE
             holder.tvTimeRight.visibility = View.GONE
 
             holder.tvOtherMessageChat.setText(message.message)

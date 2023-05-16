@@ -9,13 +9,10 @@ import android.util.Log
 import android.widget.Toast
 import com.example.angkorchatproto.databinding.ActivityReactionBinding
 import com.example.angkorchatproto.utils.FBdataBase
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.childEvents
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.database.ktx.values
 
 class ReactionActivity : AppCompatActivity() {
 
@@ -36,7 +33,7 @@ class ReactionActivity : AppCompatActivity() {
 
 
         //SharedPreferences
-        val shared = getSharedPreferences("reply", 0)
+        val shared = getSharedPreferences("sharedReply", 0)
         val editor = shared.edit()
 
 
@@ -45,7 +42,7 @@ class ReactionActivity : AppCompatActivity() {
         getCommkey = intent.getStringExtra("commkey").toString()
 
 
-        Log.d("TAG-key", getKey)
+        Log.d("TAG-key", getCommkey)
 
         //필요한 정보 -> chat Data Key값
 
@@ -54,7 +51,6 @@ class ReactionActivity : AppCompatActivity() {
         binding.viewReplyReactrion.setOnClickListener {
 
             editor.putString("replyKey", getCommkey)
-
             editor.commit()
 
             finish()
@@ -158,12 +154,9 @@ class ReactionActivity : AppCompatActivity() {
     }
 
     fun setReaction(reaction: String) {
-
-
         chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("TAG-oldReaction", snapshot.toString())
 
                     if (snapshot.value == reaction) {
                         chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
