@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/emojiStoreMainFragment">
+
+    <fragment
+        android:id="@+id/emojiStoreMainFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreMainFragment"
+        android:label="fragment_emoji_store_main"
+        tools:layout="@layout/fragment_emoji_store_main" >
+        <action
+            android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreSearchFragment"
+            app:destination="@id/emojiStoreSearchFragment" />
+        <action
+            android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreMyEmojiFragment"
+            app:destination="@id/emojiStoreEmojiListFragment" />
+        <action
+            android:id="@+id/action_emojiStoreMainFragment_to_emojiStoreDetailFragment"
+            app:destination="@id/emojiStoreDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emojiStoreEmojiListFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreEmojiListFragment"
+        android:label="fragment_emoji_store_emoji_list"
+        tools:layout="@layout/fragment_emoji_store_emoji_list" >
+        <action
+            android:id="@+id/action_emojiStoreEmojiListFragment_to_emojiStoreMainFragment"
+            app:destination="@id/emojiStoreMainFragment"
+            app:popUpTo="@id/emojiStoreMainFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/emojiStoreDetailFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreDetailFragment"
+        android:label="fragment_emoji_store_detail"
+        tools:layout="@layout/fragment_emoji_store_detail" >
+        <action
+            android:id="@+id/action_emojiStoreDetailFragment_to_emojiStoreMainFragment"
+            app:destination="@id/emojiStoreMainFragment"
+            app:popUpTo="@id/emojiStoreMainFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/emojiStoreSearchFragment"
+        android:name="com.example.angkorchatproto.emojistore.fragment.EmojiStoreSearchFragment"
+        android:label="fragment_emoji_store_search"
+        tools:layout="@layout/fragment_emoji_store_search" />
+</navigation>

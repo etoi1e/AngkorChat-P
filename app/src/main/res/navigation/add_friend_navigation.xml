@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/contactsFragment">
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.example.angkorchatproto.friends.fragment.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts" >
+        <action
+            android:id="@+id/action_contactsFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.example.angkorchatproto.friends.fragment.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" />
+</navigation>

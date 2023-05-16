@@ -5,7 +5,7 @@
     android:id="@+id/layoutBot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.ChatBotActivity">
+    tools:context=".chat.ChatBotActivity">
 
     <View
         android:id="@+id/viewBackGroundChatBot"
@@ -228,7 +228,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_shortcut_imoge" />
+            tools:listitem="@layout/item_shortcut_emoji" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewImoge"

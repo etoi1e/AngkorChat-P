@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 
-import com.example.angkorchatproto.Auth.JoinActivity
+import com.example.angkorchatproto.auth.JoinActivity
 
 class Splash : AppCompatActivity() {
 
