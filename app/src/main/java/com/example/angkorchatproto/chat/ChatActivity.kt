@@ -105,22 +105,36 @@ class ChatActivity : AppCompatActivity() {
     val FLAG_REQ_OPEN_DIRECTORY = 1002
 
     var photoUri = ""
-    var replyKey =""
+
+    var replyKey = ""
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
 
 
+    @SuppressLint("CommitPrefEdits")
     override fun onResume() {
         super.onResume()
+
         checkChatRoom()
+
+        val sharedReply = getSharedPreferences("sharedReply", 0)
+        val editorReply = sharedReply.edit()
+
+        replyKey = sharedReply.getString("replyKey", "").toString()
+
         binding.replyLayout.visibility = View.GONE
 
-        if(replyKey != ""){
-            //답장 정보가 있다면
-//            binding.replyLayout.visibility = View.VISIBLE
+        if (replyKey != "") {
+
+            binding.replyLayout.visibility = View.VISIBLE
+
+            editorReply.clear()
+            editorReply.apply()
         }
+
+
     }
 
     @SuppressLint("NewApi")
@@ -134,10 +148,6 @@ class ChatActivity : AppCompatActivity() {
         //현재 사용자 번호 불러오기
         val shared = getSharedPreferences("loginNumber", 0)
         myNumber = shared.getString("userNumber", "").toString()
-
-        //답장 정보 가져오기
-        val sharedReply = getSharedPreferences("reply",0)
-        replyKey = sharedReply.getString("replyKey","").toString()
 
         //상대방 번호 저장
         val receiverData = intent.getStringExtra("number").toString()
@@ -161,13 +171,6 @@ class ChatActivity : AppCompatActivity() {
                 .load(profileImg)
                 .into(binding.imgProfileChat)
         }
-
-
-        //답장 정보 가져오기
-
-
-
-
 
 
         //키보드 상태 캐치하는 리스너
@@ -209,11 +212,6 @@ class ChatActivity : AppCompatActivity() {
             binding.mediaMenuLayout.visibility = View.GONE
             binding.viewImogeLayout.visibility = View.GONE
             binding.replyLayout.visibility = View.GONE
-
-            //저장된 reply 정보 지우기
-            sharedReply.edit().clear()
-            
-            
 
             binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
 
@@ -485,8 +483,13 @@ class ChatActivity : AppCompatActivity() {
                     } else {
                         ""
                     }, reaction = "",
-                    reply = ""
+                    reply = if (binding.replyLayout.visibility == View.VISIBLE) {
+                        replyKey
+                    } else {
+                        ""
+                    }
                 )
+                Log.d("TAG-replyKey", replyKey)
 
                 initImogePreview()
 
@@ -510,6 +513,7 @@ class ChatActivity : AppCompatActivity() {
 
 
                         binding.etMessageChat.text = null
+
                     }
                 } else {
 
@@ -518,10 +522,14 @@ class ChatActivity : AppCompatActivity() {
 
 
                     binding.etMessageChat.text = null
+
+
                 }
 
             }
-
+            replyKey = ""
+            photoUri = ""
+            binding.replyLayout.visibility = View.GONE
         }
 
         checkChatRoom()
@@ -632,6 +640,23 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
+        //답장 정보 가져오기
+        binding.replyLayout.visibility = View.GONE
+
+        if (replyKey != "") {
+            Log.d("TAG-replyKey", replyKey)
+            binding.replyLayout.visibility = View.VISIBLE
+
+        }
+
+        //Reply 닫기 버튼 클릭 시
+        binding.ivReplyClose.setOnClickListener {
+            binding.replyLayout.visibility = View.GONE
+
+            replyKey = ""
+        }
+
+
     }
 
     //onCreate 바깥
@@ -646,6 +671,11 @@ class ChatActivity : AppCompatActivity() {
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val chatModel = ChatModel()
+                    chatModel.users.put(myNumber, true)
+                    chatModel.users.put(receiver, true)
+
                     for (item in snapshot.children) {
 
                         val chatModel = item.getValue<ChatModel>()
@@ -679,7 +709,6 @@ class ChatActivity : AppCompatActivity() {
     }
 
     fun getMessageList(chatKey: String) {
-        Log.d("TAG-chatRoomKey", chatKey)
         chatRef.child(chatKey).child("comments")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -689,6 +718,7 @@ class ChatActivity : AppCompatActivity() {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     commentList.clear()
+                    commentKeyList.clear()
                     for (data in snapshot.children) {
                         val item = data.getValue<ChatModel.Comment>()
                         commentList.add(item!!)
