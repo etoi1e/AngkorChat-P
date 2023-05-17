@@ -208,8 +208,8 @@ class ChatAdapter(
 
 
         //디바이스 가로 길이에 맞춰 말풍선 고정
-        holder.tvMyMessageChat.maxWidth = width - 250
-        holder.tvOtherMessageChat.maxWidth = width - 250
+        holder.myMessageLayout.maxWidth = width - 250
+        holder.messageLayoutOther.maxWidth = width - 250
 
 
         //내가 보낸 메세지인 경우
@@ -262,12 +262,7 @@ class ChatAdapter(
 
                                     holder.tvReplyToComment.text = "Photo"
 
-                                }.addOnFailureListener(object : OnFailureListener {
-                                    override fun onFailure(p0: Exception) {
-                                        Log.d("TAG-onFailure", p0.toString())
-                                    }
-
-                                })
+                                }
                             }
 
 
@@ -382,7 +377,7 @@ class ChatAdapter(
 
                     }).addOnFailureListener(object : OnFailureListener {
                         override fun onFailure(p0: Exception) {
-                            Log.d("TAG-onFailure", p0.toString())
+                            Log.d("TAG-onFailure2", p0.toString())
                         }
 
                     })
@@ -462,7 +457,7 @@ class ChatAdapter(
 
                         .addOnFailureListener(object : OnFailureListener {
                             override fun onFailure(p0: Exception) {
-                                Log.d("TAG-onFailure2", p0.toString())
+                                Log.d("TAG-onFailure3", p0.toString())
                             }
 
                         })
@@ -581,7 +576,7 @@ class ChatAdapter(
 
                                 }.addOnFailureListener(object : OnFailureListener {
                                     override fun onFailure(p0: Exception) {
-                                        Log.d("TAG-onFailure", p0.toString())
+                                        Log.d("TAG-onFailure4", p0.toString())
                                     }
 
                                 })
@@ -700,7 +695,7 @@ class ChatAdapter(
 
                     }).addOnFailureListener(object : OnFailureListener {
                         override fun onFailure(p0: Exception) {
-                            Log.d("TAG-onFailure", p0.toString())
+                            Log.d("TAG-onFailure5", p0.toString())
                         }
 
                     })
@@ -781,7 +776,7 @@ class ChatAdapter(
 
                         .addOnFailureListener(object : OnFailureListener {
                             override fun onFailure(p0: Exception) {
-                                Log.d("TAG-onFailure2", p0.toString())
+                                Log.d("TAG-onFailure6", p0.toString())
                             }
 
                         })

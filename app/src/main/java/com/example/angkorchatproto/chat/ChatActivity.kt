@@ -43,12 +43,17 @@ import com.example.angkorchatproto.friends.AddFriendsActivity
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
 import com.example.angkorchatproto.video.VideoActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -129,12 +134,107 @@ class ChatActivity : BaseActivity() {
 
         binding.replyLayout.visibility = View.GONE
 
+
+        //답장 정보
         if (replyKey != "") {
 
             binding.replyLayout.visibility = View.VISIBLE
 
+
+            chatRef.child("$chatRoomKey/comments").child(replyKey)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+
+                        val message = snapshot.child("message").value.toString()
+                        val file = snapshot.child("file").value.toString()
+                        val url = snapshot.child("url").value.toString()
+                        val userName = snapshot.child("sender").value.toString()
+
+
+
+                        binding.tvReplySelectUser.text = userName
+
+                        //메세지에 답장
+                        if (message != "") binding.tvReplyText.text = message
+
+                        //파일에 답장
+                        if (file != "") {
+                            binding.tvReplyText.text = "file"
+                            binding.ivReplyImage.visibility = View.VISIBLE
+                            binding.ivReplyImage.setImageResource(R.drawable.file_line_black)
+                        }
+
+                        //이미지에 답장
+                        if (url != "") {
+
+                            if (url.contains("content://media/")) {//카메라로 촬영한 사진
+                                val storage = Firebase.storage
+                                val storageRef = storage.getReference()
+                                val imgRef = storageRef.child("/$url.png")
+
+
+                                imgRef.downloadUrl.addOnSuccessListener { p0 ->
+                                    binding.ivReplyImage.visibility = View.VISIBLE
+                                    binding.tvReplyText.text = "Photo"
+                                    Glide.with(this@ChatActivity)
+                                        .load(p0)
+                                        .into(binding.ivReplyImage)
+                                }
+
+
+                            } else {//갤러리에서 전송한 사진
+
+                                val storage =
+                                    FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+                                val storageRef = storage.getReference()
+                                val imgRef = storageRef.child("/$url")
+
+                                imgRef.listAll()
+                                    .addOnSuccessListener { p0 ->
+                                        val selectedPhotoList = p0!!.items
+
+                                        if (selectedPhotoList.size > 0) {
+                                            selectedPhotoList.get(0).downloadUrl
+                                                .addOnCompleteListener(
+                                                    object : OnCompleteListener<Uri> {
+                                                        override fun onComplete(p0: Task<Uri>) {
+                                                            if (p0.isSuccessful) {
+                                                                Glide.with(this@ChatActivity)
+                                                                    .load(p0.getResult())
+                                                                    .into(binding.ivReplyImage)
+                                                            }
+                                                        }
+
+                                                    }
+                                                )
+                                        }
+                                    }
+
+
+                            }
+
+
+                        }
+
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+
             editorReply.clear()
             editorReply.apply()
+        }
+
+
+        //Reply 닫기 버튼 클릭 시
+        binding.ivReplyClose.setOnClickListener {
+            binding.replyLayout.visibility = View.GONE
+
+            replyKey = ""
         }
 
 
@@ -193,9 +293,10 @@ class ChatActivity : BaseActivity() {
                         this
                     ) - Utils.getNavigationBarHeight(this) != 0
                 ) {
-                    keyboardHeight = rootHeight - heightExceptKeyboard - Utils.getStatusBarHeight(
-                        this
-                    ) - Utils.getNavigationBarHeight(this)
+                    keyboardHeight =
+                        rootHeight - heightExceptKeyboard - Utils.getStatusBarHeight(
+                            this
+                        ) - Utils.getNavigationBarHeight(this)
                     setImogeLayoutHeight(keyboardHeight)
                     setMediaLayoutHeight(keyboardHeight)
                 }
@@ -552,30 +653,31 @@ class ChatActivity : BaseActivity() {
         }
 
         //EditText Focus 감지
-        binding.etMessageChat.onFocusChangeListener = View.OnFocusChangeListener { _, gainFocus ->
-            //포커스가 주어졌을 때
-            if (gainFocus) {
+        binding.etMessageChat.onFocusChangeListener =
+            View.OnFocusChangeListener { _, gainFocus ->
+                //포커스가 주어졌을 때
+                if (gainFocus) {
 
-                binding.viewMessageBox1Chat.visibility = View.INVISIBLE
-                binding.imgRecordChat.visibility = View.INVISIBLE
+                    binding.viewMessageBox1Chat.visibility = View.INVISIBLE
+                    binding.imgRecordChat.visibility = View.INVISIBLE
 
-                binding.imgSendMessageChat.visibility = View.VISIBLE
-                binding.viewMessageBox2Chat.visibility = View.VISIBLE
+                    binding.imgSendMessageChat.visibility = View.VISIBLE
+                    binding.viewMessageBox2Chat.visibility = View.VISIBLE
 
-                if (binding.viewImogeLayout.visibility == View.VISIBLE) {
-                    binding.viewImogeLayout.visibility = View.GONE
+                    if (binding.viewImogeLayout.visibility == View.VISIBLE) {
+                        binding.viewImogeLayout.visibility = View.GONE
+                    }
+
+                    if (binding.mediaLayout.visibility == View.VISIBLE) {
+                        binding.mediaLayout.visibility = View.GONE
+                        binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
+                    }
+
+                } else {
+                    binding.etMessageChat.clearFocus()
                 }
 
-                if (binding.mediaLayout.visibility == View.VISIBLE) {
-                    binding.mediaLayout.visibility = View.GONE
-                    binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
-                }
-
-            } else {
-                binding.etMessageChat.clearFocus()
             }
-
-        }
 
         //촬영 후 이미지 전송 버튼 클릭효과
         binding.btnSendPhotoPreview.setOnClickListener {
@@ -648,22 +750,6 @@ class ChatActivity : BaseActivity() {
             startActivity(intent)
         }
 
-        //답장 정보 가져오기
-        binding.replyLayout.visibility = View.GONE
-
-        if (replyKey != "") {
-            Log.d("TAG-replyKey", replyKey)
-            binding.replyLayout.visibility = View.VISIBLE
-
-        }
-
-        //Reply 닫기 버튼 클릭 시
-        binding.ivReplyClose.setOnClickListener {
-            binding.replyLayout.visibility = View.GONE
-
-            replyKey = ""
-        }
-
 
     }
 
@@ -734,7 +820,13 @@ class ChatActivity : BaseActivity() {
 
                     }
                     chatAdapter =
-                        ChatAdapter(this@ChatActivity, commentList, commentKeyList, width, myNumber)
+                        ChatAdapter(
+                            this@ChatActivity,
+                            commentList,
+                            commentKeyList,
+                            width,
+                            myNumber
+                        )
                     chatAdapter.notifyDataSetChanged()
                     //메세지를 보낼 시 화면을 맨 밑으로 내림
                     binding.rvChatListChat.scrollToPosition(commentList.size - 1)
