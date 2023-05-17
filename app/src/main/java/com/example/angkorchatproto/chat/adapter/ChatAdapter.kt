@@ -23,10 +23,15 @@ import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.chat.ImgViewActivity
+import com.example.angkorchatproto.utils.FBdataBase
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.values
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
@@ -43,6 +48,7 @@ class ChatAdapter(
     myNumber: String
 ) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+
 
     var chatList: ArrayList<ChatModel.Comment>
     var commentKeyList: ArrayList<String>
@@ -103,8 +109,21 @@ class ChatAdapter(
         var tvOtherMessageChat: TextView
         var tvTimeLeft: TextView
 
-        var tvMyCharReaction: TextView
-        var tvOtherCharReaction: TextView
+        //리액션
+        var tvMyChatReaction: TextView
+        var tvOtherChatReaction: TextView
+
+        //답장
+        var replyLayoutMy: ConstraintLayout
+        var replyLayoutOther: ConstraintLayout
+
+        var tvReplyToUser: TextView
+        var tvReplyToComment: TextView
+        var tvReplyToMe: TextView
+        var tvReplyToCommentOther: TextView
+        var ivMyReplyImg: ImageView
+        var ivOtherReplyImg: ImageView
+        var viewbindImg: View
 
 
         init {
@@ -124,7 +143,7 @@ class ChatAdapter(
             myMessageLayout = itemView.findViewById(R.id.myMessageLayout)
             tvMyMessageChat = itemView.findViewById(R.id.tvMyMessageChat)
             tvTimeRight = itemView.findViewById(R.id.tvTimeRight)
-            tvMyCharReaction = itemView.findViewById(R.id.tvMyChatReaction)
+            tvMyChatReaction = itemView.findViewById(R.id.tvMyChatReaction)
 
 
 
@@ -142,11 +161,23 @@ class ChatAdapter(
             messageLayoutOther = itemView.findViewById(R.id.messageLayoutOther)
             tvOtherMessageChat = itemView.findViewById(R.id.tvOtherMessageChat)
             tvTimeLeft = itemView.findViewById(R.id.tvTimeLeft)
-            tvOtherCharReaction = itemView.findViewById(R.id.tvOtherChatReaction)
+            tvOtherChatReaction = itemView.findViewById(R.id.tvOtherChatReaction)
+
+            replyLayoutMy = itemView.findViewById(R.id.replyLayoutMy)
+            replyLayoutOther = itemView.findViewById(R.id.replyLayoutOther)
+
+            tvReplyToUser = itemView.findViewById(R.id.tvReplyToUser)
+            tvReplyToComment = itemView.findViewById(R.id.tvReplyToComment)
+            tvReplyToMe = itemView.findViewById(R.id.tvReplyToMe)
+            tvReplyToCommentOther = itemView.findViewById(R.id.tvReplyToCommentOther)
+            ivMyReplyImg = itemView.findViewById(R.id.ivMyReplyImg)
+            ivOtherReplyImg = itemView.findViewById(R.id.ivOtherReplyImg)
+            viewbindImg = itemView.findViewById(R.id.viewbindImg)
         }
     }
 
 
+    @SuppressLint("InflateParams")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.chat_list, null)
@@ -187,20 +218,83 @@ class ChatAdapter(
             holder.otherChatLayout.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
 
-            //리액션
+            //답장
+            if (message.reply != "") {
+                holder.replyLayoutMy.visibility = View.VISIBLE
+                val chatRef = FBdataBase.getChatRef()
+                chatRef.child("${message.key}/comments").child(message.reply.toString())
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
 
-            Log.d("TAG-reaction",message.reaction.toString())
-            holder.tvMyCharReaction.visibility = View.GONE
-            if(message.reaction != "" ){
-                holder.tvMyCharReaction.visibility = View.VISIBLE
-                holder.tvMyCharReaction.text=message.reaction
+                            val replyMessage = snapshot.child("message").value
+
+                            holder.tvReplyToUser.text = snapshot.child("sender").value.toString()
+
+                            //텍스트에 답장하는 경우
+                            if (snapshot.child("message").value != "") {
+                                holder.tvReplyToComment.text = replyMessage.toString()
+
+                            }
+
+                            //파일에 답장하는 경우
+                            if (snapshot.child("file").value != "") {
+                                holder.ivMyReplyImg.visibility = View.VISIBLE
+                                holder.ivMyReplyImg.setImageResource(R.drawable.file_line_white)
+
+                                holder.tvReplyToComment.text =
+                                    snapshot.child("file").value.toString().substringAfterLast("/")
+                            }
+
+
+                            //카메라로 촬영한 이미지에 답장하는 경우
+                            if (snapshot.child("url").value != "") { //이미지 불러오기
+                                val storage = Firebase.storage
+                                val storageRef = storage.getReference()
+                                val imgRef = storageRef.child("/${snapshot.child("url").value}.png")
+
+
+                                imgRef.downloadUrl.addOnSuccessListener { p0 ->
+                                    holder.ivMyReplyImg.visibility = View.VISIBLE
+
+                                    Glide.with(context)
+                                        .load(p0)
+                                        .into(holder.ivMyReplyImg)
+
+                                    holder.tvReplyToComment.text = "Photo"
+
+                                }.addOnFailureListener(object : OnFailureListener {
+                                    override fun onFailure(p0: Exception) {
+                                        Log.d("TAG-onFailure", p0.toString())
+                                    }
+
+                                })
+                            }
+
+
+
+
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+
+
             }
-            if(message.reaction == null){
-                holder.tvMyCharReaction.visibility = View.GONE
+
+            //리액션
+            holder.tvMyChatReaction.visibility = View.GONE
+            if (message.reaction != "") {
+                holder.tvMyChatReaction.visibility = View.VISIBLE
+                holder.tvMyChatReaction.text = message.reaction
+            }
+            if (message.reaction == null) {
+                holder.tvMyChatReaction.visibility = View.GONE
             }
 
             //메세지
-            if (message.message == "" ) {
+            if (message.message == "") {
 
                 holder.myMessageLayout.visibility = View.GONE
             } else {
@@ -208,12 +302,12 @@ class ChatAdapter(
             }
 
             // 롱클릭 이벤트
-            holder.tvMyMessageChat.setOnLongClickListener(object : OnLongClickListener {
+            holder.myChatLayout.setOnLongClickListener(object : OnLongClickListener {
                 override fun onLongClick(p0: View?): Boolean {
 
                     val intent = Intent(context, ReactionActivity::class.java)
-                    intent.putExtra("commkey",commentKey)
-                    intent.putExtra("key",message.key)
+                    intent.putExtra("commkey", commentKey)
+                    intent.putExtra("key", message.key)
                     context.startActivity(intent)
 
                     return false
@@ -250,6 +344,7 @@ class ChatAdapter(
                         override fun onSuccess(p0: Uri?) {
 
                             holder.ivMySendImg.visibility = View.VISIBLE
+                            holder.myMessageLayout.visibility = View.GONE
 
 
                             Glide.with(context)
@@ -267,12 +362,13 @@ class ChatAdapter(
                                     context.startActivity(intent)
 
                                 }
-                                holder.ivMySendImg.setOnLongClickListener(object : OnLongClickListener{
+                                holder.ivMySendImg.setOnLongClickListener(object :
+                                    OnLongClickListener {
                                     override fun onLongClick(p0: View?): Boolean {
 
                                         val intent = Intent(context, ReactionActivity::class.java)
-                                        intent.putExtra("commkey",commentKey)
-                                        intent.putExtra("key",message.key)
+                                        intent.putExtra("commkey", commentKey)
+                                        intent.putExtra("key", message.key)
                                         context.startActivity(intent)
 
                                         return false
@@ -329,18 +425,28 @@ class ChatAdapter(
                                                             context.startActivity(intent)
 
                                                         }
-                                                        holder.ivMySendImg.setOnLongClickListener(object : OnLongClickListener{
-                                                            override fun onLongClick(p0: View?): Boolean {
+                                                        holder.ivMySendImg.setOnLongClickListener(
+                                                            object : OnLongClickListener {
+                                                                override fun onLongClick(p0: View?): Boolean {
 
-                                                                val intent = Intent(context, ReactionActivity::class.java)
-                                                                intent.putExtra("commkey",commentKey)
-                                                                intent.putExtra("key",message.key)
-                                                                context.startActivity(intent)
+                                                                    val intent = Intent(
+                                                                        context,
+                                                                        ReactionActivity::class.java
+                                                                    )
+                                                                    intent.putExtra(
+                                                                        "commkey",
+                                                                        commentKey
+                                                                    )
+                                                                    intent.putExtra(
+                                                                        "key",
+                                                                        message.key
+                                                                    )
+                                                                    context.startActivity(intent)
 
-                                                                return false
+                                                                    return false
 
-                                                            }
-                                                        })
+                                                                }
+                                                            })
                                                     }
 
 
@@ -370,45 +476,54 @@ class ChatAdapter(
             //파일
             if (message.file != "") {
                 holder.myFileLayout.visibility = View.VISIBLE
+                holder.myMessageLayout.visibility = View.GONE
 
                 holder.myFileLayout.setOnClickListener {
 
                     val storageReference = Firebase.storage.reference
                     val fileRef = storageReference.child(message.file.toString())
 
-                    fileRef.downloadUrl.addOnSuccessListener{
+                    fileRef.downloadUrl.addOnSuccessListener {
 
                     }
-                    
+
                     //다운로드 주소로 변환
-                    var downloadReference = Firebase.storage.getReferenceFromUrl(message.file.toString().
-                    replace("gs://angkor-ae0c0.appspot.com/","https://firebasestorage.googleapis.com/v0/b/angkor-ae0c0.appspot.com/o/"))
+                    var downloadReference = Firebase.storage.getReferenceFromUrl(
+                        message.file.toString().replace(
+                            "gs://angkor-ae0c0.appspot.com/",
+                            "https://firebasestorage.googleapis.com/v0/b/angkor-ae0c0.appspot.com/o/"
+                        )
+                    )
 
                     //파일의 확장자
-                    var fileType = downloadReference.name.substring(downloadReference.name.indexOf("."),downloadReference.name.lastIndex+1)
+                    var fileType = downloadReference.name.substring(
+                        downloadReference.name.indexOf("."),
+                        downloadReference.name.lastIndex + 1
+                    )
 
-                    val destinationPath = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
+                    val destinationPath =
+                        Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
 
                     //내부 저장소에 저장되는 이름
-                    val localFile = File.createTempFile("AngkorChat",fileType,destinationPath)
+                    val localFile = File.createTempFile("AngkorChat", fileType, destinationPath)
 
-                    downloadReference.getFile(localFile).addOnCompleteListener{
+                    downloadReference.getFile(localFile).addOnCompleteListener {
                         Log.d("TAG-downloadReference", downloadReference.toString())
-                        Toast.makeText(context, "다운로드 완료",Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "다운로드 완료", Toast.LENGTH_LONG).show()
                         Log.d("TAG-파일이름", "name: ${downloadReference.name}")
                     }.addOnProgressListener {
                         Log.d("TAG-addOnProgressListener", "OnProgressListener")
-                    }.addOnFailureListener{
-                            Log.e("TAG-저장실패",it.message.toString())
-                        }
+                    }.addOnFailureListener {
+                        Log.e("TAG-저장실패", it.message.toString())
+                    }
                 }
 
-                holder.myFileLayout.setOnLongClickListener(object : OnLongClickListener{
+                holder.myFileLayout.setOnLongClickListener(object : OnLongClickListener {
                     override fun onLongClick(p0: View?): Boolean {
 
                         val intent = Intent(context, ReactionActivity::class.java)
-                        intent.putExtra("commkey",commentKey)
-                        intent.putExtra("key",message.key)
+                        intent.putExtra("commkey", commentKey)
+                        intent.putExtra("key", message.key)
                         context.startActivity(intent)
 
                         return false
@@ -420,12 +535,80 @@ class ChatAdapter(
 
         } else {//타인이 보낸 메세지인 경우
 
-            //리액션
-            holder.tvOtherCharReaction.visibility = View.GONE
+            //답장
+            if (message.reply != "") {
+                holder.replyLayoutOther.visibility = View.VISIBLE
+                val chatRef = FBdataBase.getChatRef()
+                chatRef.child("${message.key}/comments").child(message.reply.toString())
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
 
-            if(message.reaction != "" ){
-                holder.tvOtherCharReaction.visibility = View.VISIBLE
-                holder.tvOtherCharReaction.text=message.reaction
+                            val replyMessage = snapshot.child("message").value
+
+                            holder.tvReplyToMe.text = snapshot.child("sender").value.toString()
+
+                            //텍스트에 답장하는 경우
+                            if (snapshot.child("message").value != "") {
+                                holder.tvReplyToCommentOther.text = replyMessage.toString()
+
+                            }
+
+                            //파일에 답장하는 경우
+                            if (snapshot.child("file").value != "") {
+                                holder.ivOtherReplyImg.visibility = View.VISIBLE
+                                holder.ivOtherReplyImg.setImageResource(R.drawable.file_line_black)
+
+                                holder.tvReplyToCommentOther.text =
+                                    snapshot.child("file").value.toString().substringAfterLast("/")
+                            }
+
+
+                            //카메라로 촬영한 이미지에 답장하는 경우
+                            if (snapshot.child("url").value != "") { //이미지 불러오기
+                                val storage = Firebase.storage
+                                val storageRef = storage.getReference()
+                                val imgRef = storageRef.child("/${snapshot.child("url").value}.png")
+
+
+                                imgRef.downloadUrl.addOnSuccessListener { p0 ->
+                                    holder.ivOtherReplyImg.visibility = View.VISIBLE
+
+                                    Glide.with(context)
+                                        .load(p0)
+                                        .into(holder.ivOtherReplyImg)
+
+                                    holder.tvReplyToCommentOther.text = "Photo"
+
+                                }.addOnFailureListener(object : OnFailureListener {
+                                    override fun onFailure(p0: Exception) {
+                                        Log.d("TAG-onFailure", p0.toString())
+                                    }
+
+                                })
+                            }
+
+
+
+
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+
+
+            }
+
+            //리액션
+            holder.tvOtherChatReaction.visibility = View.GONE
+
+            if (message.reaction != "") {
+                holder.tvOtherChatReaction.visibility = View.VISIBLE
+                holder.tvOtherChatReaction.text = message.reaction
+            }
+            if (message.reaction == null) {
+                holder.tvOtherChatReaction.visibility = View.GONE
             }
 
             holder.myMessageLayout.visibility = View.GONE
@@ -444,8 +627,8 @@ class ChatAdapter(
                 override fun onLongClick(p0: View?): Boolean {
 
                     val intent = Intent(context, ReactionActivity::class.java)
-                    intent.putExtra("commkey",commentKey)
-                    intent.putExtra("key",message.key)
+                    intent.putExtra("commkey", commentKey)
+                    intent.putExtra("key", message.key)
                     context.startActivity(intent)
 
                     return false
@@ -477,6 +660,7 @@ class ChatAdapter(
                         override fun onSuccess(p0: Uri?) {
 
                             holder.ivOtherSendImg.visibility = View.VISIBLE
+                            holder.messageLayoutOther.visibility = View.GONE
 
 
                             Glide.with(context)
@@ -485,6 +669,7 @@ class ChatAdapter(
 
                             //이미지 클릭 시 전체 화면으로 보여주기
                             if (holder.ivOtherSendImg.visibility == View.VISIBLE) {
+
                                 holder.ivOtherSendImg.setOnClickListener {
 
 
@@ -495,12 +680,13 @@ class ChatAdapter(
 
                                 }
 
-                                holder.ivOtherSendImg.setOnLongClickListener(object : OnLongClickListener{
+                                holder.ivOtherSendImg.setOnLongClickListener(object :
+                                    OnLongClickListener {
                                     override fun onLongClick(p0: View?): Boolean {
 
                                         val intent = Intent(context, ReactionActivity::class.java)
-                                        intent.putExtra("commkey",commentKey)
-                                        intent.putExtra("key",message.key)
+                                        intent.putExtra("commkey", commentKey)
+                                        intent.putExtra("key", message.key)
                                         context.startActivity(intent)
 
                                         return false
@@ -529,6 +715,7 @@ class ChatAdapter(
                         .addOnSuccessListener(object : OnSuccessListener<ListResult> {
                             override fun onSuccess(p0: ListResult?) {
                                 holder.ivOtherSendImg.visibility = View.VISIBLE
+                                holder.messageLayoutOther.visibility = View.GONE
 
                                 val selectedPhotoList = p0!!.items
 
@@ -557,18 +744,28 @@ class ChatAdapter(
                                                             context.startActivity(intent)
 
                                                         }
-                                                        holder.ivOtherSendImg.setOnLongClickListener(object : OnLongClickListener{
-                                                            override fun onLongClick(p0: View?): Boolean {
+                                                        holder.ivOtherSendImg.setOnLongClickListener(
+                                                            object : OnLongClickListener {
+                                                                override fun onLongClick(p0: View?): Boolean {
 
-                                                                val intent = Intent(context, ReactionActivity::class.java)
-                                                                intent.putExtra("commkey",commentKey)
-                                                                intent.putExtra("key",message.key)
-                                                                context.startActivity(intent)
+                                                                    val intent = Intent(
+                                                                        context,
+                                                                        ReactionActivity::class.java
+                                                                    )
+                                                                    intent.putExtra(
+                                                                        "commkey",
+                                                                        commentKey
+                                                                    )
+                                                                    intent.putExtra(
+                                                                        "key",
+                                                                        message.key
+                                                                    )
+                                                                    context.startActivity(intent)
 
-                                                                return false
+                                                                    return false
 
-                                                            }
-                                                        })
+                                                                }
+                                                            })
                                                     }
 
 
@@ -597,58 +794,62 @@ class ChatAdapter(
             //파일
             if (message.file != "") {
                 holder.otherFileLayout.visibility = View.VISIBLE
+                holder.messageLayoutOther.visibility = View.GONE
 
                 holder.otherFileLayout.setOnClickListener {
 
                     val storageReference = Firebase.storage.reference
                     val fileRef = storageReference.child(message.file.toString())
 
-                    fileRef.downloadUrl.addOnSuccessListener{
+                    fileRef.downloadUrl.addOnSuccessListener {
 
                     }
 
                     //다운로드 주소로 변환
-                    var downloadReference = Firebase.storage.getReferenceFromUrl(message.file.toString().
-                    replace("gs://angkor-ae0c0.appspot.com/","https://firebasestorage.googleapis.com/v0/b/angkor-ae0c0.appspot.com/o/"))
+                    var downloadReference = Firebase.storage.getReferenceFromUrl(
+                        message.file.toString().replace(
+                            "gs://angkor-ae0c0.appspot.com/",
+                            "https://firebasestorage.googleapis.com/v0/b/angkor-ae0c0.appspot.com/o/"
+                        )
+                    )
 
                     //파일의 확장자
-                    var fileType = downloadReference.name.substring(downloadReference.name.indexOf("."),downloadReference.name.lastIndex+1)
+                    var fileType = downloadReference.name.substring(
+                        downloadReference.name.indexOf("."),
+                        downloadReference.name.lastIndex + 1
+                    )
 
-                    val destinationPath = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
+                    val destinationPath =
+                        Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
 
                     //내부 저장소에 저장되는 이름
-                    val localFile = File.createTempFile("AngkorChat",fileType,destinationPath)
+                    val localFile = File.createTempFile("AngkorChat", fileType, destinationPath)
 
-                    downloadReference.getFile(localFile).addOnCompleteListener{
+                    downloadReference.getFile(localFile).addOnCompleteListener {
                         Log.d("TAG-downloadReference", downloadReference.toString())
-                        Toast.makeText(context, "다운로드 완료",Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "다운로드 완료", Toast.LENGTH_LONG).show()
                         Log.d("TAG-파일이름", "name: ${downloadReference.name}")
                     }.addOnProgressListener {
                         Log.d("TAG-addOnProgressListener", "OnProgressListener")
-                    }.addOnFailureListener{
-                        Log.e("TAG-저장실패",it.message.toString())
+                    }.addOnFailureListener {
+                        Log.e("TAG-저장실패", it.message.toString())
                     }
                 }
 
-                holder.otherFileLayout.setOnLongClickListener(object : OnLongClickListener{
-                    override fun onLongClick(p0: View?): Boolean {
+                holder.otherFileLayout.setOnLongClickListener {
+                    val intent = Intent(context, ReactionActivity::class.java)
+                    intent.putExtra("commkey", commentKey)
+                    intent.putExtra("key", message.key)
+                    context.startActivity(intent)
 
-                        val intent = Intent(context, ReactionActivity::class.java)
-                        intent.putExtra("commkey",commentKey)
-                        intent.putExtra("key",message.key)
-                        context.startActivity(intent)
-
-                        return false
-
-                    }
-                })
+                    false
+                }
             }
 
         }
 
         //뷰 재활용 막기(데이터꼬임방지)
         holder.setIsRecyclable(false)
-
 
 
     }
@@ -677,10 +878,6 @@ class ChatAdapter(
             } ?: return -1
 
         return array.getResourceId(imogeStrArray?.get(1)?.toInt()?.minus(1)!!, -1)
-    }
-
-    fun reply(key:String){
-
     }
 
 
