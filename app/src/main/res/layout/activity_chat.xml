@@ -113,15 +113,15 @@
         tools:visibility="visible">
 
         <TextView
-            android:id="@+id/tvReplySelectText"
+            android:id="@+id/tvReplySelectUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="-8dp"
             android:fontFamily="@font/poppins"
             android:text="UserName"
             android:textColor="@color/textBlack"
-            app:layout_constraintStart_toEndOf="@+id/imageView13"
+            app:layout_constraintStart_toEndOf="@+id/ivReplyImage"
             app:layout_constraintTop_toTopOf="@+id/imageView13" />
 
         <ImageView
@@ -142,8 +142,8 @@
             android:fontFamily="@font/poppins"
             android:text="TextView"
             app:layout_constraintEnd_toStartOf="@+id/ivReplyClose"
-            app:layout_constraintStart_toStartOf="@+id/tvReplySelectText"
-            app:layout_constraintTop_toBottomOf="@+id/tvReplySelectText" />
+            app:layout_constraintStart_toStartOf="@+id/tvReplySelectUser"
+            app:layout_constraintTop_toBottomOf="@+id/tvReplySelectUser" />
 
         <ImageView
             android:id="@+id/ivReplyClose"
@@ -154,6 +154,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView13"
             android:src="@drawable/ic_close_line_gray_20" />
+
+        <ImageView
+            android:id="@+id/ivReplyImage"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView13"
+            app:layout_constraintStart_toEndOf="@+id/imageView13"
+            app:layout_constraintTop_toTopOf="@+id/imageView13"
+            tools:srcCompat="@tools:sample/avatars"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
