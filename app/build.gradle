@@ -86,5 +86,7 @@ dependencies {
     //Permission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
 
+    //agora rtc
+    implementation 'io.agora.rtc:full-sdk:12-15-ci-test-2'
 
 }

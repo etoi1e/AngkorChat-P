@@ -8,8 +8,9 @@ import android.os.Handler
 import android.util.Log
 
 import com.example.angkorchatproto.auth.JoinActivity
+import com.example.angkorchatproto.base.BaseActivity
 
-class Splash : AppCompatActivity() {
+class Splash : BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

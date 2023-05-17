@@ -7,6 +7,7 @@ import android.provider.ContactsContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.UserVO
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityAddFriendsBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.ChildEventListener
@@ -14,7 +15,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 
 
-class AddFriendsActivity : AppCompatActivity() {
+class AddFriendsActivity : BaseActivity() {
 
     lateinit var binding: ActivityAddFriendsBinding
     var suggestList: ArrayList<UserVO> = ArrayList()

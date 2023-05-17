@@ -6,12 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityAddByContactBinding
 import com.example.angkorchatproto.databinding.ActivityEmojiStoreBinding
 import com.example.angkorchatproto.emojistore.viewmodel.EmojiStoreViewModel
 import com.example.angkorchatproto.friends.viewmodel.AddByContactViewModel
 
-class AddByContactActivity : AppCompatActivity() {
+class AddByContactActivity : BaseActivity() {
     lateinit var binding: ActivityAddByContactBinding
     private var mNavController: NavController? = null
     private var mNavHostFragment: NavHostFragment? = null

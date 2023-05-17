@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".video.VideoActivity">
+
+    <FrameLayout
+        android:id="@+id/local_video_view_container"
+        android:layout_width="140dp"
+        android:layout_height="240dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/holo_red_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/remote_video_view_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/local_video_view_container"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/JoinButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/remote_video_view_container"
+        android:layout_alignStart="@id/remote_video_view_container"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/bg_ic_call_fill_wh_36"
+        android:onClick="joinChannel"
+        android:src="@drawable/ic_call_fill_wh_36"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ibVoiceMute"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibVoiceMute"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_below="@+id/remote_video_view_container"
+        android:layout_alignStart="@id/remote_video_view_container"
+        android:background="@drawable/round_corner_white"
+        android:onClick="joinChannel"
+        android:src="@drawable/ic_mic_mute_36"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/LeaveButton"
+        app:layout_constraintEnd_toStartOf="@+id/LeaveButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/JoinButton"
+        app:layout_constraintTop_toTopOf="@+id/LeaveButton" />
+
+    <ImageButton
+        android:id="@+id/LeaveButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/remote_video_view_container"
+        android:layout_alignEnd="@id/remote_video_view_container"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/bg_ic_call_reject_fill_wh_36"
+        android:onClick="leaveChannel"
+        android:src="@drawable/ic_call_reject_fill_wh_36"
+        android:text="Leave"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ibVideoOff"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ibVoiceMute" />
+
+    <ImageButton
+        android:id="@+id/ibVideoOff"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_below="@+id/remote_video_view_container"
+        android:layout_alignStart="@id/remote_video_view_container"
+        android:background="@drawable/round_corner_white"
+        android:onClick="joinChannel"
+        android:src="@drawable/ic_video_off_fill_36"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/LeaveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/LeaveButton"
+        app:layout_constraintTop_toTopOf="@+id/LeaveButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

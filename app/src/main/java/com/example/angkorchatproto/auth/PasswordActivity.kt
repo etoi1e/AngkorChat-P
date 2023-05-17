@@ -9,11 +9,12 @@ import android.widget.Toast
 import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.MainActivity
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityPasswordBinding
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class PasswordActivity : AppCompatActivity() {
+class PasswordActivity : BaseActivity() {
 
     lateinit var binding: ActivityPasswordBinding
 
