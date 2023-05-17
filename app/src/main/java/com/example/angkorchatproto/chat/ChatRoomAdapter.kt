@@ -95,11 +95,32 @@ class ChatRoomAdapter(
         //상대방 번호
         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val users = snapshot.getValue() as Map<String, Boolean>
+                val users = snapshot.getValue() as Map<*, *>
                 for (user in users.keys) {
                     if (user != myNumber) {
-                        sender = user
-                        holder.tvNameChatList.text = sender
+
+                        sender = user.toString()
+
+                        //번호로 유저 이름 찾기
+                        val friendRef = FBdataBase.getFriendRef()
+
+                        friendRef.child(myNumber).child(user.toString()).child("name")
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+
+                                @SuppressLint("SetTextI18n")
+                                override fun onDataChange(snapshot: DataSnapshot) {
+
+                                    val name = snapshot.value.toString()
+                                    holder.tvNameChatList.text = name
+
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+
+                            })
+
                     }
                 }
             }
@@ -122,16 +143,10 @@ class ChatRoomAdapter(
 
 
 
-        holder.layout .setOnClickListener {
-//                if (position != RecyclerView.NO_POSITION){
-//                    // 버그로 인해 -1이 아닐경우에
-//                    mOnItemClickListener.onItemClick(itemView,position)
-//                }
-
-
+        holder.layout.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("name", holder.tvNameChatList.text)
-            intent.putExtra("number", holder.tvNameChatList.text)
+            intent.putExtra("number", sender)
             context.startActivity(intent)
         }
 
