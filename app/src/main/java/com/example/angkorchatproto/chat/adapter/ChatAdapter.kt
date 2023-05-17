@@ -228,7 +228,29 @@ class ChatAdapter(
 
                             val replyMessage = snapshot.child("message").value
 
-                            holder.tvReplyToUser.text = snapshot.child("sender").value.toString()
+                            //번호로 유저 이름 찾아오기
+                            val number = snapshot.child("sender").value.toString()
+                            val friendRef = FBdataBase.getFriendRef()
+                            friendRef.child(myNumber).child(number).child("name")
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                    @SuppressLint("SetTextI18n")
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        val name = snapshot.value.toString()
+                                        holder.tvReplyToUser.text = "Reply to $name"
+
+                                        if (number.equals(myNumber)) {
+                                            Log.d("TAG-number", number)
+                                            holder.tvReplyToUser.text = "Reply to Me"
+                                        }
+
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        TODO("Not yet implemented")
+                                    }
+
+                                })
+
 
                             //텍스트에 답장하는 경우
                             if (snapshot.child("message").value != "") {
@@ -247,25 +269,56 @@ class ChatAdapter(
 
 
                             //카메라로 촬영한 이미지에 답장하는 경우
-                            if (snapshot.child("url").value != "") { //이미지 불러오기
-                                val storage = Firebase.storage
-                                val storageRef = storage.getReference()
-                                val imgRef = storageRef.child("/${snapshot.child("url").value}.png")
+                            if (snapshot.child("url").value != "") {
+                                //이미지 불러오기
+                                if (snapshot.child("url").value.toString()
+                                        .contains("content://media/")
+                                ) {
+                                    val storage = Firebase.storage
+                                    val storageRef = storage.reference
+                                    val imgRef =
+                                        storageRef.child("/${snapshot.child("url").value}.png")
 
 
-                                imgRef.downloadUrl.addOnSuccessListener { p0 ->
-                                    holder.ivMyReplyImg.visibility = View.VISIBLE
+                                    imgRef.downloadUrl.addOnSuccessListener { p0 ->
+                                        holder.ivMyReplyImg.visibility = View.VISIBLE
 
-                                    Glide.with(context)
-                                        .load(p0)
-                                        .into(holder.ivMyReplyImg)
+                                        Glide.with(context)
+                                            .load(p0)
+                                            .into(holder.ivMyReplyImg)
 
-                                    holder.tvReplyToComment.text = "Photo"
+                                        holder.tvReplyToComment.text = "Photo"
 
+                                    }
                                 }
+
+                                //갤러리에서 가져온 이미지에 답장
+                                val storage =
+                                    FirebaseStorage.getInstance("gs://angkor-ae0c0.appspot.com")
+                                val storageRef = storage.reference
+                                val imgRef = storageRef.child("/${snapshot.child("url").value}")
+
+                                imgRef.listAll()
+                                    .addOnSuccessListener { p0 ->
+                                        val selectedPhotoList = p0!!.items
+
+                                        if (selectedPhotoList.size > 0) {
+                                            selectedPhotoList.get(0).downloadUrl
+                                                .addOnCompleteListener { p0 ->
+                                                    if (p0.isSuccessful) {
+                                                        holder.ivMyReplyImg.visibility =
+                                                            View.VISIBLE
+                                                        Glide.with(context)
+                                                            .load(p0.getResult())
+                                                            .into(holder.ivMyReplyImg)
+
+                                                        holder.tvReplyToComment.text = "Photo"
+                                                    }
+                                                }
+                                        }
+                                    }
+
                             }
-
-
 
 
                         }
@@ -540,7 +593,34 @@ class ChatAdapter(
 
                             val replyMessage = snapshot.child("message").value
 
-                            holder.tvReplyToMe.text = snapshot.child("sender").value.toString()
+                            //번호로 유저 이름 찾아오기
+                            val number = snapshot.child("sender").value.toString()
+
+                            val friendRef = FBdataBase.getFriendRef()
+
+                            friendRef.child(myNumber).child(number).child("name")
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+
+                                    @SuppressLint("SetTextI18n")
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+
+                                        val name = snapshot.value.toString()
+                                        holder.tvReplyToMe.text = "Reply to $name"
+
+                                        if (number.equals(myNumber)) {
+                                            Log.d("TAG-number", number)
+                                            holder.tvReplyToMe.text = "Reply to Me"
+
+
+                                        }
+
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        TODO("Not yet implemented")
+                                    }
+
+                                })
 
                             //텍스트에 답장하는 경우
                             if (snapshot.child("message").value != "") {
@@ -581,8 +661,6 @@ class ChatAdapter(
 
                                 })
                             }
-
-
 
 
                         }

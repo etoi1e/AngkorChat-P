@@ -32,8 +32,6 @@ class ChatFragment : Fragment() {
     val chatRef = FBdataBase.getChatRef()
     var chatRoomsKeys = ArrayList<String>()
     val chatInfoList = ArrayList<ChatModel.Comment>()
-    val chatCountList = ArrayList<ChatModel.Comment>()
-    var sender = ""
     var chatCount = ArrayList<String>()
 
 
