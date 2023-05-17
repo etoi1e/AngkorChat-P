@@ -9,13 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityEmojiStoreBinding
 import com.example.angkorchatproto.dialog.CustomDialog
 import com.example.angkorchatproto.emojistore.viewmodel.EmojiStoreViewModel
 import kr.co.kdnavien.naviensmart.presentation.custom.DialogNegativeBtnListener
 import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 
-class EmojiStoreActivity : AppCompatActivity() {
+class EmojiStoreActivity : BaseActivity() {
     lateinit var binding: ActivityEmojiStoreBinding
     private var mNavController: NavController? = null
     private var mNavHostFragment: NavHostFragment? = null

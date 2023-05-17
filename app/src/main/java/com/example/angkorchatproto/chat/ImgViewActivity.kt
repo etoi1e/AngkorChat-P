@@ -11,10 +11,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityImgViewBinding
 import java.util.*
 
-class ImgViewActivity : AppCompatActivity() {
+class ImgViewActivity : BaseActivity() {
 
     lateinit var binding: ActivityImgViewBinding
     var imgPath = ""

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityReactionBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot
@@ -14,7 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
-class ReactionActivity : AppCompatActivity() {
+class ReactionActivity : BaseActivity() {
 
     lateinit var binding: ActivityReactionBinding
 

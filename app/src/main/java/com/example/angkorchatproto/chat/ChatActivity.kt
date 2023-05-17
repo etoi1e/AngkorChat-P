@@ -33,13 +33,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityChatBinding
+import com.example.angkorchatproto.friends.AddFriendsActivity
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
+import com.example.angkorchatproto.video.VideoActivity
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -55,7 +58,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : BaseActivity() {
 
     lateinit var binding: ActivityChatBinding
     lateinit var myNumber: String
@@ -638,6 +641,11 @@ class ChatActivity : AppCompatActivity() {
             binding.btnChatSendMedia.visibility = View.GONE
             binding.mediaMediaLayout.visibility = View.GONE
 
+        }
+
+        binding.imgVideoChat.setOnClickListener {
+            val intent = Intent(this, VideoActivity::class.java)
+            startActivity(intent)
         }
 
         //답장 정보 가져오기

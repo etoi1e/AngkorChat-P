@@ -26,6 +26,7 @@ import com.example.angkorchatproto.auth.ProfileAdapter
 import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
 import com.example.angkorchatproto.utils.FBdataBase
@@ -33,7 +34,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : BaseActivity() {
 
     lateinit var binding: ActivityProfileBinding
     var imgList = ArrayList<Uri?>()

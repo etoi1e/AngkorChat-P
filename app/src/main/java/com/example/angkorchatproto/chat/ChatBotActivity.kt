@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.ChatBotVO.Companion.SENT_BY_ME
 import com.example.angkorchatproto.databinding.ActivityChatbotBinding
 import com.example.angkorchatproto.utils.FBdataBase
@@ -40,7 +41,7 @@ import java.io.IOException
 import java.time.LocalDateTime
 
 
-class ChatBotActivity : AppCompatActivity() {
+class ChatBotActivity : BaseActivity() {
 
     lateinit var binding: ActivityChatbotBinding
     lateinit var adapter: ChatBotAdapter

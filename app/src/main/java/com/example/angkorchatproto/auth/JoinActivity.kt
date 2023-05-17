@@ -8,12 +8,13 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityJoinBinding
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 
 
-class JoinActivity : AppCompatActivity() {
+class JoinActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

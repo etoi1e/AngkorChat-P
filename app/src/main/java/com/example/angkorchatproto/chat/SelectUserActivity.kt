@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.adapter.SelectUsersAdapter
 import com.example.angkorchatproto.databinding.ActivitySelectUserBinding
 import com.example.angkorchatproto.utils.FBdataBase
@@ -25,7 +26,7 @@ import com.google.firebase.database.DatabaseError
  * Description :
  * Created by de5ember on 2023/05/15.
  */
-class SelectUserActivity : AppCompatActivity() {
+class SelectUserActivity : BaseActivity() {
     lateinit var binding: ActivitySelectUserBinding
     var mSuggestList: ArrayList<UserVO> = ArrayList()
     var mFriendList: ArrayList<String> = ArrayList()

@@ -10,12 +10,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityLoginBinding
 import com.example.angkorchatproto.utils.CountryAdapter
 import com.example.angkorchatproto.utils.CountryUtils
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     //디바이스 번호
     var phoneNumber: String =""
