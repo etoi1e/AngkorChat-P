@@ -2,8 +2,8 @@ package com.example.angkorchatproto.video
 
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.SurfaceView
 import android.view.View
 import android.widget.FrameLayout
@@ -13,8 +13,12 @@ import androidx.core.content.ContextCompat
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityVideoBinding
+import com.example.angkorchatproto.service.Data
+import com.example.angkorchatproto.service.HttpRxKotlin
 import io.agora.rtc2.*
 import io.agora.rtc2.video.VideoCanvas
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 
 class VideoActivity : BaseActivity() {
     lateinit var binding: ActivityVideoBinding
@@ -25,10 +29,10 @@ class VideoActivity : BaseActivity() {
     private val channelName = "AngKorChatProto"
 
     // Fill the temp token generated on Agora Console.
-    private val token = "007eJxTYNjVlZl5L/fSpMy5hTcaZ63Lrd/n4R//J9nArmHtRrVNBqcUGFLNk4yMTJIMDQ2NU03STI0sDS0sUs2TTdOSUhJNEy0s7K4kpjQEMjIEeMQxMEIhiM/P4JiX7p1f5JyRWBJQlF+Sz8AAADbNJFo="
-
+    private val token = "007eJxTYODutJ3a0yt9YJ3z1Vsnbsgttm9lmpL1s63qmlnk+sBGs+MKDKnmSUZGJkmGhobGqSZppkaWhhYWqebJpmlJKYmmiRYWztNTUhoCGRm4JM4xMEIhiM/P4JiX7p1f5JyRWBJQlF+Sz8AAAL5JIyA="
+    private var fcmSendToken:String? = null
     // An integer that identifies the local user.
-    private val uid = 0
+    private var uid = 1
     private var isJoined = false
 
     private var agoraEngine: RtcEngine? = null
@@ -46,6 +50,7 @@ class VideoActivity : BaseActivity() {
     private val mRtcEventHandler: IRtcEngineEventHandler = object : IRtcEngineEventHandler() {
         // Listen for the remote host joining the channel to get the uid of the host.
         override fun onUserJoined(uid: Int, elapsed: Int) {
+            Log.d("jongchan.won","onUserJoined")
             showMessage("Remote user joined $uid")
 
             // Set the remote video view
@@ -53,6 +58,7 @@ class VideoActivity : BaseActivity() {
         }
 
         override fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int) {
+            Log.d("jongchan.won","onJoinChannelSuccess")
             isJoined = true
 //            showMessage("Joined Channel $channel")
             runOnUiThread {
@@ -63,6 +69,7 @@ class VideoActivity : BaseActivity() {
         }
 
         override fun onUserOffline(uid: Int, reason: Int) {
+            Log.d("jongchan.won","onUserOffline")
 //            showMessage("Remote user offline $uid $reason")
             runOnUiThread {
                 remoteSurfaceView!!.visibility = View.GONE
@@ -80,8 +87,16 @@ class VideoActivity : BaseActivity() {
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions(this, requestedPermissions, permissionReqId)
         }
+
+//        val shard = getSharedPreferences("loginNumber",0)
+//        uid = shard.getString("userNumber","")
+
         setupVideoSDKEngine()
+        fcmSendToken = intent.getStringExtra("token")
         setContentView(binding.root)
+        if (intent.getStringExtra("mode") == "send") {
+            joinChannel(null)
+        }
     }
 
     override fun onDestroy() {
@@ -178,7 +193,29 @@ class VideoActivity : BaseActivity() {
             agoraEngine!!.startPreview()
             // Join the channel with a temp token.
             // You need to specify the user ID yourself, and ensure that it is unique in the channel.
-            agoraEngine!!.joinChannel(token, channelName, uid, options)
+            Log.d("jongchan.won", "참여 여부 : ${ agoraEngine!!.joinChannel(token, channelName, uid, options) }")
+
+            if (intent.getStringExtra("mode") == "send" &&
+                    fcmSendToken != null) {
+                Log.d("jongchan.won", "상대방에게 영상통화를 요청합니다")
+                HttpRxKotlin.sendFCMNotification(fcmSendToken!!, "01064021549", object : Observer<Data.HttpResponseBase> {
+                    override fun onSubscribe(d: Disposable) {
+                        Log.d("jongchan.won","onSubscribe")
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.d("jongchan.won","onError $e")
+                    }
+
+                    override fun onComplete() {
+                        Log.d("jongchan.won","onComplete")
+                    }
+
+                    override fun onNext(t: Data.HttpResponseBase) {
+                        Log.d("jongchan.won","onNext $t")
+                    }
+                })
+            }
         } else {
             Toast.makeText(applicationContext, "Permissions was not granted", Toast.LENGTH_SHORT)
                 .show()
@@ -187,10 +224,10 @@ class VideoActivity : BaseActivity() {
 
     fun leaveChannel(view: View?) {
         if (!isJoined) {
-            showMessage("Join a channel first")
+//            showMessage("Join a channel first")
         } else {
             agoraEngine!!.leaveChannel()
-            showMessage("You left the channel")
+//            showMessage("You left the channel")
             // Stop remote video rendering.
             if (remoteSurfaceView != null) remoteSurfaceView!!.visibility = View.GONE
             // Stop local video rendering.
@@ -201,5 +238,6 @@ class VideoActivity : BaseActivity() {
             binding.ibVoiceMute.visibility = View.GONE
             binding.JoinButton.visibility = View.VISIBLE
         }
+        finish()
     }
 }

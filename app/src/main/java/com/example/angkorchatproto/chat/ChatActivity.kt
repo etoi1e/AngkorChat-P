@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_OPEN_DOCUMENT
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Paint.Join
 import android.graphics.Point
 import android.graphics.Rect
 import android.net.Uri
@@ -32,7 +33,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
@@ -68,6 +71,7 @@ class ChatActivity : BaseActivity() {
     lateinit var binding: ActivityChatBinding
     lateinit var myNumber: String
     var receiver: String = ""
+    var receiverToken: String = ""
     private var chatRoomKey: String? = null
     var chatRoomKeyList = ArrayList<String>()
     var imgList = ArrayList<Uri?>()
@@ -257,6 +261,29 @@ class ChatActivity : BaseActivity() {
         val receiverData2 = receiverData.replace("-", "")
 
         receiver = receiverData2.replace(" ", "")
+
+        val usersRef = FBdataBase.getUserRef().child(receiver)
+
+        //상대방 번호
+        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val value = snapshot.value
+                if (value is Map<*, *>) {
+                    val number = value["number"] as? String
+                    val password = value["password"] as? String
+                    val token = value["token"] as? String
+
+                    if (number != null && password != null && token != null) {
+                        val user = JoinVO(number, password, token)
+                        receiverToken = user.token!!
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // 에러 처리
+            }
+        })
 
         //상대방 이름 출력
         val receiverName = intent.getStringExtra("name").toString()
@@ -747,6 +774,8 @@ class ChatActivity : BaseActivity() {
 
         binding.imgVideoChat.setOnClickListener {
             val intent = Intent(this, VideoActivity::class.java)
+            intent.putExtra("mode", "send")
+            intent.putExtra("token", receiverToken)
             startActivity(intent)
         }
 
