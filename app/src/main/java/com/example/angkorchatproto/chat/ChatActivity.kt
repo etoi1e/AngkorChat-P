@@ -71,6 +71,7 @@ class ChatActivity : BaseActivity() {
     lateinit var binding: ActivityChatBinding
     lateinit var myNumber: String
     var receiver: String = ""
+    var receiverNumber: String = ""
     var receiverToken: String = ""
     private var chatRoomKey: String? = null
     var chatRoomKeyList = ArrayList<String>()
@@ -275,6 +276,7 @@ class ChatActivity : BaseActivity() {
 
                     if (number != null && password != null && token != null) {
                         val user = JoinVO(number, password, token)
+                        receiverNumber = user.number!!
                         receiverToken = user.token!!
                     }
                 }
@@ -775,6 +777,7 @@ class ChatActivity : BaseActivity() {
         binding.imgVideoChat.setOnClickListener {
             val intent = Intent(this, VideoActivity::class.java)
             intent.putExtra("mode", "send")
+            intent.putExtra("phoneNumber", receiverNumber)
             intent.putExtra("token", receiverToken)
             startActivity(intent)
         }

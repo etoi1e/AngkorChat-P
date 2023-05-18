@@ -23,10 +23,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d("jongchan.won","${remoteMessage.data["phoneNumber"]}")
+        Log.d("jongchan.won","${remoteMessage.data["token"]}, ${remoteMessage.data["phoneNumber"]}")
         super.onMessageReceived(remoteMessage)
         // 서비스에서 브로드캐스트를 전송할 때 사용
         val broadcastIntent = Intent("videoCall")
+        broadcastIntent.putExtra("token", remoteMessage.data["token"])
         broadcastIntent.putExtra("phoneNumber", remoteMessage.data["phoneNumber"])
         sendBroadcast(broadcastIntent)
     }

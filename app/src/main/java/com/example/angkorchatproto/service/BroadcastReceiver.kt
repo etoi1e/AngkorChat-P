@@ -15,8 +15,12 @@ class BroadcastReceiver : BroadcastReceiver() {
         Log.d("jongchan.won", "onReceive")
         if (intent.action == "videoCall") {
             Log.d("jongchan.won", "브로드캐스트로 데이터 받음")
+            val token = intent.getStringExtra("token")
+            val phoneNumber = intent.getStringExtra("phoneNumber")
             val videoIntent = Intent(context, VideoActivity::class.java)
             videoIntent.putExtra("mode", "receive")
+            videoIntent.putExtra("token", token)
+            videoIntent.putExtra("phoneNumber", phoneNumber)
             context.startActivity(videoIntent)
         }
     }
