@@ -2,8 +2,8 @@ package com.example.angkorchatproto.video
 
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.SurfaceView
 import android.view.View
 import android.widget.FrameLayout
@@ -13,11 +13,18 @@ import androidx.core.content.ContextCompat
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityVideoBinding
+import com.example.angkorchatproto.service.Data
+import com.example.angkorchatproto.service.HttpRxKotlin
 import io.agora.rtc2.*
 import io.agora.rtc2.video.VideoCanvas
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 
 class VideoActivity : BaseActivity() {
     lateinit var binding: ActivityVideoBinding
+    private var mMode: String? = null
+    private var mFcmSendToken:String? = null
+    private var mPhoneNumber: String? = null
     // Fill the App ID of your project generated on Agora Console.
     private val appId = "e7b224b1113e4f529188e7c5fbda5a88"
 
@@ -25,10 +32,9 @@ class VideoActivity : BaseActivity() {
     private val channelName = "AngKorChatProto"
 
     // Fill the temp token generated on Agora Console.
-    private val token = "007eJxTYNjVlZl5L/fSpMy5hTcaZ63Lrd/n4R//J9nArmHtRrVNBqcUGFLNk4yMTJIMDQ2NU03STI0sDS0sUs2TTdOSUhJNEy0s7K4kpjQEMjIEeMQxMEIhiM/P4JiX7p1f5JyRWBJQlF+Sz8AAADbNJFo="
-
+    private val token = "007eJxTYEj67vOHOVTz62XzRQffPDo+s1B22fb4/ESHF6+MVYR/PXuqwJBqnmRkZJJkaGhonGqSZmpkaWhhkWqebJqWlJJommhhIZGbmtIQyMjw0luHgREKQXx+Bse8dO/8IueMxJKAovySfAYGAIPpJU4="
     // An integer that identifies the local user.
-    private val uid = 0
+    private var uid = 0
     private var isJoined = false
 
     private var agoraEngine: RtcEngine? = null
@@ -46,6 +52,7 @@ class VideoActivity : BaseActivity() {
     private val mRtcEventHandler: IRtcEngineEventHandler = object : IRtcEngineEventHandler() {
         // Listen for the remote host joining the channel to get the uid of the host.
         override fun onUserJoined(uid: Int, elapsed: Int) {
+            Log.d("jongchan.won","onUserJoined")
             showMessage("Remote user joined $uid")
 
             // Set the remote video view
@@ -53,6 +60,7 @@ class VideoActivity : BaseActivity() {
         }
 
         override fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int) {
+            Log.d("jongchan.won","onJoinChannelSuccess")
             isJoined = true
 //            showMessage("Joined Channel $channel")
             runOnUiThread {
@@ -63,12 +71,12 @@ class VideoActivity : BaseActivity() {
         }
 
         override fun onUserOffline(uid: Int, reason: Int) {
+            Log.d("jongchan.won","onUserOffline")
 //            showMessage("Remote user offline $uid $reason")
             runOnUiThread {
                 remoteSurfaceView!!.visibility = View.GONE
-                binding.ibVideoOff.visibility = View.GONE
-                binding.ibVoiceMute.visibility = View.GONE
-                binding.JoinButton.visibility = View.VISIBLE
+                mMode = "send"
+                leaveChannel()
             }
         }
     }
@@ -80,8 +88,19 @@ class VideoActivity : BaseActivity() {
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions(this, requestedPermissions, permissionReqId)
         }
+
+        mMode = intent.getStringExtra("mode")
+        mFcmSendToken = intent.getStringExtra("token")
+        mPhoneNumber = intent.getStringExtra("phoneNumber")
+
+//        val shard = getSharedPreferences("loginNumber",0)
+//        uid = shard.getString("userNumber","")
+
         setupVideoSDKEngine()
         setContentView(binding.root)
+        if (mMode == "send") {
+            joinChannel(null)
+        }
     }
 
     override fun onDestroy() {
@@ -178,19 +197,64 @@ class VideoActivity : BaseActivity() {
             agoraEngine!!.startPreview()
             // Join the channel with a temp token.
             // You need to specify the user ID yourself, and ensure that it is unique in the channel.
-            agoraEngine!!.joinChannel(token, channelName, uid, options)
+            Log.d("jongchan.won", "참여 여부 : ${ agoraEngine!!.joinChannel(token, channelName, uid, options) }")
+            if (mFcmSendToken != null && mMode == "send") {
+                sendCallFcmMsg()
+            }
         } else {
             Toast.makeText(applicationContext, "Permissions was not granted", Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
-    fun leaveChannel(view: View?) {
+    private fun sendCallFcmMsg() {
+        Log.d("jongchan.won", "상대방에게 영상통화를 요청합니다")
+        val shared = getSharedPreferences("loginNumber", 0)
+        val sendData = Data.VideoCallInfo(shared.getString("userNumber",""), shared.getString("token",""))
+        HttpRxKotlin.sendFCMNotification(mFcmSendToken!!, sendData, object : Observer<Data.HttpResponseBase> {
+            override fun onSubscribe(d: Disposable) {
+                Log.d("jongchan.won","onSubscribe")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("jongchan.won","onError $e")
+            }
+
+            override fun onComplete() {
+                Log.d("jongchan.won","onComplete")
+            }
+
+            override fun onNext(t: Data.HttpResponseBase) {
+                Log.d("jongchan.won","onNext $t")
+            }
+        })
+    }
+
+    fun leaveExitChannel(view: View?) {
         if (!isJoined) {
-            showMessage("Join a channel first")
+//            showMessage("Join a channel first")
         } else {
             agoraEngine!!.leaveChannel()
-            showMessage("You left the channel")
+//            showMessage("You left the channel")
+            // Stop remote video rendering.
+            if (remoteSurfaceView != null) remoteSurfaceView!!.visibility = View.GONE
+            // Stop local video rendering.
+            if (localSurfaceView != null) localSurfaceView!!.visibility = View.GONE
+            isJoined = false
+
+            binding.ibVideoOff.visibility = View.GONE
+            binding.ibVoiceMute.visibility = View.GONE
+            binding.JoinButton.visibility = View.VISIBLE
+        }
+        finish()
+    }
+
+    fun leaveChannel() {
+        if (!isJoined) {
+//            showMessage("Join a channel first")
+        } else {
+            agoraEngine!!.leaveChannel()
+//            showMessage("You left the channel")
             // Stop remote video rendering.
             if (remoteSurfaceView != null) remoteSurfaceView!!.visibility = View.GONE
             // Stop local video rendering.

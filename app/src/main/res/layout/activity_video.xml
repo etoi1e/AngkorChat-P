@@ -73,7 +73,7 @@
         android:layout_alignEnd="@id/remote_video_view_container"
         android:layout_marginBottom="80dp"
         android:background="@drawable/bg_ic_call_reject_fill_wh_36"
-        android:onClick="leaveChannel"
+        android:onClick="leaveExitChannel"
         android:src="@drawable/ic_call_reject_fill_wh_36"
         android:text="Leave"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -11,13 +11,11 @@ import com.example.angkorchatproto.auth.JoinActivity
 import com.example.angkorchatproto.base.BaseActivity
 
 class Splash : BaseActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-
+        setBroadCastReceiver()
 
         //SharedPreferences
         val shared = getSharedPreferences("loginNumber",0)
@@ -38,8 +36,6 @@ class Splash : BaseActivity() {
             }
 
         },1000)
-
-
     }
 
 

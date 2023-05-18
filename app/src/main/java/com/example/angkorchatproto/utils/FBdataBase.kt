@@ -21,8 +21,8 @@ class FBdataBase {
             return dataBase.getReference("friends")
         }
 
-
-
-
+        fun getUserRef():DatabaseReference{
+            return dataBase.getReference("user")
+        }
     }
 }

@@ -43,13 +43,14 @@ class PasswordActivity : BaseActivity() {
                 val password = binding.etPasswordPassword.text.toString()
 
 
-            //번호로 사용자 정보 firebase 에 저장
-            val database = Firebase.database.reference
-            database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,password))
+                //번호로 사용자 정보 firebase 에 저장
+                val token = shared.getString("token","")
+                val database = Firebase.database.reference
+                database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,password,token))
 
                 editor.putString("userNumber", joinNumber)
                 editor.putString("userName","유저이름")
-                editor.commit()
+                editor.apply()
                 //Log.d("TAG-password에서 번호 찍기",userNumber)
 
                 val intent = Intent(this@PasswordActivity, MainActivity::class.java)
