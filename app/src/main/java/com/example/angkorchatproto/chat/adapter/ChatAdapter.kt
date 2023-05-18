@@ -333,9 +333,9 @@ class ChatAdapter(
 
             //리액션
             holder.tvMyChatReaction.visibility = View.GONE
-            if (message.reaction != "") {
+            if (message.reaction != null) {
                 holder.tvMyChatReaction.visibility = View.VISIBLE
-                holder.tvMyChatReaction.text = message.reaction
+                holder.tvMyChatReaction.text = message.reaction.get(myNumber)
             }
             if (message.reaction == null) {
                 holder.tvMyChatReaction.visibility = View.GONE
@@ -676,9 +676,31 @@ class ChatAdapter(
             //리액션
             holder.tvOtherChatReaction.visibility = View.GONE
 
-            if (message.reaction != "") {
+            if (message.reaction != null) {
                 holder.tvOtherChatReaction.visibility = View.VISIBLE
-                holder.tvOtherChatReaction.text = message.reaction
+
+                var reactions =  message.reaction.values.toString().replace("[","").replace(","," 1  ").replace("]"," 1")
+
+                var previousItem: String? = null // 이전 item 값을 저장하는 변수
+
+                for (item in message.reaction.values) {
+                    Log.d("TAG-reaction item", item)
+
+                    if (previousItem != null && item == previousItem) {
+                        reactions = "$item 2"
+                        // item과 previousItem이 같은 경우에 실행할 코드
+                    }
+
+                    previousItem = item // 현재 item 값을 previousItem으로 저장
+                }
+
+
+
+                holder.tvOtherChatReaction.text = reactions
+
+
+                Log.d("TAG-reaction", reactions.toString())
+
             }
             if (message.reaction == null) {
                 holder.tvOtherChatReaction.visibility = View.GONE

@@ -159,9 +159,6 @@ class ProfileActivity : BaseActivity() {
 
         //전화걸기
         binding.imgCallProfile.setOnClickListener {
-
-
-
             val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
             startActivity(intent)
             finish()

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.Intent.ACTION_OPEN_DOCUMENT
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Paint.Join
 import android.graphics.Point
 import android.graphics.Rect
 import android.net.Uri
@@ -23,7 +22,6 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -35,19 +33,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.R
-import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityChatBinding
-import com.example.angkorchatproto.friends.AddFriendsActivity
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
 import com.example.angkorchatproto.video.VideoActivity
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.database.DataSnapshot
@@ -56,7 +51,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -615,7 +609,7 @@ class ChatActivity : BaseActivity() {
                         sendFileDirectory
                     } else {
                         ""
-                    }, reaction = "",
+                    }, reaction = null,
                     reply = if (binding.replyLayout.visibility == View.VISIBLE) {
                         replyKey
                     } else {
@@ -781,6 +775,16 @@ class ChatActivity : BaseActivity() {
             intent.putExtra("token", receiverToken)
             startActivity(intent)
         }
+
+        //전화 걸기
+        binding.imgVoiceChat.setOnClickListener {
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$receiver"))
+            startActivity(intent)
+            finish()
+        }
+
+
+
 
 
     }

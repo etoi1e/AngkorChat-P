@@ -66,6 +66,7 @@
         android:text="5"
         android:textColor="#FFFFFF"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/tvMessageChatList"
         app:layout_constraintEnd_toEndOf="@+id/tvTimeChatList"
         app:layout_constraintTop_toBottomOf="@+id/tvNameChatList" />

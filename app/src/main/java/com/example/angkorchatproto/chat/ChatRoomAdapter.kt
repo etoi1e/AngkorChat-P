@@ -31,7 +31,7 @@ class ChatRoomAdapter(
 ) :
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
 
-    var sender = ""
+    var sender = ArrayList<String>()
 
     // 리스너 커스텀
     interface OnItemClickListener {
@@ -99,7 +99,7 @@ class ChatRoomAdapter(
                 for (user in users.keys) {
                     if (user != myNumber) {
 
-                        sender = user.toString()
+                        sender.add(user.toString())
 
                         //번호로 유저 이름 찾기
                         val friendRef = FBdataBase.getFriendRef()
@@ -110,14 +110,22 @@ class ChatRoomAdapter(
                                 @SuppressLint("SetTextI18n")
                                 override fun onDataChange(snapshot: DataSnapshot) {
 
-                                    val name = snapshot.value.toString()
-                                    holder.tvNameChatList.text = name
+                                    var name = snapshot.value.toString()
 
+                                    if(name == "null"){
+//                                        name = user.toString()
+                                        name = "Not Friends"
+                                    }
+
+                                    holder.tvNameChatList.text = name
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
                                     TODO("Not yet implemented")
                                 }
+
+
+
 
                             })
 
@@ -141,18 +149,34 @@ class ChatRoomAdapter(
                 .into(holder.imgProfileChatList)
         }
 
-
-
         holder.layout.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("name", holder.tvNameChatList.text)
-            intent.putExtra("number", sender)
+            intent.putExtra("number",sender[position])
             context.startActivity(intent)
         }
 
+
+
         //채팅방 내용 출력
 
+        if(chatRoom.file != ""){
+            holder.tvMessageChatList.text = "File"
+        }
+
+        if(chatRoom.url != ""){
+            holder.tvMessageChatList.text = "Photo"
+        }
+
+        if(chatRoom.emo != ""){
+            holder.tvMessageChatList.text = "Emoticon"
+        }
+
+        if(chatRoom.message != ""){
         holder.tvMessageChatList.text = chatRoom.message
+        }
+
+
         holder.tvCountChatChatList.text = chatCount.size.toString()
         holder.tvTimeChatList.text = setTime
 
