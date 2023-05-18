@@ -4,16 +4,11 @@ package com.example.angkorchatproto.chat
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.angkorchatproto.MainActivity
-import com.example.angkorchatproto.auth.LoginActivity
-import com.example.angkorchatproto.chat.ChatModel
-import com.example.angkorchatproto.chat.ChatRoomAdapter
 import com.example.angkorchatproto.databinding.FragmentChatBinding
 import com.example.angkorchatproto.emojistore.EmojiStoreActivity
 import com.example.angkorchatproto.utils.FBdataBase
@@ -21,7 +16,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.database.ktx.values
+
 
 
 class ChatFragment : Fragment() {
@@ -88,15 +83,21 @@ class ChatFragment : Fragment() {
                         }
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
             })
 
 
-        adapter = ChatRoomAdapter(requireContext(), chatInfoList, chatRoomsKeys, myNumber, chatCount)
+        adapter =
+            ChatRoomAdapter(requireContext(), chatInfoList, chatRoomsKeys, myNumber, chatCount)
         binding.rvChatListChats.adapter = adapter
         binding.rvChatListChats.layoutManager = GridLayoutManager(requireContext(), 1)
+
+
+
+
         binding.imgEmojiChats.setOnClickListener {
             val intent = Intent(requireContext(), EmojiStoreActivity::class.java)
             startActivity(intent)

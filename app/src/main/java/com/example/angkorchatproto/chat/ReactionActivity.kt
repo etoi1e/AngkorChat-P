@@ -25,6 +25,8 @@ class ReactionActivity : BaseActivity() {
     lateinit var getKey: String
     lateinit var getCommkey: String
 
+    var myNumber = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -36,6 +38,9 @@ class ReactionActivity : BaseActivity() {
         //SharedPreferences
         val shared = getSharedPreferences("sharedReply", 0)
         val editor = shared.edit()
+
+        val sharedNumber = getSharedPreferences("loginNumber", 0)
+        myNumber = sharedNumber.getString("userNumber","").toString()
 
 
         //chatActivity에서 intent로 값 받아오기
@@ -155,15 +160,17 @@ class ReactionActivity : BaseActivity() {
     }
 
     fun setReaction(reaction: String) {
-        chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
+        chatRef.child("$getKey/comments").child(getCommkey).child("reaction").child(myNumber)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     if (snapshot.value == reaction) {
                         chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
+                            .child(myNumber)
                             .removeValue()
                     } else {
-                        chatRef.child("$getKey/comments").child(getCommkey).child("reaction")
+                        chatRef.child("$getKey/comments").child(getCommkey)
+                            .child("reaction").child(myNumber)
                             .setValue(reaction)
                     }
 
