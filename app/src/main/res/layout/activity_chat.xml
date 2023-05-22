@@ -677,8 +677,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        style="@style/MyButtonStyle"
         android:id="@+id/btnChatSendMedia"
+        style="@style/MyButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
@@ -695,7 +695,6 @@
         app:iconSize="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/viewBottomBoxChat"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/replyLayout"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/replyLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
