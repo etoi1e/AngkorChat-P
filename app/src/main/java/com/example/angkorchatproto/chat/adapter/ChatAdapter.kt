@@ -718,7 +718,7 @@ class ChatAdapter(
             holder.tvTimeLeft.setText(setTime)
 
             //롱클릭 이벤트
-            holder.tvOtherMessageChat.setOnLongClickListener(object : OnLongClickListener {
+            holder.otherChatLayout.setOnLongClickListener(object : OnLongClickListener {
                 override fun onLongClick(p0: View?): Boolean {
 
                     val intent = Intent(context, ReactionActivity::class.java)
