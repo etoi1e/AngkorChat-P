@@ -40,6 +40,7 @@ class ChatRoomAdapter(
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
 
     var sender = ArrayList<String>()
+    val chatRef = FBdataBase.getChatRef()
 
     // 리스너 커스텀
     interface OnItemClickListener {
@@ -82,6 +83,20 @@ class ChatRoomAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.chat_room_list, null)
+        chatRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("TAG-채팅방 삭제","확인")
+                Log.d("TAG-채팅방 삭제 snapshot" ,snapshot.toString())
+
+               notifyDataSetChanged()
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
         return ViewHolder(view)
     }
 
@@ -109,16 +124,15 @@ class ChatRoomAdapter(
         //상대방 번호
         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val users = snapshot.getValue() as Map<*, *>
-                for (user in users.keys) {
-                    if (user != myNumber) {
+                for (user in snapshot.children) {
+                    if (user.key != myNumber) {
 
                         sender.add(user.toString())
 
                         //번호로 유저 이름 찾기
                         val friendRef = FBdataBase.getFriendRef()
 
-                        friendRef.child(myNumber).child(user.toString()).child("name")
+                        friendRef.child(myNumber).child(user.key.toString()).child("name")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
 
                                 @SuppressLint("SetTextI18n")
@@ -128,7 +142,7 @@ class ChatRoomAdapter(
 
                                     if (name == "null") {
 //                                        name = user.toString()
-                                        name = "Not Friends"
+                                        name = user.key.toString()
                                     }
 
                                     holder.tvNameChatList.text = name
@@ -141,7 +155,7 @@ class ChatRoomAdapter(
 
                             })
 
-                        friendRef.child(myNumber).child(user.toString()).child("profile")
+                        friendRef.child(myNumber).child(user.key.toString()).child("profile")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
 
                                 @SuppressLint("SetTextI18n")
@@ -212,7 +226,6 @@ class ChatRoomAdapter(
         holder.tvCountChatChatList.text = chatCount.size.toString()
         holder.tvTimeChatList.text = setTime
 
-
         //롱클릭 삭제
         holder.layout.setOnLongClickListener(object : OnLongClickListener {
             @SuppressLint("ResourceAsColor")
@@ -236,8 +249,9 @@ class ChatRoomAdapter(
                     ?.setPositiveBtnListener(object : DialogPositiveBtnListener {
                         override fun confirm(division: Int) {
 
-                            val chatRef = FBdataBase.getChatRef()
+
                             chatRef.child(chatRoom.key.toString()).removeValue()
+                            chatInfoList.removeAt(position)
 
                         }
                     })
@@ -254,8 +268,6 @@ class ChatRoomAdapter(
             }
 
         })
-
-
     }
 
     override fun getItemCount(): Int {

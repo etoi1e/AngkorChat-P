@@ -43,14 +43,7 @@
                 android:name="io.agora.appid"
                 android:value="e7b224b1113e4f529188e7c5fbda5a88" />
         </activity>
-        <activity
-            android:name=".chat.LongTabActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Dialog">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <activity
             android:name=".chat.ImgViewActivity"
             android:exported="false">
