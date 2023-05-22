@@ -94,6 +94,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".settings.SettingsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".chat.SelectUserActivity"
             android:exported="false">
             <meta-data

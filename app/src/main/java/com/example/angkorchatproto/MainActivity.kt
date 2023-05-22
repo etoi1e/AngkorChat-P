@@ -1,12 +1,15 @@
 package com.example.angkorchatproto
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.example.angkorchatproto.base.BaseActivity
+import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.chat.ChatFragment
 import com.example.angkorchatproto.friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
+import com.example.angkorchatproto.settings.SettingsActivity
 
 
 class MainActivity : BaseActivity() {
@@ -46,7 +49,8 @@ class MainActivity : BaseActivity() {
                 }
 
                 R.id.tab3 ->{
-                    Toast.makeText(this,"This feature is not supported by Prototype",Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
 //                    supportFragmentManager.beginTransaction().replace(
 //                        R.id.frameLayout,
 //                        MoreFragment()

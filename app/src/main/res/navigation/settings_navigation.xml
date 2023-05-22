@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/settingsMainFragment">
+    <fragment
+        android:id="@+id/settingsMainFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsMainFragment"
+        android:label="SettingsMainFragment"
+        tools:layout="@layout/fragment_settings_main" >
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsFriendsFragment"
+            app:destination="@id/settingsFriendsFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsDisplayFragment"
+            app:destination="@id/settingsDisplayFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsChattingFragment"
+            app:destination="@id/settingsChattingFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsLanguageFragment"
+            app:destination="@id/settingsLanguageFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsNotificationsFragment"
+            app:destination="@id/settingsNotificationsFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsPrivacyFragment"
+            app:destination="@id/settingsPrivacyFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsVersionFragment"
+            app:destination="@id/settingsVersionFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsHelpFragment"
+            app:destination="@id/settingsHelpFragment" />
+        <action
+            android:id="@+id/action_settingsMainFragment_to_settingsAccountFragment"
+            app:destination="@id/settingsAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsChattingFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsChattingFragment"
+        android:label="fragment_settings_chatting"
+        tools:layout="@layout/fragment_settings_chatting" />
+    <fragment
+        android:id="@+id/settingsDisplayFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsDisplayFragment"
+        android:label="fragment_settings_display"
+        tools:layout="@layout/fragment_settings_display" />
+    <fragment
+        android:id="@+id/settingsFriendsFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsFriendsFragment"
+        android:label="fragment_settings_friends"
+        tools:layout="@layout/fragment_settings_friends" />
+    <fragment
+        android:id="@+id/settingsHelpFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsHelpFragment"
+        android:label="fragment_settings_help"
+        tools:layout="@layout/fragment_settings_help" />
+    <fragment
+        android:id="@+id/settingsLanguageFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsLanguageFragment"
+        android:label="fragment_settings_language"
+        tools:layout="@layout/fragment_settings_language" />
+    <fragment
+        android:id="@+id/settingsNotificationsFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsNotificationsFragment"
+        android:label="fragment_settings_notifications"
+        tools:layout="@layout/fragment_settings_notifications" />
+    <fragment
+        android:id="@+id/settingsPrivacyFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsPrivacyFragment"
+        android:label="fragment_settings_privacy"
+        tools:layout="@layout/fragment_settings_privacy" />
+    <fragment
+        android:id="@+id/settingsVersionFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsVersionFragment"
+        android:label="fragment_settings_version"
+        tools:layout="@layout/fragment_settings_version" />
+    <fragment
+        android:id="@+id/settingsAccountFragment"
+        android:name="com.example.angkorchatproto.settings.fragment.SettingsAccountFragment"
+        android:label="fragment_settings_account"
+        tools:layout="@layout/fragment_settings_account" />
+</navigation>
