@@ -65,13 +65,11 @@ class SuggestedAdapter(
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.suggest_list, null)
 
-        Log.d("TAG-실행순서", "어댑터 onCreateViewHolder")
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("TAG-실행순서", "어댑터 onBindViewHolder")
 
         val profile = suggestList[position].profile
         val name = suggestList[position].name
@@ -115,12 +113,13 @@ class SuggestedAdapter(
 
         holder.add.setOnClickListener {
             if (holder.add.tag == "false") {//친구 삭제할 때
+                //친구 목록에서 제거
+                friendRef.child(userNum).child(removeSpace).removeValue()
+
                 holder.add.setBackgroundResource(R.drawable.add_btn)
                 holder.add.text = "Add"
                 holder.add.tag = "true"
 
-                //친구 목록에서 제거
-                friendRef.child(userNum).child(phone.toString()).removeValue()
 
             } else {
                 //친구 목록에 없는 경우

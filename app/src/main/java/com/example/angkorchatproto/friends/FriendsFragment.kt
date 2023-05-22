@@ -1,6 +1,7 @@
 package com.example.angkorchatproto.friends
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -26,6 +27,7 @@ class FriendsFragment : Fragment() {
 
     lateinit var binding: FragmentFriendsBinding
     lateinit var friendList: ArrayList<UserVO>
+    lateinit var favoriteAdapter: FriendsAdapter
     lateinit var friendAdapter: FriendsAdapter
 
 
@@ -66,7 +68,7 @@ class FriendsFragment : Fragment() {
         favoriteList.add(UserVO("유니온모바일", "union-mobile@union-mobile.co.kr", "union", "+123456789"))
 
         //즐겨찾는 친구 Adapter
-        val favoriteAdapter = FriendsAdapter(requireContext(), favoriteList)
+        favoriteAdapter = FriendsAdapter(requireContext(), favoriteList)
         favoriteAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
 
@@ -93,7 +95,7 @@ class FriendsFragment : Fragment() {
 
         friendList = ArrayList()
 
-        friendAdapter = FriendsAdapter(requireContext(), friendList)
+        favoriteAdapter = FriendsAdapter(requireContext(), friendList)
 
 
         //친구 목록 접기
@@ -166,6 +168,7 @@ class FriendsFragment : Fragment() {
 
 
         //전체 친구 Adapter
+        friendAdapter = FriendsAdapter(requireContext(),friendList)
         binding.rvFriendsFriends.adapter = friendAdapter
         binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(), 1)
 
@@ -183,6 +186,7 @@ class FriendsFragment : Fragment() {
         val friendRef = FBdataBase.getFriendRef()
 
         friendRef.child(userNumber).addChildEventListener(object : ChildEventListener {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 //Log.d("TAG-전체친구목록",snapshot.toString())
                 val firendItem = snapshot.getValue<UserVO>() as UserVO
@@ -197,7 +201,6 @@ class FriendsFragment : Fragment() {
                 }
 
                 friendAdapter.notifyDataSetChanged()
-
 
             }
 

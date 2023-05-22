@@ -735,6 +735,7 @@ class ChatAdapter(
             if (message.emo != null &&
                 message.emo != ""
             ) {
+                holder.messageLayoutOther.visibility = View.GONE
                 holder.ivOtherImoge.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(parseImogeString(message.emo))

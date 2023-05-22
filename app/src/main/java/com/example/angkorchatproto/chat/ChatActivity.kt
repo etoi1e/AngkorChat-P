@@ -49,6 +49,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import com.google.firebase.database.ktx.values
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -68,11 +69,13 @@ class ChatActivity : BaseActivity() {
     var receiverNumber: String = ""
     var receiverToken: String = ""
     private var chatRoomKey: String? = null
+    var selectedDirectory = ""
+    var sendFileDirectory = ""
     var chatRoomKeyList = ArrayList<String>()
     var imgList = ArrayList<Uri?>()
     var selectImgList = ArrayList<Uri?>()
-    var selectedDirectory = ""
-    var sendFileDirectory = ""
+    var commentKeyList = ArrayList<String>()
+    var commentList = ArrayList<ChatModel.Comment>()
 
     private lateinit var imogeAdapter: ChatImogeAdapter
     private lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
@@ -85,8 +88,6 @@ class ChatActivity : BaseActivity() {
     var width = 0
     private var client = OkHttpClient()
     private var chatRef = FBdataBase.getChatRef()
-    var commentList = ArrayList<ChatModel.Comment>()
-    var commentKeyList = ArrayList<String>()
     var selectCharacterName: String? = null
     var selectCharacterIdx: String? = null
 
@@ -259,6 +260,18 @@ class ChatActivity : BaseActivity() {
 
         val usersRef = FBdataBase.getUserRef().child(receiver)
 
+
+        //상대방 이름 출력
+        val receiverName = intent.getStringExtra("name").toString()
+        binding.tvNameChat.text = receiverName
+
+        val profileImg = intent.getStringExtra("profile")
+
+        Glide.with(this@ChatActivity)
+            .load(profileImg)
+            .into(binding.imgProfileChat)
+
+
         //상대방 번호
         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -274,6 +287,44 @@ class ChatActivity : BaseActivity() {
                         receiverToken = user.token!!
                     }
                 }
+
+
+
+                //상대방 번호로 프로필 사진 출력
+                if (profileImg == null) {
+
+                    val friendRef = FBdataBase.getFriendRef()
+
+                    friendRef.child(myNumber).child(receiverNumber).child("profile")
+                        .addValueEventListener(object :ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val getProfile = snapshot.getValue()
+
+                                if(getProfile != null){
+                                    Glide.with(this@ChatActivity)
+                                        .load(getProfile)
+                                        .into(binding.imgProfileChat)
+                                }else{
+                                    Glide.with(this@ChatActivity)
+                                        .load(R.drawable.ic_profile_default_72)
+                                        .into(binding.imgProfileChat)
+                                }
+                                Log.d("TAG-profile",snapshot.toString())
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })
+
+
+
+
+
+                }
+
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -281,22 +332,8 @@ class ChatActivity : BaseActivity() {
             }
         })
 
-        //상대방 이름 출력
-        val receiverName = intent.getStringExtra("name").toString()
-        binding.tvNameChat.text = receiverName
 
-        //상대방 프로필 출력
-        val profileImg = intent.getStringExtra("profile")
 
-        if (profileImg == "") {
-            Glide.with(this@ChatActivity)
-                .load(R.drawable.ic_profile_default_72)
-                .into(binding.imgProfileChat)
-        } else {
-            Glide.with(this@ChatActivity)
-                .load(profileImg)
-                .into(binding.imgProfileChat)
-        }
 
 
         //키보드 상태 캐치하는 리스너
@@ -561,11 +598,15 @@ class ChatActivity : BaseActivity() {
         width = size.x
 
 
+
+
         //전송 버튼 클릭 시
         binding.imgSendMessageChat.setOnClickListener {
+
             //공백확인
             val etMessageText = binding.etMessageChat.text.toString()
             val textCheck = etMessageText.replace(" ", "")
+
             //전송 시 시간 초기화
             nowTime = LocalDateTime.now().toString()
             if (nowTime == "") {
@@ -616,7 +657,6 @@ class ChatActivity : BaseActivity() {
                         ""
                     }
                 )
-                Log.d("TAG-replyKey", replyKey)
 
                 initImogePreview()
 
@@ -784,9 +824,6 @@ class ChatActivity : BaseActivity() {
         }
 
 
-
-
-
     }
 
     //onCreate 바깥
@@ -810,6 +847,8 @@ class ChatActivity : BaseActivity() {
 
                         val chatModel = item.getValue<ChatModel>()
                         if (chatModel?.users!!.containsKey(receiver)) {
+
+                            chatRoomKeyList.clear()
 
                             chatRoomKey = item.key.toString()
                             chatRoomKeyList.add(item.key.toString())

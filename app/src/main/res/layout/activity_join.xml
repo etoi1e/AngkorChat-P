@@ -8,14 +8,14 @@
 
     <ImageView
         android:id="@+id/imgJoinLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="160dp"
-        android:layout_marginBottom="39dp"
+        android:layout_width="200dp"
+        android:layout_height="154dp"
+        android:layout_marginBottom="11dp"
+        android:src="@drawable/img_logo_200"
         app:layout_constraintBottom_toTopOf="@+id/tvJoinLanguage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/img_logo_splash" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvJoinLanguage"
