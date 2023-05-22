@@ -100,6 +100,12 @@ class ChatRoomAdapter(
 
         val usersRef = FBdataBase.getChatRef().child(chatRoomKey[position]).child("users")
 
+        if (chatInfoList[position].profile == "") {
+            Glide.with(context)
+                .load(R.drawable.ic_profile_default_72)
+                .into(holder.imgProfileChatList)
+        }
+
         //상대방 번호
         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -135,6 +141,43 @@ class ChatRoomAdapter(
 
                             })
 
+                        friendRef.child(myNumber).child(user.toString()).child("profile")
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+
+                                @SuppressLint("SetTextI18n")
+                                override fun onDataChange(snapshot: DataSnapshot) {
+
+                                    var profile = snapshot.value.toString()
+
+                                    if (profile == "") {
+                                        Glide.with(context)
+                                            .load(R.drawable.ic_profile_default_72)
+                                            .into(holder.imgProfileChatList)
+                                    } else {
+                                        Glide.with(context)
+                                            .load(profile)
+                                            .into(holder.imgProfileChatList)
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+
+
+                            })
+
+
+
+                        holder.layout.setOnClickListener {
+                            val intent = Intent(context, ChatActivity::class.java)
+                            intent.putExtra("name", holder.tvNameChatList.text)
+                            intent.putExtra("number", user.toString())
+                            context.startActivity(intent)
+                        }
+
+
+
                     }
                 }
             }
@@ -145,22 +188,6 @@ class ChatRoomAdapter(
         })
 
 
-        if (chatRoom.profile == "") {
-            Glide.with(context)
-                .load(R.drawable.ic_profile_default_72)
-                .into(holder.imgProfileChatList)
-        } else {
-            Glide.with(context)
-                .load(chatRoom.profile)
-                .into(holder.imgProfileChatList)
-        }
-
-        holder.layout.setOnClickListener {
-            val intent = Intent(context, ChatActivity::class.java)
-            intent.putExtra("name", holder.tvNameChatList.text)
-            intent.putExtra("number", sender[position])
-            context.startActivity(intent)
-        }
 
 
         //채팅방 내용 출력

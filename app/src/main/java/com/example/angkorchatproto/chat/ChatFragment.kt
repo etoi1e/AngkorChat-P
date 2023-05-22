@@ -46,6 +46,8 @@ class ChatFragment : Fragment() {
         chatRef.orderByChild("users/$myNumber").equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    chatRoomsKeys.clear()
+                    chatInfoList.clear()
 
                     //같은 키를 가진 채팅방 마지막 1개만 출력하기
                     for (item in snapshot.children) {
