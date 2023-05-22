@@ -100,7 +100,7 @@ class ChatRoomAdapter(
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         val chatRoom = chatInfoList[position]
 
         //시간 포맷팅
@@ -115,11 +115,7 @@ class ChatRoomAdapter(
 
         val usersRef = FBdataBase.getChatRef().child(chatRoomKey[position]).child("users")
 
-        if (chatInfoList[position].profile == "") {
-            Glide.with(context)
-                .load(R.drawable.ic_profile_default_72)
-                .into(holder.imgProfileChatList)
-        }
+
 
         //상대방 번호
         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -127,33 +123,10 @@ class ChatRoomAdapter(
                 for (user in snapshot.children) {
                     if (user.key != myNumber) {
 
-                        sender.add(user.toString())
+                        sender.add(user.key.toString())
 
                         //번호로 유저 이름 찾기
                         val friendRef = FBdataBase.getFriendRef()
-
-                        friendRef.child(myNumber).child(user.key.toString()).child("name")
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-
-                                @SuppressLint("SetTextI18n")
-                                override fun onDataChange(snapshot: DataSnapshot) {
-
-                                    var name = snapshot.value.toString()
-
-                                    if (name == "null") {
-//                                        name = user.toString()
-                                        name = user.key.toString()
-                                    }
-
-                                    holder.tvNameChatList.text = name
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
-                                }
-
-
-                            })
 
                         friendRef.child(myNumber).child(user.key.toString()).child("profile")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -182,11 +155,38 @@ class ChatRoomAdapter(
                             })
 
 
+                        friendRef.child(myNumber).child(user.key.toString()).child("name")
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+
+                                @SuppressLint("SetTextI18n")
+                                override fun onDataChange(snapshot: DataSnapshot) {
+
+                                    var name = snapshot.value.toString()
+
+                                    if (name == "null") {
+                                        name = user.key.toString()
+
+                                        Glide.with(context)
+                                            .load(R.drawable.ic_profile_default_72)
+                                            .into(holder.imgProfileChatList)
+                                    }
+
+                                    holder.tvNameChatList.text = name
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+
+
+                            })
+
+
 
                         holder.layout.setOnClickListener {
                             val intent = Intent(context, ChatActivity::class.java)
                             intent.putExtra("name", holder.tvNameChatList.text)
-                            intent.putExtra("number", user.toString())
+                            intent.putExtra("number", user.key.toString())
                             context.startActivity(intent)
                         }
 

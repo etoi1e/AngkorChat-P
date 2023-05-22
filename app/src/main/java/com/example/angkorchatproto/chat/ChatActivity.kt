@@ -267,9 +267,15 @@ class ChatActivity : BaseActivity() {
 
         val profileImg = intent.getStringExtra("profile")
 
-        Glide.with(this@ChatActivity)
-            .load(profileImg)
-            .into(binding.imgProfileChat)
+        if (profileImg == null || profileImg=="") {
+            Glide.with(this@ChatActivity)
+                .load(R.drawable.ic_profile_default_72)
+                .into(binding.imgProfileChat)
+        }else{
+            Glide.with(this@ChatActivity)
+                .load(profileImg)
+                .into(binding.imgProfileChat)
+        }
 
 
         //상대방 번호
@@ -289,27 +295,26 @@ class ChatActivity : BaseActivity() {
                 }
 
 
-
                 //상대방 번호로 프로필 사진 출력
                 if (profileImg == null) {
 
                     val friendRef = FBdataBase.getFriendRef()
 
                     friendRef.child(myNumber).child(receiverNumber).child("profile")
-                        .addValueEventListener(object :ValueEventListener{
+                        .addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 val getProfile = snapshot.getValue()
 
-                                if(getProfile != null){
+                                if (getProfile != null) {
                                     Glide.with(this@ChatActivity)
                                         .load(getProfile)
                                         .into(binding.imgProfileChat)
-                                }else{
+                                } else {
                                     Glide.with(this@ChatActivity)
                                         .load(R.drawable.ic_profile_default_72)
                                         .into(binding.imgProfileChat)
                                 }
-                                Log.d("TAG-profile",snapshot.toString())
+                                Log.d("TAG-profile", snapshot.toString())
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -317,9 +322,6 @@ class ChatActivity : BaseActivity() {
                             }
 
                         })
-
-
-
 
 
                 }
@@ -331,9 +333,6 @@ class ChatActivity : BaseActivity() {
                 // 에러 처리
             }
         })
-
-
-
 
 
         //키보드 상태 캐치하는 리스너
@@ -596,8 +595,6 @@ class ChatActivity : BaseActivity() {
         val size = Point()
         display.getRealSize(size)
         width = size.x
-
-
 
 
         //전송 버튼 클릭 시
