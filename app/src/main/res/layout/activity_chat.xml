@@ -268,7 +268,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/imgImogePreview"
@@ -363,7 +363,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="invisible">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/imgMediaChatMedia"

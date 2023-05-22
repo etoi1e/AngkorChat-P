@@ -68,11 +68,13 @@ class ChatActivity : BaseActivity() {
     var receiverNumber: String = ""
     var receiverToken: String = ""
     private var chatRoomKey: String? = null
+    var selectedDirectory = ""
+    var sendFileDirectory = ""
     var chatRoomKeyList = ArrayList<String>()
     var imgList = ArrayList<Uri?>()
     var selectImgList = ArrayList<Uri?>()
-    var selectedDirectory = ""
-    var sendFileDirectory = ""
+    var commentKeyList = ArrayList<String>()
+    var commentList = ArrayList<ChatModel.Comment>()
 
     private lateinit var imogeAdapter: ChatImogeAdapter
     private lateinit var imogeShortcutAdapter: ChatImogeShortcutAdapter
@@ -85,8 +87,6 @@ class ChatActivity : BaseActivity() {
     var width = 0
     private var client = OkHttpClient()
     private var chatRef = FBdataBase.getChatRef()
-    var commentList = ArrayList<ChatModel.Comment>()
-    var commentKeyList = ArrayList<String>()
     var selectCharacterName: String? = null
     var selectCharacterIdx: String? = null
 
@@ -616,7 +616,6 @@ class ChatActivity : BaseActivity() {
                         ""
                     }
                 )
-                Log.d("TAG-replyKey", replyKey)
 
                 initImogePreview()
 
@@ -784,9 +783,6 @@ class ChatActivity : BaseActivity() {
         }
 
 
-
-
-
     }
 
     //onCreate 바깥
@@ -810,6 +806,8 @@ class ChatActivity : BaseActivity() {
 
                         val chatModel = item.getValue<ChatModel>()
                         if (chatModel?.users!!.containsKey(receiver)) {
+
+                            chatRoomKeyList.clear()
 
                             chatRoomKey = item.key.toString()
                             chatRoomKeyList.add(item.key.toString())

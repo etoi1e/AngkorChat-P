@@ -4,22 +4,30 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.chat.adapter.ChatAdapter
+import com.example.angkorchatproto.dialog.CustomDialog
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import kr.co.kdnavien.naviensmart.presentation.custom.DialogNegativeBtnListener
+import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 
 
 class ChatRoomAdapter(
@@ -112,7 +120,7 @@ class ChatRoomAdapter(
 
                                     var name = snapshot.value.toString()
 
-                                    if(name == "null"){
+                                    if (name == "null") {
 //                                        name = user.toString()
                                         name = "Not Friends"
                                     }
@@ -123,8 +131,6 @@ class ChatRoomAdapter(
                                 override fun onCancelled(error: DatabaseError) {
                                     TODO("Not yet implemented")
                                 }
-
-
 
 
                             })
@@ -152,33 +158,75 @@ class ChatRoomAdapter(
         holder.layout.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("name", holder.tvNameChatList.text)
-            intent.putExtra("number",sender[position])
+            intent.putExtra("number", sender[position])
             context.startActivity(intent)
         }
 
 
-
         //채팅방 내용 출력
 
-        if(chatRoom.file != ""){
+        if (chatRoom.file != "") {
             holder.tvMessageChatList.text = "File"
         }
 
-        if(chatRoom.url != ""){
+        if (chatRoom.url != "") {
             holder.tvMessageChatList.text = "Photo"
         }
 
-        if(chatRoom.emo != ""){
+        if (chatRoom.emo != "") {
             holder.tvMessageChatList.text = "Emoticon"
         }
 
-        if(chatRoom.message != ""){
-        holder.tvMessageChatList.text = chatRoom.message
+        if (chatRoom.message != "") {
+            holder.tvMessageChatList.text = chatRoom.message
         }
 
 
         holder.tvCountChatChatList.text = chatCount.size.toString()
         holder.tvTimeChatList.text = setTime
+
+
+        //롱클릭 삭제
+        holder.layout.setOnLongClickListener(object : OnLongClickListener {
+            @SuppressLint("ResourceAsColor")
+            override fun onLongClick(p0: View?): Boolean {
+
+                val title = "Leave Chatroom"
+                val spannable = SpannableStringBuilder(title)
+//                val color = getColor(R.color.mainYellow)
+                spannable.setSpan(
+                    ForegroundColorSpan(R.color.mainYellow),
+                    0,
+                    title.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                CustomDialog.create(context)
+                    ?.setTitle(spannable)
+                    ?.setDesc(SpannableStringBuilder("When you leave the chatroom\nall the data delete"))
+                    ?.setCancelable(true)
+                    ?.setPositiveButtonText(SpannableStringBuilder("Leave"))
+                    ?.setNegativeButtonText(SpannableStringBuilder("Cancel"))
+                    ?.setPositiveBtnListener(object : DialogPositiveBtnListener {
+                        override fun confirm(division: Int) {
+
+                            val chatRef = FBdataBase.getChatRef()
+                            chatRef.child(chatRoom.key.toString()).removeValue()
+
+                        }
+                    })
+                    ?.setNegativeBtnListener(object : DialogNegativeBtnListener {
+                        override fun cancel(division: Int) {
+                        }
+                    })
+                    ?.showTwoButton()
+
+
+
+
+                return false
+            }
+
+        })
 
 
     }
