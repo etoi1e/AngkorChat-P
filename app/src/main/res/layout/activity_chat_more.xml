@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".chat.ChatMoreActivity">
+
+    <ImageView
+        android:id="@+id/ivChatMoreMoveBack"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_arrow_left_line_28" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivChatMoreProfile"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivChatMoreMoveBack"
+        android:src="@drawable/ic_profile_default_72" />
+
+    <TextView
+        android:id="@+id/tvChatMoreName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Name"
+        android:textColor="#111111"
+        app:layout_constraintEnd_toEndOf="@+id/ivChatMoreProfile"
+        app:layout_constraintStart_toStartOf="@+id/ivChatMoreProfile"
+        app:layout_constraintTop_toBottomOf="@+id/ivChatMoreProfile" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvChatMoreName">
+
+        <ImageView
+            android:id="@+id/ivChatMoreFavorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/gray_circle"
+            android:elevation="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_star_circle_fill_active_40"
+            app:layout_constraintEnd_toEndOf="@+id/tvChatMoreFavorite"
+            app:layout_constraintStart_toStartOf="@+id/tvChatMoreFavorite"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvChatMoreFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins"
+            android:text="Favorite"
+            android:textColor="#111111"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivChatMoreFavorite" />
+
+        <ImageView
+            android:id="@+id/ivChatMoreMute"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="28dp"
+            android:background="@drawable/gray_circle"
+            android:elevation="5dp"
+            android:src="@drawable/ic_mute_circle_fill_bk_40"
+            app:layout_constraintBottom_toBottomOf="@+id/ivChatMoreFavorite"
+            app:layout_constraintStart_toEndOf="@+id/ivChatMoreFavorite"
+            app:layout_constraintTop_toTopOf="@+id/ivChatMoreFavorite" />
+
+        <TextView
+            android:id="@+id/tvChatMoreMute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins"
+            android:text="Mute"
+            android:textColor="#111111"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/ivChatMoreMute"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintStart_toStartOf="@+id/ivChatMoreMute"
+            app:layout_constraintTop_toBottomOf="@+id/ivChatMoreMute" />
+
+        <ImageView
+            android:id="@+id/ivChatMoreSecret"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="28dp"
+            android:background="@drawable/gray_circle"
+            android:elevation="5dp"
+            android:src="@drawable/ic_secret_circle_fill_bk_40"
+            app:layout_constraintBottom_toBottomOf="@+id/ivChatMoreMute"
+            app:layout_constraintStart_toEndOf="@+id/ivChatMoreMute"
+            app:layout_constraintTop_toTopOf="@+id/ivChatMoreMute" />
+
+        <TextView
+            android:id="@+id/tvChatMoreSecret"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins"
+            android:text="Secret"
+            android:textColor="#111111"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/ivChatMoreSecret"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintStart_toStartOf="@+id/ivChatMoreSecret"
+            app:layout_constraintTop_toBottomOf="@+id/ivChatMoreSecret" />
+
+        <ImageView
+            android:id="@+id/ivChatMoreBlock"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/gray_circle"
+            android:elevation="5dp"
+            android:src="@drawable/ic_block_circle_fill_red_40"
+            app:layout_constraintBottom_toBottomOf="@+id/ivChatMoreSecret"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivChatMoreSecret"
+            app:layout_constraintTop_toTopOf="@+id/ivChatMoreSecret" />
+
+        <TextView
+            android:id="@+id/tvChatMoreBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins"
+            android:text="Block"
+            android:textColor="#ff4040"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/ivChatMoreBlock"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintStart_toStartOf="@+id/ivChatMoreBlock"
+            app:layout_constraintTop_toBottomOf="@+id/ivChatMoreBlock" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/viewGrayBarChatMore"
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        android:layout_marginTop="37dp"
+        android:background="#f7f7fb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+
+    <TextView
+        android:id="@+id/tvChatMoreChatName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="29dp"
+        android:fontFamily="@font/poppins"
+        android:text="Chat room Name"
+        android:textColor="#111111"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBarChatMore" />
+
+    <TextView
+        android:id="@+id/tvChatMoreUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins"
+        android:text="User Name"
+        android:textColor="#555555"
+        app:layout_constraintBottom_toBottomOf="@+id/tvChatMoreChatName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvChatMoreChatName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

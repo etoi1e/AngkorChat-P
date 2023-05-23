@@ -265,7 +265,7 @@ class ChatActivity : BaseActivity() {
         val receiverName = intent.getStringExtra("name").toString()
         binding.tvNameChat.text = receiverName
 
-        val profileImg = intent.getStringExtra("profile")
+        var profileImg = intent.getStringExtra("profile")
 
         if (profileImg == null || profileImg=="") {
             Glide.with(this@ChatActivity)
@@ -303,11 +303,11 @@ class ChatActivity : BaseActivity() {
                     friendRef.child(myNumber).child(receiverNumber).child("profile")
                         .addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-                                val getProfile = snapshot.getValue()
+                                profileImg = snapshot.getValue().toString()
 
-                                if (getProfile != null) {
+                                if (profileImg != "null") {
                                     Glide.with(this@ChatActivity)
-                                        .load(getProfile)
+                                        .load(profileImg)
                                         .into(binding.imgProfileChat)
                                 } else {
                                     Glide.with(this@ChatActivity)
@@ -820,8 +820,23 @@ class ChatActivity : BaseActivity() {
             finish()
         }
 
+    //햄버거 메뉴 클릭 시
+
+        binding.imgMenuChat.setOnClickListener {
+            val intent = Intent(this@ChatActivity,ChatMoreActivity::class.java)
+
+            intent.putExtra("userName",receiverName)
+            intent.putExtra("userNumber",receiver)
+            intent.putExtra("profile",profileImg)
+
+            startActivity(intent)
+        }
 
     }
+
+
+
+
 
     //onCreate 바깥
 
