@@ -231,24 +231,13 @@ class ChatRoomAdapter(
             @SuppressLint("ResourceAsColor")
             override fun onLongClick(p0: View?): Boolean {
 
-                val title = "Leave Chatroom"
-                val spannable = SpannableStringBuilder(title)
-//                val color = getColor(R.color.mainYellow)
-                spannable.setSpan(
-                    ForegroundColorSpan(R.color.mainYellow),
-                    0,
-                    title.length,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
                 CustomDialog.create(context)
-                    ?.setTitle(spannable)
-                    ?.setDesc(SpannableStringBuilder("When you leave the chatroom\nall the data delete"))
+                    ?.setDesc(SpannableStringBuilder("Deleting a chat also removes all\nfiles and chat history. Are you sure\nyou want to delete this chat?"))
                     ?.setCancelable(true)
-                    ?.setPositiveButtonText(SpannableStringBuilder("Leave"))
+                    ?.setPositiveButtonText(SpannableStringBuilder("Delete"))
                     ?.setNegativeButtonText(SpannableStringBuilder("Cancel"))
                     ?.setPositiveBtnListener(object : DialogPositiveBtnListener {
                         override fun confirm(division: Int) {
-
 
                             chatRef.child(chatRoom.key.toString()).removeValue()
                             chatInfoList.removeAt(position)

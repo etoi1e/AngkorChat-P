@@ -47,6 +47,7 @@
             android:layout_marginStart="26dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="26dp"
+            android:fontFamily="@font/poppins"
             android:gravity="center"
             android:lineSpacingExtra="3dp"
             android:textColor="@color/black"
@@ -66,6 +67,7 @@
             android:layout_marginStart="26dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="26dp"
+            android:fontFamily="@font/poppins"
             android:gravity="center"
             android:lineSpacingExtra="3dp"
             android:textColor="@color/black"
@@ -100,15 +102,16 @@
                 android:orientation="horizontal">
 
                 <Button
-                    style="@style/MyButtonStyle"
                     android:id="@+id/negativeButton"
+                    style="@style/MyButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_left_btn_bg"
                     android:elevation="0dp"
+                    android:fontFamily="@font/poppins"
                     android:stateListAnimator="@null"
-                    android:textColor="@color/black"
+                    android:textColor="#929498"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
@@ -119,14 +122,15 @@
                     android:background="#edeef5" />
 
                 <Button
-                    style="@style/MyButtonStyle"
                     android:id="@+id/positiveButton"
+                    style="@style/MyButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_right_btn_bg"
                     android:elevation="0dp"
-                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/mainYellow"
                     android:textSize="16dp"
                     android:textStyle="bold" />
             </LinearLayout>
