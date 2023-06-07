@@ -21,6 +21,8 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +35,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
@@ -49,7 +52,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.database.ktx.values
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -116,9 +118,37 @@ class ChatActivity : BaseActivity() {
 
     var replyKey = ""
 
+    lateinit var sendProfile: UserVO
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
+
+
+    //프로필 전송
+    //쌍방향 데이터 전달
+    val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+
+            sendProfile = UserVO(
+                result.data?.getStringExtra("name")!!,
+                result.data?.getStringExtra("email")!!,
+                result.data?.getStringExtra("profile")!!,
+                result.data?.getStringExtra("phone")!!
+            )
+
+
+            binding.imgSendMessageChat.performClick()
+
+            Log.d("TAG-프로필받음", result.data?.getStringExtra("name")!!)
+            Log.d("TAG-프로필받음", result.data?.getStringExtra("email")!!)
+            Log.d("TAG-프로필받음", result.data?.getStringExtra("profile")!!)
+            Log.d("TAG-프로필받음", result.data?.getStringExtra("phone")!!)
+
+        }
+    }
 
 
     @SuppressLint("CommitPrefEdits")
@@ -126,6 +156,8 @@ class ChatActivity : BaseActivity() {
         super.onResume()
 
         checkChatRoom()
+
+        binding.rvChatListChat.scrollToPosition(commentList.size - 1)
 
         val sharedReply = getSharedPreferences("sharedReply", 0)
         val editorReply = sharedReply.edit()
@@ -267,11 +299,11 @@ class ChatActivity : BaseActivity() {
 
         var profileImg = intent.getStringExtra("profile")
 
-        if (profileImg == null || profileImg=="") {
+        if (profileImg == null || profileImg == "") {
             Glide.with(this@ChatActivity)
                 .load(R.drawable.ic_profile_default_72)
                 .into(binding.imgProfileChat)
-        }else{
+        } else {
             Glide.with(this@ChatActivity)
                 .load(profileImg)
                 .into(binding.imgProfileChat)
@@ -314,7 +346,6 @@ class ChatActivity : BaseActivity() {
                                         .load(R.drawable.ic_profile_default_72)
                                         .into(binding.imgProfileChat)
                                 }
-                                Log.d("TAG-profile", snapshot.toString())
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -463,9 +494,16 @@ class ChatActivity : BaseActivity() {
                     }
 
                     //미디어 메뉴 내 Profile 클릭 시
-                    binding.imgProfileChatMedia.setOnClickListener {
+                    with(binding) {
+                        binding.imgProfileChatMedia.setOnClickListener {
+                            val intent = Intent(this@ChatActivity, SelectUserActivity::class.java)
+                            intent.putExtra("sendProfile", "true")
+                            startForResult.launch(intent)
+                        }
+
 
                     }
+
 
                     //프로토 타입 내 지원하지 않는 기능 Toast만 출력
                     //미디어 메뉴 내 File 클릭 시
@@ -505,14 +543,12 @@ class ChatActivity : BaseActivity() {
                     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
                     binding.etMessageChat.requestFocus()
 
-
                     binding.imgMediaChat.setImageResource(R.drawable.ic_clip_line_gray_24)
 
                     binding.viewMessageBox2Chat.visibility = View.VISIBLE
                     binding.etMessageChat.visibility = View.VISIBLE
                     binding.imgImogeChat.visibility = View.VISIBLE
                     binding.imgSendMessageChat.visibility = View.VISIBLE
-
 
                     binding.btnChatSendMedia.visibility = View.GONE
                     binding.mediaLayout.visibility = View.GONE
@@ -527,12 +563,6 @@ class ChatActivity : BaseActivity() {
 
             }
         }
-
-
-
-
-
-
 
 
         binding.imgImogeChat.setOnClickListener {
@@ -613,7 +643,7 @@ class ChatActivity : BaseActivity() {
             //입력한 text가 공백이 아닌 경우 전송
             if (textCheck != "" ||
                 binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null
-                || photoUri != "" || selectImgList.size != 0 || sendFileDirectory != ""
+                || photoUri != "" || selectImgList.size != 0 || sendFileDirectory != "" || sendProfile != null
             ) {
                 val chatModel = ChatModel()
                 chatModel.users.put(myNumber, true)
@@ -652,7 +682,8 @@ class ChatActivity : BaseActivity() {
                         replyKey
                     } else {
                         ""
-                    }
+                    },
+                    sendProfile = sendProfile
                 )
 
                 initImogePreview()
@@ -820,14 +851,14 @@ class ChatActivity : BaseActivity() {
             finish()
         }
 
-    //햄버거 메뉴 클릭 시
+        //햄버거 메뉴 클릭 시
 
         binding.imgMenuChat.setOnClickListener {
-            val intent = Intent(this@ChatActivity,ChatMoreActivity::class.java)
+            val intent = Intent(this@ChatActivity, ChatMoreActivity::class.java)
 
-            intent.putExtra("userName",receiverName)
-            intent.putExtra("userNumber",receiver)
-            intent.putExtra("profile",profileImg)
+            intent.putExtra("userName", receiverName)
+            intent.putExtra("userNumber", receiver)
+            intent.putExtra("profile", profileImg)
 
             startActivity(intent)
         }
@@ -835,11 +866,7 @@ class ChatActivity : BaseActivity() {
     }
 
 
-
-
-
     //onCreate 바깥
-
 
     //보낸 사용자, 받은 사용자 확인 메소드
     private fun checkChatRoom() {
@@ -904,7 +931,6 @@ class ChatActivity : BaseActivity() {
                         val item = data.getValue<ChatModel.Comment>()
                         commentList.add(item!!)
                         commentKeyList.add(data.key.toString())
-
                     }
                     chatAdapter =
                         ChatAdapter(
@@ -917,6 +943,7 @@ class ChatActivity : BaseActivity() {
                     chatAdapter.notifyDataSetChanged()
                     //메세지를 보낼 시 화면을 맨 밑으로 내림
                     binding.rvChatListChat.scrollToPosition(commentList.size - 1)
+
                 }
             })
     }

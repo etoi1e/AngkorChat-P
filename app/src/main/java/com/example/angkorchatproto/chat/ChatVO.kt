@@ -1,6 +1,7 @@
 package com.example.angkorchatproto.chat
 
 import android.net.Uri
+import com.example.angkorchatproto.UserVO
 import java.io.Serializable
 
 data class ChatModel (val users: HashMap<String, Boolean> = HashMap(),
@@ -9,7 +10,7 @@ data class ChatModel (val users: HashMap<String, Boolean> = HashMap(),
     class Comment(
         val profile: String? = null, val sender: String? = null, val message: String? = null,
         val time: String? = null, val state:Boolean?=false, val url: String? = null, var key: String? = null,
-        val emo:String? = null, val file:String? = null, val reaction:HashMap<String,String>? = null, val reply:String? =null) {
+        val emo:String? = null, val file:String? = null, val reaction:HashMap<String,String>? = null, val reply:String? =null, val sendProfile: UserVO? = null) {
     }
 }
 

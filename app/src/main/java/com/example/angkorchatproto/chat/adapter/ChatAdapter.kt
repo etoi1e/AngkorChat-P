@@ -23,6 +23,7 @@ import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.chat.ImgViewActivity
+import com.example.angkorchatproto.profile.ProfileActivity
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
@@ -125,6 +126,18 @@ class ChatAdapter(
         var ivOtherReplyImg: ImageView
         var viewbindImg: View
 
+        var myProfileLayout: View
+        var viewMySendProfile: View
+        var ivMySendProfile: ImageView
+        var tvMySendProfileName: TextView
+        var tvMySendProfileBtn: TextView
+
+        var otherProfileLayout: View
+        var viewOtherSendProfile: View
+        var ivOtherSendProfile: ImageView
+        var tvOtherSendProfileName: TextView
+        var tvOtherSendProfileBtn: TextView
+
 
         init {
             divChatList = itemView.findViewById(R.id.divChatList)
@@ -173,6 +186,19 @@ class ChatAdapter(
             ivMyReplyImg = itemView.findViewById(R.id.ivMyReplyImg)
             ivOtherReplyImg = itemView.findViewById(R.id.ivOtherReplyImg)
             viewbindImg = itemView.findViewById(R.id.viewbindImg)
+
+            myProfileLayout = itemView.findViewById(R.id.myProfileLayout)
+            viewMySendProfile = itemView.findViewById(R.id.viewMySendProfile)
+            ivMySendProfile = itemView.findViewById(R.id.ivMySendProfile)
+            tvMySendProfileName = itemView.findViewById(R.id.tvMySendProfileName)
+            tvMySendProfileBtn = itemView.findViewById(R.id.tvMySendProfileBtn)
+
+            otherProfileLayout = itemView.findViewById(R.id.otherProfileLayout)
+            viewOtherSendProfile = itemView.findViewById(R.id.viewOtherSendProfile)
+            ivOtherSendProfile = itemView.findViewById(R.id.ivOtherSendProfile)
+            tvOtherSendProfileName = itemView.findViewById(R.id.tvOtherSendProfileName)
+            tvOtherSendProfileBtn = itemView.findViewById(R.id.tvOtherSendProfileBtn)
+
         }
     }
 
@@ -217,6 +243,40 @@ class ChatAdapter(
 
             holder.otherChatLayout.visibility = View.GONE
             holder.tvTimeLeft.visibility = View.GONE
+
+
+
+            //프로필 전송
+            if(message.sendProfile != null){
+                holder.myProfileLayout.visibility = View.VISIBLE
+                holder.tvMySendProfileName.text = message.sendProfile.name
+
+                if(message.sendProfile.profile != ""){
+                    Glide.with(context)
+                        .load(message.sendProfile.profile)
+                        .into(holder.ivMySendProfile)
+                }else{
+                    //프로필 사진 없는 경우 기본 프로필 적용
+                    Glide.with(context)
+                        .load(R.drawable.ic_profile_default_72)
+                        .into(holder.ivMySendProfile)
+                }
+
+                //프로필 보기 클릭 시 해당 유저 프로필로 이동
+                holder.tvMySendProfileBtn.setOnClickListener {
+                    val intent = Intent(context,ProfileActivity::class.java)
+                    intent.putExtra("name",message.sendProfile.name)
+                    intent.putExtra("email",message.sendProfile.email)
+                    intent.putExtra("number",message.sendProfile.phone)
+                    intent.putExtra("profile",message.sendProfile.profile)
+                    context.startActivity(intent)
+                }
+            }
+
+
+
+
+
 
             //답장
             if (message.reply != "") {
@@ -582,6 +642,33 @@ class ChatAdapter(
 
 
         } else {//타인이 보낸 메세지인 경우
+
+            //프로필 전송
+            if(message.sendProfile != null){
+                holder.myProfileLayout.visibility = View.VISIBLE
+                holder.tvMySendProfileName.text = message.sendProfile.name
+
+                if(message.sendProfile.profile != ""){
+                    Glide.with(context)
+                        .load(message.sendProfile.profile)
+                        .into(holder.ivMySendProfile)
+                }else{
+                    //프로필 사진 없는 경우 기본 프로필 적용
+                    Glide.with(context)
+                        .load(R.drawable.ic_profile_default_72)
+                        .into(holder.ivMySendProfile)
+                }
+
+                //프로필 보기 클릭 시 해당 유저 프로필로 이동
+                holder.tvMySendProfileBtn.setOnClickListener {
+                    val intent = Intent(context,ProfileActivity::class.java)
+                    intent.putExtra("name",message.sendProfile.name)
+                    intent.putExtra("email",message.sendProfile.email)
+                    intent.putExtra("number",message.sendProfile.phone)
+                    intent.putExtra("profile",message.sendProfile.profile)
+                    context.startActivity(intent)
+                }
+            }
 
             //답장
             if (message.reply != "") {
