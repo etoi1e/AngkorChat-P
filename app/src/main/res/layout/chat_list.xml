@@ -18,6 +18,73 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/myProfileLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View
+                android:id="@+id/viewMySendProfile"
+                android:layout_width="216dp"
+                android:layout_height="148dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/roundbox_light_gray"
+                android:elevation="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/ivMySendProfile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="27dp"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="@+id/viewMySendProfile"
+                app:layout_constraintStart_toStartOf="@+id/viewMySendProfile"
+                app:layout_constraintTop_toTopOf="@+id/viewMySendProfile"
+                app:srcCompat="@drawable/ic_profile_default_72" />
+
+            <TextView
+                android:id="@+id/tvMySendProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Cindy"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="@+id/ivMySendProfile"
+                app:layout_constraintStart_toStartOf="@+id/ivMySendProfile"
+                app:layout_constraintTop_toBottomOf="@+id/ivMySendProfile" />
+
+            <TextView
+                android:id="@+id/tvMySendProfileBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundbox8_white"
+                android:elevation="6dp"
+                android:fontFamily="@font/poppins"
+                android:paddingStart="59dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="59dp"
+                android:paddingBottom="1dp"
+                android:text="Show Profile"
+                android:textColor="#555555"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewMySendProfile"
+                app:layout_constraintEnd_toEndOf="@+id/tvMySendProfileName"
+                app:layout_constraintStart_toStartOf="@+id/tvMySendProfileName"
+                app:layout_constraintTop_toBottomOf="@+id/tvMySendProfileName" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/myFileLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -229,8 +296,74 @@
         android:gravity="left"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/tvOtherChatReaction"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/otherProfileLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View
+                android:id="@+id/viewOtherSendProfile"
+                android:layout_width="216dp"
+                android:layout_height="148dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/roundbox_light_gray"
+                android:elevation="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/ivOtherSendProfile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="27dp"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="@+id/viewOtherSendProfile"
+                app:layout_constraintStart_toStartOf="@+id/viewOtherSendProfile"
+                app:layout_constraintTop_toTopOf="@+id/viewOtherSendProfile"
+                app:srcCompat="@drawable/ic_profile_default_72" />
+
+            <TextView
+                android:id="@+id/tvOtherSendProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Cindy"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="@+id/ivOtherSendProfile"
+                app:layout_constraintStart_toStartOf="@+id/ivOtherSendProfile"
+                app:layout_constraintTop_toBottomOf="@+id/ivOtherSendProfile" />
+
+            <TextView
+                android:id="@+id/tvOtherSendProfileBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundbox8_white"
+                android:elevation="6dp"
+                android:fontFamily="@font/poppins"
+                android:paddingStart="59dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="59dp"
+                android:paddingBottom="1dp"
+                android:text="Show Profile"
+                android:textColor="#555555"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewOtherSendProfile"
+                app:layout_constraintEnd_toEndOf="@+id/tvOtherSendProfileName"
+                app:layout_constraintStart_toStartOf="@+id/tvOtherSendProfileName"
+                app:layout_constraintTop_toBottomOf="@+id/tvOtherSendProfileName" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/otherFileLayout"
@@ -315,8 +448,8 @@
             android:layout_height="134dp"
             android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
-            android:visibility="gone"
             android:src="@drawable/top_logo"
+            android:visibility="gone"
             tools:visibility="visible" />
 
         <ImageView

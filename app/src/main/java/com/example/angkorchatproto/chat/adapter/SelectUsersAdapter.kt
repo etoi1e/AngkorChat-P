@@ -43,13 +43,11 @@ class SelectUsersAdapter(
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.select_user_list, null)
 
-        Log.d("TAG-실행순서", "어댑터 onCreateViewHolder")
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        Log.d("TAG-실행순서", "어댑터 onBindViewHolder")
 
         val profile = mSuggestList[position].profile
         val name = mSuggestList[position].name

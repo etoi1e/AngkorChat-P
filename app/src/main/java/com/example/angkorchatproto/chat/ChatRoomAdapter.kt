@@ -85,8 +85,6 @@ class ChatRoomAdapter(
         val view = layoutInflater.inflate(R.layout.chat_room_list, null)
         chatRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("TAG-채팅방 삭제","확인")
-                Log.d("TAG-채팅방 삭제 snapshot" ,snapshot.toString())
 
                notifyDataSetChanged()
 

@@ -38,6 +38,10 @@ class SelectUserActivity : BaseActivity() {
         val shared = getSharedPreferences("loginNumber", 0)
         val userNumber = shared.getString("userNumber", "")
         getContacts()
+
+        val checkProfile = intent.getStringExtra("sendProfile")
+        Log.d("TAG-checkProfile",checkProfile.toString())
+
         val adapter = SelectUsersAdapter(
             this@SelectUserActivity,
             mSuggestList,
@@ -50,20 +54,39 @@ class SelectUserActivity : BaseActivity() {
                 }
             }
         )
-        binding.btnNext.setOnClickListener {
-            if (binding.btnNext.currentTextColor == getColor(R.color.mainYellow)) {
-                Log.d("SelectUserActivity","채팅방을 열어주세요")
-                //채팅방으로 이동
-                if (mSelectUser != null) {
-                    val intent = Intent(this, ChatActivity::class.java)
-                    intent.putExtra("name", mSelectUser?.name)
-                    intent.putExtra("number", mSelectUser?.phone)
-                    intent.putExtra("profile", mSelectUser?.profile)
-                    startActivity(intent)
+
+        if(checkProfile == "true"){
+            with(binding){
+                binding.btnNext.setOnClickListener {
+                    val intent = Intent(this@SelectUserActivity,ChatActivity::class.java).apply {
+                        putExtra("name",mSelectUser?.name)
+                        putExtra("email",mSelectUser?.email)
+                        putExtra("profile",mSelectUser?.profile)
+                        putExtra("phone",mSelectUser?.phone)
+                    }
+                    setResult(RESULT_OK,intent)
                     finish()
                 }
             }
         }
+
+        if(checkProfile != "true"){
+            binding.btnNext.setOnClickListener {
+                if (binding.btnNext.currentTextColor == getColor(R.color.mainYellow)) {
+                    Log.d("SelectUserActivity","채팅방을 열어주세요")
+                    //채팅방으로 이동
+                    if (mSelectUser != null) {
+                        val intent = Intent(this, ChatActivity::class.java)
+                        intent.putExtra("name", mSelectUser?.name)
+                        intent.putExtra("number", mSelectUser?.phone)
+                        intent.putExtra("profile", mSelectUser?.profile)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+        }
+
         binding.imgMoveBack.setOnClickListener {
             finish()
         }
