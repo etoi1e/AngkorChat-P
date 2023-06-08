@@ -118,7 +118,7 @@ class ChatActivity : BaseActivity() {
 
     var replyKey = ""
 
-    lateinit var sendProfile: UserVO
+    var sendProfile: UserVO? = null
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -157,7 +157,9 @@ class ChatActivity : BaseActivity() {
 
         checkChatRoom()
 
-        binding.rvChatListChat.scrollToPosition(commentList.size - 1)
+        binding.rvChatListChat.scrollToPosition(commentList.lastIndex)
+
+//        binding.rvChatListChat.scrollToPosition(commentList.size-1)
 
         val sharedReply = getSharedPreferences("sharedReply", 0)
         val editorReply = sharedReply.edit()
@@ -522,11 +524,11 @@ class ChatActivity : BaseActivity() {
 
                     //미디어 메뉴 내 Location 클릭 시
                     binding.imgLocationChatMedia.setOnClickListener {
-                        Toast.makeText(
-                            this@ChatActivity,
-                            "This feature is not supported by Prototype",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                        val intent = Intent(this@ChatActivity,MapsActivity::class.java)
+                        startActivity(intent)
+
+
                     }
 
                     //미디어 메뉴 내 Capture 클릭 시
@@ -1046,7 +1048,6 @@ class ChatActivity : BaseActivity() {
         selectCharacterIdx = null
         binding.imogePreview.visibility = View.GONE
     }
-
 
     //카메라 권한 확인
     private fun openCamera() {
