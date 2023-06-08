@@ -39,7 +39,7 @@ class JoinActivity : BaseActivity() {
 
     fun permissionCheck (){
         TedPermission.create()
-            .setPermissionListener(object : PermissionListener{
+            .setPermissionListener(object : PermissionListener {
                 override fun onPermissionGranted() {
                    Toast.makeText(this@JoinActivity,"Permission Granted",Toast.LENGTH_SHORT).show()
                 }
