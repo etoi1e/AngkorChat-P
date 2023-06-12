@@ -6,6 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".friends.AddFriendsActivity">
 
+    <ImageView
+        android:id="@+id/imgQr"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="37dp"
+        android:src="@drawable/ic_contact_circle_fill_40"
+        app:layout_constraintBottom_toBottomOf="@+id/imgEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imgEmail"
+        app:layout_constraintTop_toTopOf="@+id/imgEmail"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tvContactAddFriends3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="QR Code"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="@+id/imgQr"
+        app:layout_constraintStart_toStartOf="@+id/imgQr"
+        app:layout_constraintTop_toBottomOf="@+id/imgQr" />
+
+    <ImageView
+        android:id="@+id/imgEmail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_contact_circle_fill_40"
+        app:layout_constraintBottom_toBottomOf="@+id/imgContactAddFriends"
+        app:layout_constraintEnd_toStartOf="@+id/imgQr"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imgContactAddFriends"
+        app:layout_constraintTop_toTopOf="@+id/imgContactAddFriends"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvContactAddFriends2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Email"
+        android:textColor="@color/textBlack"
+        app:layout_constraintEnd_toEndOf="@+id/imgEmail"
+        app:layout_constraintStart_toStartOf="@+id/imgEmail"
+        app:layout_constraintTop_toBottomOf="@+id/imgEmail" />
+
     <View
         android:id="@+id/view2"
         android:layout_width="0dp"
@@ -56,38 +103,34 @@
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="14dp"
+        android:src="@drawable/ic_arrow_left_line_28"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_arrow_left_line_28" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imgNearbyAddFriends"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="37dp"
         android:layout_marginTop="38dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        android:src="@drawable/ic_location_circle_fill_40"
+        app:layout_constraintEnd_toStartOf="@+id/imgContactAddFriends"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgMoveBackAddFriends"
-        android:src="@drawable/ic_location_circle_fill_40" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50" />
+        app:layout_constraintTop_toBottomOf="@+id/imgMoveBackAddFriends" />
 
     <ImageView
         android:id="@+id/imgContactAddFriends"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_contact_circle_fill_40"
         app:layout_constraintBottom_toBottomOf="@+id/imgNearbyAddFriends"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/imgEmail"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imgNearbyAddFriends"
         app:layout_constraintTop_toTopOf="@+id/imgNearbyAddFriends"
-        android:src="@drawable/ic_contact_circle_fill_40" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tvNearbyAddFriends"
@@ -127,20 +170,20 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_info_circle_fill_lightgray_24"
         app:layout_constraintBottom_toBottomOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewGrayBarAddFriends"
-        android:src="@drawable/ic_info_circle_fill_lightgray_24" />
+        app:layout_constraintTop_toBottomOf="@+id/viewGrayBarAddFriends" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSuggestedListAddFriends"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constrainedHeight="true"/>
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -99,6 +99,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".friends.QrCameraActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".friends.AddByContactActivity"
             android:exported="false"
             android:windowSoftInputMode="stateAlwaysVisible" >

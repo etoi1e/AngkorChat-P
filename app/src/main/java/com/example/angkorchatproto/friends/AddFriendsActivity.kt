@@ -1,10 +1,15 @@
 package com.example.angkorchatproto.friends
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.base.BaseActivity
@@ -22,6 +27,10 @@ class AddFriendsActivity : BaseActivity() {
     var friendList: ArrayList<String> = ArrayList()
     var friendRef = FBdataBase.getFriendRef()
 
+    val FLAG_PERM_CAMERA = 98
+    val FLAG_REQ_CAMERA = 1001
+    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -36,6 +45,15 @@ class AddFriendsActivity : BaseActivity() {
 
         binding.imgContactAddFriends.setOnClickListener {
             val intent = Intent(this, AddByContactActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.imgEmail.setOnClickListener {
+
+        }
+
+        binding.imgQr.setOnClickListener {
+            val intent = Intent(this, QrCameraActivity::class.java)
             startActivity(intent)
         }
 

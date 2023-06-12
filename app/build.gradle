@@ -54,6 +54,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-runtime-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation 'androidx.camera:camera-lifecycle:1.0.2'
+    implementation 'androidx.camera:camera-view:1.1.0-beta02'
     // implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -102,5 +104,7 @@ dependencies {
 
     //Permission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+
+    implementation 'androidx.camera:camera-camera2:1.2.3'
 
 }
