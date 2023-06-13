@@ -45,6 +45,7 @@ import com.example.angkorchatproto.databinding.ActivityChatBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
 import com.example.angkorchatproto.video.VideoActivity
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
@@ -120,6 +121,8 @@ class ChatActivity : BaseActivity() {
 
     var sendProfile: UserVO? = null
 
+    var location: String? = ""
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     var nowTime = ""
@@ -142,11 +145,21 @@ class ChatActivity : BaseActivity() {
 
             binding.imgSendMessageChat.performClick()
 
-            Log.d("TAG-프로필받음", result.data?.getStringExtra("name")!!)
-            Log.d("TAG-프로필받음", result.data?.getStringExtra("email")!!)
-            Log.d("TAG-프로필받음", result.data?.getStringExtra("profile")!!)
-            Log.d("TAG-프로필받음", result.data?.getStringExtra("phone")!!)
 
+        }
+
+        if(result.resultCode == 1994){
+            //location 정보 불러오기
+            val lat = result.data?.getDoubleExtra("latitude",0.0)!!
+            val lng = result.data?.getDoubleExtra("longitude",0.0)!!
+            val mapScreenshot = result.data?.getStringExtra("mapScreenshot")!!
+            location = "$lat,$lng&$mapScreenshot"
+
+            Log.d("TAG-위치정보",location.toString())
+
+            binding.imgSendMessageChat.performClick()
+
+            location=""
         }
     }
 
@@ -157,9 +170,9 @@ class ChatActivity : BaseActivity() {
 
         checkChatRoom()
 
-        binding.rvChatListChat.scrollToPosition(commentList.lastIndex)
+//        binding.rvChatListChat.scrollToPosition(commentList.lastIndex)
 
-//        binding.rvChatListChat.scrollToPosition(commentList.size-1)
+        binding.rvChatListChat.scrollToPosition(commentList.size-1)
 
         val sharedReply = getSharedPreferences("sharedReply", 0)
         val editorReply = sharedReply.edit()
@@ -180,6 +193,7 @@ class ChatActivity : BaseActivity() {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
                         val message = snapshot.child("message").value.toString()
+                        val location = snapshot.child("location").value.toString()
                         val file = snapshot.child("file").value.toString()
                         val url = snapshot.child("url").value.toString()
                         val userName = snapshot.child("sender").value.toString()
@@ -187,6 +201,9 @@ class ChatActivity : BaseActivity() {
 
 
                         binding.tvReplySelectUser.text = userName
+
+                        //주소에 답장
+                        if (location != "") binding.tvReplyText.text = "location"
 
                         //메세지에 답장
                         if (message != "") binding.tvReplyText.text = message
@@ -526,7 +543,10 @@ class ChatActivity : BaseActivity() {
                     binding.imgLocationChatMedia.setOnClickListener {
 
                         val intent = Intent(this@ChatActivity,MapsActivity::class.java)
-                        startActivity(intent)
+
+                        startForResult.launch(intent)
+
+
 
 
                     }
@@ -645,7 +665,7 @@ class ChatActivity : BaseActivity() {
             //입력한 text가 공백이 아닌 경우 전송
             if (textCheck != "" ||
                 binding.imogePreview.visibility == View.VISIBLE && binding.imgImogePreview.drawable != null
-                || photoUri != "" || selectImgList.size != 0 || sendFileDirectory != "" || sendProfile != null
+                || photoUri != "" || selectImgList.size != 0 || sendFileDirectory != "" || sendProfile != null || location != ""
             ) {
                 val chatModel = ChatModel()
                 chatModel.users.put(myNumber, true)
@@ -685,7 +705,8 @@ class ChatActivity : BaseActivity() {
                     } else {
                         ""
                     },
-                    sendProfile = sendProfile
+                    sendProfile = sendProfile,
+                    location = location
                 )
 
                 initImogePreview()

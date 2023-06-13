@@ -204,6 +204,14 @@ class ChatRoomAdapter(
 
         //채팅방 내용 출력
 
+        if (chatRoom.profile != "") {
+            holder.tvMessageChatList.text = "profile"
+        }
+
+        if (chatRoom.location != "") {
+            holder.tvMessageChatList.text = "location"
+        }
+
         if (chatRoom.file != "") {
             holder.tvMessageChatList.text = "File"
         }
@@ -217,6 +225,10 @@ class ChatRoomAdapter(
         }
 
         if (chatRoom.message != "") {
+            holder.tvMessageChatList.text = chatRoom.message
+        }
+
+        if (chatRoom.reply != "") {
             holder.tvMessageChatList.text = chatRoom.message
         }
 
