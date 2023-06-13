@@ -773,7 +773,7 @@ class ChatAdapter(
                 }
 
                 //프로필 보기 클릭 시 해당 유저 프로필로 이동
-                holder.tvMySendProfileBtn.setOnClickListener {
+                holder.tvOtherSendProfileBtn.setOnClickListener {
                     val intent = Intent(context,ProfileActivity::class.java)
                     intent.putExtra("name",message.sendProfile.name)
                     intent.putExtra("email",message.sendProfile.email)
