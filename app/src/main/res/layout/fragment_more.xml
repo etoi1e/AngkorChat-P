@@ -173,7 +173,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/btnPoint"
+                    android:id="@+id/tvPayPoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
@@ -202,6 +202,7 @@
                     app:layout_constraintVertical_bias="0.0">
 
                     <TextView
+                        android:id="@+id/tvPayment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -218,6 +219,7 @@
                         android:background="#ebebeb"/>
 
                     <TextView
+                        android:id="@+id/tvTransfer"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_gravity="center"
@@ -234,6 +236,7 @@
                         android:background="#ebebeb"/>
 
                     <TextView
+                        android:id="@+id/tvMyQr"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

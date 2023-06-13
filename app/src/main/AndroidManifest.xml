@@ -58,6 +58,9 @@
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
+            android:name=".pay.PayActivity"
+            android:exported="false"/>
+        <activity
             android:name=".chat.ChatMoreActivity"
             android:exported="false">
             <meta-data

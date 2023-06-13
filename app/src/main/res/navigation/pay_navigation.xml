@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/joinFragment">
+
+    <fragment
+        android:id="@+id/joinFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.JoinFragment"
+        android:label="fragment_join"
+        tools:layout="@layout/fragment_join" >
+        <action
+            android:id="@+id/action_joinFragment_to_smsVerificationFragment"
+            app:destination="@id/smsVerificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardRegistrationFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.CardRegistrationFragment"
+        android:label="fragment_card_registration"
+        tools:layout="@layout/fragment_card_registration" />
+    <fragment
+        android:id="@+id/cardScanFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.CardScanFragment"
+        android:label="fragment_card_scan"
+        tools:layout="@layout/fragment_card_scan" />
+    <fragment
+        android:id="@+id/cardUseFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.CardUseFragment"
+        android:label="fragment_card_use"
+        tools:layout="@layout/fragment_card_use" />
+    <fragment
+        android:id="@+id/confirmSmsFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.ConfirmSmsFragment"
+        android:label="fragment_confirm_sms"
+        tools:layout="@layout/fragment_confirm_sms" />
+    <fragment
+        android:id="@+id/idCardFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.IdCardFragment"
+        android:label="fragment_id_card"
+        tools:layout="@layout/fragment_id_card" >
+        <action
+            android:id="@+id/action_idCardFragment_to_paymentRegistrationFragment"
+            app:destination="@id/paymentRegistrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/idVerificationFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.IdVerificationFragment"
+        android:label="fragment_id_verification"
+        tools:layout="@layout/fragment_id_verification" >
+        <action
+            android:id="@+id/action_idVerificationFragment_to_idCardFragment"
+            app:destination="@id/idCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentPasswordFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PaymentPasswordFragment"
+        android:label="fragment_payment_password"
+        tools:layout="@layout/fragment_payment_password" >
+        <action
+            android:id="@+id/action_paymentPasswordFragment_to_payMainFragment"
+            app:destination="@id/payMainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentRegistrationFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PaymentRegistrationFragment"
+        android:label="fragment_payment_registration"
+        tools:layout="@layout/fragment_payment_registration" >
+        <action
+            android:id="@+id/action_paymentRegistrationFragment_to_cardScanFragment"
+            app:destination="@id/cardScanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/smsVerificationFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.SmsVerificationFragment"
+        android:label="fragment_sms_verification"
+        tools:layout="@layout/fragment_sms_verification" >
+        <action
+            android:id="@+id/action_smsVerificationFragment_to_paymentPasswordFragment"
+            app:destination="@id/paymentPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payMainFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayMainFragment"
+        android:label="fragment_pay_main"
+        tools:layout="@layout/fragment_pay_main" />
+</navigation>
