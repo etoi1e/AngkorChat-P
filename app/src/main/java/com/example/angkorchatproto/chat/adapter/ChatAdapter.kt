@@ -10,6 +10,7 @@ import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -23,6 +24,7 @@ import com.example.angkorchatproto.chat.ChatModel
 import com.example.angkorchatproto.chat.ReactionActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.chat.ImgViewActivity
+import com.example.angkorchatproto.chat.MapsActivity
 import com.example.angkorchatproto.profile.ProfileActivity
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.android.gms.tasks.OnCompleteListener
@@ -32,7 +34,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.values
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
@@ -139,6 +140,10 @@ class ChatAdapter(
         var tvOtherSendProfileBtn: TextView
 
 
+        var viewChatMyLocation: ImageView
+        var viewChatOtherLocation: ImageView
+
+
         init {
             divChatList = itemView.findViewById(R.id.divChatList)
 
@@ -199,6 +204,9 @@ class ChatAdapter(
             tvOtherSendProfileName = itemView.findViewById(R.id.tvOtherSendProfileName)
             tvOtherSendProfileBtn = itemView.findViewById(R.id.tvOtherSendProfileBtn)
 
+            viewChatMyLocation = itemView.findViewById(R.id.viewChatMyLocation)
+            viewChatOtherLocation = itemView.findViewById(R.id.viewChatOtherLocation)
+
         }
     }
 
@@ -245,6 +253,57 @@ class ChatAdapter(
             holder.tvTimeLeft.visibility = View.GONE
 
 
+            //주소전송
+            if(message.location != ""){
+                holder.viewChatMyLocation.visibility = View.VISIBLE
+
+                val location = message.location!!.substringBefore("&")
+                val latitude = location.substringBefore(",")
+                val longitude = location.substringAfter(",")
+
+                val bitmapString = message.location.substringAfter("&gs://angkor-ae0c0.appspot.com/")
+                val bitmap = bitmapString.replace("%40","@")
+
+                val storage = Firebase.storage
+                val storageRef = storage.reference
+                val imgRef = storageRef.child(bitmap)
+
+
+                imgRef.downloadUrl.addOnSuccessListener { p0 ->
+
+                    Glide.with(context)
+                        .load(p0)
+                        .into(holder.viewChatMyLocation)
+
+                }
+
+
+                holder.viewChatMyLocation.setOnClickListener {
+                    val intent = Intent(context, MapsActivity::class.java)
+                    intent.putExtra("check", "false")
+                    intent.putExtra("latitude", latitude.toDouble())
+                    intent.putExtra("longitude", longitude.toDouble())
+                    context.startActivity(intent)
+                }
+
+
+                // 롱클릭 이벤트
+                holder.viewChatMyLocation.setOnLongClickListener(object : OnLongClickListener {
+                    override fun onLongClick(p0: View?): Boolean {
+
+                        val intent = Intent(context, ReactionActivity::class.java)
+                        intent.putExtra("commkey", commentKey)
+                        intent.putExtra("key", message.key)
+                        context.startActivity(intent)
+
+                        return false
+
+                    }
+
+                })
+
+            }
+
 
             //프로필 전송
             if(message.sendProfile != null){
@@ -272,9 +331,6 @@ class ChatAdapter(
                     context.startActivity(intent)
                 }
             }
-
-
-
 
 
 
@@ -310,6 +366,12 @@ class ChatAdapter(
                                     }
 
                                 })
+
+                            //주소에 답장하는 경우
+                            if (snapshot.child("location").value != "") {
+                                holder.tvReplyToComment.text ="location"
+
+                            }
 
 
                             //텍스트에 답장하는 경우
@@ -596,7 +658,7 @@ class ChatAdapter(
                     }
 
                     //다운로드 주소로 변환
-                    var downloadReference = Firebase.storage.getReferenceFromUrl(
+                    val downloadReference = Firebase.storage.getReferenceFromUrl(
                         message.file.toString().replace(
                             "gs://angkor-ae0c0.appspot.com/",
                             "https://firebasestorage.googleapis.com/v0/b/angkor-ae0c0.appspot.com/o/"
@@ -604,7 +666,7 @@ class ChatAdapter(
                     )
 
                     //파일의 확장자
-                    var fileType = downloadReference.name.substring(
+                    val fileType = downloadReference.name.substring(
                         downloadReference.name.indexOf("."),
                         downloadReference.name.lastIndex + 1
                     )
@@ -643,20 +705,71 @@ class ChatAdapter(
 
         } else {//타인이 보낸 메세지인 경우
 
+            //주소전송
+            if(message.location != ""){
+                holder.viewChatOtherLocation.visibility = View.VISIBLE
+
+                val location = message.location!!.substringBefore("&")
+                val latitude = location.substringBefore(",")
+                val longitude = location.substringAfter(",")
+
+                val bitmapString = message.location.substringAfter("&gs://angkor-ae0c0.appspot.com/")
+                val bitmap = bitmapString.replace("%40","@")
+
+                val storage = Firebase.storage
+                val storageRef = storage.reference
+                val imgRef = storageRef.child(bitmap)
+
+
+                imgRef.downloadUrl.addOnSuccessListener { p0 ->
+
+                    Glide.with(context)
+                        .load(p0)
+                        .into(holder.viewChatOtherLocation)
+
+                }
+
+
+                holder.viewChatOtherLocation.setOnClickListener {
+                    val intent = Intent(context, MapsActivity::class.java)
+                    intent.putExtra("check", "false")
+                    intent.putExtra("latitude", latitude.toDouble())
+                    intent.putExtra("longitude", longitude.toDouble())
+                    context.startActivity(intent)
+                }
+
+                // 롱클릭 이벤트
+                holder.viewChatOtherLocation.setOnLongClickListener(object : OnLongClickListener {
+                    override fun onLongClick(p0: View?): Boolean {
+
+                        val intent = Intent(context, ReactionActivity::class.java)
+                        intent.putExtra("commkey", commentKey)
+                        intent.putExtra("key", message.key)
+                        context.startActivity(intent)
+
+                        return false
+
+                    }
+
+                })
+
+            }
+
+
             //프로필 전송
             if(message.sendProfile != null){
-                holder.myProfileLayout.visibility = View.VISIBLE
-                holder.tvMySendProfileName.text = message.sendProfile.name
+                holder.otherProfileLayout.visibility = View.VISIBLE
+                holder.tvOtherSendProfileName.text = message.sendProfile.name
 
                 if(message.sendProfile.profile != ""){
                     Glide.with(context)
                         .load(message.sendProfile.profile)
-                        .into(holder.ivMySendProfile)
+                        .into(holder.ivOtherSendProfile)
                 }else{
                     //프로필 사진 없는 경우 기본 프로필 적용
                     Glide.with(context)
                         .load(R.drawable.ic_profile_default_72)
-                        .into(holder.ivMySendProfile)
+                        .into(holder.ivOtherSendProfile)
                 }
 
                 //프로필 보기 클릭 시 해당 유저 프로필로 이동
@@ -708,6 +821,12 @@ class ChatAdapter(
                                     }
 
                                 })
+
+                            //주소에 답장하는 경우
+                            if (snapshot.child("location").value != "") {
+                                holder.tvReplyToComment.text ="location"
+
+                            }
 
                             //텍스트에 답장하는 경우
                             if (snapshot.child("message").value != "") {
@@ -797,7 +916,7 @@ class ChatAdapter(
             holder.tvTimeRight.visibility = View.GONE
 
             if (message.message == "") {
-                holder.tvOtherMessageChat.visibility = View.GONE
+                holder.messageLayoutOther.visibility = View.GONE
             } else {
                 holder.tvOtherMessageChat.setText(message.message)
             }
