@@ -16,11 +16,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ActivityMapsBinding
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.*
@@ -49,6 +55,49 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        //검색
+
+        Places.initialize(applicationContext, "AIzaSyBtpGTyyCocpC1JvwYC5c-vynX5e268Mhw")
+        var placesClient = Places.createClient(this)
+
+        val autocompleteFragment =
+            supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                val searchPlace = place.name
+
+                val geocoder = Geocoder(this@MapsActivity)
+                var add = geocoder.getFromLocationName(searchPlace, 1)
+
+
+                val latitude = add?.get(0)?.latitude
+                val longitude = add?.get(0)?.longitude
+
+                if (latitude != null && longitude != null) {
+                    mMap.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            LatLng(
+                                latitude!!,
+                                longitude!!
+                            ), 15.0f
+                        )
+                    )
+                }
+
+
+            }
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+
+            }
+        })
+
 
     }
 
@@ -62,24 +111,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val check = intent.getStringExtra("check")
 
+        var latitude: Double = 0.0
+        var longitude: Double = 0.0
+
         if (check == "false") {
             //상대방이 보낸 지도 클릭 시
 
-            //서치바 제거
-            binding.svSearchFriendFriends.visibility = View.GONE
-            binding.imageView16.visibility = View.GONE
 
-
-            val latitude = intent.getDoubleExtra("latitude", 0.0)
-            val longitude = intent.getDoubleExtra("longitude", 0.0)
+            latitude = intent.getDoubleExtra("latitude", 0.0)
+            longitude = intent.getDoubleExtra("longitude", 0.0)
             Log.d("TAG-location", LatLng(latitude, longitude).toString())
             Log.d("TAG-check", check)
 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 15.0f))
 
         } else {
-
-
             //내 위치버튼 생성(권한체크)
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -108,9 +154,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             location?.let {
 
                 //현재 위치로 시작
-                var latitude: Double = it.latitude
-                var longitude: Double = it.longitude
-                var mapScreenshot: String? = ""
+                latitude = it.latitude
+                longitude = it.longitude
+
 
                 val currLocation = LatLng(latitude, longitude)
 
@@ -119,10 +165,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 try {
                     add =
                         geocoder.getFromLocation(latitude, longitude, 1)!!.first().getAddressLine(0)
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
 
                 //카메라 이동 감지
                 mMap.setOnCameraIdleListener {
@@ -132,37 +178,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     latitude = point.target.latitude
                     longitude = point.target.longitude
-
-                    mMap.snapshot {
-
-                        val storage: File = this.cacheDir // 이 부분이 임시파일 저장 경로
-
-                        val fileName = "$it.jpg" // 파일이름
-
-                        val tempFile = File(storage, fileName)
-
-                        try {
-                            tempFile.createNewFile() // 파일을 생성해주고
-
-                            val out = FileOutputStream(tempFile)
-
-                            it.compress(
-                                Bitmap.CompressFormat.JPEG,
-                                90,
-                                out
-                            ) // 넘겨 받은 bitmap을 jpeg(손실압축)으로 저장해줌
-
-                            out.close() // 마무리로 닫기
-
-                        } catch (e: FileNotFoundException) {
-                            e.printStackTrace()
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
-
-                        mapScreenshot = tempFile.absolutePath
-
-                    }
 
                     try {
                         add =
@@ -178,11 +193,44 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 }
 
+            }
 
 
-                binding.layOutSentLocation.setOnClickListener {
-                    val intent = Intent(this@MapsActivity, ChatActivity::class.java)
+            // 위치 전송
+            binding.layOutSentLocation.setOnClickListener {
 
+                var mapScreenshot: String? = ""
+
+                val intent = Intent(this@MapsActivity, ChatActivity::class.java)
+
+                mMap.snapshot {
+
+                    val storage: File = this.cacheDir // 이 부분이 임시파일 저장 경로
+
+                    val fileName = "$it.jpg" // 파일이름
+
+                    val tempFile = File(storage, fileName)
+
+                    try {
+                        tempFile.createNewFile() // 파일을 생성해주고
+
+                        val out = FileOutputStream(tempFile)
+
+                        it.compress(
+                            Bitmap.CompressFormat.JPEG,
+                            90,
+                            out
+                        ) // 넘겨 받은 bitmap을 jpeg(손실압축)으로 저장해줌
+
+                        out.close() // 마무리로 닫기
+
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    mapScreenshot = tempFile.absolutePath
 
                     val storageRef = Firebase.storage.reference
 
@@ -206,14 +254,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         exception.printStackTrace()
                     }
 
-
                 }
-
-
             }
 
         }
     }
+
 
 }
 
