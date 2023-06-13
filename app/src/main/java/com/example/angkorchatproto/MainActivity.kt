@@ -9,6 +9,7 @@ import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.chat.ChatFragment
 import com.example.angkorchatproto.friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
+import com.example.angkorchatproto.more.MoreFragment
 import com.example.angkorchatproto.settings.SettingsActivity
 
 
@@ -49,12 +50,10 @@ class MainActivity : BaseActivity() {
                 }
 
                 R.id.tab3 ->{
-                    val intent = Intent(this, SettingsActivity::class.java)
-                    startActivity(intent)
-//                    supportFragmentManager.beginTransaction().replace(
-//                        R.id.frameLayout,
-//                        MoreFragment()
-//                    ).commit()
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.frameLayout,
+                        MoreFragment()
+                    ).commit()
                 }
 
             }
