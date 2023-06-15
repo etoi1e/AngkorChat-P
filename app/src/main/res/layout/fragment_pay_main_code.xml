@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView59" />
 
     <TextView
-        android:id="@+id/textView62"
+        android:id="@+id/tvCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
@@ -55,14 +55,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView60" />
 
     <ImageView
-        android:id="@+id/imageView33"
+        android:id="@+id/ivRefresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_refresh_circle_24"
-        app:layout_constraintBottom_toBottomOf="@+id/textView62"
-        app:layout_constraintStart_toEndOf="@+id/textView62"
-        app:layout_constraintTop_toTopOf="@+id/textView62" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvCounter"
+        app:layout_constraintStart_toEndOf="@+id/tvCounter"
+        app:layout_constraintTop_toTopOf="@+id/tvCounter" />
 
     <ImageView
         android:id="@+id/imageView36"
@@ -72,7 +72,7 @@
         android:src="@drawable/img_angkorpay_card_w_260"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView62" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCounter" />
 
     <ImageView
         android:id="@+id/imageView34"

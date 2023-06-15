@@ -12,6 +12,7 @@ import com.example.angkorchatproto.emojistore.data.Data
  * Created by de5ember on 2023/05/08.
  */
 class PayViewModel: BaseViewModel() {
+    var payType: String? = ""
     var testLiveData = MutableLiveData<Boolean>()
     var testEmojiList = arrayListOf(
         Data.EmojiInfo(R.drawable.nunu1, "NUNU Emoticon", "Union", 100),

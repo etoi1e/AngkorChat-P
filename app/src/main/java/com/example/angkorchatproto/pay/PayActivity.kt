@@ -24,6 +24,7 @@ class PayActivity: BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPayBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[PayViewModel::class.java]
+        viewModel?.payType = intent.getStringExtra("type")
         mNavHostFragment = supportFragmentManager.findFragmentById(R.id.pay_container) as NavHostFragment
         mNavController = mNavHostFragment?.navController
         setContentView(binding.root)
