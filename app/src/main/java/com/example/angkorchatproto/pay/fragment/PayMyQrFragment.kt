@@ -2,28 +2,20 @@ package com.example.angkorchatproto.pay.fragment
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
-import com.example.angkorchatproto.R
-import com.example.angkorchatproto.databinding.FragmentJoinBinding
-import com.example.angkorchatproto.databinding.FragmentPayMainBinding
 import com.example.angkorchatproto.databinding.FragmentPayMainCodeBinding
+import com.example.angkorchatproto.databinding.FragmentPayMyQrBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.temporal.ChronoUnit
 import java.util.Locale
 
-class PayMainCodeFragment : Fragment() {
+class PayMyQrFragment : Fragment() {
     private val activityViewModel: PayViewModel? by activityViewModels()
-    lateinit var binding: FragmentPayMainCodeBinding
+    lateinit var binding: FragmentPayMyQrBinding
     private var mCountDownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +31,16 @@ class PayMainCodeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPayMainCodeBinding.inflate(inflater, container, false)
+        binding = FragmentPayMyQrBinding.inflate(inflater, container, false)
         countDownTime()
 
         binding.ivRefresh.setOnClickListener {
             mCountDownTimer?.cancel()
             binding.tvCounter.text= "03:00"
             countDownTime()
+        }
+        binding.ivClose.setOnClickListener {
+            requireActivity().finish()
         }
         return binding.root
     }

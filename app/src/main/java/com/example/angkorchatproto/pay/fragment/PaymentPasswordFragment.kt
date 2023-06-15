@@ -63,7 +63,13 @@ class PaymentPasswordFragment : Fragment() {
                 setEtTextChangeListener()
                 binding.textView56.text = "Enter Payment Password Again"
             } else {
-                view?.findNavController()?.navigate(R.id.action_paymentPasswordFragment_to_payMainFragment)
+                if (activityViewModel?.payType == "myQr") {
+                    view?.findNavController()
+                        ?.navigate(R.id.action_paymentPasswordFragment_to_payMyQrFragment)
+                } else {
+                    view?.findNavController()
+                        ?.navigate(R.id.action_paymentPasswordFragment_to_payMainFragment)
+                }
             }
         }
         onDeleteListener()

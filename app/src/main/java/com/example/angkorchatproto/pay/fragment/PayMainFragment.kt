@@ -26,6 +26,16 @@ class PayMainFragment : Fragment() {
         binding = FragmentPayMainBinding.inflate(inflater, container, false)
         mNavHostFragment = childFragmentManager.findFragmentById(R.id.pay_main_container) as? NavHostFragment
         mNavController = mNavHostFragment?.navController
+
+        if (activityViewModel?.payType == "transfer") {
+            if (mSelectTab == 0) {
+                mSelectTab = 1
+                binding.btnPayCode.isChecked = false
+                binding.btnScan.isChecked = true
+                mNavController?.navigate(R.id.action_payMainCodeFragment_to_payMainScanFragment)
+            }
+        }
+
         binding.btnPayCode.setOnClickListener {
             if (mSelectTab == 1) {
                 mSelectTab = 0

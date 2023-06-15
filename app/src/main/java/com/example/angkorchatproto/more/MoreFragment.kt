@@ -40,6 +40,11 @@ class MoreFragment : Fragment() {
             val intent = Intent(requireContext(), SettingsActivity::class.java)
             startActivity(intent)
         }
+        binding.ivLogo.setOnClickListener {
+            val intent = Intent(requireContext(), PayActivity::class.java)
+            intent.putExtra("type","payment")
+            startActivity(intent)
+        }
         binding.tvMyQr.setOnClickListener {
             val intent = Intent(requireContext(), PayActivity::class.java)
             intent.putExtra("type","myQr")

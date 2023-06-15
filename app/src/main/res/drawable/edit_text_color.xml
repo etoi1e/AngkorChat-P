@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FF0000" /> <!-- 원하는 색상으로 변경 -->
+    <size android:height="1dp" /> <!-- 밑줄의 높이를 조정할 수 있습니다 -->
+</shape>
