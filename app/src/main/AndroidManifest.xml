@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- 디바이스 정보 호출 커미션 -->
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" /> <!-- 주소록 접근 호출 커미션 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 전화 발신 커미션 -->
@@ -37,21 +36,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AngKorChatProto"
         tools:targetApi="31">
-
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-
-             To get one, follow the directions here:
-
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="AIzaSyBtpGTyyCocpC1JvwYC5c-vynX5e268Mhw" />
+
+        <activity
+            android:name=".pay.room.DBTestActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <activity
             android:name=".chat.MapsActivity"
