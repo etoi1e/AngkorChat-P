@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentMoreBinding
 import com.example.angkorchatproto.more.adapter.ServiceAdapter
+import com.example.angkorchatproto.pay.PayActivity
 import com.example.angkorchatproto.settings.SettingsActivity
 
 class MoreFragment : Fragment() {
@@ -37,6 +38,31 @@ class MoreFragment : Fragment() {
         binding = FragmentMoreBinding.inflate(inflater, container, false)
         binding.ivSetting.setOnClickListener {
             val intent = Intent(requireContext(), SettingsActivity::class.java)
+            startActivity(intent)
+        }
+        binding.ivLogo.setOnClickListener {
+            val intent = Intent(requireContext(), PayActivity::class.java)
+            intent.putExtra("type","payment")
+            startActivity(intent)
+        }
+        binding.tvMyQr.setOnClickListener {
+            val intent = Intent(requireContext(), PayActivity::class.java)
+            intent.putExtra("type","myQr")
+            startActivity(intent)
+        }
+        binding.tvPayment.setOnClickListener {
+            val intent = Intent(requireContext(), PayActivity::class.java)
+            intent.putExtra("type","payment")
+            startActivity(intent)
+        }
+        binding.tvTransfer.setOnClickListener {
+            val intent = Intent(requireContext(), PayActivity::class.java)
+            intent.putExtra("type","transfer")
+            startActivity(intent)
+        }
+        binding.tvPayPoint.setOnClickListener {
+            val intent = Intent(requireContext(), PayActivity::class.java)
+            intent.putExtra("type","point")
             startActivity(intent)
         }
         setServiceGridRecyclerView()

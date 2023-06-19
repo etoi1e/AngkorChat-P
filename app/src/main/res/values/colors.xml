@@ -10,5 +10,8 @@
     <color name ="mainYellow">#FEC11A</color>
     <color name ="textBlack">#111111</color>
     <color name ="gray">#dadde3</color>
+    <color name="colorText">#111111</color>
+    <color name="colorTextGray">#a5a5a5</color>
+    <color name="colorLightGray">#dadde3</color>
 
 </resources>

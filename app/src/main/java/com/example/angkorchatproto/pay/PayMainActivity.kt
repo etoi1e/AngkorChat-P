@@ -7,5 +7,4 @@ package com.example.angkorchatproto.pay
  * Created by de5ember on 2023/06/12.
  */
 class PayMainActivity {
-
 }

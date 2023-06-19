@@ -163,7 +163,7 @@
                 android:background="#f7f7fb">
 
                 <ImageView
-                    android:id="@+id/iv_logo"
+                    android:id="@+id/ivLogo"
                     android:layout_width="120dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="12dp"
@@ -173,7 +173,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/btnPoint"
+                    android:id="@+id/tvPayPoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
@@ -182,9 +182,9 @@
                     android:text="100 P"
                     android:textColor="@color/black"
                     android:textSize="20dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_logo"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/iv_logo" />
+                    app:layout_constraintTop_toTopOf="@+id/ivLogo" />
 
                 <LinearLayout
                     android:id="@+id/llPayment"
@@ -198,10 +198,11 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_logo"
+                    app:layout_constraintTop_toBottomOf="@+id/ivLogo"
                     app:layout_constraintVertical_bias="0.0">
 
                     <TextView
+                        android:id="@+id/tvPayment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -218,6 +219,7 @@
                         android:background="#ebebeb"/>
 
                     <TextView
+                        android:id="@+id/tvTransfer"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_gravity="center"
@@ -234,6 +236,7 @@
                         android:background="#ebebeb"/>
 
                     <TextView
+                        android:id="@+id/tvMyQr"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
