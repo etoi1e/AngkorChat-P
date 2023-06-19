@@ -1,8 +1,6 @@
 package com.example.angkorchatproto.pay.room
 
 import androidx.room.*
-import java.sql.Date
-import java.sql.Time
 
 @Entity(tableName = "tb_account")
 data class AccountInfo (
@@ -36,12 +34,13 @@ data class AccountInfo (
     parentColumns = arrayOf("account_number"),
     childColumns = arrayOf("pay_from"),
     onDelete = ForeignKey.CASCADE
-)], tableName =  "tb_transfer")
+)], indices = [Index(value = ["pay_from"])],
+    tableName =  "tb_transfer")
 
-data class TransferInfo (
+data class TransferInfo(
 
     /**거래번호(자동생성)*/
-    @PrimaryKey(autoGenerate = true) val transferNum:Int,
+    @PrimaryKey(autoGenerate = true) val transferNum: Int,
 
     /**결제한 계좌(외래키)*/
     @ColumnInfo(name = "pay_from") val payFrom: String,
@@ -53,10 +52,10 @@ data class TransferInfo (
     val amount: Int,
 
     /**결제 비밀번호*/
-    val pin: Int,
+    val pin: String,
 
     /**결제 분류*/
-    val type: Int,
+    val type: String,
 
     /**결제 시간*/
     val date: String
