@@ -15,9 +15,13 @@ class DBTestActivity : AppCompatActivity() {
         val db = AppDatabase.getInstance(applicationContext)
 
         if(db != null){
-            //val newAccount = AccountInfo("123d03d11Zxz112","userID","0000","ABA",1000,100)
-            db.paymentDao().delUserAccount("userID")
-            //finish()
+
+//            val newAccount = AccountInfo("123456","0000","1000","0000",1000,1000)
+//            val newTransfer = TransferInfo(0,newAccount.accountNumber,"0000",1000,"0000","Shopping","time")
+//            db.paymentDao().insertAccount(newAccount)
+//            db.paymentDao().insertTransfer(newTransfer)
+//            finish()
+
         }
 
 
