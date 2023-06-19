@@ -32,17 +32,28 @@
         app:layout_constraintTop_toTopOf="@+id/ivCloseMap" />
 
 
-    <fragment
-        android:id="@+id/autocomplete_fragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+    <FrameLayout
+        android:id="@+id/autocompleteLayout"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/border_box_lightgray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+        app:layout_constraintTop_toBottomOf="@+id/textView32">
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+
 
 
     <FrameLayout
@@ -53,7 +64,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment">
+        app:layout_constraintTop_toBottomOf="@+id/autocompleteLayout">
 
         <fragment
             android:id="@+id/map"

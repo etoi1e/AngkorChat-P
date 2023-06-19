@@ -22,9 +22,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.ktx.Firebase
@@ -58,7 +58,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //검색
 
         Places.initialize(applicationContext, "AIzaSyBtpGTyyCocpC1JvwYC5c-vynX5e268Mhw")
-        var placesClient = Places.createClient(this)
 
         val autocompleteFragment =
             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
@@ -117,6 +116,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (check == "false") {
             //상대방이 보낸 지도 클릭 시
 
+            binding.imageView18.visibility = View.GONE
+            binding.autocompleteLayout.visibility = View.GONE
+
+            //내 위치버튼 생성(권한체크)
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this@MapsActivity, arrayOf(
+                        ACCESS_COARSE_LOCATION,
+                        ACCESS_FINE_LOCATION
+                    ), 0
+                )
+                return
+            }
+            mMap.isMyLocationEnabled = true
+
 
             latitude = intent.getDoubleExtra("latitude", 0.0)
             longitude = intent.getDoubleExtra("longitude", 0.0)
@@ -124,6 +145,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.d("TAG-check", check)
 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 15.0f))
+
+            var markerOptions = MarkerOptions()
+
+            mMap.addMarker(markerOptions.position(LatLng(latitude,longitude)))
 
         } else {
             //내 위치버튼 생성(권한체크)
@@ -145,8 +170,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             mMap.isMyLocationEnabled = true
 
+
             val manager = getSystemService(LOCATION_SERVICE) as LocationManager
             val location: Location? = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+
 
             val geocoder = Geocoder(this)
             var add: String
@@ -160,6 +187,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val currLocation = LatLng(latitude, longitude)
 
+            Log.d("TAG-add", currLocation.toString())
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 15.0f))
 
                 try {
