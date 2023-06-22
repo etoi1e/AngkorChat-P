@@ -59,9 +59,6 @@
         <action
             android:id="@+id/action_paymentPasswordFragment_to_payMainFragment"
             app:destination="@id/payMainFragment" />
-        <action
-            android:id="@+id/action_paymentPasswordFragment_to_payMyQrFragment"
-            app:destination="@id/payMyQrFragment" />
     </fragment>
     <fragment
         android:id="@+id/paymentRegistrationFragment"
@@ -85,7 +82,11 @@
         android:id="@+id/payMainFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayMainFragment"
         android:label="fragment_pay_main"
-        tools:layout="@layout/fragment_pay_main" />
+        tools:layout="@layout/fragment_pay_main" >
+        <action
+            android:id="@+id/action_payMainFragment_to_payMyQrFragment"
+            app:destination="@id/payMyQrFragment" />
+    </fragment>
     <fragment
         android:id="@+id/payMyQrFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayMyQrFragment"

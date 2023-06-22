@@ -14,7 +14,7 @@ import com.example.angkorchatproto.databinding.FragmentPayMyQrBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
 import java.util.Locale
 
-class PayMyQrFragment : Fragment() {
+class PayPointFragment : Fragment() {
     private val activityViewModel: PayViewModel? by activityViewModels()
     lateinit var binding: FragmentPayMyQrBinding
     private var mCountDownTimer: CountDownTimer? = null
