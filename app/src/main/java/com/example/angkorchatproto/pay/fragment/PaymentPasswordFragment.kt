@@ -17,6 +17,8 @@ import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentJoinBinding
 import com.example.angkorchatproto.databinding.FragmentPaymentPasswordBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
+import com.example.angkorchatproto.pay.room.AccountInfo
+import com.example.angkorchatproto.pay.room.AppDatabase
 import org.w3c.dom.Text
 
 class PaymentPasswordFragment : Fragment() {
@@ -57,10 +59,31 @@ class PaymentPasswordFragment : Fragment() {
             binding.vSix
         )
 
+        //현재 사용자 번호 불러오기
+        val shared = requireContext().getSharedPreferences("loginNumber", 0)
+        val myNumber = shared.getString("userNumber", "").toString()
+
         binding.btnNext.setOnClickListener {
             if (binding.textView56.text == "Enter Payment Password") {
                 onDeleteListener()
                 setEtTextChangeListener()
+
+                var pinNumber = ""
+
+                for (i in 0 until etArray.size){
+                    var pin = etArray[i].text.toString()
+                    pinNumber += pin
+                }
+
+                //계좌 생성
+                val db = AppDatabase.getInstance(requireContext().applicationContext)
+
+                if(db != null){
+                    val newAccount = AccountInfo("0000${myNumber}9999",myNumber,pinNumber,"ABA",0,0)
+                    db.paymentDao().insertAccount(newAccount)
+                    Log.d("TAG-계좌생성",newAccount.toString())
+                }
+
                 binding.textView56.text = "Enter Payment Password Again"
             } else {
                 if (activityViewModel?.payType == "myQr") {

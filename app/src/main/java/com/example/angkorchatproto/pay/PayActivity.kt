@@ -28,8 +28,21 @@ class PayActivity: BaseActivity() {
         mNavHostFragment = supportFragmentManager.findFragmentById(R.id.pay_container) as NavHostFragment
         mNavController = mNavHostFragment?.navController
         setContentView(binding.root)
+
+        val isAlreadyLogin = intent.getBooleanExtra("checkAccount",false)
+
+        setNavGraph(isAlreadyLogin)
     }
 
     override fun onBackPressed() {
+    }
+
+    private fun setNavGraph(isAlreadyLogin: Boolean) {
+        val navGraph = mNavController?.navInflater!!.inflate(R.navigation.pay_navigation)
+        if (isAlreadyLogin) {
+            navGraph.setStartDestination(R.id.payMainFragment)
+            mNavController?.setGraph(navGraph, null)
+        } else navGraph.setStartDestination(R.id.pay_container)
+        mNavController?.setGraph(navGraph, null) //navController에 graph 설정
     }
 }

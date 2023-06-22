@@ -20,6 +20,19 @@ interface PaymentsDAO {
 
 
     //Read
+
+    /** 해당 유저의 계좌번호 */
+    @Query("SELECT account_number FROM tb_account WHERE user_id = :userId")
+    fun getAccountNumber(userId : String):String
+
+    /** 해당 계좌의 남은 금액 */
+    @Query("SELECT amount FROM tb_account WHERE account_number = :account")
+    fun getAmount(account : String):Int
+
+    /** 해당 계좌의 남은 포인트 */
+    @Query("SELECT point FROM tb_account WHERE account_number = :account")
+    fun getPoint(account : String):Int
+
     /** 해당 계좌의 모든 거래내역 */
     @Query("SELECT * FROM tb_transfer WHERE pay_from = :account OR pay_to = :account")
     fun getAllHistory(account : String):List<TransferInfo>

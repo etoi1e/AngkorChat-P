@@ -3,14 +3,12 @@ package com.example.angkorchatproto.pay.room
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.angkorchatproto.R
-import com.facebook.stetho.Stetho
+
 
 class DBTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dbtest)
-
-        Stetho.initializeWithDefaults(this);
 
         val db = AppDatabase.getInstance(applicationContext)
 

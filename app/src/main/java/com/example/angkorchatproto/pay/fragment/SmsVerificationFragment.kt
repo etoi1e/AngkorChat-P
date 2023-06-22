@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.angkorchatproto.R
@@ -21,10 +22,12 @@ import com.example.angkorchatproto.utils.CountryUtils
 
 class SmsVerificationFragment : Fragment() {
     private val activityViewModel: PayViewModel? by activityViewModels()
+
     //디바이스 번호
-    var phoneNumber: String =""
+    var phoneNumber: String = ""
+
     //디바이스 국가
-    var phoneCountry: String =""
+    var phoneCountry: String = ""
     lateinit var binding: FragmentSmsVerificationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,11 +64,16 @@ class SmsVerificationFragment : Fragment() {
         //SendCode 클릭 시 동작
         binding.btnNext.setOnClickListener {
 
-            if(phoneNumber == ""){
+            if (phoneNumber == "") {
                 phoneNumber = binding.etPhoneNumberLogin.text.toString()
             }
+            if (phoneNumber != binding.etPhoneNumberLogin.text.toString()) {
+                Toast.makeText(context, "현재 디바이스 기기의 번호와 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+            } else {
+                view?.findNavController()
+                    ?.navigate(R.id.action_smsVerificationFragment_to_paymentPasswordFragment)
+            }
 
-            view?.findNavController()?.navigate(R.id.action_smsVerificationFragment_to_paymentPasswordFragment)
         }
 
         return binding.root
@@ -79,7 +87,7 @@ class SmsVerificationFragment : Fragment() {
             phoneNumber = msg.line1Number.toString()
             phoneCountry = msg.simCountryIso.toUpperCase()
 
-            Log.d("TAG-로그인 정보 번호/국가", phoneNumber+"/"+phoneCountry)
+            Log.d("TAG-로그인 정보 번호/국가", phoneNumber + "/" + phoneCountry)
         } else {
             Log.d("TAG-번호가져오기", "없음")
         }
