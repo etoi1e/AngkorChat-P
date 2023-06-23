@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout6"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pay.fragment.PayPointTopUpFragment">
+
+    <ImageView
+        android:id="@+id/ivClosePointTopUp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ic_arrow_left_line_28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Top up"
+        android:textColor="#111111"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivClosePointTopUp" />
+
+    <EditText
+        android:id="@+id/etTopUpAmount"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:ems="10"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:hint="Enter amount"
+        android:inputType="number"
+        android:textColorHint="#929498"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView60" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/Guidline"
+        android:layout_width="76dp"
+        android:layout_height="32dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <TextView
+        android:id="@+id/btnTopUp50000"
+        android:layout_width="79dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/box_border8_lightgray"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="+50,000P"
+        android:textColor="#555555"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/Guidline"
+        app:layout_constraintStart_toStartOf="@+id/Guidline"
+        app:layout_constraintTop_toBottomOf="@+id/etTopUpAmount" />
+
+    <TextView
+        android:id="@+id/btnTopUp10000"
+        android:layout_width="79dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/box_border8_lightgray"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="+10,000P"
+        android:textColor="#555555"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnTopUp50000"
+        app:layout_constraintEnd_toStartOf="@+id/btnTopUp50000"
+        app:layout_constraintTop_toTopOf="@+id/btnTopUp50000" />
+
+    <TextView
+        android:id="@+id/btnTopUp100000"
+        android:layout_width="79dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/box_border8_lightgray"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="+100,000P"
+        android:textColor="#555555"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnTopUp50000"
+        app:layout_constraintStart_toEndOf="@+id/btnTopUp50000"
+        app:layout_constraintTop_toTopOf="@+id/btnTopUp50000" />
+
+    <Button
+        android:id="@+id/btnTopUpNext"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/style_disable_btn"
+        android:clickable="false"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -86,10 +86,28 @@
         <action
             android:id="@+id/action_payMainFragment_to_payMyQrFragment"
             app:destination="@id/payMyQrFragment" />
+        <action
+            android:id="@+id/action_payMainFragment_to_payPointFragment"
+            app:destination="@id/payPointFragment" />
     </fragment>
     <fragment
         android:id="@+id/payMyQrFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayMyQrFragment"
         android:label="fragment_pay_my_qr"
         tools:layout="@layout/fragment_pay_my_qr" />
+    <fragment
+        android:id="@+id/payPointFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayPointFragment"
+        android:label="PayPointFragment"
+        tools:layout="@layout/fragment_pay_angkor_point">
+        <action
+            android:id="@+id/action_payPointFragment_to_payPointTopUpFragment"
+            app:destination="@id/payPointTopUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payPointTopUpFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayPointTopUpFragment"
+        android:label="fragment_pay_point_top_up"
+        tools:layout="@layout/fragment_pay_point_top_up" />
+
 </navigation>

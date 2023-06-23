@@ -35,14 +35,8 @@ class MoreFragment : Fragment() {
 
     var checkAccount = false
 
-    @SuppressLint("SetTextI18n")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        binding = FragmentMoreBinding.inflate(inflater, container, false)
-        binding.tvPayPoint.text = "No Point"
+    override fun onResume() {
+        super.onResume()
 
         //현재 사용자 번호 불러오기
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
@@ -52,16 +46,44 @@ class MoreFragment : Fragment() {
         val db = AppDatabase.getInstance(requireContext().applicationContext)
         if (db != null) {
             val accountNumber = db.paymentDao().getAccountNumber(myNumber)
-            if (accountNumber != "") {
+            if (accountNumber != "" && accountNumber != null) {
                 checkAccount = true
 
                 //계좌 있는 경우 정보 가져와서 삽입
                 val accountPoint = db.paymentDao().getPoint(accountNumber)
-                binding.tvPayPoint.text = accountPoint.toString() + "P"
-            }
+                if (binding.tvPayPoint.text != accountPoint.toString() + "P") {
+                    binding.tvPayPoint.text = accountPoint.toString() + "P"
 
+                }
+            }
         }
 
+        //현재 사용자 번호 불러오기
+        val point = binding.tvPayPoint.text.toString()
+        val oldPoint = point.replace("P","")
+        if (db != null) {
+            val accountNumber = db.paymentDao().getAccountNumber(myNumber)
+            val newPoint = db.paymentDao().getPoint(accountNumber).toString()
+            if (oldPoint != newPoint) {
+                //프래그먼트 새로고침
+                val ft = requireFragmentManager().beginTransaction()
+                ft.detach(this).attach(this).commit()
+                Log.d("TAG-old",oldPoint)
+                Log.d("TAG-new",newPoint)
+            }
+        }
+
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        binding = FragmentMoreBinding.inflate(inflater, container, false)
+        binding.tvPayPoint.text = "No Point"
 
         binding.ivSetting.setOnClickListener {
             val intent = Intent(requireContext(), SettingsActivity::class.java)

@@ -68,7 +68,7 @@ class PayMainFragment : Fragment() {
                 override fun onItemClicked(item: String) {
                     when (item) {
                         "My QR"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
-                        "Angkor Point"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
+                        "Angkor Point"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payPointFragment)
                         "Angkor Giftcard"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Payment History"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Transfer History"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)

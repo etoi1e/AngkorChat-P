@@ -1,68 +1,93 @@
 package com.example.angkorchatproto.pay.fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.example.angkorchatproto.databinding.FragmentPayMainCodeBinding
-import com.example.angkorchatproto.databinding.FragmentPayMyQrBinding
+import androidx.navigation.fragment.NavHostFragment
+import com.example.angkorchatproto.R
+import com.example.angkorchatproto.databinding.FragmentPayAngkorPointBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
-import java.util.Locale
+import com.example.angkorchatproto.pay.room.AppDatabase
 
 class PayPointFragment : Fragment() {
-    private val activityViewModel: PayViewModel? by activityViewModels()
-    lateinit var binding: FragmentPayMyQrBinding
-    private var mCountDownTimer: CountDownTimer? = null
+    lateinit var binding: FragmentPayAngkorPointBinding
+    private var mNavController: NavController? = null
+    private var mNavHostFragment: NavHostFragment? = null
+    private var mSelectTab = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mCountDownTimer?.cancel()
-    }
-
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPayMyQrBinding.inflate(inflater, container, false)
-        activityViewModel?.payType = ""
-        countDownTime()
+        binding = FragmentPayAngkorPointBinding.inflate(inflater, container, false)
+        mNavHostFragment =
+            childFragmentManager.findFragmentById(R.id.pay_point_container) as? NavHostFragment
+        mNavController = mNavHostFragment?.navController
 
-        binding.ivRefresh.setOnClickListener {
-            mCountDownTimer?.cancel()
-            binding.tvCounter.text= "03:00"
-            countDownTime()
-        }
-        binding.ivClose.setOnClickListener {
+        //현재 사용자 번호 불러오기
+        val shared = requireContext().getSharedPreferences("loginNumber", 0)
+        val myNumber = shared.getString("userNumber", "").toString()
+
+        //페이지 닫기
+        binding.ivClosePayPoint.setOnClickListener {
             view?.findNavController()?.popBackStack()
         }
+
+        if (binding.btnTopUp.isChecked) {
+            binding.btnUsed.isChecked = false
+        }
+
+        //탭 옮기기
+        binding.btnTopUp.setOnClickListener {
+            if (mSelectTab == 1) {
+                mSelectTab = 0
+                binding.btnTopUp.isChecked = true
+                binding.btnUsed.isChecked = false
+                mNavController?.popBackStack()
+
+            } else {
+                binding.btnTopUp.isChecked = true
+                binding.btnUsed.isChecked = false
+            }
+        }
+        binding.btnUsed.setOnClickListener {
+            if (mSelectTab == 0) {
+                mSelectTab = 1
+                binding.btnTopUp.isChecked = false
+                binding.btnUsed.isChecked = true
+                mNavController?.navigate(R.id.action_topUpHistoryFragment_to_usedHistoryFragment)
+            } else {
+                binding.btnTopUp.isChecked = false
+                binding.btnUsed.isChecked = true
+            }
+        }
+
+        //db정보 불러오기
+        val db = AppDatabase.getInstance(requireContext().applicationContext)
+        if (db != null) {
+            val account = db.paymentDao().getAccountNumber(myNumber)
+            val point = db.paymentDao().getPoint(account)
+            binding.tvPointPayPoint.text = point.toString()
+        }
+
+        binding.btnTopUpPayPoint.setOnClickListener {
+            view?.findNavController()?.navigate(R.id.action_payPointFragment_to_payPointTopUpFragment)
+        }
+
+
+
+
         return binding.root
     }
 
-    private fun countDownTime() {
-        mCountDownTimer = object : CountDownTimer(180000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val seconds = (millisUntilFinished / 1000) % 60
-                val minutes = (millisUntilFinished / (1000 * 60)) % 60
 
-                val timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
-                Log.d("Countdown", timeLeftFormatted) // 출력 형식: 02:30 (시:분:초)
-                binding.tvCounter.text = timeLeftFormatted
-            }
-
-            override fun onFinish() {
-                Log.d("Countdown", "Countdown finished")
-            }
-        }
-
-        mCountDownTimer?.start()
-    }
 }

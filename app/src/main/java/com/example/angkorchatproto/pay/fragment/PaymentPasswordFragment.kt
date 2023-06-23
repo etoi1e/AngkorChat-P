@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.pay.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
@@ -20,6 +22,10 @@ import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
 import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
 import org.w3c.dom.Text
+import java.text.DecimalFormat
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PaymentPasswordFragment : Fragment() {
     private val activityViewModel: PayViewModel? by activityViewModels()
@@ -31,6 +37,7 @@ class PaymentPasswordFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,7 +77,7 @@ class PaymentPasswordFragment : Fragment() {
 
                 var pinNumber = ""
 
-                for (i in 0 until etArray.size){
+                for (i in 0 until etArray.size) {
                     var pin = etArray[i].text.toString()
                     pinNumber += pin
                 }
@@ -78,10 +85,14 @@ class PaymentPasswordFragment : Fragment() {
                 //계좌 생성
                 val db = AppDatabase.getInstance(requireContext().applicationContext)
 
-                if(db != null){
-                    val newAccount = AccountInfo("0000${myNumber}9999",myNumber,pinNumber,"ABA",0,0)
+                if (db != null) {
+                    val newAccountNumber = formatString()
+
+
+                    val newAccount = AccountInfo(0,newAccountNumber,myNumber,pinNumber,0,0,"new")
                     db.paymentDao().insertAccount(newAccount)
-                    Log.d("TAG-계좌생성",newAccount.toString())
+                    Log.d("TAG-계좌생성", newAccountNumber)
+                    Log.d("TAG-계좌생성", newAccount.toString())
                 }
 
                 binding.textView56.text = "Enter Payment Password Again"
@@ -93,6 +104,37 @@ class PaymentPasswordFragment : Fragment() {
         onDeleteListener()
         setEtTextChangeListener()
         return binding.root
+    }
+
+    fun randomNumber(): String {
+        val randomNumberLength = 12
+        val allowedChars = "0123456789"
+        val random = Random(System.currentTimeMillis())
+
+        return buildString {
+            repeat(randomNumberLength) {
+                val randomIndex = random.nextInt(allowedChars.length)
+                append(allowedChars[randomIndex])
+            }
+        }
+    }
+
+    fun formatString(): String {
+
+        val input = randomNumber()
+        val formattedString = StringBuilder()
+        val chunkSize = 4 // 변경된 문자열의 청크 크기
+
+        for (i in input.indices) {
+            formattedString.append(input[i])
+
+            // 청크 크기에 도달할 때마다 "-" 추가
+            if ((i + 1) % chunkSize == 0 && i != input.length - 1) {
+                formattedString.append("-")
+            }
+        }
+
+        return formattedString.toString()
     }
 
     private fun onDeleteListener() {
@@ -117,7 +159,7 @@ class PaymentPasswordFragment : Fragment() {
 
     private fun setEtTextChangeListener() {
         for (i in 0 until etArray.size) {
-            etArray[i].addTextChangedListener (
+            etArray[i].addTextChangedListener(
                 object : TextWatcher {
                     override fun beforeTextChanged(
                         s: CharSequence?,
@@ -125,7 +167,7 @@ class PaymentPasswordFragment : Fragment() {
                         count: Int,
                         after: Int
                     ) {
-                        Log.d("beforeTextChanged","$start $count $after")
+                        Log.d("beforeTextChanged", "$start $count $after")
                     }
 
                     override fun onTextChanged(
@@ -153,7 +195,7 @@ class PaymentPasswordFragment : Fragment() {
                             }
                         } else {
                             if (etArray[i].length() == 1) {
-                                if (i == etArray.size-1) {
+                                if (i == etArray.size - 1) {
                                     vArray[i].background =
                                         requireActivity().getDrawable(R.color.mainYellow)
                                 } else {
