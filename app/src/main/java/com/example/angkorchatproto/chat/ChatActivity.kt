@@ -42,7 +42,6 @@ import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
 import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityChatBinding
-import com.example.angkorchatproto.pay.room.DBTestActivity
 import com.example.angkorchatproto.utils.FBdataBase
 import com.example.angkorchatproto.utils.Utils
 import com.example.angkorchatproto.video.VideoActivity
@@ -326,12 +325,6 @@ class ChatActivity : BaseActivity() {
             Glide.with(this@ChatActivity)
                 .load(profileImg)
                 .into(binding.imgProfileChat)
-        }
-
-        //room테스트
-        binding.imgProfileChat.setOnClickListener {
-            val intent = Intent(this@ChatActivity,DBTestActivity::class.java)
-            startActivity(intent)
         }
 
 

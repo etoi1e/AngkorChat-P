@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import com.example.angkorchatproto.databinding.FragmentPayMainCodeBinding
 import com.example.angkorchatproto.databinding.FragmentPayMyQrBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
+import com.example.angkorchatproto.pay.room.AppDatabase
 import java.util.Locale
 
 class PayMyQrFragment : Fragment() {
@@ -36,13 +37,31 @@ class PayMyQrFragment : Fragment() {
         activityViewModel?.payType = ""
         countDownTime()
 
+        //현재 사용자 번호 불러오기
+        val shared = requireContext().getSharedPreferences("loginNumber", 0)
+        val myNumber = shared.getString("userNumber", "").toString()
+
+        val db = AppDatabase.getInstance(requireContext().applicationContext)
+
+        if (db != null) {
+            val accountNumber = db.paymentDao().getAccountNumber(myNumber)
+            binding.tvPayMainAccount.text = accountNumber
+        }
+
+
+        binding.tvMyQrName.text = myNumber
+
+
+
+
         binding.ivRefresh.setOnClickListener {
             mCountDownTimer?.cancel()
-            binding.tvCounter.text= "03:00"
+            binding.tvCounter.text = "03:00"
             countDownTime()
         }
         binding.ivClose.setOnClickListener {
-            view?.findNavController()?.popBackStack()
+            requireActivity().finish()
+//            view?.findNavController()?.popBackStack()
         }
         return binding.root
     }
@@ -53,7 +72,8 @@ class PayMyQrFragment : Fragment() {
                 val seconds = (millisUntilFinished / 1000) % 60
                 val minutes = (millisUntilFinished / (1000 * 60)) % 60
 
-                val timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+                val timeLeftFormatted =
+                    String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
                 Log.d("Countdown", timeLeftFormatted) // 출력 형식: 02:30 (시:분:초)
                 binding.tvCounter.text = timeLeftFormatted
             }

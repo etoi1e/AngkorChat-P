@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView66"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Angkor Point"
+        android:textColor="#111111"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivClosePayPoint"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="21dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView66"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView66"
+        app:srcCompat="@drawable/ic_close_line_28" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/payPointLayout"
+        android:layout_width="328dp"
+        android:layout_height="129dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/round_white_yellow_stroke"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView66">
+
+        <TextView
+            android:id="@+id/tvPointPayPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="1,000"
+            android:textColor="#111111"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView63"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/poppins"
+            android:text="Point"
+            android:textColor="#111111"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPointPayPoint"
+            app:layout_constraintStart_toEndOf="@+id/tvPointPayPoint"
+            app:layout_constraintTop_toTopOf="@+id/tvPointPayPoint" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/style_login_btn"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Transfer"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btnTopUpPayPoint"
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/style_login_btn"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Top up"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/button3"
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintTop_toTopOf="@+id/button3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/pay_point_container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUsed"
+        app:navGraph="@navigation/pay_point_history_navigation" />
+
+    <ToggleButton
+        android:id="@+id/btnTopUp"
+        android:layout_width="114dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:autoText="false"
+        android:background="@drawable/img_segment_top_up"
+        android:checked="true"
+        android:fontFamily="@font/poppins_medium"
+        android:textAllCaps="false"
+        android:textOff="Top up"
+        android:textOn="Top up"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/payPointLayout" />
+
+    <ToggleButton
+        android:id="@+id/btnUsed"
+        android:layout_width="114dp"
+        android:layout_height="45dp"
+        android:background="@drawable/img_segment_used"
+        android:fontFamily="@font/poppins_medium"
+        android:textAllCaps="false"
+        android:textColorLink="#929498"
+        android:textOff="Used"
+        android:textOn="Used"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnTopUp"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/btnTopUp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
