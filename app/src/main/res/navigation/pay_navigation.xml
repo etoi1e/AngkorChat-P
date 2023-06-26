@@ -108,6 +108,28 @@
         android:id="@+id/payPointTopUpFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayPointTopUpFragment"
         android:label="fragment_pay_point_top_up"
-        tools:layout="@layout/fragment_pay_point_top_up" />
+        tools:layout="@layout/fragment_pay_point_top_up" >
+        <action
+            android:id="@+id/action_payPointTopUpFragment_to_selectMethodFragment"
+            app:destination="@id/selectMethodFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectMethodFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.SelectMethodFragment"
+        android:label="fragment_select_method"
+        tools:layout="@layout/fragment_select_method" >
+        <action
+            android:id="@+id/action_selectMethodFragment_to_topUpCompleteFragment"
+            app:destination="@id/topUpCompleteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/topUpCompleteFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.TopUpCompleteByCreditFragment"
+        android:label="fragment_top_up_complete"
+        tools:layout="@layout/fragment_top_up_complete_by_credit" >
+        <action
+            android:id="@+id/action_topUpCompleteFragment_to_payMainFragment"
+            app:destination="@id/payMainFragment" />
+    </fragment>
 
 </navigation>

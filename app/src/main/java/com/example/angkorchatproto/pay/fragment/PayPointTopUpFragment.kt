@@ -1,19 +1,19 @@
 package com.example.angkorchatproto.pay.fragment
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.room.Index
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentPayPointTopUpBinding
 
@@ -56,22 +56,24 @@ class PayPointTopUpFragment : Fragment() {
         }
 
 
+        binding.btnTopUpNext.setOnClickListener {
 
+            val checkMinimum = binding.etTopUpAmount.text.length
+            if (checkMinimum < 5) {
+                binding.imMinimum.visibility = View.VISIBLE
+                binding.tvMinimum.visibility = View.VISIBLE
+            } else {
+                val bundle = bundleOf("topUpAmount" to binding.etTopUpAmount.text.toString())
+                view?.findNavController()
+                    ?.navigate(R.id.action_payPointTopUpFragment_to_selectMethodFragment,bundle)
+            }
 
-
-
-
-
-
-
-
-
-
+        }
 
         return binding.root
     }
 
-    fun topUpBtn(topUp:Int){
+    fun topUpBtn(topUp: Int) {
         val putAmount = binding.etTopUpAmount.text.toString()
         var amount = 0
 
@@ -80,7 +82,7 @@ class PayPointTopUpFragment : Fragment() {
         }
 
         if (amount <= 1000000) {
-            val setAmount = amount+topUp
+            val setAmount = amount + topUp
             binding.etTopUpAmount.setText(setAmount.toString())
 
 
@@ -93,7 +95,7 @@ class PayPointTopUpFragment : Fragment() {
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             binding.etTopUpAmount.requestFocus()
-            binding.etTopUpAmount.setSelection(binding.etTopUpAmount.text.lastIndex+1)
+            binding.etTopUpAmount.setSelection(binding.etTopUpAmount.text.lastIndex + 1)
 
             if (p0.toString().length > 0 && p0 != null) {
                 binding.btnTopUpNext.isEnabled = true

@@ -70,6 +70,14 @@ class PaymentPasswordFragment : Fragment() {
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
         val myNumber = shared.getString("userNumber", "").toString()
 
+        //이전 페이지 확인
+        val checkTopUp = requireContext().getSharedPreferences("checkTopUp", 0)
+        val prePage = checkTopUp.getBoolean("checkTopUp",false)
+
+        if(prePage){
+            binding.textView56.text == "Top Up"
+        }
+
         binding.btnNext.setOnClickListener {
             if (binding.textView56.text == "Enter Payment Password") {
                 onDeleteListener()

@@ -5,6 +5,7 @@ import androidx.room.*
 
 @Dao
 interface PaymentsDAO {
+
     //Create
     /** 새로운 거래 생성 */
     @Insert(entity = AccountInfo::class)
@@ -20,7 +21,7 @@ interface PaymentsDAO {
     fun getAmount(account : String):Int
 
     /** 해당 계좌의 남은 포인트 */
-    @Query("SELECT SUM(amount) FROM tb_account WHERE account_number = :account")
+    @Query("SELECT SUM(point) FROM tb_account WHERE account_number = :account")
     fun getPoint(account : String):Int
 
     /** 거래 분류별 호출 */
