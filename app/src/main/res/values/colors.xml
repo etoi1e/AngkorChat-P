@@ -13,5 +13,6 @@
     <color name="colorText">#111111</color>
     <color name="colorTextGray">#a5a5a5</color>
     <color name="colorLightGray">#dadde3</color>
+    <color name="darkGray">#555555</color>
 
 </resources>

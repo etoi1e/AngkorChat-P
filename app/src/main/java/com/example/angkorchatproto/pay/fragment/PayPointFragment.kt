@@ -79,10 +79,15 @@ class PayPointFragment : Fragment() {
             binding.tvPointPayPoint.text = point.toString()
         }
 
+        //TopUp 이동
         binding.btnTopUpPayPoint.setOnClickListener {
             view?.findNavController()?.navigate(R.id.action_payPointFragment_to_payPointTopUpFragment)
         }
 
+        //Transfer 이동
+        binding.btnTransferPayPoint.setOnClickListener {
+            view?.findNavController()?.navigate(R.id.action_payPointFragment_to_payPointTransferFragment)
+        }
 
 
 

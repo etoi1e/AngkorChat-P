@@ -168,8 +168,6 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:src="@drawable/ic_search_lightgray_20"
         app:layout_constraintBottom_toTopOf="@+id/viewFavoriteBoxFriends"
         app:layout_constraintStart_toStartOf="@+id/svSearchFriendFriends"

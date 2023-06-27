@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.pay.room.AccountInfo
 
-class PointHistoryAdapter(val context: Context, val historyList: List<AccountInfo>) :
+class PointHistoryAdapter(val context: Context, val historyList: List<AccountInfo>,val type:String) :
     RecyclerView.Adapter<PointHistoryAdapter.ViewHolder>() {
 
     // 리스너 커스텀
@@ -52,19 +52,27 @@ class PointHistoryAdapter(val context: Context, val historyList: List<AccountInf
 
         val transfer = historyList[position]
 
-        if (transfer.depositor == "") {
-            holder.tvPointHistoryName.text = transfer.accountNumber
+        if(type == "used"){
+            //Used 접근경우
+            if (transfer.bankName == "") {
+                holder.tvPointHistoryName.text = transfer.depositor
+            }else{
+                holder.tvPointHistoryName.text = transfer.bankName
+            }
+            holder.tvPointHistoryTime.text = transfer.time
+            holder.tvPointHistoryPoint.text = "${transfer.point}P"
         }else{
-            holder.tvPointHistoryName.text = transfer.depositor
+            //TopUp접근경우
+            if (transfer.depositor == "") {
+                holder.tvPointHistoryName.text = transfer.accountNumber
+            }else{
+                holder.tvPointHistoryName.text = transfer.depositor
+            }
+            holder.tvPointHistoryTime.text = transfer.time
+            holder.tvPointHistoryPoint.text = "${transfer.point}P"
         }
-        holder.tvPointHistoryTime.text = transfer.time
-        holder.tvPointHistoryPoint.text = transfer.point.toString()
 
 
-//        holder.itemView.setOnClickListener {
-//            it.findNavController()
-//                .navigate(R.id.action_topUpSelectBankFragment_to_checkBankFragment)
-//        }
 
     }
 

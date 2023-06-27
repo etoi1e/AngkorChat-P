@@ -92,7 +92,6 @@ class SelectMethodFragment : Fragment() {
 
                     db.paymentDao().insertAccount(topUpPoint)
 
-                    Log.d("TAG-topup", topUpAmount.toString())
 
                     val bundle = bundleOf(
                         "transferNumber" to transferNumber

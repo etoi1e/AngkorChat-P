@@ -3,7 +3,6 @@ package com.example.angkorchatproto.auth
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.text.Editable

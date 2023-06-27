@@ -27,11 +27,11 @@
                 android:layout_width="45dp"
                 android:layout_height="35dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/round8_gray_box"
+                android:background="@drawable/round8_gray_stroke_box"
                 android:fontFamily="@font/poppins"
                 android:text="All"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textColor="#555555" />
 
             <Button
                 android:id="@+id/btnDebitTopUpHistory"
@@ -39,9 +39,11 @@
                 android:layout_height="35dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/round8_gray_stroke_box"
+                android:clickable="false"
                 android:fontFamily="@font/poppins"
                 android:text="Debit/Credit Card"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="#555555" />
 
             <Button
                 android:id="@+id/btnTransferTopUpHistory"
@@ -49,9 +51,11 @@
                 android:layout_height="35dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/round8_gray_stroke_box"
+                android:clickable="false"
                 android:fontFamily="@font/poppins"
                 android:text="Account Transfer"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="#555555" />
 
             <Button
                 android:id="@+id/btnGiftCard"
@@ -59,30 +63,35 @@
                 android:layout_height="35dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/round8_gray_stroke_box"
+                android:clickable="false"
                 android:fontFamily="@font/poppins"
                 android:text="Gift Card"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="#555555" />
         </LinearLayout>
     </HorizontalScrollView>
 
     <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="80dp"
+        android:id="@+id/spHistory"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:background="@drawable/round8_gray_stroke_box"
+        android:dropDownWidth="120dp"
+        android:popupBackground="@drawable/round8_gray_stroke_box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <ImageView
-        android:id="@+id/imageView32"
+        android:id="@+id/ivSearchTopUp"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_search_circle_32"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/spHistory"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintTop_toTopOf="@+id/spHistory" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTopUpHistory"
@@ -91,5 +100,5 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/spHistory" />
 </androidx.constraintlayout.widget.ConstraintLayout>

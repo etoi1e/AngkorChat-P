@@ -2,7 +2,6 @@ package com.example.angkorchatproto.chat.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
-import com.example.angkorchatproto.emojistore.data.Data
-import com.example.angkorchatproto.utils.FBdataBase
 
 class SelectUsersAdapter(
     val context: Context,
