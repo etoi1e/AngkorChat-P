@@ -70,8 +70,16 @@ class PayMainFragment : Fragment() {
                         "My QR"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Angkor Point"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payPointFragment)
                         "Angkor Giftcard"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payAngkorGiftCardFragment)
-                        "Payment History"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
-                        "Transfer History"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
+                        "Payment History"-> {
+                            val args = Bundle()
+                            args.putString("title","Payment Details")
+                            view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payHistoryFragment, args)
+                        }
+                        "Transfer History"-> {
+                            val args = Bundle()
+                            args.putString("title","Transfer details")
+                            view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payHistoryFragment, args)
+                        }
                         "Password"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Notice"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Help and Contact Us"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)

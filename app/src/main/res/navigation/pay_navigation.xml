@@ -92,6 +92,9 @@
         <action
             android:id="@+id/action_payMainFragment_to_payAngkorGiftCardFragment"
             app:destination="@id/payAngkorGiftCardFragment" />
+        <action
+            android:id="@+id/action_payMainFragment_to_payHistoryFragment"
+            app:destination="@id/payHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/payMyQrFragment"
@@ -186,6 +189,11 @@
         android:name="com.example.angkorchatproto.pay.fragment.PayAngkorGiftCardHistoryFragment"
         android:label="PayAngkorGiftCardHistoryFragment"
         tools:layout="@layout/fragment_pay_giftcard_history"/>
+    <fragment
+        android:id="@+id/payHistoryFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayHistoryFragment"
+        android:label="PayHistoryFragment"
+        tools:layout="@layout/fragment_pay_history"/>
 
 
 </navigation>
