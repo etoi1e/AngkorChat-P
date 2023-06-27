@@ -109,6 +109,9 @@
         <action
             android:id="@+id/action_payPointFragment_to_payPointTopUpFragment"
             app:destination="@id/payPointTopUpFragment" />
+        <action
+            android:id="@+id/action_payPointFragment_to_payPointTransferFragment"
+            app:destination="@id/payPointTransferFragment" />
     </fragment>
     <fragment
         android:id="@+id/payPointTopUpFragment"
@@ -118,6 +121,9 @@
         <action
             android:id="@+id/action_payPointTopUpFragment_to_selectMethodFragment"
             app:destination="@id/selectMethodFragment" />
+        <action
+            android:id="@+id/action_payPointTopUpFragment_to_topUpCompleteByAccountFragment"
+            app:destination="@id/topUpCompleteByAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectMethodFragment"
@@ -194,6 +200,16 @@
         android:name="com.example.angkorchatproto.pay.fragment.PayHistoryFragment"
         android:label="PayHistoryFragment"
         tools:layout="@layout/fragment_pay_history"/>
+
+    <fragment
+        android:id="@+id/payPointTransferFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayPointTransferFragment"
+        android:label="fragment_top_up_complete_by_account"
+        tools:layout="@layout/fragment_pay_point_transfer" >
+        <action
+            android:id="@+id/action_payPointTransferFragment_to_payPointTopUpFragment"
+            app:destination="@id/payPointTopUpFragment" />
+    </fragment>
 
 
 </navigation>

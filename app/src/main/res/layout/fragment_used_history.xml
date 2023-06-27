@@ -82,26 +82,29 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/spHistory" />
 
     <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="80dp"
+        android:id="@+id/spHistory"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:background="@drawable/round8_gray_stroke_box"
+        android:dropDownWidth="wrap_content"
+        android:popupBackground="@drawable/round8_gray_stroke_box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <ImageView
-        android:id="@+id/imageView32"
+        android:id="@+id/ivSearchTopUp"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_search_circle_32"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/spHistory"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintTop_toTopOf="@+id/spHistory" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

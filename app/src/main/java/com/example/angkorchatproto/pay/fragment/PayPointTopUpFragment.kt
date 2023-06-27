@@ -16,11 +16,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentPayPointTopUpBinding
+import com.example.angkorchatproto.pay.room.AccountInfo
+import com.example.angkorchatproto.pay.room.AppDatabase
+import java.time.LocalDateTime
+import java.util.*
 
 class PayPointTopUpFragment : Fragment() {
     lateinit var binding: FragmentPayPointTopUpBinding
-    private var mNavController: NavController? = null
-    private var mNavHostFragment: NavHostFragment? = null
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -28,14 +30,23 @@ class PayPointTopUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentPayPointTopUpBinding.inflate(inflater, container, false)
-        mNavHostFragment =
-            childFragmentManager.findFragmentById(R.id.pay_container) as? NavHostFragment
-        mNavController = mNavHostFragment?.navController
+
+        //현재 사용자 번호 불러오기
+        val shared = requireContext().getSharedPreferences("loginNumber", 0)
+        val myNumber = shared.getString("userNumber", "").toString()
+
+        //이전 페이지 확인
+        val checkTopUp = requireContext().getSharedPreferences("checkPrePage", 0)
+        var prePage = checkTopUp.getBoolean("checkPrePage", false)
 
         //뒤로가기
         binding.ivClosePointTopUp.setOnClickListener {
             view?.findNavController()?.popBackStack()
+            checkTopUp.edit().clear().apply()
+
+
         }
 
         //Amount Null 확인
@@ -44,7 +55,6 @@ class PayPointTopUpFragment : Fragment() {
 
         binding.btnTopUp10000.setOnClickListener {
             topUpBtn(10000)
-
         }
 
         binding.btnTopUp50000.setOnClickListener {
@@ -56,19 +66,78 @@ class PayPointTopUpFragment : Fragment() {
         }
 
 
-        binding.btnTopUpNext.setOnClickListener {
 
-            val checkMinimum = binding.etTopUpAmount.text.length
-            if (checkMinimum < 5) {
-                binding.imMinimum.visibility = View.VISIBLE
-                binding.tvMinimum.visibility = View.VISIBLE
-            } else {
-                val bundle = bundleOf("topUpAmount" to binding.etTopUpAmount.text.toString())
-                view?.findNavController()
-                    ?.navigate(R.id.action_payPointTopUpFragment_to_selectMethodFragment,bundle)
+
+
+        if (prePage == true) {
+            val getName = requireArguments().getString("name", null)
+            val getNumber = requireArguments().getString("number", null)
+            //Transfer 화면으로 이동
+            binding.textView60.text = "Transfer"
+
+            binding.btnTopUpNext.setOnClickListener {
+
+                val transferNumber = randomNumber(10)
+
+                val db = AppDatabase.getInstance(requireContext())
+                if (db != null) {
+                    val accountNumber = db.paymentDao().getAccountNumber(myNumber)
+                    val amount = binding.etTopUpAmount.text.toString().toInt()
+                    val time = LocalDateTime.now().toString()
+
+
+                    val transfer = AccountInfo(
+                        0,
+                        transferNumber,
+                        accountNumber,
+                        myNumber,
+                        0,
+                        -amount,
+                        "transfer",
+                        myNumber,
+                        getNumber,
+                        getName,
+                        time
+                    )
+
+                    db.paymentDao().insertAccount(transfer)
+
+                    val bundle = bundleOf("transferNumber" to transferNumber)
+                    view?.findNavController()
+                        ?.navigate(
+                            R.id.action_payPointTopUpFragment_to_topUpCompleteByAccountFragment,
+                            bundle
+                        )
+                }
+
             }
 
+
+        } else {
+            binding.btnTopUpNext.setOnClickListener {
+
+                val checkMinimum = binding.etTopUpAmount.text.length
+                if (checkMinimum < 5) {
+                    binding.imMinimum.visibility = View.VISIBLE
+                    binding.tvMinimum.visibility = View.VISIBLE
+                } else {
+                    val bundle = bundleOf("topUpAmount" to binding.etTopUpAmount.text.toString())
+                    view?.findNavController()
+                        ?.navigate(
+                            R.id.action_payPointTopUpFragment_to_selectMethodFragment,
+                            bundle
+                        )
+                }
+
+            }
         }
+
+
+
+
+
+
+
 
         return binding.root
     }
@@ -109,6 +178,19 @@ class PayPointTopUpFragment : Fragment() {
 
         override fun afterTextChanged(p0: Editable?) {}
 
+    }
+
+    fun randomNumber(length: Int): String {
+        val randomNumberLength = length
+        val allowedChars = "0123456789"
+        val random = Random(System.currentTimeMillis())
+
+        return buildString {
+            repeat(randomNumberLength) {
+                val randomIndex = random.nextInt(allowedChars.length)
+                append(allowedChars[randomIndex])
+            }
+        }
     }
 
 

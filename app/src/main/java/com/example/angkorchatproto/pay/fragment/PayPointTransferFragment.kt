@@ -1,102 +1,77 @@
-package com.example.angkorchatproto.chat
+package com.example.angkorchatproto.pay.fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.app.NotificationCompat.getColor
+import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.res.ResourcesCompat.getColor
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
-import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.adapter.SelectUsersAdapter
-import com.example.angkorchatproto.databinding.ActivitySelectUserBinding
+import com.example.angkorchatproto.databinding.FragmentPayPointTransferBinding
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 
-/**
- * Package Name : com.example.angkorchatproto.chat
- * Class Name : SelectUser
- * Description :
- * Created by de5ember on 2023/05/15.
- */
-class SelectUserActivity : BaseActivity() {
-    lateinit var binding: ActivitySelectUserBinding
+class PayPointTransferFragment : Fragment() {
+
+    lateinit var binding: FragmentPayPointTransferBinding
+    lateinit var adapter: SelectUsersAdapter
     var mSuggestList: ArrayList<UserVO> = ArrayList()
     var mFriendList: ArrayList<String> = ArrayList()
     var mSelectUser: UserVO? = null
     var friendRef = FBdataBase.getFriendRef()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivitySelectUserBinding.inflate(layoutInflater)
-        val shared = getSharedPreferences("loginNumber", 0)
-        val userNumber = shared.getString("userNumber", "")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        binding = FragmentPayPointTransferBinding.inflate(inflater, container, false)
+
+        binding.ivClosePointTransfer.setOnClickListener {
+            view?.findNavController()?.popBackStack()
+        }
+
+        //현재 사용자 번호 불러오기
+        val shared = requireContext().getSharedPreferences("loginNumber", 0)
+        val myNumber = shared.getString("userNumber", "").toString()
+
         getContacts()
 
-        val checkProfile = intent.getStringExtra("sendProfile")
-        Log.d("TAG-checkProfile",checkProfile.toString())
-
-        val adapter = SelectUsersAdapter(
-            this@SelectUserActivity,
+        adapter = SelectUsersAdapter(
+            requireContext(),
             mSuggestList,
             mFriendList,
-            object: SelectUsersAdapter.OnSelectUsersListener {
+            object : SelectUsersAdapter.OnSelectUsersListener {
                 @SuppressLint("ResourceAsColor")
                 override fun onItemClicked(user: UserVO) {
                     mSelectUser = user
-                    binding.btnNext.setTextColor(getColor(R.color.mainYellow))
+                    binding.btnNextPointTransfer.setTextColor(getColor(requireContext(),R.color.mainYellow))
+                    binding.btnNextPointTransfer.tag = "true"
                 }
             }
         )
 
-        if(checkProfile == "true"){
-            with(binding){
-                binding.btnNext.setOnClickListener {
-                    val intent = Intent(this@SelectUserActivity,ChatActivity::class.java).apply {
-                        putExtra("name",mSelectUser?.name)
-                        putExtra("email",mSelectUser?.email)
-                        putExtra("profile",mSelectUser?.profile)
-                        putExtra("phone",mSelectUser?.phone)
-                    }
-                    setResult(RESULT_OK,intent)
-                    finish()
-                }
-            }
-        }
-
-        if(checkProfile != "true"){
-            binding.btnNext.setOnClickListener {
-                if (binding.btnNext.currentTextColor == getColor(R.color.mainYellow)) {
-                    Log.d("SelectUserActivity","채팅방을 열어주세요")
-                    //채팅방으로 이동
-                    if (mSelectUser != null) {
-                        val intent = Intent(this, ChatActivity::class.java)
-                        intent.putExtra("name", mSelectUser?.name)
-                        intent.putExtra("number", mSelectUser?.phone)
-                        intent.putExtra("profile", mSelectUser?.profile)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
-        }
-
-        binding.imgMoveBack.setOnClickListener {
-            finish()
-        }
-        binding.rvSuggestedListAddFriends.adapter = adapter
-        binding.rvSuggestedListAddFriends.layoutManager =
-            GridLayoutManager(this@SelectUserActivity, 1)
+        binding.rvPointTransfer.adapter = adapter
+        binding.rvPointTransfer.layoutManager =
+            GridLayoutManager(requireContext(), 1)
 
         //FireBase 데이터 불러와서 mFriendList에 저장하기
-        friendRef.child(userNumber.toString()).addChildEventListener(object : ChildEventListener {
+        friendRef.child(myNumber).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-
                 val userData = dataSnapshot.value as HashMap<String, Any>?
 
                 val friendNum = userData!!["phone"] as String
@@ -122,16 +97,15 @@ class SelectUserActivity : BaseActivity() {
             }
         })
 
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
+        binding.etSearchPayPoint.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.d("search", charSequence.toString())
                 if (charSequence.toString().isNotEmpty()) {
-                    binding.ibDelete.visibility = View.VISIBLE
+                    binding.ibDeletePayPoint.visibility = View.VISIBLE
                 } else {
-                    binding.ibDelete.visibility = View.GONE
+                    binding.ibDeletePayPoint.visibility = View.GONE
                 }
 
                 val suggestList = mSuggestList.map {
@@ -158,18 +132,39 @@ class SelectUserActivity : BaseActivity() {
             override fun afterTextChanged(charSequence: Editable?) {
             }
         })
-        binding.ibDelete.setOnClickListener {
-            binding.etSearch.text.clear()
+
+        binding.ibDeletePayPoint.setOnClickListener {
+            binding.etSearchPayPoint.text.clear()
         }
 
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+
+        //Next 활성화
+        binding.btnNextPointTransfer.setOnClickListener {
+            if(binding.btnNextPointTransfer.tag == "false"){
+
+            }else{
+                //SharedPreferences
+                val shared = requireContext().getSharedPreferences("checkPrePage", 0)
+                val editor = shared.edit()
+
+                editor.putBoolean("checkPrePage",true)
+                editor.apply()
+
+                val bundle = bundleOf("name" to mSelectUser!!.name, "number" to mSelectUser!!.phone)
+                view?.findNavController()?.navigate(R.id.action_payPointTransferFragment_to_payPointTopUpFragment,bundle)
+            }
+
+        }
+
+
+
+        return binding.root
     }
 
     @SuppressLint("Range")
     private fun getContacts(): ArrayList<UserVO> {
         // 주소록에 접근하기 위한 ContentResolver 생성
-        val cr = this.contentResolver
+        val cr = requireContext().contentResolver
         // 주소록에 저장된 연락처 정보를 가져오기 위한 URI 생성
         val uri = ContactsContract.Contacts.CONTENT_URI
         // 연락처 정보를 가져오기 위한 쿼리문 실행
@@ -242,4 +237,6 @@ class SelectUserActivity : BaseActivity() {
         return mSuggestList
 
     }
+
+
 }
