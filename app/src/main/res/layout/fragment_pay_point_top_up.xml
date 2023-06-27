@@ -113,4 +113,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/tvMinimum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Minimum transfer amount 10,000p"
+        android:textColor="#ff4040"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/imMinimum"
+        app:layout_constraintEnd_toEndOf="@+id/etTopUpAmount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imMinimum"
+        app:layout_constraintTop_toTopOf="@+id/imMinimum"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/imMinimum"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_caution_line_red_24"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/tvMinimum"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/etTopUpAmount"
+        app:layout_constraintTop_toBottomOf="@+id/etTopUpAmount" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

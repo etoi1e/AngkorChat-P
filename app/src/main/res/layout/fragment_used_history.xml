@@ -23,38 +23,60 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Used" />
+                android:id="@+id/btnAllUsedHistory"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/round8_gray_box"
+                android:fontFamily="@font/poppins"
+                android:text="All"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/button7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:id="@+id/btnPaymentUsedHistory"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/round8_gray_stroke_box"
+                android:fontFamily="@font/poppins"
+                android:text="Payment"
+                android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/button8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:id="@+id/btnTransferUsedHistory"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/round8_gray_stroke_box"
+                android:fontFamily="@font/poppins"
+                android:text="Transfer"
+                android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/button9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:id="@+id/btnWithdrawal"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/round8_gray_stroke_box"
+                android:fontFamily="@font/poppins"
+                android:text="Withdrawal"
+                android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/button6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:id="@+id/btnEtcUsedHistory"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/round8_gray_stroke_box"
+                android:fontFamily="@font/poppins"
+                android:text="Etc."
+                android:textAllCaps="false" />
         </LinearLayout>
     </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUsedHistory"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

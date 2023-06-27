@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivPointHistory"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="#dadde3"
+        android:src="@drawable/top_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPointHistoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Card Name"
+        android:textColor="#111111"
+        app:layout_constraintStart_toEndOf="@+id/ivPointHistory"
+        app:layout_constraintTop_toTopOf="@+id/ivPointHistory" />
+
+    <TextView
+        android:id="@+id/tvPointHistoryPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="+1,000 P"
+        android:textColor="#111111"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPointHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivPointHistory" />
+
+    <TextView
+        android:id="@+id/tvPointHistoryTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="00:00:00 Mar 29, 2022"
+        android:textColor="#929498"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPointHistory"
+        app:layout_constraintStart_toStartOf="@+id/tvPointHistoryName" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,17 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.RequiresApi
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.angkorchatproto.R
-import com.example.angkorchatproto.databinding.FragmentJoinBinding
 import com.example.angkorchatproto.databinding.FragmentPaymentPasswordBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
 import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
-import org.w3c.dom.Text
-import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
@@ -70,6 +66,14 @@ class PaymentPasswordFragment : Fragment() {
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
         val myNumber = shared.getString("userNumber", "").toString()
 
+        //이전 페이지 확인
+        val checkTopUp = requireContext().getSharedPreferences("checkTopUp", 0)
+        val prePage = checkTopUp.getBoolean("checkTopUp", false)
+
+        if (prePage) {
+            binding.textView56.text == "Top Up"
+        }
+
         binding.btnNext.setOnClickListener {
             if (binding.textView56.text == "Enter Payment Password") {
                 onDeleteListener()
@@ -86,10 +90,12 @@ class PaymentPasswordFragment : Fragment() {
                 val db = AppDatabase.getInstance(requireContext().applicationContext)
 
                 if (db != null) {
-                    val newAccountNumber = formatString()
+                    val newAccountNumber = formatString(16)
+                    val time = LocalDateTime.now().toString()
 
+                    val newAccount =
+                        AccountInfo(0,"0", newAccountNumber, myNumber, 0, 0, "new", "", "", "", time)
 
-                    val newAccount = AccountInfo(0,newAccountNumber,myNumber,pinNumber,0,0,"new")
                     db.paymentDao().insertAccount(newAccount)
                     Log.d("TAG-계좌생성", newAccountNumber)
                     Log.d("TAG-계좌생성", newAccount.toString())
@@ -106,8 +112,8 @@ class PaymentPasswordFragment : Fragment() {
         return binding.root
     }
 
-    fun randomNumber(): String {
-        val randomNumberLength = 12
+    fun randomNumber(length:Int): String {
+        val randomNumberLength = length
         val allowedChars = "0123456789"
         val random = Random(System.currentTimeMillis())
 
@@ -119,9 +125,9 @@ class PaymentPasswordFragment : Fragment() {
         }
     }
 
-    fun formatString(): String {
+    fun formatString(length: Int): String {
 
-        val input = randomNumber()
+        val input = randomNumber(length)
         val formattedString = StringBuilder()
         val chunkSize = 4 // 변경된 문자열의 청크 크기
 
