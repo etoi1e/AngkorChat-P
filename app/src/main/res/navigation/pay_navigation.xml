@@ -89,6 +89,9 @@
         <action
             android:id="@+id/action_payMainFragment_to_payPointFragment"
             app:destination="@id/payPointFragment" />
+        <action
+            android:id="@+id/action_payMainFragment_to_payAngkorGiftCardFragment"
+            app:destination="@id/payAngkorGiftCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/payMyQrFragment"
@@ -161,6 +164,28 @@
             android:id="@+id/topUpCompleteByAccountFragment_to_payMainFragment"
             app:destination="@id/payMainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/payAngkorGiftCardFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayAngkorGiftCardFragment"
+        android:label="PayAngkorGiftCardFragment"
+        tools:layout="@layout/fragment_pay_giftcard">
+        <action
+            android:id="@+id/action_payAngkorGiftCardFragment_to_payAngkorGiftCardCodeFragment"
+            app:destination="@id/payAngkorGiftCardCodeFragment" />
+        <action
+            android:id="@+id/action_payAngkorGiftCardFragment_to_payAngkorGiftCardHistoryFragment"
+            app:destination="@id/payAngkorGiftCardHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payAngkorGiftCardCodeFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayAngkorGiftCardCodeFragment"
+        android:label="PayAngkorGiftCardCodeFragment"
+        tools:layout="@layout/fragment_pay_giftcard_code"/>
+    <fragment
+        android:id="@+id/payAngkorGiftCardHistoryFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayAngkorGiftCardHistoryFragment"
+        android:label="PayAngkorGiftCardHistoryFragment"
+        tools:layout="@layout/fragment_pay_giftcard_history"/>
 
 
 </navigation>

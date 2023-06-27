@@ -69,7 +69,7 @@ class PayMainFragment : Fragment() {
                     when (item) {
                         "My QR"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Angkor Point"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payPointFragment)
-                        "Angkor Giftcard"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
+                        "Angkor Giftcard"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payAngkorGiftCardFragment)
                         "Payment History"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Transfer History"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Password"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
