@@ -121,6 +121,9 @@
         <action
             android:id="@+id/action_selectMethodFragment_to_topUpCompleteFragment"
             app:destination="@id/topUpCompleteFragment" />
+        <action
+            android:id="@+id/action_selectMethodFragment_to_topUpSelectBankFragment"
+            app:destination="@id/topUpSelectBankFragment" />
     </fragment>
     <fragment
         android:id="@+id/topUpCompleteFragment"
@@ -131,5 +134,33 @@
             android:id="@+id/action_topUpCompleteFragment_to_payMainFragment"
             app:destination="@id/payMainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/topUpSelectBankFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.TopUpSelectBankFragment"
+        android:label="fragment_top_up_select_bank"
+        tools:layout="@layout/fragment_top_up_select_bank" >
+        <action
+            android:id="@+id/action_topUpSelectBankFragment_to_checkBankFragment"
+            app:destination="@id/checkBankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkBankFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.CheckBankFragment"
+        android:label="fragment_check_bank"
+        tools:layout="@layout/fragment_check_bank" >
+        <action
+            android:id="@+id/action_checkBankFragment_to_topUpCompleteByAccountFragment"
+            app:destination="@id/topUpCompleteByAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/topUpCompleteByAccountFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.TopUpCompleteByAccountFragment"
+        android:label="fragment_top_up_complete_by_account"
+        tools:layout="@layout/fragment_top_up_complete_by_account" >
+        <action
+            android:id="@+id/topUpCompleteByAccountFragment_to_payMainFragment"
+            app:destination="@id/payMainFragment" />
+    </fragment>
+
 
 </navigation>

@@ -9,23 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.example.angkorchatproto.R
-import com.example.angkorchatproto.databinding.FragmentPayPointTopUpBinding
-import com.example.angkorchatproto.databinding.FragmentPayTransferPasswordBinding
+
 import com.example.angkorchatproto.databinding.FragmentSelectMethodBinding
 import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 
 
 class SelectMethodFragment : Fragment() {
     lateinit var binding: FragmentSelectMethodBinding
-    private var mNavController: NavController? = null
-    private var mNavHostFragment: NavHostFragment? = null
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -47,6 +44,9 @@ class SelectMethodFragment : Fragment() {
         //충전수단 저장 변수
         /** 0=debit 1=account */
         var selectMethod = 0
+
+
+        val transferNumber = randomNumber(10)
 
         //뒤로가기
         binding.ivCloseSelectMethod.setOnClickListener {
@@ -70,29 +70,95 @@ class SelectMethodFragment : Fragment() {
         //Next 클릭 시
         binding.btnNextSelectMethod.setOnClickListener {
             if (selectMethod == 0) {
+                //debit/credit 으로 충전 시
                 if (db != null) {
                     val accountNumber = db.paymentDao().getAccountNumber(myNumber)
                     val amount = topUpAmount!!.toInt()
-                    val topUpAmount =
-                        AccountInfo(0, accountNumber, myNumber, "0000", 0, amount, "top_up")
-                    db.paymentDao().insertAccount(topUpAmount)
+                    val time = LocalDateTime.now().toString()
 
-                    Log.d("TAG-topup",topUpAmount.toString())
+                    val topUpPoint = AccountInfo(
+                        0,
+                        transferNumber,
+                        accountNumber,
+                        myNumber,
+                        0,
+                        amount,
+                        "top_up",
+                        "",
+                        accountNumber.toString(),
+                        "",
+                        time
+                    )
 
-                    val bundle = bundleOf("topUpAmount" to amount.toString(),"topUpTime" to LocalDate.now().toString(),"accountNumber" to accountNumber)
-                    Log.d("TAG-bundle",bundle.toString())
+                    db.paymentDao().insertAccount(topUpPoint)
+
+                    Log.d("TAG-topup", topUpAmount.toString())
+
+                    val bundle = bundleOf(
+                        "transferNumber" to transferNumber
+                    )
+                    Log.d("TAG-bundle", bundle.toString())
                     view?.findNavController()
-                        ?.navigate(R.id.action_selectMethodFragment_to_topUpCompleteFragment,bundle)
+                        ?.navigate(
+                            R.id.action_selectMethodFragment_to_topUpCompleteFragment,
+                            bundle
+                        )
                 }
 
             }
 
             if (selectMethod == 1) {
+                if (db != null) {
+
+                    val accountNumber = db.paymentDao().getAccountNumber(myNumber)
+                    val amount = topUpAmount!!.toInt()
+                    val bundle = bundleOf(
+                        "topUpAmount" to amount.toString(),
+                        "topUpTime" to LocalDate.now().toString(),
+                        "accountNumber" to accountNumber
+                    )
+                    view?.findNavController()
+                        ?.navigate(
+                            R.id.action_selectMethodFragment_to_topUpSelectBankFragment,
+                            bundle
+                        )
+                }
 
             }
         }
 
 
         return binding.root
+    }
+
+    fun randomNumber(length:Int): String {
+        val randomNumberLength = length
+        val allowedChars = "0123456789"
+        val random = Random(System.currentTimeMillis())
+
+        return buildString {
+            repeat(randomNumberLength) {
+                val randomIndex = random.nextInt(allowedChars.length)
+                append(allowedChars[randomIndex])
+            }
+        }
+    }
+
+    fun formatString(length: Int): String {
+
+        val input = randomNumber(length)
+        val formattedString = StringBuilder()
+        val chunkSize = 4 // 변경된 문자열의 청크 크기
+
+        for (i in input.indices) {
+            formattedString.append(input[i])
+
+            // 청크 크기에 도달할 때마다 "-" 추가
+            if ((i + 1) % chunkSize == 0 && i != input.length - 1) {
+                formattedString.append("-")
+            }
+        }
+
+        return formattedString.toString()
     }
 }

@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView36" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/amountLayout"
+        android:id="@+id/transferNumberLayout"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="40dp"
@@ -99,7 +99,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amountLayout">
+        app:layout_constraintTop_toBottomOf="@+id/transferNumberLayout">
 
         <View
             android:id="@+id/view6"
