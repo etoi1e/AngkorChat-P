@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGiftCard" />
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTopUp"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnAcquiredGiftCard"/>
 
     <ImageView
         android:id="@+id/imageView44"
@@ -33,16 +33,17 @@
         android:layout_height="32dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_search_circle_32"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner2"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerGiftCard"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner2" />
+        app:layout_constraintTop_toTopOf="@+id/spinnerGiftCard" />
 
     <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="80dp"
+        android:id="@+id/spinnerGiftCard"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
+        android:background="@drawable/round8_gray_stroke_box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
@@ -110,7 +111,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ToggleButton
-        android:id="@+id/btnTopUp"
+        android:id="@+id/btnAcquiredGiftCard"
         android:layout_width="114dp"
         android:layout_height="45dp"
         android:layout_marginStart="13dp"
@@ -120,30 +121,30 @@
         android:checked="true"
         android:fontFamily="@font/poppins_medium"
         android:textAllCaps="false"
-        android:textOff="Used"
-        android:textOn="Used"
+        android:textOff="Acquired"
+        android:textOn="Acquired"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/btnUsed"
+        app:layout_constraintEnd_toStartOf="@+id/btnUsedGiftCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPoint" />
 
     <ToggleButton
-        android:id="@+id/btnUsed"
+        android:id="@+id/btnUsedGiftCard"
         android:layout_width="114dp"
         android:layout_height="45dp"
         android:background="@drawable/img_segment_used"
         android:fontFamily="@font/poppins_medium"
         android:textAllCaps="false"
         android:textColorLink="#929498"
-        android:textOff="Acquired"
-        android:textOn="Acquired"
+        android:textOff="Used"
+        android:textOn="Used"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnTopUp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAcquiredGiftCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnTopUp"
-        app:layout_constraintTop_toTopOf="@+id/btnTopUp" />
+        app:layout_constraintStart_toEndOf="@+id/btnAcquiredGiftCard"
+        app:layout_constraintTop_toTopOf="@+id/btnAcquiredGiftCard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

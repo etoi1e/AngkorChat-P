@@ -28,8 +28,11 @@ data class AccountInfo(
     /**계좌의 포인트*/
     val point: Int?,
 
-    /**결제 분류*/
+    /**거래 분류*/
     val content: String,
+
+    /**결제 분류(debit,credit,gift.../)*/
+    val type : String,
 
     /**입금자명*/
     val depositor: String?,

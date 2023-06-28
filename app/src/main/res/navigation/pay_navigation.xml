@@ -8,7 +8,7 @@
         android:id="@+id/joinFragment"
         android:name="com.example.angkorchatproto.pay.fragment.JoinFragment"
         android:label="fragment_join"
-        tools:layout="@layout/fragment_join" >
+        tools:layout="@layout/fragment_join">
         <action
             android:id="@+id/action_joinFragment_to_smsVerificationFragment"
             app:destination="@id/smsVerificationFragment" />
@@ -18,6 +18,7 @@
         android:name="com.example.angkorchatproto.pay.fragment.CardRegistrationFragment"
         android:label="fragment_card_registration"
         tools:layout="@layout/fragment_card_registration" />
+
     <fragment
         android:id="@+id/cardScanFragment"
         android:name="com.example.angkorchatproto.pay.fragment.CardScanFragment"
@@ -37,16 +38,19 @@
         android:id="@+id/idCardFragment"
         android:name="com.example.angkorchatproto.pay.fragment.IdCardFragment"
         android:label="fragment_id_card"
-        tools:layout="@layout/fragment_id_card" >
+        tools:layout="@layout/fragment_id_card">
         <action
             android:id="@+id/action_idCardFragment_to_paymentRegistrationFragment"
             app:destination="@id/paymentRegistrationFragment" />
+        <action
+            android:id="@+id/action_idCardFragment_self"
+            app:destination="@id/idCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/idVerificationFragment"
         android:name="com.example.angkorchatproto.pay.fragment.IdVerificationFragment"
         android:label="fragment_id_verification"
-        tools:layout="@layout/fragment_id_verification" >
+        tools:layout="@layout/fragment_id_verification">
         <action
             android:id="@+id/action_idVerificationFragment_to_idCardFragment"
             app:destination="@id/idCardFragment" />
@@ -55,7 +59,7 @@
         android:id="@+id/paymentPasswordFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PaymentPasswordFragment"
         android:label="fragment_payment_password"
-        tools:layout="@layout/fragment_payment_password" >
+        tools:layout="@layout/fragment_payment_password">
         <action
             android:id="@+id/action_paymentPasswordFragment_to_payMainFragment"
             app:destination="@id/payMainFragment" />
@@ -64,7 +68,7 @@
         android:id="@+id/paymentRegistrationFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PaymentRegistrationFragment"
         android:label="fragment_payment_registration"
-        tools:layout="@layout/fragment_payment_registration" >
+        tools:layout="@layout/fragment_payment_registration">
         <action
             android:id="@+id/action_paymentRegistrationFragment_to_cardScanFragment"
             app:destination="@id/cardScanFragment" />
@@ -73,7 +77,7 @@
         android:id="@+id/smsVerificationFragment"
         android:name="com.example.angkorchatproto.pay.fragment.SmsVerificationFragment"
         android:label="fragment_sms_verification"
-        tools:layout="@layout/fragment_sms_verification" >
+        tools:layout="@layout/fragment_sms_verification">
         <action
             android:id="@+id/action_smsVerificationFragment_to_paymentPasswordFragment"
             app:destination="@id/paymentPasswordFragment" />
@@ -82,7 +86,7 @@
         android:id="@+id/payMainFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayMainFragment"
         android:label="fragment_pay_main"
-        tools:layout="@layout/fragment_pay_main" >
+        tools:layout="@layout/fragment_pay_main">
         <action
             android:id="@+id/action_payMainFragment_to_payMyQrFragment"
             app:destination="@id/payMyQrFragment" />
@@ -95,6 +99,9 @@
         <action
             android:id="@+id/action_payMainFragment_to_payHistoryFragment"
             app:destination="@id/payHistoryFragment" />
+        <action
+            android:id="@+id/action_payMainFragment_to_payTransferFragment"
+            app:destination="@id/payTransferFragment" />
     </fragment>
     <fragment
         android:id="@+id/payMyQrFragment"
@@ -117,7 +124,7 @@
         android:id="@+id/payPointTopUpFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayPointTopUpFragment"
         android:label="fragment_pay_point_top_up"
-        tools:layout="@layout/fragment_pay_point_top_up" >
+        tools:layout="@layout/fragment_pay_point_top_up">
         <action
             android:id="@+id/action_payPointTopUpFragment_to_selectMethodFragment"
             app:destination="@id/selectMethodFragment" />
@@ -129,7 +136,7 @@
         android:id="@+id/selectMethodFragment"
         android:name="com.example.angkorchatproto.pay.fragment.SelectMethodFragment"
         android:label="fragment_select_method"
-        tools:layout="@layout/fragment_select_method" >
+        tools:layout="@layout/fragment_select_method">
         <action
             android:id="@+id/action_selectMethodFragment_to_topUpCompleteFragment"
             app:destination="@id/topUpCompleteFragment" />
@@ -141,7 +148,7 @@
         android:id="@+id/topUpCompleteFragment"
         android:name="com.example.angkorchatproto.pay.fragment.TopUpCompleteByCreditFragment"
         android:label="fragment_top_up_complete"
-        tools:layout="@layout/fragment_top_up_complete_by_credit" >
+        tools:layout="@layout/fragment_top_up_complete_by_credit">
         <action
             android:id="@+id/action_topUpCompleteFragment_to_payMainFragment"
             app:destination="@id/payMainFragment" />
@@ -150,7 +157,7 @@
         android:id="@+id/topUpSelectBankFragment"
         android:name="com.example.angkorchatproto.pay.fragment.TopUpSelectBankFragment"
         android:label="fragment_top_up_select_bank"
-        tools:layout="@layout/fragment_top_up_select_bank" >
+        tools:layout="@layout/fragment_top_up_select_bank">
         <action
             android:id="@+id/action_topUpSelectBankFragment_to_checkBankFragment"
             app:destination="@id/checkBankFragment" />
@@ -159,7 +166,7 @@
         android:id="@+id/checkBankFragment"
         android:name="com.example.angkorchatproto.pay.fragment.CheckBankFragment"
         android:label="fragment_check_bank"
-        tools:layout="@layout/fragment_check_bank" >
+        tools:layout="@layout/fragment_check_bank">
         <action
             android:id="@+id/action_checkBankFragment_to_topUpCompleteByAccountFragment"
             app:destination="@id/topUpCompleteByAccountFragment" />
@@ -168,7 +175,7 @@
         android:id="@+id/topUpCompleteByAccountFragment"
         android:name="com.example.angkorchatproto.pay.fragment.TopUpCompleteByAccountFragment"
         android:label="fragment_top_up_complete_by_account"
-        tools:layout="@layout/fragment_top_up_complete_by_account" >
+        tools:layout="@layout/fragment_top_up_complete_by_account">
         <action
             android:id="@+id/topUpCompleteByAccountFragment_to_payMainFragment"
             app:destination="@id/payMainFragment" />
@@ -189,26 +196,55 @@
         android:id="@+id/payAngkorGiftCardCodeFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayAngkorGiftCardCodeFragment"
         android:label="PayAngkorGiftCardCodeFragment"
-        tools:layout="@layout/fragment_pay_giftcard_code"/>
+        tools:layout="@layout/fragment_pay_giftcard_code">
+        <action
+            android:id="@+id/action_payAngkorGiftCardCodeFragment_to_payAngkorGiftCardHistoryFragment"
+            app:destination="@id/payAngkorGiftCardHistoryFragment" />
+    </fragment>
     <fragment
         android:id="@+id/payAngkorGiftCardHistoryFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayAngkorGiftCardHistoryFragment"
         android:label="PayAngkorGiftCardHistoryFragment"
-        tools:layout="@layout/fragment_pay_giftcard_history"/>
+        tools:layout="@layout/fragment_pay_giftcard_history" />
     <fragment
         android:id="@+id/payHistoryFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayHistoryFragment"
         android:label="PayHistoryFragment"
-        tools:layout="@layout/fragment_pay_history"/>
+        tools:layout="@layout/fragment_pay_history" />
 
     <fragment
         android:id="@+id/payPointTransferFragment"
         android:name="com.example.angkorchatproto.pay.fragment.PayPointTransferFragment"
         android:label="fragment_top_up_complete_by_account"
-        tools:layout="@layout/fragment_pay_point_transfer" >
+        tools:layout="@layout/fragment_pay_point_transfer">
         <action
             android:id="@+id/action_payPointTransferFragment_to_payPointTopUpFragment"
             app:destination="@id/payPointTopUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payTransferFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayTransferFragment"
+        android:label="PayTransferFragment" >
+        <action
+            android:id="@+id/action_payTransferFragment_to_payTransferPasswordFragment"
+            app:destination="@id/payTransferPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payTransferPasswordFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayTransferPasswordFragment"
+        android:label="PayTransferPasswordFragment" >
+        <action
+            android:id="@+id/action_payTransferPasswordFragment_to_transferCompleteFragment"
+            app:destination="@id/transferCompleteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transferCompleteFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.TransferCompleteFragment"
+        android:label="fragment_transfer_complete"
+        tools:layout="@layout/fragment_transfer_complete" >
+        <action
+            android:id="@+id/action_transferCompleteFragment_to_payMainFragment"
+            app:destination="@id/payMainFragment" />
     </fragment>
 
 

@@ -14,5 +14,8 @@
     <color name="colorTextGray">#a5a5a5</color>
     <color name="colorLightGray">#dadde3</color>
     <color name="darkGray">#555555</color>
+    <color name="red">#ff4040</color>
+    <color name="blue">#6079e0</color>
+
 
 </resources>

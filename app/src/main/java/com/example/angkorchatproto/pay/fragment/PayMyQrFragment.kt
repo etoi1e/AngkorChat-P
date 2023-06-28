@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.pay.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -7,13 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.angkorchatproto.databinding.FragmentPayMainCodeBinding
 import com.example.angkorchatproto.databinding.FragmentPayMyQrBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
+import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
-import java.util.Locale
+import java.time.LocalDateTime
+import java.util.*
 
 class PayMyQrFragment : Fragment() {
     private val activityViewModel: PayViewModel? by activityViewModels()
@@ -29,6 +33,7 @@ class PayMyQrFragment : Fragment() {
         mCountDownTimer?.cancel()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,8 +49,10 @@ class PayMyQrFragment : Fragment() {
         val db = AppDatabase.getInstance(requireContext().applicationContext)
 
         if (db != null) {
+            //setPoint
             val accountNumber = db.paymentDao().getAccountNumber(myNumber)
             binding.tvPayMainAccount.text = accountNumber
+
         }
 
 
@@ -65,6 +72,8 @@ class PayMyQrFragment : Fragment() {
         }
         return binding.root
     }
+
+
 
     private fun countDownTime() {
         mCountDownTimer = object : CountDownTimer(180000, 1000) {

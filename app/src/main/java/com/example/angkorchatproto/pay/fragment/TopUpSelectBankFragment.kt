@@ -33,12 +33,6 @@ class TopUpSelectBankFragment : Fragment() {
 
         val amount = topUpAmount!!.toInt()
 
-        val bundle = bundleOf(
-            "topUpAmount" to amount.toString(),
-            "topUpTime" to LocalDate.now().toString(),
-            "accountNumber" to accountNumber
-        )
-
         binding.ivCloseSelectBank.setOnClickListener {
             view?.findNavController()?.popBackStack()
         }

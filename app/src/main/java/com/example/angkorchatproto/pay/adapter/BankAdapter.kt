@@ -67,7 +67,6 @@ class BankAdapter(
         val bundle = bundleOf(
             "bankName" to bankList[position],
             "topUpAmount" to amount.toString(),
-            "topUpTime" to LocalDate.now().toString(),
             "accountNumber" to accountNumber
         )
         holder.itemView.setOnClickListener {

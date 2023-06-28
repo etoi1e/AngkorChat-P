@@ -1,17 +1,21 @@
 package com.example.angkorchatproto.pay.fragment
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.angkorchatproto.databinding.FragmentPayMainCodeBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
+import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
+import java.time.LocalDateTime
 import java.util.*
 
 class PayMainCodeFragment : Fragment() {
@@ -28,6 +32,7 @@ class PayMainCodeFragment : Fragment() {
         mCountDownTimer?.cancel()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,8 +53,51 @@ class PayMainCodeFragment : Fragment() {
             countDownTime()
         }
 
+        val db = AppDatabase.getInstance(requireContext())
+
+        if (db != null) {
+
+            val accountNumber = db.paymentDao().getAccountNumber(myNumber)
+            binding.imageView17.setOnClickListener {
+                val transferNumber = randomNumber(10)
+                val time = LocalDateTime.now().toString()
+
+                val newAccount =
+                    AccountInfo(
+                        0,
+                        transferNumber,
+                        accountNumber,
+                        myNumber,
+                        1000,
+                        0,
+                        "transfer",
+                        "received",
+                        "",
+                        "Angkor",
+                        "",
+                        time
+                    )
+
+                db.paymentDao().insertAccount(newAccount)
+            }
+
+        }
+
 
         return binding.root
+    }
+
+    fun randomNumber(length: Int): String {
+        val randomNumberLength = length
+        val allowedChars = "0123456789"
+        val random = Random(System.currentTimeMillis())
+
+        return buildString {
+            repeat(randomNumberLength) {
+                val randomIndex = random.nextInt(allowedChars.length)
+                append(allowedChars[randomIndex])
+            }
+        }
     }
 
     private fun countDownTime() {
@@ -88,7 +136,6 @@ class PayMainCodeFragment : Fragment() {
 
         }
     }
-
 
 
 }

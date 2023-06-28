@@ -94,7 +94,7 @@ class PaymentPasswordFragment : Fragment() {
                     val time = LocalDateTime.now().toString()
 
                     val newAccount =
-                        AccountInfo(0,"0", newAccountNumber, myNumber, 0, 0, "new", "", "", "", time)
+                        AccountInfo(0,"0", newAccountNumber, myNumber, 3000, 0, "new","", "", "", "", time)
 
                     db.paymentDao().insertAccount(newAccount)
                     Log.d("TAG-계좌생성", newAccountNumber)

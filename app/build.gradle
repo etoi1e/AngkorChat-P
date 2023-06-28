@@ -132,5 +132,8 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
+    //TopSheetDialog
+    implementation 'com.orhanobut:dialogplus:1.11@aar'
+
 
 }
