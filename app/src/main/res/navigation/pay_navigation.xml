@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_payMainFragment_to_payTransferFragment"
             app:destination="@id/payTransferFragment" />
+        <action
+            android:id="@+id/action_payMainFragment_to_paymentPasswordFragment"
+            app:destination="@id/paymentPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/payMyQrFragment"

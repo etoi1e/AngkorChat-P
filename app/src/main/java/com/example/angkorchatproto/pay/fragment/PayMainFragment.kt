@@ -80,7 +80,11 @@ class PayMainFragment : Fragment() {
                             args.putString("title","Transfer details")
                             view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payHistoryFragment, args)
                         }
-                        "Password"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
+                        "Password"-> {
+                            val args = Bundle()
+                            args.putString("title","Password")
+                            view?.findNavController()?.navigate(R.id.action_payMainFragment_to_paymentPasswordFragment, args)
+                        }
                         "Notice"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                         "Help and Contact Us"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payMyQrFragment)
                     }

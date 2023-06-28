@@ -39,6 +39,11 @@ class PaymentPasswordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPaymentPasswordBinding.inflate(inflater, container, false)
+
+        val title = arguments?.getString("title").toString()
+
+        binding.textView50.text = title
+
         binding.btnBack.setOnClickListener {
             view?.findNavController()?.popBackStack()
         }

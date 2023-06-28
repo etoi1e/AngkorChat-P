@@ -42,7 +42,7 @@ class UsedHistoryFragment : Fragment() {
             binding.spHistory.adapter = spAdapter
 
 
-            var transferList = db.paymentDao().getAllByContent(accountNumber, "transfer")
+            var transferList = db.paymentDao().getAllByContent(accountNumber, "used_point")
             if (transferList != null) {
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "used")
                 binding.rvUsedHistory.adapter = adapter
@@ -50,7 +50,7 @@ class UsedHistoryFragment : Fragment() {
             }
 
             binding.btnAllUsedHistory.setOnClickListener {
-                transferList = db.paymentDao().getAllByContent(accountNumber, "transfer")
+                transferList = db.paymentDao().getAllByContent(accountNumber, "used_point")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "used")
                 binding.rvUsedHistory.adapter = adapter
@@ -70,7 +70,7 @@ class UsedHistoryFragment : Fragment() {
             }
 
             binding.btnTransferUsedHistory.setOnClickListener {
-                transferList = db.paymentDao().getAllByContent(accountNumber, "transfer")
+                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "used_point","transfer")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "used")
                 binding.rvUsedHistory.adapter = adapter
@@ -91,7 +91,7 @@ class UsedHistoryFragment : Fragment() {
 
 
             binding.btnPaymentUsedHistory.setOnClickListener {
-                transferList = db.paymentDao().getAllByContent(accountNumber, "pay")
+                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "used_point","pay")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "used")
                 binding.rvUsedHistory.adapter = adapter
@@ -111,7 +111,7 @@ class UsedHistoryFragment : Fragment() {
             }
 
             binding.btnWithdrawal.setOnClickListener {
-                transferList = db.paymentDao().getAllByContent(accountNumber, "withdraw")
+                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "used_point","withdraw")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "used")
                 binding.rvUsedHistory.adapter = adapter
@@ -131,7 +131,7 @@ class UsedHistoryFragment : Fragment() {
             }
 
             binding.btnEtcUsedHistory.setOnClickListener {
-                transferList = db.paymentDao().getAllByContent(accountNumber, "etc")
+                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "used_point","etc")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "used")
                 binding.rvUsedHistory.adapter = adapter

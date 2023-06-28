@@ -20,17 +20,17 @@ class MoreFragment : Fragment() {
     lateinit var binding: FragmentMoreBinding
     private lateinit var serviceAdapter: ServiceAdapter
     private var serviceImg = arrayListOf<Int>(
-        R.drawable.ic_location_line_bk_24,
+        R.drawable.icon_line_24_ic_nunu_line_bk_28,
         R.drawable.ic_delivery_line_bk_24,
         R.drawable.ic_webtoon_line_bk_24,
         R.drawable.ic_game_line_bk_24,
         R.drawable.ic_play_line_bk_24,
         R.drawable.ic_reservation_line_bk_24,
-        R.drawable.ic_beauty_line_bk_24,
+        R.drawable.ic_note_line_bk_24,
         R.drawable.ic_money_line_bk_24
     )
     private var serviceTitle = arrayListOf(
-        "Mobility", "Delivery", "Webtoon", "Game", "OTT", "Reservation", "Beauty", "Bank"
+        "Friends", "Eats", "Webtoon", "Games", "Play", "Check", "Echoes", "Bank"
     )
 
     var checkAccount = false
