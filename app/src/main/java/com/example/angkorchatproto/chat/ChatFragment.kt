@@ -4,6 +4,7 @@ package com.example.angkorchatproto.chat
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-
 
 
 class ChatFragment : Fragment() {
@@ -49,6 +49,7 @@ class ChatFragment : Fragment() {
                     chatRoomsKeys.clear()
                     chatInfoList.clear()
 
+
                     //같은 키를 가진 채팅방 마지막 1개만 출력하기
                     for (item in snapshot.children) {
                         if (!chatRoomsKeys.contains(item.key.toString())) {
@@ -76,6 +77,11 @@ class ChatFragment : Fragment() {
                                         adapter.notifyDataSetChanged()
                                         chatRoomsKeys.add(item.key.toString())
 
+                                        if(chatInfoList.size != 0){
+                                            binding.boxNoChat.visibility = View.GONE
+                                        }
+
+
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {
@@ -98,8 +104,6 @@ class ChatFragment : Fragment() {
         binding.rvChatListChats.layoutManager = GridLayoutManager(requireContext(), 1)
 
 
-
-
         binding.imgEmojiChats.setOnClickListener {
             val intent = Intent(requireContext(), EmojiStoreActivity::class.java)
             startActivity(intent)
@@ -108,6 +112,7 @@ class ChatFragment : Fragment() {
             val intent = Intent(requireActivity(), SelectUserActivity::class.java)
             startActivity(intent)
         }
+
 
         return binding.root
 

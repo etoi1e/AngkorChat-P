@@ -106,7 +106,6 @@ class PayMainScanFragment : Fragment() {
             val cameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder()
-                .setTargetResolution(Size(640, 480))
                 .build()
                 .also {
                     it.setSurfaceProvider(binding.preview.surfaceProvider)

@@ -12,6 +12,6 @@
         android:title="chats" />
     <item
         android:id="@+id/tab3"
-        android:icon="@drawable/ic_tap_more_default_28"
+        android:icon="@drawable/ic_bottom_menu_more"
         android:title="more" />
 </menu>
