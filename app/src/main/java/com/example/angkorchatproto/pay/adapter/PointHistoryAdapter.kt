@@ -1,5 +1,6 @@
 package com.example.angkorchatproto.pay.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.pay.room.AccountInfo
 
-class PointHistoryAdapter(val context: Context, val historyList: List<AccountInfo>,val type:String) :
+class PointHistoryAdapter(
+    val context: Context,
+    val historyList: List<AccountInfo>,
+    val type: String
+) :
     RecyclerView.Adapter<PointHistoryAdapter.ViewHolder>() {
 
     // 리스너 커스텀
@@ -52,26 +57,73 @@ class PointHistoryAdapter(val context: Context, val historyList: List<AccountInf
 
         val transfer = historyList[position]
 
-        if(type == "used"){
+        if (type == "used") {
             //Used 접근경우
             if (transfer.bankName == "") {
                 holder.tvPointHistoryName.text = transfer.depositor
-            }else{
+            } else {
                 holder.tvPointHistoryName.text = transfer.bankName
             }
             holder.tvPointHistoryTime.text = transfer.time
-            holder.tvPointHistoryPoint.text = "${transfer.point}P"
-        }else{
+
+            if(transfer.content == "top_up"){
+                holder.tvPointHistoryPoint.text = "+ ${transfer.point}P"
+            }
+            if(transfer.content == "transfer"){
+                holder.tvPointHistoryPoint.text = "${transfer.point}P"
+            }
+        }
+        if (type == "topUp") {
             //TopUp접근경우
             if (transfer.depositor == "") {
                 holder.tvPointHistoryName.text = transfer.accountNumber
-            }else{
+            } else {
                 holder.tvPointHistoryName.text = transfer.depositor
             }
+
+            if(transfer.type == "gift_card"){
+                holder.tvPointHistoryName.text = "Angkor Giftcard"
+            }
             holder.tvPointHistoryTime.text = transfer.time
-            holder.tvPointHistoryPoint.text = "${transfer.point}P"
+
+            if(transfer.content == "top_up"){
+                holder.tvPointHistoryPoint.text = "+ ${transfer.point}P"
+            }
+            if(transfer.content == "transfer"){
+                holder.tvPointHistoryPoint.text = "${transfer.point}P"
+            }
+        }
+        if (type == "giftCard") {
+            //GiftCard접근경우
+
+            holder.ivPointHistory.visibility = View.GONE
+
+            holder.tvPointHistoryName.text = "Angkor Giftcard"
+
+            holder.tvPointHistoryTime.text = transfer.time
+
+            if(transfer.content == "top_up"){
+                holder.tvPointHistoryPoint.text = "+ ${transfer.point}P"
+            }
+            if(transfer.content == "transfer"){
+                holder.tvPointHistoryPoint.text = "${transfer.point}P"
+            }
         }
 
+        if(type == "transfer"){
+            holder.tvPointHistoryName.text = transfer.payTo
+
+            holder.tvPointHistoryTime.text = transfer.time
+
+            if(transfer.type == "received"){
+                holder.tvPointHistoryPoint.text = "+ ${transfer.amount}$"
+                holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.blue))
+            }
+            if(transfer.type == "transfer"){
+                holder.tvPointHistoryPoint.text = "${transfer.amount}$"
+                holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.red))
+            }
+        }
 
 
     }

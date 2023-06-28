@@ -37,9 +37,9 @@
         android:fontFamily="@font/poppins_medium"
         android:text="+1,000 P"
         android:textColor="#111111"
-        app:layout_constraintBottom_toBottomOf="@+id/ivPointHistory"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPointHistoryTime"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ivPointHistory" />
+        app:layout_constraintTop_toTopOf="@+id/tvPointHistoryName" />
 
     <TextView
         android:id="@+id/tvPointHistoryTime"
@@ -49,6 +49,6 @@
         android:text="00:00:00 Mar 29, 2022"
         android:textColor="#929498"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivPointHistory"
-        app:layout_constraintStart_toStartOf="@+id/tvPointHistoryName" />
+        app:layout_constraintStart_toStartOf="@+id/tvPointHistoryName"
+        app:layout_constraintTop_toBottomOf="@+id/tvPointHistoryName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

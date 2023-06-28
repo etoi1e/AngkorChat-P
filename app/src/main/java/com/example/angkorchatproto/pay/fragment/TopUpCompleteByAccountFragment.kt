@@ -24,6 +24,9 @@ class TopUpCompleteByAccountFragment : Fragment() {
 
         //Close 클릭 시 메인으로 이동
         binding.btnCloseTopUp.setOnClickListener {
+            val checkTopUp = requireContext().getSharedPreferences("checkPrePage", 0)
+            checkTopUp.edit().clear().apply()
+
             view?.findNavController()?.navigate(R.id.topUpCompleteByAccountFragment_to_payMainFragment)
         }
 

@@ -41,10 +41,12 @@ class PayPointTopUpFragment : Fragment() {
         val checkTopUp = requireContext().getSharedPreferences("checkPrePage", 0)
         var prePage = checkTopUp.getBoolean("checkPrePage", false)
 
+
         //뒤로가기
         binding.ivClosePointTopUp.setOnClickListener {
             view?.findNavController()?.popBackStack()
             checkTopUp.edit().clear().apply()
+
 
 
         }
@@ -69,7 +71,7 @@ class PayPointTopUpFragment : Fragment() {
 
 
 
-        if (prePage == true) {
+        if (prePage) {
             val getName = requireArguments().getString("name", null)
             val getNumber = requireArguments().getString("number", null)
             //Transfer 화면으로 이동
@@ -94,6 +96,7 @@ class PayPointTopUpFragment : Fragment() {
                         0,
                         -amount,
                         "transfer",
+                        "point",
                         myNumber,
                         getNumber,
                         getName,

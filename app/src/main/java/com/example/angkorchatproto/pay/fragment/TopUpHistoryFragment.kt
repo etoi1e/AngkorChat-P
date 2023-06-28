@@ -1,18 +1,23 @@
 package com.example.angkorchatproto.pay.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SimpleAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentTopUpHistoryBinding
+import com.example.angkorchatproto.pay.HistorySearchActivity
 import com.example.angkorchatproto.pay.adapter.PointHistoryAdapter
 import com.example.angkorchatproto.pay.room.AppDatabase
+import com.orhanobut.dialogplus.DialogPlus
 
 
 class TopUpHistoryFragment : Fragment() {
@@ -40,12 +45,6 @@ class TopUpHistoryFragment : Fragment() {
             items.add("High to Low")
             items.add("Low to High")
 
-            binding.ivSearchTopUp.setOnClickListener {
-
-
-
-            }
-
 
 
             val spAdapter = ArrayAdapter(
@@ -54,6 +53,11 @@ class TopUpHistoryFragment : Fragment() {
                 items
             )
             binding.spHistory.adapter = spAdapter
+
+
+            binding.ivSearchTopUp.setOnClickListener {
+
+            }
 
             //전체 불러오기의 경우
             var transferList = db.paymentDao().getAllByContent(accountNumber, "top_up")
@@ -69,9 +73,6 @@ class TopUpHistoryFragment : Fragment() {
             binding.btnDebitTopUpHistory.setBackgroundResource(R.drawable.round8_gray_stroke_box)
             binding.btnTransferTopUpHistory.setBackgroundResource(R.drawable.round8_gray_stroke_box)
             binding.btnGiftCard.setBackgroundResource(R.drawable.round8_gray_stroke_box)
-
-
-
 
 
             //ALL 클릭 시
@@ -95,7 +96,7 @@ class TopUpHistoryFragment : Fragment() {
 
             //Debit 클릭 시
             binding.btnDebitTopUpHistory.setOnClickListener {
-                transferList = db.paymentDao().getTopUpByDebit(accountNumber, "top_up")
+                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "top_up","debit")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
@@ -114,7 +115,7 @@ class TopUpHistoryFragment : Fragment() {
 
             //Account 클릭 시
             binding.btnTransferTopUpHistory.setOnClickListener {
-                transferList = db.paymentDao().getTopUpByAccount(accountNumber, "top_up")
+                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "top_up","account")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
@@ -133,7 +134,7 @@ class TopUpHistoryFragment : Fragment() {
 
             //GiftCard 클릭 시
             binding.btnGiftCard.setOnClickListener {
-                transferList = db.paymentDao().getTopUpByAccount(accountNumber, "giftcard")
+                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "top_up","gift_card")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
@@ -157,6 +158,8 @@ class TopUpHistoryFragment : Fragment() {
         return binding.root
 
     }
+
+
 
 
 }

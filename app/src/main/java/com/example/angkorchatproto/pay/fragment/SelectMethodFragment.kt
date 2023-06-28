@@ -84,6 +84,7 @@ class SelectMethodFragment : Fragment() {
                         0,
                         amount,
                         "top_up",
+                        "debit",
                         "",
                         accountNumber.toString(),
                         "",

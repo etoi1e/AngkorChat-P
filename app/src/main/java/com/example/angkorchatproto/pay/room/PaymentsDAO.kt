@@ -2,7 +2,6 @@ package com.example.angkorchatproto.pay.room
 
 import androidx.room.*
 
-
 @Dao
 interface PaymentsDAO {
 
@@ -32,13 +31,17 @@ interface PaymentsDAO {
     @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account")
     fun getAllByContent(account : String,content : String):List<AccountInfo>
 
-    /** Debit으로 충전 시 분류별 호출 */
-    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND bank_name = '' ")
-    fun getTopUpByDebit(account : String,content : String):List<AccountInfo>
+    /** Point 분류별 호출 */
+    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND type = :type AND amount = 0 ")
+    fun getPointHistoryByType(account : String,content : String, type : String):List<AccountInfo>
 
-    /** 계좌로 충전 시 분류별 호출 */
-    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND NOT bank_name = '' ")
-    fun getTopUpByAccount(account : String,content : String):List<AccountInfo>
+    /** Amount 거래 전체분류별 호출*/
+    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND point = 0 ")
+    fun getAllAmountHistory(account : String,content : String):List<AccountInfo>
+
+    /** Amount 분류별 호출*/
+    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND type = :type AND point = 0 ")
+    fun getAmountHistoryByType(account : String,content : String, type : String):List<AccountInfo>
 
     /** 시간순 호출 time = ASC or DESC*/
     @Query("SELECT * FROM tb_account  WHERE account_number = :account ORDER BY :time")

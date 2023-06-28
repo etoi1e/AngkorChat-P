@@ -36,7 +36,7 @@ class CheckBankFragment : Fragment() {
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
         val myNumber = shared.getString("userNumber", "").toString()
         var topUpAmount = requireArguments().getString("topUpAmount")
-        var accountNumber = requireArguments().getString("accountNumber")
+        var accountNumber = requireArguments().getString("accountNumber").toString()
 
         //선택한 은행 출력
         val getBankName = requireArguments().getString("bankName")
@@ -59,6 +59,8 @@ class CheckBankFragment : Fragment() {
             val time = LocalDateTime.now().toString()
             if (db != null) {
                 val amount = topUpAmount!!.toInt()
+
+
                 val topUpPoint = AccountInfo(
                     0,
                     transferNumber,
@@ -67,6 +69,7 @@ class CheckBankFragment : Fragment() {
                     0,
                     amount,
                     "top_up",
+                    "account",
                     depositor,
                     accountNumber.toString(),
                     getBankName.toString(),

@@ -144,6 +144,8 @@ class ChatActivity : BaseActivity() {
 
             binding.imgSendMessageChat.performClick()
 
+            sendProfile = null
+
 
         }
 
