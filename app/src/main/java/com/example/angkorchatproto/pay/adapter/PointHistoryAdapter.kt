@@ -121,11 +121,11 @@ class PointHistoryAdapter(
             holder.tvPointHistoryTime.text = transfer.time
 
 
-            holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}$"
+            holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}P"
             holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.blue))
 
             if (transfer.point.toString().contains("-")) {
-                holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)}$"
+                holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)}P"
                 holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.red))
             }
 
