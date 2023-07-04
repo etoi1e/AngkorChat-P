@@ -69,7 +69,7 @@ class TopUpHistoryFragment : Fragment() {
             }
 
             //전체 불러오기의 경우
-            var transferList = db.paymentDao().getAllByContent(accountNumber, "top_up")
+            var transferList = db.paymentDao().getAllPointHistory(accountNumber)
             var adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
             var type = "Top up"
 

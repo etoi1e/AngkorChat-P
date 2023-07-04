@@ -71,9 +71,9 @@ class PayMainFragment : Fragment() {
                         "Angkor Point"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payPointFragment)
                         "Angkor Giftcard"-> view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payAngkorGiftCardFragment)
                         "Payment History"-> {
-                            val args = Bundle()
-                            args.putString("title","Payment Details")
-                            view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payHistoryFragment, args)
+//                            val args = Bundle()
+//                            args.putString("title","Payment Details")
+//                            view?.findNavController()?.navigate(R.id.action_payMainFragment_to_payHistoryFragment, args)
                         }
                         "Transfer History"-> {
                             val args = Bundle()

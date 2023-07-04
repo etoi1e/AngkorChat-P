@@ -8,9 +8,11 @@
 package com.example.angkorchatproto.emojistore.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ItemDrawerBinding
 
 class DrawerEmojiAdapter(
@@ -46,6 +48,11 @@ class DrawerEmojiAdapter(
         holder.binding?.tvDrawerMenu?.text = mItems?.get(position)
         holder.itemView.setOnClickListener {
             mListener?.onItemClicked(mItems?.get(position)!!)
+        }
+        if(mItems?.get(position) == "Payment History"){
+            holder.binding?.tvDrawerMenu?.setTextColor(mContext!!.getColor(R.color.colorLightGray))
+        }else{
+            holder.binding?.tvDrawerMenu?.textColors
         }
     }
 

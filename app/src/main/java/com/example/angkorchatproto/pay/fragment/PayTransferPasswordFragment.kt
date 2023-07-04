@@ -121,13 +121,13 @@ class PayTransferPasswordFragment : Fragment() {
                             transferNumber,
                             accountNumber,
                             myNumber,
-                            -amount,
                             0,
-                            "transfer",
-                            "transfer",
+                            -amount,
+                            "used_point",
+                            "received",
                             "",
                             "Angkor",
-                            "",
+                            "Angkor",
                             time
                         )
 

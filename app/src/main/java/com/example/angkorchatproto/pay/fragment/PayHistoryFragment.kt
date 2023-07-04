@@ -71,12 +71,13 @@ class PayHistoryFragment : Fragment() {
             //Transfer details
             if (title == "Transfer details") {
 
-                val transferHistoryList = db.paymentDao().getAllAmountHistory(accountNumber, "transfer",)
+                val transferHistoryList = db.paymentDao().getPointHistoryByType(accountNumber, "transfer", "received")
 
                 val adapter = PointHistoryAdapter(requireContext(), transferHistoryList, "transfer")
                 binding.rvTopUpHistory.adapter = adapter
                 binding.rvTopUpHistory.layoutManager = GridLayoutManager(requireContext(), 1)
 
+                Log.d("TAG-transferHistoryList",transferHistoryList.toString())
 
             }
 

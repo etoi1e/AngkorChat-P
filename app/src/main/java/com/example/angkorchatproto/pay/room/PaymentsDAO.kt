@@ -32,28 +32,33 @@ interface PaymentsDAO {
     fun getAllByContent(account : String,content : String):List<AccountInfo>
 
     /** Point 분류별 호출 */
+    @Query("SELECT * FROM tb_account WHERE account_number = :account AND NOT point = 0")
+    fun getAllPointHistory(account : String):List<AccountInfo>
+
+    /** Point 분류별 호출 */
     @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND type = :type AND amount = 0 ")
     fun getPointHistoryByType(account : String,content : String, type : String):List<AccountInfo>
 
-    /** Amount 거래 전체분류별 호출*/
-    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND point = 0 ")
-    fun getAllAmountHistory(account : String,content : String):List<AccountInfo>
-
-    /** Amount 분류별 호출*/
-    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND type = :type AND point = 0 ")
-    fun getAmountHistoryByType(account : String,content : String, type : String):List<AccountInfo>
 
     /** 시간순 호출 time = ASC or DESC*/
     @Query("SELECT * FROM tb_account  WHERE account_number = :account ORDER BY :time")
     fun getAllByTime(account : String,time : Long):List<AccountInfo>
 
-    /** 높은 Amount 순 호출 */
-    @Query("SELECT * FROM tb_account  WHERE account_number = :account ORDER BY amount DESC")
-    fun getAllByAmountHigh(account : String):List<AccountInfo>
+//    /** Amount 거래 전체분류별 호출*/
+//    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND point = 0 ")
+//    fun getAllAmountHistory(account : String,content : String):List<AccountInfo>
+//
+//    /** Amount 분류별 호출*/
+//    @Query("SELECT * FROM tb_account WHERE content = :content AND account_number = :account AND type = :type AND point = 0 ")
+//    fun getAmountHistoryByType(account : String,content : String, type : String):List<AccountInfo>
 
-    /** 낮은 Amount 순 호출 */
-    @Query("SELECT * FROM tb_account  WHERE account_number = :account ORDER BY amount ASC")
-    fun getAllByAmountLow(account : String):List<AccountInfo>
+//    /** 높은 Amount 순 호출 */
+//    @Query("SELECT * FROM tb_account  WHERE account_number = :account ORDER BY amount DESC")
+//    fun getAllByAmountHigh(account : String):List<AccountInfo>
+//
+//    /** 낮은 Amount 순 호출 */
+//    @Query("SELECT * FROM tb_account  WHERE account_number = :account ORDER BY amount ASC")
+//    fun getAllByAmountLow(account : String):List<AccountInfo>
 
     /** 높은 Point 순 호출 */
     @Query("SELECT * FROM tb_account  WHERE account_number = :account ORDER BY point DESC")

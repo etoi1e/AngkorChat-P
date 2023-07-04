@@ -69,17 +69,20 @@ class PayMainCodeFragment : Fragment() {
                         transferNumber,
                         accountNumber,
                         myNumber,
-                        1000,
                         0,
+                        1000,
                         "transfer",
                         "received",
                         "",
                         "Angkor",
-                        "",
+                        "Angkor",
                         time
                     )
 
                 db.paymentDao().insertAccount(newAccount)
+
+                binding.ivRefresh.performClick()
+                setAccountInfo(myNumber)
             }
 
         }

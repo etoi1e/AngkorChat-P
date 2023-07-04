@@ -121,13 +121,15 @@ class PointHistoryAdapter(
             holder.tvPointHistoryTime.text = transfer.time
 
             if(transfer.type == "received"){
-                holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.amount)}$"
+                holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}$"
                 holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.blue))
+
+                if(transfer.point.toString().contains("-")){
+                    holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)}$"
+                    holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.red))
+                }
             }
-            if(transfer.type == "transfer"){
-                holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.amount)}$"
-                holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.red))
-            }
+
         }
 
 

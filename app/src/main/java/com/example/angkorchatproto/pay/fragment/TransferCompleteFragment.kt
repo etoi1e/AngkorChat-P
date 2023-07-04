@@ -30,7 +30,7 @@ class TransferCompleteFragment : Fragment() {
             val transferInfo = db.paymentDao().getTransfer(transferNumber)
 
             val userName = transferInfo.payTo
-            val amount = transferInfo.amount.toString().replace("-","")
+            val amount = transferInfo.point.toString().replace("-","")
 
             binding.textView97.text="Transferred ${amount}$\nto ${userName}"
 
