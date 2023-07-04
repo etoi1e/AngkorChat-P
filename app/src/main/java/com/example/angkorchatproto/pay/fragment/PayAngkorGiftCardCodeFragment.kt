@@ -24,7 +24,7 @@ import java.util.*
 class PayAngkorGiftCardCodeFragment : Fragment() {
     private val activityViewModel: PayViewModel? by activityViewModels()
     lateinit var binding: FragmentPayGiftcardCodeBinding
-    private lateinit var job: Job
+    var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class PayAngkorGiftCardCodeFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel()
+        job?.cancel()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

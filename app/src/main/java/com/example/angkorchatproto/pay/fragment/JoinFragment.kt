@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.angkorchatproto.R
@@ -26,6 +27,7 @@ class JoinFragment : Fragment() {
     ): View? {
         binding = FragmentJoinBinding.inflate(inflater, container, false)
         binding.btnJoinPay.setOnClickListener {
+
             view?.findNavController()?.navigate(R.id.action_joinFragment_to_smsVerificationFragment)
         }
         binding.ivClose.setOnClickListener {

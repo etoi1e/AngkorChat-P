@@ -16,6 +16,7 @@ import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentPayAngkorPointBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
 import com.example.angkorchatproto.pay.room.AppDatabase
+import java.text.DecimalFormat
 
 class PayPointFragment : Fragment() {
     lateinit var binding: FragmentPayAngkorPointBinding
@@ -76,7 +77,10 @@ class PayPointFragment : Fragment() {
         if (db != null) {
             val account = db.paymentDao().getAccountNumber(myNumber)
             val point = db.paymentDao().getPoint(account)
-            binding.tvPointPayPoint.text = point.toString()
+
+            val numberFormatter = DecimalFormat("###,###")
+
+            binding.tvPointPayPoint.text = numberFormatter.format(point)
         }
 
         //TopUp 이동

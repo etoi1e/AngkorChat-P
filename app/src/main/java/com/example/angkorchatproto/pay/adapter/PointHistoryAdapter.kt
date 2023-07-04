@@ -2,14 +2,23 @@ package com.example.angkorchatproto.pay.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.databinding.ActivityAddByContactBinding
+import com.example.angkorchatproto.friends.viewmodel.AddByContactViewModel
 import com.example.angkorchatproto.pay.room.AccountInfo
+import java.text.DecimalFormat
 
 class PointHistoryAdapter(
     val context: Context,
@@ -24,7 +33,7 @@ class PointHistoryAdapter(
     }
 
     // 객체 저장 변수 선언
-    lateinit var mOnItemClickListener: OnItemClickListener
+    var mOnItemClickListener: OnItemClickListener? = null
 
     //객체 전달 메서드
     fun setOnItemClickListener(OnItemClickListener: OnItemClickListener) {
@@ -43,6 +52,11 @@ class PointHistoryAdapter(
             tvPointHistoryName = itemView.findViewById(R.id.tvPointHistoryName)
             tvPointHistoryTime = itemView.findViewById(R.id.tvPointHistoryTime)
             tvPointHistoryPoint = itemView.findViewById(R.id.tvPointHistoryPoint)
+
+            itemView.setOnClickListener{
+                mOnItemClickListener?.onItemClick(itemView,adapterPosition)
+            }
+
         }
     }
 
@@ -53,9 +67,11 @@ class PointHistoryAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val transfer = historyList[position]
+        val numberFormatter = DecimalFormat("###,###")
 
         if (type == "used") {
             //Used 접근경우
@@ -66,12 +82,8 @@ class PointHistoryAdapter(
             }
             holder.tvPointHistoryTime.text = transfer.time
 
-            if(transfer.content == "top_up"){
-                holder.tvPointHistoryPoint.text = "+ ${transfer.point}P"
-            }
-            if(transfer.content == "transfer"){
-                holder.tvPointHistoryPoint.text = "${transfer.point}P"
-            }
+            holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)} P"
+
         }
         if (type == "topUp") {
             //TopUp접근경우
@@ -81,17 +93,10 @@ class PointHistoryAdapter(
                 holder.tvPointHistoryName.text = transfer.depositor
             }
 
-            if(transfer.type == "gift_card"){
-                holder.tvPointHistoryName.text = "Angkor Giftcard"
-            }
             holder.tvPointHistoryTime.text = transfer.time
 
-            if(transfer.content == "top_up"){
-                holder.tvPointHistoryPoint.text = "+ ${transfer.point}P"
-            }
-            if(transfer.content == "transfer"){
-                holder.tvPointHistoryPoint.text = "${transfer.point}P"
-            }
+            holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}P"
+
         }
         if (type == "giftCard") {
             //GiftCard접근경우
@@ -103,10 +108,10 @@ class PointHistoryAdapter(
             holder.tvPointHistoryTime.text = transfer.time
 
             if(transfer.content == "top_up"){
-                holder.tvPointHistoryPoint.text = "+ ${transfer.point}P"
+                holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}P"
             }
             if(transfer.content == "transfer"){
-                holder.tvPointHistoryPoint.text = "${transfer.point}P"
+                holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)}P"
             }
         }
 
@@ -116,11 +121,11 @@ class PointHistoryAdapter(
             holder.tvPointHistoryTime.text = transfer.time
 
             if(transfer.type == "received"){
-                holder.tvPointHistoryPoint.text = "+ ${transfer.amount}$"
+                holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.amount)}$"
                 holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.blue))
             }
             if(transfer.type == "transfer"){
-                holder.tvPointHistoryPoint.text = "${transfer.amount}$"
+                holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.amount)}$"
                 holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.red))
             }
         }

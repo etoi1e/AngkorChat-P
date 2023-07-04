@@ -62,10 +62,9 @@
 
     <Spinner
         android:id="@+id/spCountryCodeLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
-        app:layout_constraintEnd_toEndOf="@+id/tvPhoneNumberLogin"
         app:layout_constraintStart_toStartOf="@+id/viewNumberBoxLogin"
         app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin" />
 
@@ -73,7 +72,7 @@
         android:id="@+id/etPhoneNumberLogin"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="2dp"
         android:background="@android:color/transparent"
         android:ems="10"
         android:hint="000 123 4567"
@@ -82,7 +81,8 @@
         android:textColorHint="#dadde3"
         app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
         app:layout_constraintStart_toEndOf="@+id/spCountryCodeLogin"
-        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin" />
+        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintVertical_bias="0.0" />
 
     <android.widget.Button
         android:id="@+id/btnSendCodeLogin"
@@ -99,5 +99,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView41"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintEnd_toEndOf="@+id/spCountryCodeLogin"
+        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin"
+        app:srcCompat="@drawable/ic_indecator_down_16" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

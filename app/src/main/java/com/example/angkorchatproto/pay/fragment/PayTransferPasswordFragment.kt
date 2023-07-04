@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +54,9 @@ class PayTransferPasswordFragment : Fragment() {
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
         val myNumber = shared.getString("userNumber", "").toString()
 
+
+
+
         etArray = arrayListOf(
             binding.etOne,
             binding.etTwo,
@@ -70,7 +74,6 @@ class PayTransferPasswordFragment : Fragment() {
             binding.vSix
         )
 
-
         var pinNumber = ""
 
         for (i in 0 until etArray.size) {
@@ -80,7 +83,12 @@ class PayTransferPasswordFragment : Fragment() {
 
 
 
+
+
         binding.btnNext.setOnClickListener {
+
+            setEtTextChangeListener()
+            onDeleteListener()
 
             var pinNumber = ""
 
@@ -167,6 +175,7 @@ class PayTransferPasswordFragment : Fragment() {
         }
 
         setEtTextChangeListener()
+        onDeleteListener()
 
         return binding.root
     }
@@ -180,6 +189,26 @@ class PayTransferPasswordFragment : Fragment() {
             repeat(randomNumberLength) {
                 val randomIndex = random.nextInt(allowedChars.length)
                 append(allowedChars[randomIndex])
+            }
+        }
+    }
+
+    private fun onDeleteListener() {
+        for (i in 0 until etArray.size) {
+            etArray[i].setOnKeyListener { v, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN) {
+                    if (i == 0) {
+                        vArray[i].background =
+                            requireActivity().getDrawable(R.color.colorLightGray)
+                        etArray[i].text = null
+                    } else {
+                        vArray[i].background =
+                            requireActivity().getDrawable(R.color.colorLightGray)
+                        etArray[i].text = null
+                        etArray[i - 1].requestFocus()
+                    }
+                }
+                false
             }
         }
     }
@@ -234,6 +263,7 @@ class PayTransferPasswordFragment : Fragment() {
                             } else {
                                 vArray[i].background =
                                     requireActivity().getDrawable(R.color.colorLightGray)
+                                    binding.btnNext.setBackgroundResource(R.drawable.style_login_btn)
                             }
                         }
                     }

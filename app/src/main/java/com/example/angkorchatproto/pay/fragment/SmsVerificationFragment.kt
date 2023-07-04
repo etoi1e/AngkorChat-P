@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.angkorchatproto.R
@@ -64,6 +65,8 @@ class SmsVerificationFragment : Fragment() {
         //SendCode 클릭 시 동작
         binding.btnNext.setOnClickListener {
 
+            val bundle = bundleOf("title" to "password")
+
             if (phoneNumber == "") {
                 phoneNumber = binding.etPhoneNumberLogin.text.toString()
             }
@@ -71,7 +74,7 @@ class SmsVerificationFragment : Fragment() {
                 Toast.makeText(context, "현재 디바이스 기기의 번호와 일치하지 않습니다", Toast.LENGTH_SHORT).show()
             } else {
                 view?.findNavController()
-                    ?.navigate(R.id.action_smsVerificationFragment_to_paymentPasswordFragment)
+                    ?.navigate(R.id.action_smsVerificationFragment_to_paymentPasswordFragment, bundle)
             }
 
         }

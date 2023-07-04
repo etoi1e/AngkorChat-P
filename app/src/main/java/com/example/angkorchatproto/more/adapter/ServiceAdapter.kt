@@ -1,6 +1,8 @@
 package com.example.angkorchatproto.more.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +11,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ItemMoreServiceBinding
+import com.example.angkorchatproto.emojistore.EmojiStoreActivity
+import com.example.angkorchatproto.emojistore.fragment.EmojiStoreMainFragment
+import com.example.angkorchatproto.more.AngkorFriends
 
 /**
  * Package Name : com.example.angkorchatproto.Chat.adapter
@@ -61,6 +66,59 @@ class ServiceAdapter(
         }
         holder.itemView.setOnClickListener {
             mListener?.onItemClicked(position, mMenuName?.get(position))
+
+
+            if(mMenuName?.get(position) == "Friends"){
+                //Friends
+                val intent = Intent(mContext,AngkorFriends::class.java)
+                mContext?.startActivity(intent)
+            }
+
+            if(mMenuName?.get(position) == "Eats"){
+                //Eats
+                val packageName = "com.example.angkoreats"
+                val intent = Intent(mContext?.packageManager?.getLaunchIntentForPackage(packageName))
+                mContext?.startActivity(intent)
+            }
+            if(mMenuName?.get(position) == "Webtoon"){
+                //Webtoon
+                val packageName = "com.example.angkorwebtoonprototype"
+                val intent = Intent(mContext?.packageManager?.getLaunchIntentForPackage(packageName))
+                mContext?.startActivity(intent)
+            }
+            if(mMenuName?.get(position) == "Games"){
+                //Games
+                val packageName = "com.example.angkorgamesprototype"
+                val intent = Intent(mContext?.packageManager?.getLaunchIntentForPackage(packageName))
+                mContext?.startActivity(intent)
+            }
+            if(mMenuName?.get(position) == "Play"){
+                //Play
+                val packageName = "com.example.angkorplayprototype"
+                val intent = Intent(mContext?.packageManager?.getLaunchIntentForPackage(packageName))
+                mContext?.startActivity(intent)
+            }
+            if(mMenuName?.get(position) == "Check"){
+                //Check
+                val packageName = "com.example.angkorcheckprototype"
+                val intent = Intent(mContext?.packageManager?.getLaunchIntentForPackage(packageName))
+                mContext?.startActivity(intent)
+            }
+            if(mMenuName?.get(position) == "Echoes"){
+                //Echoes
+                val packageName = "com.example.angkorechoesprototype"
+                val intent = Intent(mContext?.packageManager?.getLaunchIntentForPackage(packageName))
+                mContext?.startActivity(intent)
+
+            }
+            if(mMenuName?.get(position) == "Bank"){
+                //Bank
+                val packageName = "com.example.bankangkorprototype"
+                val intent = Intent(mContext?.packageManager?.getLaunchIntentForPackage(packageName))
+                mContext?.startActivity(intent)
+            }
+
+
         }
     }
 

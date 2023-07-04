@@ -49,16 +49,6 @@ class LoginActivity : BaseActivity() {
 
 
 
-        //국가 번호 맞춰 국기/번호 출력
-//        if(GetCountryZipCode() == "855"){
-//            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_cambodia)
-//        }else if(GetCountryZipCode() == "82"){
-//            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_south_korea)
-//        }else if(GetCountryZipCode() == "1"){
-//            binding.imgFlagLogin.setImageResource(R.drawable.img_flag_united_states)
-//        }else{
-//            binding.imgFlagLogin.setImageResource(R.drawable.ic_delate_circle_fill_lightgray)
-//        }
 
         //디바이스 번호 자동 입력
         if (phoneNumber != null) {

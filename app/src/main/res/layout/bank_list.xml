@@ -24,7 +24,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="15dp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/font"
         android:text="Bank Name"
         android:textColor="#111111"
         app:layout_constraintBottom_toBottomOf="parent"

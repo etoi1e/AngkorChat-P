@@ -68,8 +68,6 @@ class ProfileActivity : BaseActivity() {
         val number = intent.getStringExtra("number")
         val userProfile = intent.getStringExtra("profile")
 
-        getImage()
-
 
         //기본 정보 삽입
         binding.tvNameProfile.text = userName
@@ -83,6 +81,8 @@ class ProfileActivity : BaseActivity() {
 
         //프로필 사진 uri 가져오기
         val profile = intent.getStringExtra("profile")
+
+        getImage()
 
         if (profile == "union") { //챗봇프로필 출력 조건
             Glide.with(this)
@@ -116,7 +116,7 @@ class ProfileActivity : BaseActivity() {
 
         }
 
-        //Add/Unfriend 버튼(실제 친구 목록 아니기 때문에 기능X)
+        //Add/Unfriend 버튼
         binding.btnAddProfile.setOnClickListener {
 
             val friendRef = FBdataBase.getFriendRef()
@@ -159,20 +159,27 @@ class ProfileActivity : BaseActivity() {
 
         //전화걸기
         binding.imgCallProfile.setOnClickListener {
-            val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
-            startActivity(intent)
-            finish()
+            if (profile == "union") {
+                Toast.makeText(
+                    this@ProfileActivity,
+                    "Call function is not supported",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
+                startActivity(intent)
+                finish()
+            }
         }
 
-        binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
-        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
-
+            binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
+            binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
 
 
         if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
 
         } else {
-            //권한이 없으면 권한 요청을 합니다.
+            //권한이 없으면 권한 요청
             ActivityCompat.requestPermissions(this, STORAGE_PERMISSION, FLAG_PERM_STORAGE)
         }
 

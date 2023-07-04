@@ -15,6 +15,7 @@ import com.example.angkorchatproto.more.adapter.ServiceAdapter
 import com.example.angkorchatproto.pay.PayActivity
 import com.example.angkorchatproto.pay.room.AppDatabase
 import com.example.angkorchatproto.settings.SettingsActivity
+import java.text.DecimalFormat
 
 class MoreFragment : Fragment() {
     lateinit var binding: FragmentMoreBinding
@@ -35,6 +36,7 @@ class MoreFragment : Fragment() {
 
     var checkAccount = false
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
@@ -46,30 +48,28 @@ class MoreFragment : Fragment() {
         val db = AppDatabase.getInstance(requireContext().applicationContext)
         if (db != null) {
             val accountNumber = db.paymentDao().getAccountNumber(myNumber)
-            if (accountNumber != "" && accountNumber != null) {
+            if (accountNumber != "" && accountNumber != null ) {
                 checkAccount = true
 
+                val numberFormatter = DecimalFormat("###,###")
                 //계좌 있는 경우 정보 가져와서 삽입
-                val accountPoint = db.paymentDao().getPoint(accountNumber)
-                if (binding.tvPayPoint.text != accountPoint.toString() + "P") {
-                    binding.tvPayPoint.text = accountPoint.toString() + "P"
+                val accountPoint = numberFormatter.format(db.paymentDao().getPoint(accountNumber))
+                if (binding.tvPayPoint.text != "$accountPoint P") {
+                    binding.tvPayPoint.text = "$accountPoint P"
 
                 }
             }
-        }
 
-        //현재 사용자 번호 불러오기
         val point = binding.tvPayPoint.text.toString()
-        val oldPoint = point.replace("P","")
-        if (db != null) {
-            val accountNumber = db.paymentDao().getAccountNumber(myNumber)
+        val oldPoint = point.replace("P", "")
+
             val newPoint = db.paymentDao().getPoint(accountNumber).toString()
             if (oldPoint != newPoint) {
                 //프래그먼트 새로고침
                 val ft = requireFragmentManager().beginTransaction()
                 ft.detach(this).attach(this).commit()
-                Log.d("TAG-old",oldPoint)
-                Log.d("TAG-new",newPoint)
+                Log.d("TAG-old", oldPoint)
+                Log.d("TAG-new", newPoint)
             }
         }
 
@@ -138,7 +138,7 @@ class MoreFragment : Fragment() {
             serviceImg,
             object : ServiceAdapter.OnServiceAdapterListener {
                 override fun onItemClicked(itemIdx: Int?, characterName: String?) {
-                    Log.d("MoreFragment", "${itemIdx}번 인덱스 $characterName 선택")
+
                 }
             })
         binding.rvServicesMenu.adapter = serviceAdapter

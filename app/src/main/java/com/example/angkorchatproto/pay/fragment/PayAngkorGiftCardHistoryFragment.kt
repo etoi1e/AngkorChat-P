@@ -17,6 +17,7 @@ import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
 import com.example.angkorchatproto.pay.adapter.PointHistoryAdapter
 import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
+import java.text.DecimalFormat
 
 class PayAngkorGiftCardHistoryFragment : Fragment() {
     private val activityViewModel: PayViewModel? by activityViewModels()
@@ -62,7 +63,8 @@ class PayAngkorGiftCardHistoryFragment : Fragment() {
 
             val accountNumber = db.paymentDao().getAccountNumber(myNumber)
             //setPoint
-            binding.tvPoint.text = db.paymentDao().getPoint(accountNumber).toString()
+            val numberFormatter = DecimalFormat("###,###")
+            binding.tvPoint.text = numberFormatter.format(db.paymentDao().getPoint(accountNumber))
 
             //탭 옮기기
             if (binding.btnUsedGiftCard.isChecked) {

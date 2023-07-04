@@ -13,9 +13,6 @@ import com.example.angkorchatproto.pay.room.AppDatabase
 
 class TopUpCompleteByCreditFragment : Fragment() {
     lateinit var binding: FragmentTopUpCompleteByCreditBinding
-//    private var mNavController: NavController? = null
-//    private var mNavHostFragment: NavHostFragment? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

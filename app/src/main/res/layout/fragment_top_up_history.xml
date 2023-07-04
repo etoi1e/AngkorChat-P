@@ -28,7 +28,7 @@
                 android:layout_height="35dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/round8_gray_stroke_box"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/font"
                 android:text="All"
                 android:textAllCaps="false"
                 android:textColor="#555555" />
@@ -40,7 +40,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/round8_gray_stroke_box"
                 android:clickable="false"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/font"
                 android:text="Debit/Credit Card"
                 android:textAllCaps="false"
                 android:textColor="#555555" />
@@ -52,7 +52,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/round8_gray_stroke_box"
                 android:clickable="false"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/font"
                 android:text="Account Transfer"
                 android:textAllCaps="false"
                 android:textColor="#555555" />
@@ -64,7 +64,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/round8_gray_stroke_box"
                 android:clickable="false"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/font"
                 android:text="Gift Card"
                 android:textAllCaps="false"
                 android:textColor="#555555" />

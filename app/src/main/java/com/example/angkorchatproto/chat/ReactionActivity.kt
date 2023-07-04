@@ -90,7 +90,7 @@ class ReactionActivity : BaseActivity() {
 
                 })
 
-
+            finish()
         }
 
         //고정(기능X)

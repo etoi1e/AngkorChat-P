@@ -9,8 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.SimpleAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentTopUpHistoryBinding
@@ -22,6 +25,9 @@ import com.orhanobut.dialogplus.DialogPlus
 
 class TopUpHistoryFragment : Fragment() {
     lateinit var binding: FragmentTopUpHistoryBinding
+
+    private var mNavController: NavController? = null
+    private var mNavHostFragment: NavHostFragment? = null
 
     @SuppressLint("ResourceAsColor")
     override fun onCreateView(
@@ -46,13 +52,16 @@ class TopUpHistoryFragment : Fragment() {
             items.add("Low to High")
 
 
-
             val spAdapter = ArrayAdapter(
                 requireContext(),
                 androidx.transition.R.layout.support_simple_spinner_dropdown_item,
                 items
             )
             binding.spHistory.adapter = spAdapter
+
+            mNavHostFragment =
+                requireActivity().supportFragmentManager.findFragmentById(R.id.pay_container) as NavHostFragment
+            mNavController = mNavHostFragment?.navController
 
 
             binding.ivSearchTopUp.setOnClickListener {
@@ -61,8 +70,10 @@ class TopUpHistoryFragment : Fragment() {
 
             //전체 불러오기의 경우
             var transferList = db.paymentDao().getAllByContent(accountNumber, "top_up")
+            var adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
+            var type = "Top up"
+
             if (transferList != null) {
-                val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
                 binding.rvTopUpHistory.layoutManager = GridLayoutManager(requireContext(), 1)
             }
@@ -79,7 +90,7 @@ class TopUpHistoryFragment : Fragment() {
             binding.btnAllTopUpHistory.setOnClickListener {
                 transferList = db.paymentDao().getAllByContent(accountNumber, "top_up")
 
-                val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
+                adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
                 binding.rvTopUpHistory.layoutManager = GridLayoutManager(requireContext(), 1)
 
@@ -92,13 +103,29 @@ class TopUpHistoryFragment : Fragment() {
                 binding.btnTransferTopUpHistory.setTextColor(requireContext().getColor(R.color.darkGray))
                 binding.btnGiftCard.setBackgroundResource(R.drawable.round8_gray_stroke_box)
                 binding.btnGiftCard.setTextColor(requireContext().getColor(R.color.darkGray))
+
+                adapter.setOnItemClickListener(object : PointHistoryAdapter.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+
+                        var bundle = bundleOf("type" to type, "transferNumber" to transferList[position].transferNumber)
+
+                        mNavController?.navigate(
+                            R.id.action_payPointFragment_to_payDetailFragment,
+                            bundle
+                        )
+
+                    }
+
+                })
+
             }
 
             //Debit 클릭 시
             binding.btnDebitTopUpHistory.setOnClickListener {
-                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "top_up","debit")
+                transferList =
+                    db.paymentDao().getPointHistoryByType(accountNumber, "top_up", "debit")
 
-                val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
+                adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
                 binding.rvTopUpHistory.layoutManager = GridLayoutManager(requireContext(), 1)
 
@@ -111,13 +138,29 @@ class TopUpHistoryFragment : Fragment() {
                 binding.btnTransferTopUpHistory.setTextColor(requireContext().getColor(R.color.darkGray))
                 binding.btnGiftCard.setBackgroundResource(R.drawable.round8_gray_stroke_box)
                 binding.btnGiftCard.setTextColor(requireContext().getColor(R.color.darkGray))
+
+                adapter.setOnItemClickListener(object : PointHistoryAdapter.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+
+                        var bundle = bundleOf("type" to type, "transferNumber" to transferList[position].transferNumber)
+
+                        mNavController?.navigate(
+                            R.id.action_payPointFragment_to_payDetailFragment,
+                            bundle
+                        )
+
+                    }
+
+                })
+
             }
 
             //Account 클릭 시
             binding.btnTransferTopUpHistory.setOnClickListener {
-                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "top_up","account")
+                transferList =
+                    db.paymentDao().getPointHistoryByType(accountNumber, "top_up", "account")
 
-                val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
+                adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
                 binding.rvTopUpHistory.layoutManager = GridLayoutManager(requireContext(), 1)
 
@@ -130,13 +173,29 @@ class TopUpHistoryFragment : Fragment() {
                 binding.btnDebitTopUpHistory.setTextColor(requireContext().getColor(R.color.darkGray))
                 binding.btnGiftCard.setBackgroundResource(R.drawable.round8_gray_stroke_box)
                 binding.btnGiftCard.setTextColor(requireContext().getColor(R.color.darkGray))
+
+                adapter.setOnItemClickListener(object : PointHistoryAdapter.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+
+                        var bundle = bundleOf("type" to type, "transferNumber" to transferList[position].transferNumber)
+
+                        mNavController?.navigate(
+                            R.id.action_payPointFragment_to_payDetailFragment,
+                            bundle
+                        )
+
+                    }
+
+                })
+
             }
 
             //GiftCard 클릭 시
             binding.btnGiftCard.setOnClickListener {
-                transferList = db.paymentDao().getPointHistoryByType(accountNumber, "top_up","gift_card")
+                transferList =
+                    db.paymentDao().getPointHistoryByType(accountNumber, "top_up", "gift_card")
 
-                val adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
+                adapter = PointHistoryAdapter(requireContext(), transferList, "topUp")
                 binding.rvTopUpHistory.adapter = adapter
                 binding.rvTopUpHistory.layoutManager = GridLayoutManager(requireContext(), 1)
 
@@ -150,7 +209,35 @@ class TopUpHistoryFragment : Fragment() {
                 binding.btnTransferTopUpHistory.setBackgroundResource(R.drawable.round8_gray_stroke_box)
                 binding.btnTransferTopUpHistory.setTextColor(requireContext().getColor(R.color.darkGray))
 
+                adapter.setOnItemClickListener(object : PointHistoryAdapter.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+
+                        var bundle = bundleOf("type" to type, "transferNumber" to transferList[position].transferNumber)
+
+                        mNavController?.navigate(
+                            R.id.action_payPointFragment_to_payDetailFragment,
+                            bundle
+                        )
+
+                    }
+
+                })
+
             }
+
+            adapter.setOnItemClickListener(object : PointHistoryAdapter.OnItemClickListener {
+                override fun onItemClick(view: View, position: Int) {
+
+                    var bundle = bundleOf("type" to type, "transferNumber" to transferList[position].transferNumber)
+
+                    mNavController?.navigate(
+                        R.id.action_payPointFragment_to_payDetailFragment,
+                        bundle
+                    )
+
+                }
+
+            })
 
 
         }
@@ -158,8 +245,6 @@ class TopUpHistoryFragment : Fragment() {
         return binding.root
 
     }
-
-
 
 
 }

@@ -15,6 +15,7 @@ import com.example.angkorchatproto.databinding.FragmentPayMainCodeBinding
 import com.example.angkorchatproto.emojistore.viewmodel.PayViewModel
 import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
+import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.util.*
 
@@ -129,10 +130,12 @@ class PayMainCodeFragment : Fragment() {
             //계좌번호 적용
             binding.tvPayMainAccount.text = accountNumber
 
+            val numberFormatter = DecimalFormat("###,###")
+
             /**포인트*/
-            val point = db.paymentDao().getPoint(accountNumber)
+            val point = numberFormatter.format(db.paymentDao().getPoint(accountNumber))
             //잔여포인트
-            binding.tvPayMainPoint.text = point.toString() + "Point"
+            binding.tvPayMainPoint.text = point.toString() + " Point"
 
         }
     }

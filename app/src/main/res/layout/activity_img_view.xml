@@ -22,7 +22,7 @@
         android:id="@+id/tvImgViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/dm_sans_medium"
         android:text="Name"
         android:textColor="@color/white"
         android:textSize="16sp"

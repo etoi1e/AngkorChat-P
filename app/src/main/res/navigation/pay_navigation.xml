@@ -122,6 +122,9 @@
         <action
             android:id="@+id/action_payPointFragment_to_payPointTransferFragment"
             app:destination="@id/payPointTransferFragment" />
+        <action
+            android:id="@+id/action_payPointFragment_to_payDetailFragment"
+            app:destination="@id/payDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/payPointTopUpFragment"
@@ -249,6 +252,11 @@
             android:id="@+id/action_transferCompleteFragment_to_payMainFragment"
             app:destination="@id/payMainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/payDetailFragment"
+        android:name="com.example.angkorchatproto.pay.fragment.PayDetailFragment"
+        android:label="fragment_pay_detail"
+        tools:layout="@layout/fragment_pay_detail" />
 
 
 </navigation>
