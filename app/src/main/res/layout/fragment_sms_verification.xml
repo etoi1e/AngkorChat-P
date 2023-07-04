@@ -72,10 +72,9 @@
 
     <Spinner
         android:id="@+id/spCountryCodeLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
-        app:layout_constraintEnd_toEndOf="@+id/tvPhoneNumberLogin"
         app:layout_constraintStart_toStartOf="@+id/viewNumberBoxLogin"
         app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin" />
 
@@ -83,7 +82,7 @@
         android:id="@+id/etPhoneNumberLogin"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:background="@android:color/transparent"
         android:ems="10"
         android:hint="000 123 4567"
@@ -92,7 +91,8 @@
         android:textColorHint="#dadde3"
         app:layout_constraintBottom_toBottomOf="@+id/viewNumberBoxLogin"
         app:layout_constraintStart_toEndOf="@+id/spCountryCodeLogin"
-        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin" />
+        app:layout_constraintTop_toTopOf="@+id/viewNumberBoxLogin"
+        app:layout_constraintVertical_bias="0.0" />
 
     <android.widget.Button
         android:id="@+id/btnNext"

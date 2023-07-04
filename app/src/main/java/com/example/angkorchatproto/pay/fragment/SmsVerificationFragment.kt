@@ -55,7 +55,7 @@ class SmsVerificationFragment : Fragment() {
         binding.spCountryCodeLogin.adapter = adapter
 
         //디바이스 번호 자동 입력
-        binding.etPhoneNumberLogin.setText(phoneNumber)
+        binding.etPhoneNumberLogin.setText(phoneNumber.replace("+${GetCountryZipCode()}", "0"))
         binding.btnNext.setBackgroundResource(R.drawable.style_login_btn)
         binding.viewUnderLineLogin.setBackgroundColor(requireActivity().getColor(R.color.mainYellow))
 
@@ -70,12 +70,10 @@ class SmsVerificationFragment : Fragment() {
             if (phoneNumber == "") {
                 phoneNumber = binding.etPhoneNumberLogin.text.toString()
             }
-            if (phoneNumber != binding.etPhoneNumberLogin.text.toString()) {
-                Toast.makeText(context, "현재 디바이스 기기의 번호와 일치하지 않습니다", Toast.LENGTH_SHORT).show()
-            } else {
-                view?.findNavController()
-                    ?.navigate(R.id.action_smsVerificationFragment_to_paymentPasswordFragment, bundle)
-            }
+
+            view?.findNavController()
+                ?.navigate(R.id.action_smsVerificationFragment_to_paymentPasswordFragment, bundle)
+
 
         }
 
