@@ -201,9 +201,9 @@ class AddFriendsActivity : BaseActivity() {
 
 
                 if (photoUri != null) {
-                    suggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber))
+                    suggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber, name))
                 } else {
-                    suggestList.add(UserVO(name, emailAddress, "", phoneNumber))
+                    suggestList.add(UserVO(name, emailAddress, "", phoneNumber, name))
                 }
 
 

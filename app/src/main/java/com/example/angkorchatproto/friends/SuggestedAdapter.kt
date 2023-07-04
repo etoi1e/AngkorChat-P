@@ -75,6 +75,7 @@ class SuggestedAdapter(
         val name = suggestList[position].name
         val email = suggestList[position].email
         val phone = suggestList[position].phone
+        val id = suggestList[position].id
 
         holder.tvName.text = name
         holder.tvEmail.text = email
@@ -130,8 +131,8 @@ class SuggestedAdapter(
                 val removeDash = phone.toString().replace("-", "")
                 val removeSpace = removeDash.replace(" ", "")
 
-                friendRef.child(userNum).child(removeSpace!!)
-                    .setValue(UserVO(name, email, profile, removeSpace))
+                friendRef.child(userNum).child(removeSpace)
+                    .setValue(UserVO(name, email, profile, removeSpace, id))
             }
 
 

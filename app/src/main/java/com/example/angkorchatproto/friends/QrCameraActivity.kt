@@ -1,7 +1,6 @@
 package com.example.angkorchatproto.friends
 
 import android.Manifest
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -16,7 +15,6 @@ import com.example.angkorchatproto.R
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityQrCameraBinding
 import com.example.angkorchatproto.databinding.FragmentMyQrBinding
-import com.example.angkorchatproto.databinding.ItemMoreServiceBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 

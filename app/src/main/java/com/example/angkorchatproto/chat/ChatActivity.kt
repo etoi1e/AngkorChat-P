@@ -138,7 +138,8 @@ class ChatActivity : BaseActivity() {
                 result.data?.getStringExtra("name")!!,
                 result.data?.getStringExtra("email")!!,
                 result.data?.getStringExtra("profile")!!,
-                result.data?.getStringExtra("phone")!!
+                result.data?.getStringExtra("phone")!!,
+                result.data?.getStringExtra("id")!!,
             )
 
 
@@ -338,9 +339,10 @@ class ChatActivity : BaseActivity() {
                     val number = value["number"] as? String
                     val password = value["password"] as? String
                     val token = value["token"] as? String
+                    val id = value["id"] as? String
 
-                    if (number != null && password != null && token != null) {
-                        val user = JoinVO(number, password, token)
+                    if (number != null && password != null && token != null && id != null) {
+                        val user = JoinVO(number, password, token, id)
                         receiverNumber = user.number!!
                         receiverToken = user.token!!
                     }

@@ -45,6 +45,7 @@ class PayMyQrFragment : Fragment() {
         //현재 사용자 번호 불러오기
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
         val myNumber = shared.getString("userNumber", "").toString()
+        val id = shared.getString("id", "").toString()
 
         val db = AppDatabase.getInstance(requireContext().applicationContext)
 
@@ -56,7 +57,7 @@ class PayMyQrFragment : Fragment() {
         }
 
 
-        binding.tvMyQrName.text = myNumber
+        binding.tvMyQrName.text = id
 
 
 
