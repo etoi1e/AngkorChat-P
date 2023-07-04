@@ -1,8 +1,6 @@
 package com.example.angkorchatproto.chat
 
-import android.net.Uri
 import com.example.angkorchatproto.UserVO
-import com.google.android.gms.maps.model.LatLng
 import java.io.Serializable
 
 data class ChatModel (val users: HashMap<String, Boolean> = HashMap(),

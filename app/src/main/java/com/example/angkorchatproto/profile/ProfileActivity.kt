@@ -67,6 +67,7 @@ class ProfileActivity : BaseActivity() {
         val userMsg = intent.getStringExtra("email")
         val number = intent.getStringExtra("number")
         val userProfile = intent.getStringExtra("profile")
+        val id = intent.getStringExtra("id")
 
 
         //기본 정보 삽입
@@ -149,7 +150,7 @@ class ProfileActivity : BaseActivity() {
                     val removeDash = number.toString().replace("-", "")
                     val removeSpace = removeDash.replace(" ", "")
                     friendRef.child(userNumber).child(removeSpace!!)
-                        .setValue(UserVO(userName, userMsg, userProfile, removeSpace))
+                        .setValue(UserVO(userName, userMsg, userProfile, removeSpace, id))
                 }
             }
 

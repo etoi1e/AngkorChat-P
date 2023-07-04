@@ -93,6 +93,11 @@ class PayMainFragment : Fragment() {
         binding.ivClose.setOnClickListener {
             requireActivity().finish()
         }
+
+        val shared = requireActivity().getSharedPreferences("loginNumber", 0)
+        val id = shared.getString("id", "")
+
+        binding.tvName.text = id
         return binding.root
     }
 

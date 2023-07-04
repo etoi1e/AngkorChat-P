@@ -34,9 +34,12 @@ class SettingsAccountFragment : Fragment() {
         binding = FragmentSettingsAccountBinding.inflate(inflater, container, false)
         val shared = requireActivity().getSharedPreferences("loginNumber", 0)
         val userNumber = shared.getString("userNumber", "")
+        val id = shared.getString("id", "")
         binding.tvUserPhoneNumber.text = userNumber
         binding.tvChangeNumber.text = userNumber
         binding.tvDeleteAccount.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding.tvUserName.text = id
+        binding.tvUserId.text = id
         binding.ivClose.setOnClickListener {
             view?.findNavController()?.popBackStack()
         }

@@ -73,11 +73,6 @@ class LoginActivity : BaseActivity() {
             startActivity(intent)
             finish()
         }
-        
-        
-        
-        
-
     }
 
 

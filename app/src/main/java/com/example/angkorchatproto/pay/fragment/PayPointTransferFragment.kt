@@ -227,9 +227,9 @@ class PayPointTransferFragment : Fragment() {
                     cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))
 
                 if (photoUri != null) {
-                    mSuggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber))
+                    mSuggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber, name))
                 } else {
-                    mSuggestList.add(UserVO(name, emailAddress, "", phoneNumber))
+                    mSuggestList.add(UserVO(name, emailAddress, "", phoneNumber, name))
                 }
             }
             cursor.close()
