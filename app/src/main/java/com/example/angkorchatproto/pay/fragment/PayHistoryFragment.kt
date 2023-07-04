@@ -71,7 +71,7 @@ class PayHistoryFragment : Fragment() {
             //Transfer details
             if (title == "Transfer details") {
 
-                val transferHistoryList = db.paymentDao().getPointHistoryByType(accountNumber, "transfer", "received")
+                val transferHistoryList = db.paymentDao().getAllPointHistory(accountNumber)
 
                 val adapter = PointHistoryAdapter(requireContext(), transferHistoryList, "transfer")
                 binding.rvTopUpHistory.adapter = adapter

@@ -53,8 +53,8 @@ class PointHistoryAdapter(
             tvPointHistoryTime = itemView.findViewById(R.id.tvPointHistoryTime)
             tvPointHistoryPoint = itemView.findViewById(R.id.tvPointHistoryPoint)
 
-            itemView.setOnClickListener{
-                mOnItemClickListener?.onItemClick(itemView,adapterPosition)
+            itemView.setOnClickListener {
+                mOnItemClickListener?.onItemClick(itemView, adapterPosition)
             }
 
         }
@@ -107,28 +107,28 @@ class PointHistoryAdapter(
 
             holder.tvPointHistoryTime.text = transfer.time
 
-            if(transfer.content == "top_up"){
+            if (transfer.content == "top_up") {
                 holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}P"
             }
-            if(transfer.content == "transfer"){
+            if (transfer.content == "transfer") {
                 holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)}P"
             }
         }
 
-        if(type == "transfer"){
+        if (type == "transfer" || (type == "received" && historyList[position].content == "used_point")) {
             holder.tvPointHistoryName.text = transfer.payTo
 
             holder.tvPointHistoryTime.text = transfer.time
 
-            if(transfer.type == "received"){
-                holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}$"
-                holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.blue))
 
-                if(transfer.point.toString().contains("-")){
-                    holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)}$"
-                    holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.red))
-                }
+            holder.tvPointHistoryPoint.text = "+ ${numberFormatter.format(transfer.point)}$"
+            holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.blue))
+
+            if (transfer.point.toString().contains("-")) {
+                holder.tvPointHistoryPoint.text = "${numberFormatter.format(transfer.point)}$"
+                holder.tvPointHistoryPoint.setTextColor(context.getColor(R.color.red))
             }
+
 
         }
 

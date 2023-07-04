@@ -52,7 +52,7 @@ class LoginActivity : BaseActivity() {
 
         //디바이스 번호 자동 입력
         if (phoneNumber != null) {
-            binding.etPhoneNumberLogin.setText(phoneNumber)
+            binding.etPhoneNumberLogin.setText(phoneNumber.replace("+${GetCountryZipCode()}","0"))
             binding.btnSendCodeLogin.setBackgroundResource(R.drawable.style_login_btn)
             binding.viewUnderLineLogin.setBackgroundColor(getColor(R.color.mainYellow))
         }

@@ -22,8 +22,7 @@ class CountryAdapter(context: Context, countries: List<Country>) :
         imageView.setImageResource(country!!.flag)
 
         val textView = view.findViewById<TextView>(R.id.textView)
-        textView.text = country!!.name
-
+        textView.text = country!!.numberCode
         return view
     }
 
