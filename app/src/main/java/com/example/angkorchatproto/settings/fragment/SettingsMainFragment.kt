@@ -45,7 +45,9 @@ class SettingsMainFragment : Fragment() {
         binding = FragmentSettingsMainBinding.inflate(inflater, container, false)
         val shared = requireActivity().getSharedPreferences("loginNumber", 0)
         val userNumber = shared.getString("userNumber", "")
+        val id = shared.getString("id", "")
         binding.tvUserPhoneNumber.text = userNumber
+        binding.tvUserName.text = id
         binding.clAccount.setOnClickListener {
             view?.findNavController()?.navigate(R.id.settingsAccountFragment)
         }

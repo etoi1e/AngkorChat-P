@@ -328,6 +328,7 @@ class ChatAdapter(
                     intent.putExtra("email",message.sendProfile.email)
                     intent.putExtra("number",message.sendProfile.phone)
                     intent.putExtra("profile",message.sendProfile.profile)
+                    intent.putExtra("id",message.sendProfile.id)
                     context.startActivity(intent)
                 }
             }

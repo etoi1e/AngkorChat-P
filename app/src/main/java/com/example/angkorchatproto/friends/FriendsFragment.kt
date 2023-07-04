@@ -65,7 +65,7 @@ class FriendsFragment : Fragment() {
 
 
         //즐겨찾는 친구에 유니온모바일 무조건 추가
-        favoriteList.add(UserVO("유니온모바일", "union-mobile@union-mobile.co.kr", "union", "+123456789"))
+        favoriteList.add(UserVO("유니온모바일", "union-mobile@union-mobile.co.kr", "union", "+123456789", "unionmobileum"))
 
         //즐겨찾는 친구 Adapter
         favoriteAdapter = FriendsAdapter(requireContext(), favoriteList)
