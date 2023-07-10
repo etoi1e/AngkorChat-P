@@ -25,3 +25,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AngKorChatProto"
 include ':app'
+include ':angkorbank'
+include ':angkorcheck'
+include ':angkoreats'
+include ':angkorechoes'
+include ':angkorgames'
+include ':angkorplay'
+include ':angkorwebtoon'
