@@ -11,6 +11,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/angkorbank" />
+            <option value="$PROJECT_DIR$/angkorcheck" />
+            <option value="$PROJECT_DIR$/angkoreats" />
+            <option value="$PROJECT_DIR$/angkorechoes" />
+            <option value="$PROJECT_DIR$/angkorgames" />
+            <option value="$PROJECT_DIR$/angkorplay" />
+            <option value="$PROJECT_DIR$/angkorwebtoon" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

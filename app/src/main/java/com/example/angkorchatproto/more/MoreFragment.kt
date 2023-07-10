@@ -138,7 +138,6 @@ class MoreFragment : Fragment() {
             serviceImg,
             object : ServiceAdapter.OnServiceAdapterListener {
                 override fun onItemClicked(itemIdx: Int?, characterName: String?) {
-
                 }
             })
         binding.rvServicesMenu.adapter = serviceAdapter
