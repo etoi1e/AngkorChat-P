@@ -244,7 +244,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         val out = FileOutputStream(tempFile)
 
-                        it.compress(
+                        it!!.compress(
                             Bitmap.CompressFormat.JPEG,
                             90,
                             out
