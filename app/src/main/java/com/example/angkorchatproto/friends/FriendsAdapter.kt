@@ -3,6 +3,9 @@ package com.example.angkorchatproto.friends
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +15,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.Resource
 import com.example.angkorchatproto.profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.io.Resources
+import java.net.URL
 
 class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
     RecyclerView.Adapter<FriendsAdapter.ViewHolder>(), Filterable {
@@ -26,15 +32,15 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
     var itemFilter = ItemFilter()
 
     // 리스너 커스텀
-    interface  OnItemClickListener{
-        fun  onItemClick(view : View, position: Int)
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
     }
 
     // 객체 저장 변수 선언
-    lateinit var mOnItemClickListener : OnItemClickListener
+    lateinit var mOnItemClickListener: OnItemClickListener
 
     //객체 전달 메서드
-    fun setOnItemClickListener(OnItemClickListener : OnItemClickListener){
+    fun setOnItemClickListener(OnItemClickListener: OnItemClickListener) {
         mOnItemClickListener = OnItemClickListener
     }
 
@@ -59,13 +65,14 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
 
                 val intent = Intent(context, ProfileActivity::class.java)
 
+
+
                 intent.putExtra("name", filterList.name)
                 intent.putExtra("number", filterList.phone)
                 intent.putExtra("email", filterList.email)
                 intent.putExtra("profile", filterList.profile)
 
                 context.startActivity(intent)
-
 
 
             }
@@ -96,17 +103,24 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
         holder.tvName.text = name
         holder.tvEmail.text = email
 
-        if(profile == "union"){
-            Glide.with(context)
-                .load(R.drawable.top_logo)
-                .into(holder.imgProfile)
-        }else if(profile == ""){
+//        if(profile == "union"){
+//            Glide.with(context)
+//                .load(R.drawable.top_logo)
+//                .into(holder.imgProfile)
+//        }else
+
+        Log.d("TAG-profile", profile.toString())
+
+
+        if (profile == "") {
             Glide.with(context)
                 .load(R.drawable.ic_profile_default_72)
                 .into(holder.imgProfile)
-        }else{
+        } else {
+            val resourceID =
+                context.resources.getIdentifier(profile, "drawable", "com.example.angkorchatproto")
             Glide.with(context)
-                .load(profile)
+                .load(resourceID)
                 .into(holder.imgProfile)
         }
 
@@ -114,7 +128,9 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
     }
 
     override fun getItemCount(): Int {
-        if(initCk&&initCn==3){ filteredBoard.addAll(friendList)}
+        if (initCk && initCn == 3) {
+            filteredBoard.addAll(friendList)
+        }
         initCn++
         return filteredBoard.size
     }
@@ -158,7 +174,6 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
 
 
     }
-
 
 
 }

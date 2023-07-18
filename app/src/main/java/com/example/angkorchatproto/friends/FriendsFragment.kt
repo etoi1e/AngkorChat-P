@@ -16,17 +16,12 @@ import com.example.angkorchatproto.profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.databinding.FragmentFriendsBinding
-import com.example.angkorchatproto.utils.FBdataBase
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ktx.getValue
+
 
 
 class FriendsFragment : Fragment() {
 
     lateinit var binding: FragmentFriendsBinding
-    lateinit var friendList: ArrayList<UserVO>
     lateinit var favoriteAdapter: FriendsAdapter
     lateinit var friendAdapter: FriendsAdapter
 
@@ -38,7 +33,7 @@ class FriendsFragment : Fragment() {
 
 
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
-        var favoriteList = arrayListOf<UserVO>()
+        var friendList = arrayListOf<UserVO>()
 
 
         //포커스 컨트롤
@@ -65,19 +60,27 @@ class FriendsFragment : Fragment() {
 
 
         //즐겨찾는 친구에 유니온모바일 무조건 추가
-        favoriteList.add(UserVO("유니온모바일", "union-mobile@union-mobile.co.kr", "union", "+123456789", "unionmobileum"))
+        val resourceID = resources.getIdentifier("dummy_profile_01", "drawable","com.example.angkorchatproto")
+        friendList.add(UserVO("Cindy", "Hello, I'm Cindy", "dummy_profile_01", "010-8888-9999", "dummyMom"))
+        friendList.add(UserVO("Jessica", "❤", "dummy_profile_02", "010-1234-5678", "dummyJessica"))
+        friendList.add(UserVO("Emma", "", "dummy_profile_03", "010-5678-1234", "dummyEmma"))
+        friendList.add(UserVO("Adam Smith", "Working...", "dummy_profile_04", "010-2222-4444", "dummyAdam"))
+        friendList.add(UserVO("John Kim", "Hiking", "dummy_profile_05", "010-6666-7777", "dummyJohn"))
+        friendList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-9999", "dummyMom"))
+        friendList.add(UserVO("Brother", "Paw", "dummy_profile_07", "010-0000-0000", "dummyBro"))
+        friendList.add(UserVO("Nuri Kim", "", "", "010-7516-8705", "dummyNuri"))
 
         //즐겨찾는 친구 Adapter
-        favoriteAdapter = FriendsAdapter(requireContext(), favoriteList)
+        favoriteAdapter = FriendsAdapter(requireContext(), friendList)
         favoriteAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
 
                 val intent = Intent(requireContext(), ProfileActivity::class.java)
 
-                intent.putExtra("name", favoriteList[position].name)
-                intent.putExtra("number", favoriteList[position].phone)
-                intent.putExtra("email", favoriteList[position].email)
-                intent.putExtra("profile", favoriteList[position].profile)
+                intent.putExtra("name", friendList[position].name)
+                intent.putExtra("number", friendList[position].phone)
+                intent.putExtra("email", friendList[position].email)
+                intent.putExtra("profile", friendList[position].profile)
 
                 startActivity(intent)
 
@@ -88,12 +91,12 @@ class FriendsFragment : Fragment() {
         binding.rvFavoriteFriends.layoutManager = GridLayoutManager(requireContext(), 1)
 
         //즐겨찾는 친구 Count
-        val countFavorite = favoriteList.size.toString()
+        val countFavorite = friendList.size.toString()
         binding.tvCountFavoriteFriends.text = countFavorite
 
-        friendList = getFirebase()
+        //friendList = getFirebase()
 
-        friendList = ArrayList()
+        //friendList = ArrayList()
 
         favoriteAdapter = FriendsAdapter(requireContext(), friendList)
 
@@ -176,57 +179,57 @@ class FriendsFragment : Fragment() {
 
     }
 
-    fun getFirebase(): ArrayList<UserVO> {
-        friendList = ArrayList()
-
-        //SharedPreferences
-        val shared = requireContext().getSharedPreferences("loginNumber", 0)
-        val userNumber = shared.getString("userNumber", "").toString()
-
-        val friendRef = FBdataBase.getFriendRef()
-
-        friendRef.child(userNumber).addChildEventListener(object : ChildEventListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                //Log.d("TAG-전체친구목록",snapshot.toString())
-                val firendItem = snapshot.getValue<UserVO>() as UserVO
-                friendList.add(firendItem)
-
-                //전체 친구 Count
-                if (friendList.size == 0) {
-                    binding.tvCountFriendsFriends.text = "0"
-                } else {
-                    val testList = friendList.size.toString()
-                    binding.tvCountFriendsFriends.text = testList
-                }
-
-                friendAdapter.notifyDataSetChanged()
-
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                friendAdapter.notifyDataSetChanged()
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
-
-
-
-
-        return friendList
-    }
+//    fun getFirebase(): ArrayList<UserVO> {
+//        friendList = ArrayList()
+//
+//        //SharedPreferences
+//        val shared = requireContext().getSharedPreferences("loginNumber", 0)
+//        val userNumber = shared.getString("userNumber", "").toString()
+//
+//        val friendRef = FBdataBase.getFriendRef()
+//
+//        friendRef.child(userNumber).addChildEventListener(object : ChildEventListener {
+//            @SuppressLint("NotifyDataSetChanged")
+//            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//                //Log.d("TAG-전체친구목록",snapshot.toString())
+//                val firendItem = snapshot.getValue<UserVO>() as UserVO
+//                friendList.add(firendItem)
+//
+//                //전체 친구 Count
+//                if (friendList.size == 0) {
+//                    binding.tvCountFriendsFriends.text = "0"
+//                } else {
+//                    val testList = friendList.size.toString()
+//                    binding.tvCountFriendsFriends.text = testList
+//                }
+//
+//                friendAdapter.notifyDataSetChanged()
+//
+//            }
+//
+//            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onChildRemoved(snapshot: DataSnapshot) {
+//                friendAdapter.notifyDataSetChanged()
+//            }
+//
+//            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                TODO("Not yet implemented")
+//            }
+//
+//        })
+//
+//
+//
+//
+//        return friendList
+//    }
 
 
 }

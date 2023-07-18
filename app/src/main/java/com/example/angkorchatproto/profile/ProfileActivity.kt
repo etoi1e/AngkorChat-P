@@ -85,17 +85,21 @@ class ProfileActivity : BaseActivity() {
 
         getImage()
 
-        if (profile == "union") { //챗봇프로필 출력 조건
-            Glide.with(this)
-                .load(R.drawable.top_logo)
-                .into(binding.imgProfileProfile)
-        } else if (profile == "") {
+//        if (profile == "union") { //챗봇프로필 출력 조건
+//            Glide.with(this)
+//                .load(R.drawable.top_logo)
+//                .into(binding.imgProfileProfile)
+//        } else
+
+        val resourceID = resources.getIdentifier(profile, "drawable","com.example.angkorchatproto")
+
+        if (profile == "") {
             Glide.with(this)
                 .load(R.drawable.ic_profile_default_72)
                 .into(binding.imgProfileProfile)
         } else {
             Glide.with(this)
-                .load(profile)
+                .load(resourceID)
                 .into(binding.imgProfileProfile)
         }
 
@@ -173,8 +177,8 @@ class ProfileActivity : BaseActivity() {
             }
         }
 
-            binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
-            binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
+        binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
+        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
 
 
         if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {

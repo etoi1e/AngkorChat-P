@@ -12,6 +12,14 @@
         android:title="chats" />
     <item
         android:id="@+id/tab3"
+        android:icon="@drawable/bottom_menu_feed"
+        android:title="feed" />
+    <item
+        android:id="@+id/tab4"
+        android:icon="@drawable/bottom_menu_shop"
+        android:title="shop" />
+    <item
+        android:id="@+id/tab5"
         android:icon="@drawable/ic_bottom_menu_more"
         android:title="more" />
 </menu>
