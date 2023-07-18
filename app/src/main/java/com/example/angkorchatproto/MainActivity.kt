@@ -8,6 +8,7 @@ import com.example.angkorchatproto.friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
 import com.example.angkorchatproto.more.MoreFragment
 import com.example.angkorchatproto.shopping.ShopFragment
+import com.example.feed.fragment.FeedFragment
 
 
 class MainActivity : BaseActivity() {
@@ -47,8 +48,10 @@ class MainActivity : BaseActivity() {
                 }
 
                 R.id.tab3 ->{
-
-
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.frameLayout,
+                        FeedFragment()
+                    ).commit()
                 }
 
                 R.id.tab4 ->{
