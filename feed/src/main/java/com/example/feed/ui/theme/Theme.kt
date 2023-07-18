@@ -36,7 +36,7 @@ fun AngKorChatProtoFeedTheme(
             val window = (view.context as Activity).window
             window.statusBarColor = LightColorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
-            WindowCompat.setDecorFitsSystemWindows(window, false)
+            //WindowCompat.setDecorFitsSystemWindows(window, false)
         }
     }
 

@@ -102,9 +102,7 @@ fun FeedDetailScreen(
             )
         }, bottomBar = {
             CommentEdit(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .imePadding(),
+                modifier = Modifier,
                 text = commentText.value,
                 mention = commentMention.value,
                 focusRequester = focusRequester,
@@ -122,9 +120,7 @@ fun FeedDetailScreen(
             }
         }) { scaffoldPaddingValues ->
             LazyColumn(
-                modifier = Modifier
-                    .padding(scaffoldPaddingValues)
-                    .imeNestedScroll()
+                modifier = Modifier.padding(scaffoldPaddingValues)
             ) {
                 item {
                     if (feed.content?.isNotBlank() == true) {

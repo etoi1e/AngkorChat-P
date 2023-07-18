@@ -50,19 +50,11 @@
         <activity
             android:name=".activity.FeedDetailActivity"
             android:theme="@style/Theme.AngKorChatProto"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:exported="false" />
 
         <activity android:name=".activity.FeedActivity"
             android:exported="true"
             android:theme="@style/Theme.AngKorChatProto">
-
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
