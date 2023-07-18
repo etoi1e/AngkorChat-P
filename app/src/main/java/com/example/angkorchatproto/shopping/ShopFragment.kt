@@ -5,56 +5,231 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.setContent
 import com.example.angkorchatproto.R
+import com.example.angkorchatproto.databinding.FragmentShopBinding
+import com.example.angkorshopping.compose.state.MerchandiseInfo
+import com.example.angkorshopping.screens.HomeScreen
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ShopFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ShopFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding: FragmentShopBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop, container, false)
+
+        super.onCreate(savedInstanceState)
+
+        binding = FragmentShopBinding.inflate(inflater, container, false)
+
+        binding.composeView.setContent {
+
+            val homeItemList = listOf<MerchandiseInfo>(
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_1,
+                    "Top Banding Sleeveless",
+                    15.00,
+                    "Black",
+                    1,
+                    true,
+                    "#Top #Sleeveless"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_2,
+                    "YALE White T-Shirts",
+                    27.00,
+                    "White",
+                    1,
+                    true,
+                    "#Top #T-Shirts"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_3,
+                    "Asics white sneakers with green line ",
+                    58.00,
+                    "White",
+                    1,
+                    true,
+                    "#Shoes #Sneakers"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_4,
+                    "Black long Sleeve",
+                    8.00,
+                    "Black",
+                    1,
+                    true,
+                    "#Top #long-Sleeve"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_5,
+                    "Mini Dress Black and SkyBlue",
+                    30.00,
+                    "Black/SkyBlue",
+                    1,
+                    true,
+                    "#Dress #Mini-Dress"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_6,
+                    "Converse White low",
+                    30.00,
+                    "White",
+                    1,
+                    true,
+                    "#Shoes #Converse"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_7,
+                    "Denim skirt mini",
+                    20.00,
+                    "Blue",
+                    1,
+                    true,
+                    "#Skirt #Denim"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_8,
+                    "Pink Training Zip up",
+                    45.00,
+                    "Pink",
+                    1,
+                    true,
+                    "#Top #Zip-Up"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_1,
+                    "Top Banding Sleeveless",
+                    15.00,
+                    "Black",
+                    1,
+                    true,
+                    "#Top #Sleeveless"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_2,
+                    "YALE White T-Shirts",
+                    27.00,
+                    "White",
+                    1,
+                    true,
+                    "#Top #T-Shirts"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_3,
+                    "Asics white sneakers with green line ",
+                    58.00,
+                    "White",
+                    1,
+                    true,
+                    "#Shoes #Sneakers"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_4,
+                    "Black long Sleeve",
+                    8.00,
+                    "Black",
+                    1,
+                    true,
+                    "#Top #long-Sleeve"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_5,
+                    "Mini Dress Black and SkyBlue",
+                    30.00,
+                    "Black/SkyBlue",
+                    1,
+                    true,
+
+                    "#Dress #Mini-Dress"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_6,
+                    "Converse White low",
+                    30.00,
+                    "White",
+                    1,
+                    true,
+
+                    "#Shoes #Converse"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_7,
+                    "Denim skirt mini",
+                    20.00,
+                    "Blue",
+                    1,
+                    true,
+                    "#Skirt #Denim "
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_8,
+                    "Pink Training Zip up",
+                    45.00,
+                    "Pink",
+                    1,
+                    true,
+                    "#Top #Zip-Up"
+
+                ),
+                MerchandiseInfo(
+                    "AngkorShop",
+                    com.example.angkorshopping.R.drawable.img_7,
+                    "Denim skirt mini",
+                    20.00,
+                    "Blue",
+                    1,
+                    true,
+
+                    "#Skirt #Denim"
+
+                )
+            )
+
+            HomeScreen(content = homeItemList)
+
+        }
+
+
+
+
+
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ShopFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ShopFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }
