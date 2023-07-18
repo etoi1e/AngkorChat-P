@@ -325,8 +325,9 @@ class ChatActivity : BaseActivity() {
                 .load(R.drawable.ic_profile_default_72)
                 .into(binding.imgProfileChat)
         } else {
+            val resourceID = resources.getIdentifier(profileImg, "drawable","com.example.angkorchatproto")
             Glide.with(this@ChatActivity)
-                .load(profileImg)
+                .load(resourceID)
                 .into(binding.imgProfileChat)
         }
 
@@ -360,8 +361,9 @@ class ChatActivity : BaseActivity() {
                                 profileImg = snapshot.getValue().toString()
 
                                 if (profileImg != "null") {
+                                    val resourceID = resources.getIdentifier(profileImg, "drawable","com.example.angkorchatproto")
                                     Glide.with(this@ChatActivity)
-                                        .load(profileImg)
+                                        .load(resourceID)
                                         .into(binding.imgProfileChat)
                                 } else {
                                     Glide.with(this@ChatActivity)
