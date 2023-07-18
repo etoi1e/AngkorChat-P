@@ -7,6 +7,7 @@ import com.example.angkorchatproto.chat.ChatFragment
 import com.example.angkorchatproto.friends.FriendsFragment
 import com.example.angkorchatproto.databinding.ActivityMainBinding
 import com.example.angkorchatproto.more.MoreFragment
+import com.example.angkorchatproto.shopping.ShopFragment
 
 
 class MainActivity : BaseActivity() {
@@ -46,6 +47,18 @@ class MainActivity : BaseActivity() {
                 }
 
                 R.id.tab3 ->{
+
+
+                }
+
+                R.id.tab4 ->{
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.frameLayout,
+                        ShopFragment()
+                    ).commit()
+                }
+
+                R.id.tab5 ->{
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frameLayout,
                         MoreFragment()

@@ -139,8 +139,10 @@ class ChatRoomAdapter(
                                             .load(R.drawable.ic_profile_default_72)
                                             .into(holder.imgProfileChatList)
                                     } else {
+                                        val resourceID =
+                                            context.resources.getIdentifier(profile, "drawable", "com.example.angkorchatproto")
                                         Glide.with(context)
-                                            .load(profile)
+                                            .load(resourceID)
                                             .into(holder.imgProfileChatList)
                                     }
                                 }
@@ -163,6 +165,7 @@ class ChatRoomAdapter(
 
                                     if (name == "null") {
                                         name = user.key.toString()
+
 
                                         Glide.with(context)
                                             .load(R.drawable.ic_profile_default_72)

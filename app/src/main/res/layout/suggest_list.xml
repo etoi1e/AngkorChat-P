@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_corner_radius="10dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/ic_profile_default_72" />
 
     <TextView
         android:id="@+id/tvNameFriendsList"
