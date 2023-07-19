@@ -74,10 +74,12 @@ fun AngkorEchoesHomeScreen(
     LaunchedEffect(nowPlaying) {
         nowPlayingDuration = 0
 
+        val start = System.currentTimeMillis()
+
         if(nowPlaying != null) {
-            while (nowPlayingDuration < nowPlaying!!.durationMs) {
-                delay(1000)
-                nowPlayingDuration += 1000
+            while (System.currentTimeMillis() - start < nowPlaying!!.durationMs) {
+                nowPlayingDuration = System.currentTimeMillis() - start
+                delay(100)
             }
         }
     }

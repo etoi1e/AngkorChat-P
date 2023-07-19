@@ -73,7 +73,7 @@ fun NowPlaying(
                             .padding(top = 24.dp)
                             .fillMaxWidth()
                             .aspectRatio(1f),
-                        painter = painterResource(id = song.albumArtResourceId),
+                        painter = painterResource(id = song.bigAlbumArtResourceId),
                         contentDescription = ""
                     )
 
