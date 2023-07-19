@@ -20,10 +20,10 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
-            //setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 FeedScreen(
-                    feeds = sampleFeeds,
+                    feeds = sampleFeeds + sampleFeeds.shuffled().map { it.copy(id = it.id + sampleFeeds.size) },
                     storyCovers = sampleStoryCovers,
                     suggestedUsers = sampleUsers,
                     onBack = { requireActivity().finish() }
