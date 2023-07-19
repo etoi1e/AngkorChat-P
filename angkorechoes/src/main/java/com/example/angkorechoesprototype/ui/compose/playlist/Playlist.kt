@@ -1,4 +1,4 @@
-package com.example.ui.compose.playlist
+package com.example.angkorechoesprototype.ui.compose.playlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

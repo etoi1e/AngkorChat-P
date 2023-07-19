@@ -1,4 +1,4 @@
-package com.example.ui.compose.appbar
+package com.example.angkorechoesprototype.ui.compose.appbar
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
@@ -42,7 +42,8 @@ fun BottomNavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
-            .background(AngkorEchoesTheme.colors.background),
+            .background(AngkorEchoesTheme.colors.background)
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
