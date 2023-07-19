@@ -4,19 +4,17 @@ package com.example.angkorshopping.screens
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,20 +39,27 @@ import java.text.DecimalFormat
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    merchandise: MerchandiseInfo
+    merchandise: MerchandiseInfo,
+    onBack: () -> Unit,
 ) {
 
     val context = LocalContext.current
 
     val item = merchandise.imgNumber
     val imgList = ArrayList<Int>()
-    val itemDetail = context.resources.getIdentifier("${item}_detail","drawable",context.packageName)
+    val itemDetail =
+        context.resources.getIdentifier("${item}_detail", "drawable", context.packageName)
 
 
-    for(i in 1 .. 4){
-        imgList.add(context.resources.getIdentifier("${item}_${i}","drawable",context.packageName))
+    for (i in 1..4) {
+        imgList.add(
+            context.resources.getIdentifier(
+                "${item}_${i}",
+                "drawable",
+                context.packageName
+            )
+        )
     }
-
 
     AngkorShoppingTheme {
         val dataFormat = DecimalFormat("##")
@@ -66,9 +71,29 @@ fun DetailScreen(
 
             Scaffold(containerColor = AngkorShoppingTheme.colors.Background,
                 topBar = {
+                    TopAppBar( modifier = Modifier
+                        .background(AngkorShoppingTheme.colors.Background)
+                        .padding(top = 15.dp, bottom = 8.dp)
+                        .height(28.dp),
+                        title = {
+                        },
+                        navigationIcon = {
+                            IconButton(modifier = Modifier
+                                .background(AngkorShoppingTheme.colors.Background),
+                                onClick = onBack) {
+                                Icon(
+                                    modifier = Modifier.size(28.dp),
+                                    painter = painterResource(id = R.drawable.ic_arrow_left_bk_28),
+                                    contentDescription = "Back"
+                                )
+                            }
+                        },
+                    )
+
                     Row(
                         modifier = Modifier
-                            .padding(start = 16.dp, top = 15.dp, bottom = 8.dp)
+                            .padding(start = 56.dp, top = 15.dp, bottom = 8.dp)
+                            .background(AngkorShoppingTheme.colors.Background)
                             .height(28.dp)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -77,10 +102,7 @@ fun DetailScreen(
                             modifier = Modifier
                                 .width(IntrinsicSize.Max)
                         ) {
-                            Icon(modifier = Modifier,
-                                painter = painterResource(id = R.drawable.ic_arrow_left_bk_28),
-                                contentDescription = "",
-                            )
+
                             Text(
                                 modifier = Modifier
                                     .padding(start = 12.dp),
@@ -100,6 +122,8 @@ fun DetailScreen(
 
                     }
                 },
+
+
                 bottomBar = {
                     BuyBottomBar()
                 }
@@ -143,8 +167,6 @@ fun DetailScreen(
                             Box(
                                 modifier = Modifier
                                     .padding(start = 16.dp, top = 8.dp)
-                                    .width(40.dp)
-                                    .height(16.dp)
                                     .background(AngkorShoppingTheme.colors.TextBlack),
                                 contentAlignment = Alignment.Center
                             ) {
@@ -263,7 +285,11 @@ fun DetailScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                val shop = ShopInfoState(merchandise.merchandiseImg, merchandise.shopName, "add")
+                                val shop = ShopInfoState(
+                                    merchandise.merchandiseImg,
+                                    merchandise.shopName,
+                                    "add"
+                                )
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Image(
@@ -305,11 +331,31 @@ fun DetailScreen(
                     //후기 사진 리스트 출력
                     item {
                         val reviews = listOf<ReviewsState>(
-                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_11_1),
-                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_17_1),
-                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_6_1),
-                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_8_1),
-                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_15_1)
+                            ReviewsState(
+                                "userName",
+                                R.drawable.img_profile_default_28,
+                                R.drawable.img_11_1
+                            ),
+                            ReviewsState(
+                                "userName",
+                                R.drawable.img_profile_default_28,
+                                R.drawable.img_17_1
+                            ),
+                            ReviewsState(
+                                "userName",
+                                R.drawable.img_profile_default_28,
+                                R.drawable.img_6_1
+                            ),
+                            ReviewsState(
+                                "userName",
+                                R.drawable.img_profile_default_28,
+                                R.drawable.img_8_1
+                            ),
+                            ReviewsState(
+                                "userName",
+                                R.drawable.img_profile_default_28,
+                                R.drawable.img_15_1
+                            )
 
                         )
 

@@ -15,17 +15,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
-import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.dialog.CustomDialog
 import com.example.angkorchatproto.utils.FBdataBase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
 import kr.co.kdnavien.naviensmart.presentation.custom.DialogNegativeBtnListener
 import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 
@@ -33,7 +30,6 @@ import kr.co.kdnavien.naviensmart.presentation.custom.DialogPositiveBtnListener
 class ChatRoomAdapter(
     val context: Context,
     val chatInfoList: ArrayList<ChatModel.Comment>,
-    val chatRoomKey: ArrayList<String>,
     var myNumber: String,
     val chatCount: ArrayList<String>
 ) :
@@ -83,10 +79,10 @@ class ChatRoomAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.chat_room_list, null)
-        chatRef.addValueEventListener(object : ValueEventListener{
+        chatRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-               notifyDataSetChanged()
+                notifyDataSetChanged()
 
             }
 
@@ -99,6 +95,7 @@ class ChatRoomAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+
         val chatRoom = chatInfoList[position]
 
         //시간 포맷팅
@@ -111,98 +108,131 @@ class ChatRoomAdapter(
             setTime = "AM " + chatRoom.time?.substring(11, 16)
         }
 
-        val usersRef = FBdataBase.getChatRef().child(chatRoomKey[position]).child("users")
+        val profile = chatInfoList[position].profile
+
+        val resourceID =
+            context.resources.getIdentifier(profile, "drawable", "com.example.angkorchatproto")
+
+
+        Glide.with(context)
+            .load(resourceID)
+            .into(holder.imgProfileChatList)
 
 
 
-        //상대방 번호
-        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (user in snapshot.children) {
-                    if (user.key != myNumber) {
-
-                        sender.add(user.key.toString())
-
-                        //번호로 유저 이름 찾기
-                        val friendRef = FBdataBase.getFriendRef()
-
-                        friendRef.child(myNumber).child(user.key.toString()).child("profile")
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-
-                                @SuppressLint("SetTextI18n")
-                                override fun onDataChange(snapshot: DataSnapshot) {
-
-                                    var profile = snapshot.value.toString()
-
-                                    if (profile == "") {
-                                        Glide.with(context)
-                                            .load(R.drawable.ic_profile_default_72)
-                                            .into(holder.imgProfileChatList)
-                                    } else {
-                                        val resourceID =
-                                            context.resources.getIdentifier(profile, "drawable", "com.example.angkorchatproto")
-                                        Glide.with(context)
-                                            .load(resourceID)
-                                            .into(holder.imgProfileChatList)
-                                    }
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
-                                }
+        if (profile == "dummy_profile_04") {
+            holder.tvNameChatList.text = "Adam Smith"
+        }
+        if (profile == "dummy_profile_07") {
+            holder.tvNameChatList.text = "Brother"
+        }
+        if (profile == "dummy_profile_01") {
+            holder.tvNameChatList.text = "Cindy"
+        }
+        if (profile == "ic_profile_default_72") {
+            holder.tvNameChatList.text = "Dad"
+        }
+        if (profile == "dummy_profile_03") {
+            holder.tvNameChatList.text = "Emma"
+        }
+        if (profile == "dummy_profile_02") {
+            holder.tvNameChatList.text = "Jessica"
+        }
+        if (profile == "dummy_profile_05") {
+            holder.tvNameChatList.text = "John Kim"
+        }
+        if (profile == "dummy_profile_06") {
+            holder.tvNameChatList.text = "Mom"
+        }
 
 
-                            })
-
-
-                        friendRef.child(myNumber).child(user.key.toString()).child("name")
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-
-                                @SuppressLint("SetTextI18n")
-                                override fun onDataChange(snapshot: DataSnapshot) {
-
-                                    var name = snapshot.value.toString()
-
-                                    if (name == "null") {
-                                        name = user.key.toString()
-
-
-                                        Glide.with(context)
-                                            .load(R.drawable.ic_profile_default_72)
-                                            .into(holder.imgProfileChatList)
-                                    }
-
-                                    holder.tvNameChatList.text = name
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
-                                }
-
-
-                            })
-
-
-
-                        holder.layout.setOnClickListener {
-                            val intent = Intent(context, ChatActivity::class.java)
-                            intent.putExtra("name", holder.tvNameChatList.text)
-                            intent.putExtra("number", user.key.toString())
-                            context.startActivity(intent)
-                        }
-
-
-
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // 에러 처리
-            }
-        })
-
-
+//        //상대방 번호
+//        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                for (user in snapshot.children) {
+//                    if (user.key != myNumber) {
+//
+//                        sender.add(user.key.toString())
+//
+//                        //번호로 유저 이름 찾기
+//                        val friendRef = FBdataBase.getFriendRef()
+//
+//                        friendRef.child(myNumber).child(user.key.toString()).child("profile")
+//                            .addListenerForSingleValueEvent(object : ValueEventListener {
+//
+//                                @SuppressLint("SetTextI18n")
+//                                override fun onDataChange(snapshot: DataSnapshot) {
+//
+//                                    var profile = snapshot.value.toString()
+//
+//                                    if (profile == "") {
+//                                        Glide.with(context)
+//                                            .load(R.drawable.ic_profile_default_72)
+//                                            .into(holder.imgProfileChatList)
+//                                    } else {
+//                                        val resourceID =
+//                                            context.resources.getIdentifier(profile, "drawable", "com.example.angkorchatproto")
+//                                        Glide.with(context)
+//                                            .load(resourceID)
+//                                            .into(holder.imgProfileChatList)
+//                                    }
+//                                }
+//
+//                                override fun onCancelled(error: DatabaseError) {
+//                                    TODO("Not yet implemented")
+//                                }
+//
+//
+//                            })
+//
+//
+//                        friendRef.child(myNumber).child(user.key.toString()).child("name")
+//                            .addListenerForSingleValueEvent(object : ValueEventListener {
+//
+//                                @SuppressLint("SetTextI18n")
+//                                override fun onDataChange(snapshot: DataSnapshot) {
+//
+//                                    var name = snapshot.value.toString()
+//
+//                                    if (name == "null") {
+//                                        name = user.key.toString()
+//
+//
+//                                        Glide.with(context)
+//                                            .load(R.drawable.ic_profile_default_72)
+//                                            .into(holder.imgProfileChatList)
+//                                    }
+//
+//                                    holder.tvNameChatList.text = name
+//                                }
+//
+//                                override fun onCancelled(error: DatabaseError) {
+//                                    TODO("Not yet implemented")
+//                                }
+//
+//
+//                            })
+//
+//
+//
+        holder.layout.setOnClickListener {
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("name", holder.tvNameChatList.text)
+            intent.putExtra("number", chatInfoList[position].sender)
+            intent.putExtra("profileDummy", profile)
+            context.startActivity(intent)
+        }
+//
+//
+//
+//                    }
+//                }
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // 에러 처리
+//            }
+//        })
 
 
         //채팅방 내용 출력

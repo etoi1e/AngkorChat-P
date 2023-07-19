@@ -150,18 +150,18 @@ class ChatActivity : BaseActivity() {
 
         }
 
-        if(result.resultCode == 1994){
+        if (result.resultCode == 1994) {
             //location 정보 불러오기
-            val lat = result.data?.getDoubleExtra("latitude",0.0)!!
-            val lng = result.data?.getDoubleExtra("longitude",0.0)!!
+            val lat = result.data?.getDoubleExtra("latitude", 0.0)!!
+            val lng = result.data?.getDoubleExtra("longitude", 0.0)!!
             val mapScreenshot = result.data?.getStringExtra("mapScreenshot")!!
             location = "$lat,$lng&$mapScreenshot"
 
-            Log.d("TAG-위치정보",location.toString())
+            Log.d("TAG-위치정보", location.toString())
 
             binding.imgSendMessageChat.performClick()
 
-            location=""
+            location = ""
         }
     }
 
@@ -174,7 +174,7 @@ class ChatActivity : BaseActivity() {
 
 //        binding.rvChatListChat.scrollToPosition(commentList.lastIndex)
 
-        binding.rvChatListChat.scrollToPosition(commentList.size-1)
+        binding.rvChatListChat.scrollToPosition(commentList.size - 1)
 
         val sharedReply = getSharedPreferences("sharedReply", 0)
         val editorReply = sharedReply.edit()
@@ -302,8 +302,8 @@ class ChatActivity : BaseActivity() {
         setContentView(binding.root)
 
         //현재 사용자 번호 불러오기
-        val shared = getSharedPreferences("loginNumber", 0)
-        myNumber = shared.getString("userNumber", "").toString()
+        //val shared = getSharedPreferences("loginNumber", 0)
+        myNumber = "05555215554"
 
         //상대방 번호 저장
         val receiverData = intent.getStringExtra("number").toString()
@@ -316,20 +316,45 @@ class ChatActivity : BaseActivity() {
 
         //상대방 이름 출력
         val receiverName = intent.getStringExtra("name").toString()
-        binding.tvNameChat.text = receiverName
+        if (receiverName != null) {
+            binding.tvNameChat.text = receiverName
+
+        }
 
         var profileImg = intent.getStringExtra("profile")
+        var profileDummy = intent.getStringExtra("profileDummy")
+        var profileFromProfile = intent.getStringExtra("profileFromProfile")
 
-        if (profileImg == null || profileImg == "") {
-            Glide.with(this@ChatActivity)
-                .load(R.drawable.ic_profile_default_72)
-                .into(binding.imgProfileChat)
-        } else {
-            val resourceID = resources.getIdentifier(profileImg, "drawable","com.example.angkorchatproto")
+        if(profileDummy != null) {
+            val resourceID =
+                resources.getIdentifier(profileDummy, "drawable", "com.example.angkorchatproto")
             Glide.with(this@ChatActivity)
                 .load(resourceID)
                 .into(binding.imgProfileChat)
         }
+
+
+        if(profileFromProfile != null) {
+            val resourceID =
+                resources.getIdentifier(profileFromProfile, "drawable", "com.example.angkorchatproto")
+            Glide.with(this@ChatActivity)
+                .load(resourceID)
+                .into(binding.imgProfileChat)
+        }
+//        }else{
+//            Glide.with(this@ChatActivity)
+//                .load(R.drawable.ic_profile_default_72)
+//                .into(binding.imgProfileChat)
+//        }
+
+
+//        if (profileImg == null || profileImg == "") {
+//            Glide.with(this@ChatActivity)
+//                .load(profileDummy)
+//                .into(binding.imgProfileChat)
+//        } else {
+
+//        }
 
 
         //상대방 번호
@@ -360,16 +385,16 @@ class ChatActivity : BaseActivity() {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 profileImg = snapshot.getValue().toString()
 
-                                if (profileImg != "null") {
-                                    val resourceID = resources.getIdentifier(profileImg, "drawable","com.example.angkorchatproto")
-                                    Glide.with(this@ChatActivity)
-                                        .load(resourceID)
-                                        .into(binding.imgProfileChat)
-                                } else {
-                                    Glide.with(this@ChatActivity)
-                                        .load(R.drawable.ic_profile_default_72)
-                                        .into(binding.imgProfileChat)
-                                }
+//                                if (profileImg != "null") {
+//                                    val resourceID = resources.getIdentifier(profileImg, "drawable","com.example.angkorchatproto")
+//                                    Glide.with(this@ChatActivity)
+//                                        .load(resourceID)
+//                                        .into(binding.imgProfileChat)
+//                                } else {
+//                                    Glide.with(this@ChatActivity)
+//                                        .load(R.drawable.ic_profile_default_72)
+//                                        .into(binding.imgProfileChat)
+//                                }
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -547,11 +572,9 @@ class ChatActivity : BaseActivity() {
                     //미디어 메뉴 내 Location 클릭 시
                     binding.imgLocationChatMedia.setOnClickListener {
 
-                        val intent = Intent(this@ChatActivity,MapsActivity::class.java)
+                        val intent = Intent(this@ChatActivity, MapsActivity::class.java)
 
                         startForResult.launch(intent)
-
-
 
 
                     }

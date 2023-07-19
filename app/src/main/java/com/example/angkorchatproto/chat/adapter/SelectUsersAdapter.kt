@@ -47,6 +47,8 @@ class SelectUsersAdapter(
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
 
         val profile = mSuggestList[position].profile
+        val resourceID =
+            context.resources.getIdentifier(profile, "drawable", "com.example.angkorchatproto")
         val name = mSuggestList[position].name
         val phone = mSuggestList[position].phone
 
@@ -54,21 +56,21 @@ class SelectUsersAdapter(
         if (selectItemPosition != null) {
             holder.tbSelect.isChecked = position == selectItemPosition
         }
-        holder.tbSelect.isEnabled = false
+//        holder.tbSelect.isEnabled = false
         //프로필 사진 적용
-        if (profile == "union") {//공식계정인 경우
+//        if (profile == "union") {//공식계정인 경우
+//            Glide.with(context)
+//                .load(R.drawable.top_logo)
+//                .into(holder.imgProfile)
+//        } else if (profile == "") {//사진 미등록의 경우
+//            Glide.with(context)
+//                .load(R.drawable.ic_profile_default_72)
+//                .into(holder.imgProfile)
+//        } else {//저장된 사진 가져오기
             Glide.with(context)
-                .load(R.drawable.top_logo)
+                .load(resourceID)
                 .into(holder.imgProfile)
-        } else if (profile == "") {//사진 미등록의 경우
-            Glide.with(context)
-                .load(R.drawable.ic_profile_default_72)
-                .into(holder.imgProfile)
-        } else {//저장된 사진 가져오기
-            Glide.with(context)
-                .load(profile)
-                .into(holder.imgProfile)
-        }
+//        }
 
         val removeDash = phone.toString().replace("-", "")
         val removeSpace = removeDash.replace(" ", "")

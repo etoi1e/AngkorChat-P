@@ -3,7 +3,6 @@ package com.example.angkorshopping
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import com.example.angkorshopping.compose.state.MerchandiseInfo
 import com.example.angkorshopping.screens.DetailScreen
@@ -42,7 +41,7 @@ class DetailActivity : ComponentActivity() {
                 )
 
 
-                DetailScreen(merchandise)
+                DetailScreen(merchandise) { this@DetailActivity.finish() }
 
             }
         }

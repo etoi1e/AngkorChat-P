@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.angkorchatproto.R
 
-class ProfileAdapter(val context: Context, val imgList: ArrayList<Uri?>) :
+class ProfileAdapter(val context: Context, val imgList: ArrayList<Int>) :
     RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
 
 

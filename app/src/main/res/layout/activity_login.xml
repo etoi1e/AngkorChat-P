@@ -90,7 +90,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="36dp"
-        android:background="@drawable/style_disable_btn"
+        android:background="@drawable/style_login_btn"
         android:text="Send a code"
         android:textAllCaps="false"
         android:textColor="@color/white"

@@ -1,18 +1,12 @@
 package com.example.angkorchatproto.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.KeyEvent
 import android.widget.Toast
 import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.MainActivity
-import com.example.angkorchatproto.R
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.databinding.ActivityIdBinding
-import com.example.angkorchatproto.databinding.ActivityPasswordBinding
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -29,25 +23,26 @@ class IdActivity : BaseActivity() {
         val shared = getSharedPreferences("loginNumber", 0)
         val editor = shared.edit()
 
+        binding.etIdId.setText("AngkorChat")
         //아이디 입력 확인
-        binding.etIdId.addTextChangedListener(textChecker)
+//        binding.etIdId.addTextChangedListener(textChecker)
 
 
-        //Enter 클릭 시 다음 페이지로 이동
-        binding.etIdId.setOnKeyListener() { v, keyCode, event ->
-            var handled = false
+//        //Enter 클릭 시 다음 페이지로 이동
+//        binding.etIdId.setOnKeyListener() { v, keyCode, event ->
+//            var handled = false
+//
+//            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+//
+//                //전송 버튼 클릭효과
+//                binding.btnLoginId.performClick()
+//                handled = true
+//            }
+//            handled
+//        }
 
-            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-                //전송 버튼 클릭효과
-                binding.btnLoginId.performClick()
-                handled = true
-            }
-            handled
-        }
-
-
-        binding.btnLoginId.isEnabled = false
+        binding.btnLoginId.isEnabled = true
 
         //Login 버튼 클릭시 동작
 
@@ -61,12 +56,12 @@ class IdActivity : BaseActivity() {
                 val id = binding.etIdId.text.toString()
 
 
-                //번호로 사용자 정보 firebase 에 저장
-                val token = shared.getString("token","")
-                val database = Firebase.database.reference
-                database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,password,token,id))
+//                //번호로 사용자 정보 firebase 에 저장
+//                val token = shared.getString("token","")
+//                val database = Firebase.database.reference
+//                database.child("user").child(joinNumber).setValue(JoinVO(joinNumber,password,token,id))
 
-                editor.putString("userNumber", joinNumber)
+                editor.putString("userNumber", "05555215554")
                 editor.putString("id", id)
                 editor.putString("userName","유저이름")
                 editor.apply()
@@ -82,33 +77,33 @@ class IdActivity : BaseActivity() {
 
     }
 
-    //edtiText 값 확인 버튼 활성화
-    val textChecker = object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            val number = p0.toString().trim()
-
-            if (p0.toString().length > 0 && p0 != null) {
-                binding.btnLoginId.isEnabled = true
-//                binding.btnLoginPassword.setClickable(true)
-                binding.viewUnderLineId.setBackgroundColor(getColor(R.color.mainYellow))
-                binding.btnLoginId.setBackgroundResource(R.drawable.style_login_btn)
-//                Log.d("TAG-번호입력", number)
-
-            } else {
-                binding.btnLoginId.isEnabled = false
-//                binding.btnLoginId.setClickable(false)
-                binding.viewUnderLineId.setBackgroundColor(getColor(R.color.gray))
-                binding.btnLoginId.setBackgroundResource(R.drawable.style_disable_btn)
-//                Log.d("TAG-번호미입력", p0.toString())
-            }
-
-        }
-
-        override fun afterTextChanged(p0: Editable?) {}
-
-    }
+//    //edtiText 값 확인 버튼 활성화
+//    val textChecker = object : TextWatcher {
+//        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+//
+//        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            val number = p0.toString().trim()
+//
+//            if (p0.toString().length > 0 && p0 != null) {
+//                binding.btnLoginId.isEnabled = true
+////                binding.btnLoginPassword.setClickable(true)
+//                binding.viewUnderLineId.setBackgroundColor(getColor(R.color.mainYellow))
+//                binding.btnLoginId.setBackgroundResource(R.drawable.style_login_btn)
+////                Log.d("TAG-번호입력", number)
+//
+//            } else {
+//                binding.btnLoginId.isEnabled = false
+////                binding.btnLoginId.setClickable(false)
+//                binding.viewUnderLineId.setBackgroundColor(getColor(R.color.gray))
+//                binding.btnLoginId.setBackgroundResource(R.drawable.style_disable_btn)
+////                Log.d("TAG-번호미입력", p0.toString())
+//            }
+//
+//        }
+//
+//        override fun afterTextChanged(p0: Editable?) {}
+//
+//    }
 
 
 }

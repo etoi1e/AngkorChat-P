@@ -37,7 +37,7 @@ import kotlin.collections.ArrayList
 class ProfileActivity : BaseActivity() {
 
     lateinit var binding: ActivityProfileBinding
-    var imgList = ArrayList<Uri?>()
+    var imgList = ArrayList<Int>()
 
     //Manifest 에서 설정한 권한을 가지고 온다.
     val STORAGE_PERMISSION = arrayOf(
@@ -83,7 +83,7 @@ class ProfileActivity : BaseActivity() {
         //프로필 사진 uri 가져오기
         val profile = intent.getStringExtra("profile")
 
-        getImage()
+//        getImage()
 
 //        if (profile == "union") { //챗봇프로필 출력 조건
 //            Glide.with(this)
@@ -114,7 +114,7 @@ class ProfileActivity : BaseActivity() {
                 val intent = Intent(this@ProfileActivity, ChatActivity::class.java)
                 intent.putExtra("name", userName)
                 intent.putExtra("number", number)
-                intent.putExtra("profile", userProfile)
+                intent.putExtra("profileFromProfile", userProfile)
                 startActivity(intent)
                 finish()
             }
@@ -180,116 +180,121 @@ class ProfileActivity : BaseActivity() {
         binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)
         binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
 
+//
+//        if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
+//
+//        } else {
+//            //권한이 없으면 권한 요청
+//            ActivityCompat.requestPermissions(this, STORAGE_PERMISSION, FLAG_PERM_STORAGE)
+//        }
+//
+//
+//        val projection = arrayOf(
+//            MediaStore.Images.Media._ID,
+//            MediaStore.Images.Media.DISPLAY_NAME,
+//            MediaStore.Images.Media.DATE_TAKEN
+//        )
+//        val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
+//        val query = applicationContext.contentResolver.query(
+//            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//            projection,
+//            null,
+//            null,
+//            sortOrder
+//        )
+//        query?.use { cursor ->
+//            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+//            while (cursor.moveToNext() && imgList.size < 5) { // 5개 이하까지 불러옴
+//                val id = cursor.getLong(idColumn)
+//                val imageUri = ContentUris.withAppendedId(
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                    id
+//                )
+//            }
+//        }
 
-        if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
-
-        } else {
-            //권한이 없으면 권한 요청
-            ActivityCompat.requestPermissions(this, STORAGE_PERMISSION, FLAG_PERM_STORAGE)
-        }
-
-
-        val projection = arrayOf(
-            MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATE_TAKEN
-        )
-        val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
-        val query = applicationContext.contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            projection,
-            null,
-            null,
-            sortOrder
-        )
-        query?.use { cursor ->
-            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            while (cursor.moveToNext() && imgList.size < 5) { // 5개 이하까지 불러옴
-                val id = cursor.getLong(idColumn)
-                val imageUri = ContentUris.withAppendedId(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    id
-                )
-                imgList.add(imageUri)
-            }
-            //사진 count
+                imgList.add(R.drawable.dummy_profile_01)
+                imgList.add(R.drawable.dummy_profile_02)
+                imgList.add(R.drawable.dummy_profile_03)
+                imgList.add(R.drawable.dummy_profile_04)
+                imgList.add(R.drawable.dummy_profile_05)
+                imgList.add(R.drawable.dummy_profile_06)
+//            사진 count
             binding.tvCountPhotoProfile.text = imgList.size.toString()
-        }
-
 
     }
 
-    fun getImage() {
-
-        //권한 확인
-
-        if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
-
-            val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
-            startActivity(intent)
-        } else {
-            //권한이 없으면 권한 요청을 합니다.
-            ActivityCompat.requestPermissions(
-                this@ProfileActivity,
-                STORAGE_PERMISSION,
-                FLAG_PERM_STORAGE
-            )
-
-        }
-
-
-        val projection = arrayOf(
-            MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATE_TAKEN
-        )
-        val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
-
-        val query = applicationContext.contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            projection,
-            null,
-            null,
-            sortOrder
-        )
-        query?.use { cursor ->
-            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            while (cursor.moveToNext()) { // 5개 이하까지 불러옴
-                val id = cursor.getLong(idColumn)
-                val imageUri = ContentUris.withAppendedId(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    id
-                )
-                if (imgList.size < 5) {
-                    imgList.add(imageUri)
-                }
-                Log.d("imgList", imgList.toString())
-            }
-        }
-        val adapter = ProfileAdapter(this@ProfileActivity, imgList)
-        binding.rvPhotoListProfile.adapter = adapter
-        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
-
-        adapter.notifyDataSetChanged()
-
-
-    }
-
-
-    fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
-        for (permission in permissions) {
-            //만약 권한이 승인되어 있지 않다면 권한승인 요청을 사용에 화면에 호출합니다.
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    permission
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(this, permissions, flag)
-                return false
-            }
-        }
-        return true
-    }
+//    fun getImage() {
+//
+//        //권한 확인
+//
+//        if (checkPermission(STORAGE_PERMISSION, FLAG_PERM_STORAGE)) {
+//
+//            val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+//            startActivity(intent)
+//        } else {
+//            //권한이 없으면 권한 요청을 합니다.
+//            ActivityCompat.requestPermissions(
+//                this@ProfileActivity,
+//                STORAGE_PERMISSION,
+//                FLAG_PERM_STORAGE
+//            )
+//
+//        }
+//
+//
+//        val projection = arrayOf(
+//            MediaStore.Images.Media._ID,
+//            MediaStore.Images.Media.DISPLAY_NAME,
+//            MediaStore.Images.Media.DATE_TAKEN
+//        )
+//        val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
+//
+//        val query = applicationContext.contentResolver.query(
+//            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//            projection,
+//            null,
+//            null,
+//            sortOrder
+//        )
+//        query?.use { cursor ->
+//            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+//            while (cursor.moveToNext()) { // 5개 이하까지 불러옴
+//                val id = cursor.getLong(idColumn)
+//                val imageUri = ContentUris.withAppendedId(
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                    id
+//                )
+//                if (imgList.size < 5) {
+//                    imgList.add(imageUri)
+//                }
+//                Log.d("imgList", imgList.toString())
+//            }
+//        }
+//        val adapter = ProfileAdapter(this@ProfileActivity, imgList)
+//        binding.rvPhotoListProfile.adapter = adapter
+//        binding.rvPhotoListProfile.layoutManager = GridLayoutManager(this@ProfileActivity, 3)
+//
+//        adapter.notifyDataSetChanged()
+//
+//
+//    }
+//
+//
+//    fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
+//        for (permission in permissions) {
+//            //만약 권한이 승인되어 있지 않다면 권한승인 요청을 사용에 화면에 호출합니다.
+//            if (ContextCompat.checkSelfPermission(
+//                    this,
+//                    permission
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                ActivityCompat.requestPermissions(this, permissions, flag)
+//                return false
+//            }
+//        }
+//        return true
+//    }
 
 
 }

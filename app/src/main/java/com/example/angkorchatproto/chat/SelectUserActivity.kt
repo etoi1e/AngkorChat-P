@@ -36,10 +36,28 @@ class SelectUserActivity : BaseActivity() {
         binding = ActivitySelectUserBinding.inflate(layoutInflater)
         val shared = getSharedPreferences("loginNumber", 0)
         val userNumber = shared.getString("userNumber", "")
-        getContacts()
+//        getContacts()
 
         val checkProfile = intent.getStringExtra("sendProfile")
         Log.d("TAG-checkProfile",checkProfile.toString())
+
+        mSuggestList.add(UserVO("Adam Smith", "Working...", "dummy_profile_04", "010-1111-1111", "dummyAdam"))
+        mSuggestList.add(UserVO("Brother", "Paw", "dummy_profile_07", "010-2222-2222", "dummyBro"))
+        mSuggestList.add(UserVO("Cindy", "Hello, I'm Cindy", "dummy_profile_01", "010-3333-3333", "dummyMom"))
+        mSuggestList.add(UserVO("Dad", "", "ic_profile_default_72", "010-4444-4444", "dummyDad"))
+        mSuggestList.add(UserVO("Emma", "", "dummy_profile_03", "010-5555-5555", "dummyEmma"))
+        mSuggestList.add(UserVO("Jessica", "❤", "dummy_profile_02", "010-6666-6666", "dummyJessica"))
+        mSuggestList.add(UserVO("John Kim", "Hiking", "dummy_profile_05", "010-7777-7777", "dummyJohn"))
+        mSuggestList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-8888", "dummyMom"))
+
+        mFriendList.add("010-1111-1111")
+        mFriendList.add("010-2222-2222")
+        mFriendList.add("010-3333-3333")
+        mFriendList.add("010-4444-4444")
+        mFriendList.add("010-5555-5555")
+        mFriendList.add("010-6666-6666")
+        mFriendList.add("010-7777-7777")
+        mFriendList.add("010-8888-8888")
 
         val adapter = SelectUsersAdapter(
             this@SelectUserActivity,
@@ -60,7 +78,7 @@ class SelectUserActivity : BaseActivity() {
                     val intent = Intent(this@SelectUserActivity,ChatActivity::class.java).apply {
                         putExtra("name",mSelectUser?.name)
                         putExtra("email",mSelectUser?.email)
-                        putExtra("profile",mSelectUser?.profile)
+                        putExtra("profileDummy",mSelectUser?.profile)
                         putExtra("phone",mSelectUser?.phone)
                     }
                     setResult(RESULT_OK,intent)
@@ -78,7 +96,7 @@ class SelectUserActivity : BaseActivity() {
                         val intent = Intent(this, ChatActivity::class.java)
                         intent.putExtra("name", mSelectUser?.name)
                         intent.putExtra("number", mSelectUser?.phone)
-                        intent.putExtra("profile", mSelectUser?.profile)
+                        intent.putExtra("profileDummy", mSelectUser?.profile)
                         startActivity(intent)
                         finish()
                     }
@@ -92,35 +110,35 @@ class SelectUserActivity : BaseActivity() {
         binding.rvSuggestedListAddFriends.adapter = adapter
         binding.rvSuggestedListAddFriends.layoutManager =
             GridLayoutManager(this@SelectUserActivity, 1)
-
-        //FireBase 데이터 불러와서 mFriendList에 저장하기
-        friendRef.child(userNumber.toString()).addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-
-                val userData = dataSnapshot.value as HashMap<String, Any>?
-
-                val friendNum = userData!!["phone"] as String
-                mFriendList.add(friendNum)
-
-            }
-
-
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        })
+//
+//        //FireBase 데이터 불러와서 mFriendList에 저장하기
+//        friendRef.child(userNumber.toString()).addChildEventListener(object : ChildEventListener {
+//            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+//
+//                val userData = dataSnapshot.value as HashMap<String, Any>?
+//
+//                val friendNum = userData!!["phone"] as String
+//                mFriendList.add(friendNum)
+//
+//            }
+//
+//
+//            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+//
+//            }
+//
+//            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+//
+//            }
+//
+//            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+//
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//
+//            }
+//        })
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -166,80 +184,80 @@ class SelectUserActivity : BaseActivity() {
         setContentView(binding.root)
     }
 
-    @SuppressLint("Range")
-    private fun getContacts(): ArrayList<UserVO> {
-        // 주소록에 접근하기 위한 ContentResolver 생성
-        val cr = this.contentResolver
-        // 주소록에 저장된 연락처 정보를 가져오기 위한 URI 생성
-        val uri = ContactsContract.Contacts.CONTENT_URI
-        // 연락처 정보를 가져오기 위한 쿼리문 실행
-        val cursor = cr.query(
-            uri,
-            null,
-            null,
-            null,
-            ContactsContract.Contacts.DISPLAY_NAME + " ASC"
-        )
-
-        // 가져온 연락처 정보를 리스트에 저장
-        if (cursor != null && cursor.count > 0) {
-            while (cursor.moveToNext()) {
-                val id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
-                val name =
-                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                // 전화번호 정보를 가져오기 위한 URI 생성
-                val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-                // 가져올 전화번호 정보의 컬럼 정보
-                val phoneProjection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
-                // 전화번호 정보를 가져오기 위한 쿼리문 실행
-                val phoneCursor = cr.query(
-                    phoneUri,
-                    phoneProjection,
-                    "${ContactsContract.CommonDataKinds.Phone.CONTACT_ID} = ?",
-                    arrayOf(id),
-                    null
-                )
-                var phoneNumber = ""
-
-                if (phoneCursor != null && phoneCursor.moveToFirst()) {
-                    phoneNumber =
-                        phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                    phoneCursor.close()
-                }
-
-                // 이메일 정보를 가져오기 위한 URI 생성
-                val emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI
-                // 가져올 이메일 정보의 컬럼 정보
-                val emailProjection = arrayOf(ContactsContract.CommonDataKinds.Email.DATA)
-                // 이메일 정보를 가져오기 위한 쿼리문 실행
-                val emailCursor = cr.query(
-                    emailUri,
-                    emailProjection,
-                    "${ContactsContract.CommonDataKinds.Email.CONTACT_ID} = ?",
-                    arrayOf(id),
-                    null
-                )
-
-                var emailAddress = ""
-                if (emailCursor != null && emailCursor.moveToFirst()) {
-                    emailAddress =
-                        emailCursor.getString(emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
-                    emailCursor.close()
-                }
-
-                // 사진 정보를 가져오기 위한 URI 생성
-                val photoUri =
-                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))
-
-                if (photoUri != null) {
-                    mSuggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber, name))
-                } else {
-                    mSuggestList.add(UserVO(name, emailAddress, "", phoneNumber, name))
-                }
-            }
-            cursor.close()
-        }
-        return mSuggestList
-
-    }
+//    @SuppressLint("Range")
+//    private fun getContacts(): ArrayList<UserVO> {
+//        // 주소록에 접근하기 위한 ContentResolver 생성
+//        val cr = this.contentResolver
+//        // 주소록에 저장된 연락처 정보를 가져오기 위한 URI 생성
+//        val uri = ContactsContract.Contacts.CONTENT_URI
+//        // 연락처 정보를 가져오기 위한 쿼리문 실행
+//        val cursor = cr.query(
+//            uri,
+//            null,
+//            null,
+//            null,
+//            ContactsContract.Contacts.DISPLAY_NAME + " ASC"
+//        )
+//
+//        // 가져온 연락처 정보를 리스트에 저장
+//        if (cursor != null && cursor.count > 0) {
+//            while (cursor.moveToNext()) {
+//                val id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+//                val name =
+//                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+//                // 전화번호 정보를 가져오기 위한 URI 생성
+//                val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+//                // 가져올 전화번호 정보의 컬럼 정보
+//                val phoneProjection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+//                // 전화번호 정보를 가져오기 위한 쿼리문 실행
+//                val phoneCursor = cr.query(
+//                    phoneUri,
+//                    phoneProjection,
+//                    "${ContactsContract.CommonDataKinds.Phone.CONTACT_ID} = ?",
+//                    arrayOf(id),
+//                    null
+//                )
+//                var phoneNumber = ""
+//
+//                if (phoneCursor != null && phoneCursor.moveToFirst()) {
+//                    phoneNumber =
+//                        phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+//                    phoneCursor.close()
+//                }
+//
+//                // 이메일 정보를 가져오기 위한 URI 생성
+//                val emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI
+//                // 가져올 이메일 정보의 컬럼 정보
+//                val emailProjection = arrayOf(ContactsContract.CommonDataKinds.Email.DATA)
+//                // 이메일 정보를 가져오기 위한 쿼리문 실행
+//                val emailCursor = cr.query(
+//                    emailUri,
+//                    emailProjection,
+//                    "${ContactsContract.CommonDataKinds.Email.CONTACT_ID} = ?",
+//                    arrayOf(id),
+//                    null
+//                )
+//
+//                var emailAddress = ""
+//                if (emailCursor != null && emailCursor.moveToFirst()) {
+//                    emailAddress =
+//                        emailCursor.getString(emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
+//                    emailCursor.close()
+//                }
+//
+//                // 사진 정보를 가져오기 위한 URI 생성
+//                val photoUri =
+//                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))
+//
+//                if (photoUri != null) {
+//                    mSuggestList.add(UserVO(name, emailAddress, photoUri, phoneNumber, name))
+//                } else {
+//                    mSuggestList.add(UserVO(name, emailAddress, "", phoneNumber, name))
+//                }
+//            }
+//            cursor.close()
+//        }
+//        return mSuggestList
+//
+//    }
 }

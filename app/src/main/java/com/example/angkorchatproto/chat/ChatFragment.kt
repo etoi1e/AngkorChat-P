@@ -22,8 +22,8 @@ import com.google.firebase.database.ktx.getValue
 class ChatFragment : Fragment() {
 
     lateinit var binding: FragmentChatBinding
-    lateinit var myNumber: String
     lateinit var adapter: ChatRoomAdapter
+    val myNumber = "05555215554"
     val chatRef = FBdataBase.getChatRef()
     var chatRoomsKeys = ArrayList<String>()
     val chatInfoList = ArrayList<ChatModel.Comment>()
@@ -39,7 +39,7 @@ class ChatFragment : Fragment() {
 
         //현재 사용자 번호 불러오기
         val shared = requireContext().getSharedPreferences("loginNumber", 0)
-        myNumber = shared.getString("userNumber", "").toString()
+
 
 
         //사용자가 포함된 채팅창 호출
@@ -99,7 +99,7 @@ class ChatFragment : Fragment() {
 
 
         adapter =
-            ChatRoomAdapter(requireContext(), chatInfoList, chatRoomsKeys, myNumber, chatCount)
+            ChatRoomAdapter(requireContext(), chatInfoList, myNumber, chatCount)
         binding.rvChatListChats.adapter = adapter
         binding.rvChatListChats.layoutManager = GridLayoutManager(requireContext(), 1)
 

@@ -34,6 +34,7 @@ class JoinActivity : BaseActivity() {
         binding.btnJoinLogin.setOnClickListener {
             val intent = Intent(this@JoinActivity, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 

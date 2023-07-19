@@ -1,7 +1,6 @@
 package com.example.angkorchatproto.friends
 
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -33,7 +32,8 @@ class FriendsFragment : Fragment() {
 
 
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
-        var friendList = arrayListOf<UserVO>()
+        var favoriteList = arrayListOf<UserVO>()
+        var allList = arrayListOf<UserVO>()
 
 
         //포커스 컨트롤
@@ -53,52 +53,88 @@ class FriendsFragment : Fragment() {
 
         }
 
-        //로그인한 계정 번호 불러오기
-        //SharedPreferences
-        val shared = requireContext().getSharedPreferences("loginNumber", 0)
-        val userNumber = shared.getString("userNumber", "").toString()
+//        //로그인한 계정 번호 불러오기
+//        //SharedPreferences
+//        val shared = requireContext().getSharedPreferences("loginNumber", 0)
+//        val userNumber = shared.getString("userNumber", "").toString()
 
 
-        //즐겨찾는 친구에 유니온모바일 무조건 추가
-        val resourceID = resources.getIdentifier("dummy_profile_01", "drawable","com.example.angkorchatproto")
-        friendList.add(UserVO("Cindy", "Hello, I'm Cindy", "dummy_profile_01", "010-8888-9999", "dummyMom"))
-        friendList.add(UserVO("Jessica", "❤", "dummy_profile_02", "010-1234-5678", "dummyJessica"))
-        friendList.add(UserVO("Emma", "", "dummy_profile_03", "010-5678-1234", "dummyEmma"))
-        friendList.add(UserVO("Adam Smith", "Working...", "dummy_profile_04", "010-2222-4444", "dummyAdam"))
-        friendList.add(UserVO("John Kim", "Hiking", "dummy_profile_05", "010-6666-7777", "dummyJohn"))
-        friendList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-9999", "dummyMom"))
-        friendList.add(UserVO("Brother", "Paw", "dummy_profile_07", "010-0000-0000", "dummyBro"))
-        friendList.add(UserVO("Nuri Kim", "", "", "010-7516-8705", "dummyNuri"))
+        //즐겨찾는 친구 더미 목록
+        favoriteList.add(UserVO("Dad", "", "ic_profile_default_72", "010-4444-4444", "dummyDad"))
+        favoriteList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-8888", "dummyMom"))
+
+
+        //전체목록
+        allList.add(UserVO("Adam Smith", "Working...", "dummy_profile_04", "010-1111-1111", "dummyAdam"))
+        allList.add(UserVO("Brother", "Paw", "dummy_profile_07", "010-2222-2222", "dummyBro"))
+        allList.add(UserVO("Cindy", "Hello, I'm Cindy", "dummy_profile_01", "010-3333-3333", "dummyMom"))
+        allList.add(UserVO("Dad", "", "ic_profile_default_72", "010-4444-4444", "dummyDad"))
+        allList.add(UserVO("Emma", "", "dummy_profile_03", "010-5555-5555", "dummyEmma"))
+        allList.add(UserVO("Jessica", "❤", "dummy_profile_02", "010-6666-6666", "dummyJessica"))
+        allList.add(UserVO("John Kim", "Hiking", "dummy_profile_05", "010-7777-7777", "dummyJohn"))
+        allList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-8888", "dummyMom"))
+
 
         //즐겨찾는 친구 Adapter
-        favoriteAdapter = FriendsAdapter(requireContext(), friendList)
+        favoriteAdapter = FriendsAdapter(requireContext(), favoriteList)
         favoriteAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
 
                 val intent = Intent(requireContext(), ProfileActivity::class.java)
 
-                intent.putExtra("name", friendList[position].name)
-                intent.putExtra("number", friendList[position].phone)
-                intent.putExtra("email", friendList[position].email)
-                intent.putExtra("profile", friendList[position].profile)
+                intent.putExtra("name", favoriteList[position].name)
+                intent.putExtra("number", favoriteList[position].phone)
+                intent.putExtra("email", favoriteList[position].email)
+                intent.putExtra("profile", favoriteList[position].profile)
 
                 startActivity(intent)
 
             }
 
         })
-        binding.rvFavoriteFriends.adapter = favoriteAdapter
-        binding.rvFavoriteFriends.layoutManager = GridLayoutManager(requireContext(), 1)
 
         //즐겨찾는 친구 Count
-        val countFavorite = friendList.size.toString()
-        binding.tvCountFavoriteFriends.text = countFavorite
+        val countFriends = favoriteList.size.toString()
+        binding.tvCountFavoriteFriends.text = countFriends
 
         //friendList = getFirebase()
 
         //friendList = ArrayList()
 
-        favoriteAdapter = FriendsAdapter(requireContext(), friendList)
+
+        binding.rvFavoriteFriends.adapter = favoriteAdapter
+        binding.rvFavoriteFriends.layoutManager = GridLayoutManager(requireContext(), 1)
+
+
+        //일반 친구 Adapter
+        friendAdapter = FriendsAdapter(requireContext(), allList)
+        friendAdapter.setOnItemClickListener(object : FriendsAdapter.OnItemClickListener {
+            override fun onItemClick(view: View, position: Int) {
+
+                val intent = Intent(requireContext(), ProfileActivity::class.java)
+
+                intent.putExtra("name", allList[position].name)
+                intent.putExtra("number", allList[position].phone)
+                intent.putExtra("email", allList[position].email)
+                intent.putExtra("profile", allList[position].profile)
+
+                startActivity(intent)
+
+            }
+
+        })
+
+        //일반 친구 Count
+        val countFriend = allList.size.toString()
+        binding.tvCountFriendsFriends.text = countFriend
+
+        //friendList = getFirebase()
+
+        //friendList = ArrayList()
+
+
+        binding.rvFriendsFriends.adapter = friendAdapter
+        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(), 1)
 
 
         //친구 목록 접기
@@ -157,7 +193,7 @@ class FriendsFragment : Fragment() {
                         binding.imgFoldFriendsFriends.visibility = View.VISIBLE
                         binding.imgFoldFavoriteFriends.visibility = View.VISIBLE
                         binding.tvCountFavoriteFriends.visibility = View.VISIBLE
-                        binding.tvCountFriendsFriends.text = friendList.size.toString()
+                        binding.tvCountFriendsFriends.text = allList.size.toString()
 
                     }
                     return false
@@ -170,10 +206,6 @@ class FriendsFragment : Fragment() {
         binding.svSearchFriendFriends.setOnQueryTextListener(searchViewTextListener)
 
 
-        //전체 친구 Adapter
-        friendAdapter = FriendsAdapter(requireContext(),friendList)
-        binding.rvFriendsFriends.adapter = friendAdapter
-        binding.rvFriendsFriends.layoutManager = GridLayoutManager(requireContext(), 1)
 
         return binding.root
 

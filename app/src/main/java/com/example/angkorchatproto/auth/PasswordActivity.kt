@@ -33,18 +33,20 @@ class PasswordActivity : BaseActivity() {
 
         binding.btnLoginPassword.isEnabled = false
 
-        //Enter 클릭 시 다음 페이지로 이동
-        binding.etPasswordPassword.setOnKeyListener() { v, keyCode, event ->
-            var handled = false
+        binding.etPasswordPassword.setText("12345678")
 
-            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-
-                //전송 버튼 클릭효과
-                binding.btnLoginPassword.performClick()
-                handled = true
-            }
-            handled
-        }
+//        //Enter 클릭 시 다음 페이지로 이동
+//        binding.etPasswordPassword.setOnKeyListener() { v, keyCode, event ->
+//            var handled = false
+//
+//            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+//
+//                //전송 버튼 클릭효과
+//                binding.btnLoginPassword.performClick()
+//                handled = true
+//            }
+//            handled
+//        }
 
 
         //Login 버튼 클릭시 동작
@@ -53,11 +55,10 @@ class PasswordActivity : BaseActivity() {
             if(binding.btnLoginPassword.isEnabled){
                 val userNumber = intent.getStringExtra("userNumber").toString()
 
-                val joinNumber = userNumber
                 val password = binding.etPasswordPassword.text.toString()
 
                 val intent = Intent(this@PasswordActivity, IdActivity::class.java)
-                intent.putExtra("userNumber",userNumber)
+                intent.putExtra("userNumber","05555215554")
                 intent.putExtra("password",password)
                 startActivity(intent)
                 finish()
