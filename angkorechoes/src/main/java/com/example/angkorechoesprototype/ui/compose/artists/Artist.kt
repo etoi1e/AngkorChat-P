@@ -1,4 +1,4 @@
-package com.example.ui.compose.artists
+package com.example.angkorechoesprototype.ui.compose.artists
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

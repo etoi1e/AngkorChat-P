@@ -1,6 +1,7 @@
-package com.example.ui.compose.song
+package com.example.angkorechoesprototype.ui.compose.song
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -21,15 +22,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.angkorechoesprototype.R
+import com.example.angkorechoesprototype.model.Song
 import com.example.ui.theme.AngkorEchoesTheme
 
 @Composable
 fun Song(
-    albumArt: Painter,
-    songName: String,
-    songArtist: String
+    song: Song,
+    onClick: () -> Unit = {}
 ) {
     Row(
+        modifier = Modifier.clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -37,8 +39,8 @@ fun Song(
                 .padding(start = 16.dp, top = 11.dp, bottom = 11.dp)
                 .size(48.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            painter = albumArt,
-            contentDescription = songName
+            painter = painterResource(id = song.albumArtResourceId),
+            contentDescription = song.name
         )
 
         Column(
@@ -47,13 +49,13 @@ fun Song(
                 .weight(1f)
         ) {
             Text(
-                text = songName,
+                text = song.name,
                 style = AngkorEchoesTheme.typography.body,
                 color = AngkorEchoesTheme.colors.textPrimary,
                 lineHeight = 24.sp
             )
             Text(
-                text = songArtist,
+                text = song.artist,
                 style = AngkorEchoesTheme.typography.body2,
                 color = AngkorEchoesTheme.colors.textSecondary,
                 lineHeight = 24.sp
@@ -61,26 +63,12 @@ fun Song(
         }
 
         Icon(
-            modifier = Modifier.padding(16.dp).size(24.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .size(24.dp),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_more_wh),
             contentDescription = "Play",
             tint = AngkorEchoesTheme.colors.onBackground
         )
-    }
-}
-
-@Composable
-@Preview
-internal fun SongPreview() {
-    AngkorEchoesTheme {
-        Surface(
-            color = AngkorEchoesTheme.colors.background
-        ) {
-            Song(
-                albumArt = painterResource(id = R.drawable.img_album_iam_48),
-                songName = "I AM",
-                songArtist = "IVE"
-            )
-        }
     }
 }

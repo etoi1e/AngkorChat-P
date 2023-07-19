@@ -10,12 +10,14 @@ import com.example.ui.color.onAccent
 import com.example.ui.color.onBackground
 import com.example.ui.color.textPrimary
 import com.example.ui.color.textSecondary
-import com.example.ui.typography.AngkorEchoesTypography
-import com.example.ui.typography.LocalAngkorEchoesTypography
-import com.example.ui.typography.body
-import com.example.ui.typography.body2
-import com.example.ui.typography.caption
-import com.example.ui.typography.head
+import com.example.angkorechoesprototype.ui.typography.AngkorEchoesTypography
+import com.example.angkorechoesprototype.ui.typography.LocalAngkorEchoesTypography
+import com.example.angkorechoesprototype.ui.typography.body
+import com.example.angkorechoesprototype.ui.typography.body2
+import com.example.angkorechoesprototype.ui.typography.bodyLarge
+import com.example.angkorechoesprototype.ui.typography.caption
+import com.example.angkorechoesprototype.ui.typography.captionLarge
+import com.example.angkorechoesprototype.ui.typography.head
 
 @Composable
 fun AngkorEchoesTheme(
@@ -34,7 +36,9 @@ fun AngkorEchoesTheme(
         head = head,
         body = body,
         body2 = body2,
-        caption = caption
+        captionLarge = captionLarge,
+        caption = caption,
+        bodyLarge = bodyLarge
     )
     
     CompositionLocalProvider(
