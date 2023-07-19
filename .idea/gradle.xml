@@ -17,8 +17,10 @@
             <option value="$PROJECT_DIR$/angkorechoes" />
             <option value="$PROJECT_DIR$/angkorgames" />
             <option value="$PROJECT_DIR$/angkorplay" />
+            <option value="$PROJECT_DIR$/angkorshopping" />
             <option value="$PROJECT_DIR$/angkorwebtoon" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/feed" />
           </set>
         </option>
       </GradleProjectSettings>
