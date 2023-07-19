@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.widget.Toast
 import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.MainActivity
@@ -30,6 +31,21 @@ class IdActivity : BaseActivity() {
 
         //아이디 입력 확인
         binding.etIdId.addTextChangedListener(textChecker)
+
+
+        //Enter 클릭 시 다음 페이지로 이동
+        binding.etIdId.setOnKeyListener() { v, keyCode, event ->
+            var handled = false
+
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                //전송 버튼 클릭효과
+                binding.btnLoginId.performClick()
+                handled = true
+            }
+            handled
+        }
+
 
         binding.btnLoginId.isEnabled = false
 
