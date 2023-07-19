@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.angkorechoesprototype.home.AngkorEchoesHomeScreen
 import com.example.angkorechoesprototype.home.state.FavoriteUiState
 import com.example.angkorechoesprototype.home.state.PlaylistUiState
-import com.example.angkorechoesprototype.home.state.SongUiState
+import com.example.angkorechoesprototype.model.sampleSongs
 import com.example.angkorechoesprototype.splash.AngkorEchoesSplashScreen
 import com.example.ui.theme.AngkorEchoesTheme
 import kotlinx.coroutines.delay
@@ -56,17 +56,6 @@ class AngkorEchoesActivity : ComponentActivity() {
                     )
                 }
 
-                val songs = List(5) { index ->
-                    when (index) {
-                        0 -> SongUiState(R.drawable.img_album_iam_48, "I AM", "IVE")
-                        1 -> SongUiState(R.drawable.img_album_flower_48, "Flower", "JISOO(BLACKPINK)")
-                        2 -> SongUiState(R.drawable.img_album_iam_48, "Kitsch", "IVE")
-                        3 -> SongUiState(R.drawable.img_album_people_pt_2_48, "People Pt.2(Feat.IU)", "Agust D")
-                        4 -> SongUiState(R.drawable.img_album_ditto_48, "Ditto", "New Jeans")
-                        else -> throw IllegalArgumentException("Invalid index: $index")
-                    }
-                }
-
                 val favorites = List(10) { index ->
                     when (index) {
                         0 -> { FavoriteUiState(R.drawable.img_artist_ive_120, "IVE") }
@@ -83,10 +72,9 @@ class AngkorEchoesActivity : ComponentActivity() {
                     }
                 }
 
-
-                val nowPlaying = SongUiState(R.drawable.img_album_iam_48, "I AM", "IVE")
-
-                AngkorEchoesHomeScreen(playlists, songs, favorites, nowPlaying)
+                AngkorEchoesHomeScreen(playlists, sampleSongs, favorites) {
+                    finish()
+                }
             }
         }
     }

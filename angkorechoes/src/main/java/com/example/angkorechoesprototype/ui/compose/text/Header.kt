@@ -1,4 +1,4 @@
-package com.example.ui.compose.text
+package com.example.angkorechoesprototype.ui.compose.text
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface

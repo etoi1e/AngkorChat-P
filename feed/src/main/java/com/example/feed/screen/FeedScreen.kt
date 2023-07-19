@@ -101,6 +101,9 @@ fun FeedScreen(
 
                 items(feedSliced.second, key = { it.id }) {
                     Feed(
+                        modifier = Modifier.clickable {
+                            feedDetailContract.launch(it)
+                        },
                         feed = it,
                         onQuoteClick = { feedEditorContract.launch(it) },
                         onUnfriendClick = { /*TODO*/ },
