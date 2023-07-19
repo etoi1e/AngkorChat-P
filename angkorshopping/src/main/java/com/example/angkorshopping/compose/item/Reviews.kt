@@ -59,7 +59,7 @@ fun Reviews(
             Text(
                 modifier = Modifier.padding(start = 4.dp),
                 text = userName,
-                style = AngkorShoppingTheme.typography.sansR11
+                style = AngkorShoppingTheme.typography.sansR13
             )
         }
 
@@ -73,6 +73,6 @@ fun Reviews(
 @Composable
 fun ReviewsPreview() {
     AngkorShoppingTheme {
-        Reviews(R.drawable.img_3, R.drawable.img_2, "UserName")
+        Reviews(R.drawable.img_3_1, R.drawable.img_2_1, "UserName")
     }
 }

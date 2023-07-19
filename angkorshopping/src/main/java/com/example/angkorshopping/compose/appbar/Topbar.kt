@@ -1,5 +1,7 @@
 package com.example.angkorshopping.compose.appbar
 
+import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,21 +21,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.angkorshopping.DetailActivity
 import com.example.angkorshopping.R
+import com.example.angkorshopping.SearchActivity
 import com.example.angkorshopping.ui.theme.AngkorShoppingTheme
 
 
 @Composable
-fun TopBar(
-    onSearchButtonClick: () -> Unit,
-    onHamburgerButtonClick: () -> Unit
-) {
+fun TopBar() {
+
+    val context = LocalContext.current
+
+    val searchIntent = Intent(context, SearchActivity::class.java)
+
     Box(
-        modifier = Modifier.statusBarsPadding(),
+        modifier = Modifier
+            .statusBarsPadding()
+            .background(AngkorShoppingTheme.colors.Background),
         contentAlignment = Alignment.BottomCenter
     ) {
         Row(
@@ -63,7 +72,7 @@ fun TopBar(
                     .padding(6.dp)
                     .size(24.dp)
                     .clip(CircleShape)
-                    .clickable(onClick = onSearchButtonClick),
+                    ,
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_search_line_bk_28),
                 contentDescription = "Search",
             )
@@ -73,7 +82,7 @@ fun TopBar(
                     .padding(6.dp)
                     .size(24.dp)
                     .clip(CircleShape)
-                    .clickable(onClick = onHamburgerButtonClick),
+                   ,
                 painter = painterResource(id = R.drawable.ic_tap_shop_active_28),
                 contentDescription = "More",
             )
@@ -83,7 +92,7 @@ fun TopBar(
                     .padding(6.dp)
                     .size(24.dp)
                     .clip(CircleShape)
-                    .clickable(onClick = onHamburgerButtonClick),
+                    ,
                 painter = painterResource(id = R.drawable.ic_menu_line_bk_28),
                 contentDescription = "More",
             )
@@ -95,10 +104,9 @@ fun TopBar(
 
 @Preview
 @Composable
-fun TopBar() {
+fun TopBarPreView() {
     AngkorShoppingTheme {
-            TopBar(onSearchButtonClick = {}) {
-            }
+        TopBar()
     }
 }
 

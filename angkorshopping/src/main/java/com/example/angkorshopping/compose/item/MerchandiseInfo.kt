@@ -194,7 +194,8 @@ fun MerchandiseInfoPreview() {
     AngkorShoppingTheme {
         val item = MerchandiseInfo(
             "AngkorMall",
-            R.drawable.img_2,
+            "",
+            R.drawable.img_2_1,
             "YALE T-Shirt",
             20.00,
             "White",

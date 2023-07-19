@@ -71,6 +71,6 @@ fun RecommendItem(
 @Composable
 fun RecommendItemPreview() {
     AngkorShoppingTheme {
-        RecommendItem(R.drawable.img_3, R.drawable.img_2, "ShopName")
+        RecommendItem(R.drawable.img_3_1, R.drawable.img_2_1, "ShopName")
     }
 }

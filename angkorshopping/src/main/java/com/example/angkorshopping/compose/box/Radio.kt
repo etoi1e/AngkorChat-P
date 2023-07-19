@@ -72,13 +72,6 @@ fun Radio(
 @Composable
 internal fun RadioPreview() {
     AngkorShoppingTheme {
-        val shopList = listOf<ShopInfoState>(
-            ShopInfoState(R.drawable.img_1,"ShopName", "ShopAdd"),
-            ShopInfoState(R.drawable.img_1,"ShopName", "ShopAdd"),
-            ShopInfoState(R.drawable.img_1,"ShopName", "ShopAdd"),
-            ShopInfoState(R.drawable.img_1,"ShopName", "ShopAdd"),
-            ShopInfoState(R.drawable.img_1,"ShopName", "ShopAdd")
-        )
-        Radio(shopList)
+
     }
 }

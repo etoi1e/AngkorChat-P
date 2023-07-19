@@ -1,20 +1,14 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.example.angkorshopping.screens
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -28,9 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.angkorshopping.R
 import com.example.angkorshopping.compose.appbar.BuyBottomBar
@@ -43,12 +37,23 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 
-
+@SuppressLint("DiscouragedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     merchandise: MerchandiseInfo
 ) {
+
+    val context = LocalContext.current
+
+    val item = merchandise.imgNumber
+    val imgList = ArrayList<Int>()
+    val itemDetail = context.resources.getIdentifier("${item}_detail","drawable",context.packageName)
+
+
+    for(i in 1 .. 4){
+        imgList.add(context.resources.getIdentifier("${item}_${i}","drawable",context.packageName))
+    }
 
 
     AngkorShoppingTheme {
@@ -56,11 +61,45 @@ fun DetailScreen(
         dataFormat.roundingMode = RoundingMode.DOWN
 
 
-
         if (merchandise != null) {
-            val merchandiseLists = List(5) { merchandise.merchandiseImg }
+
 
             Scaffold(containerColor = AngkorShoppingTheme.colors.Background,
+                topBar = {
+                    Row(
+                        modifier = Modifier
+                            .padding(start = 16.dp, top = 15.dp, bottom = 8.dp)
+                            .height(28.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .width(IntrinsicSize.Max)
+                        ) {
+                            Icon(modifier = Modifier,
+                                painter = painterResource(id = R.drawable.ic_arrow_left_bk_28),
+                                contentDescription = "",
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = merchandise.shopName,
+                                style = AngkorShoppingTheme.typography.sansM18,
+                                color = AngkorShoppingTheme.colors.TextBlack
+                            )
+                        }
+
+                        Icon(
+                            modifier = Modifier
+                                .width(IntrinsicSize.Max)
+                                .padding(end = 16.dp),
+                            painter = painterResource(id = R.drawable.ic_more_28),
+                            contentDescription = ""
+                        )
+
+                    }
+                },
                 bottomBar = {
                     BuyBottomBar()
                 }
@@ -83,12 +122,13 @@ fun DetailScreen(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            items(merchandiseLists) { merchandise ->
+                            items(imgList) { img ->
                                 Image(
-                                    painter = painterResource(id = merchandise),
+                                    painter = painterResource(id = img),
                                     contentDescription = merchandise.toString(),
                                     contentScale = ContentScale.Crop,
-                                    modifier = Modifier.width(200.dp)
+                                    modifier = Modifier
+                                        .width(200.dp)
                                         .height(250.dp)
                                         .padding(4.dp)
                                         .clip(RoundedCornerShape(12.dp))
@@ -223,7 +263,7 @@ fun DetailScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                val shop = ShopInfoState(R.drawable.img_1, "Shop Name", "add")
+                                val shop = ShopInfoState(merchandise.merchandiseImg, merchandise.shopName, "add")
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Image(
@@ -265,12 +305,12 @@ fun DetailScreen(
                     //후기 사진 리스트 출력
                     item {
                         val reviews = listOf<ReviewsState>(
-                            ReviewsState("userName", R.drawable.img_1, R.drawable.img_3),
-                            ReviewsState("userName", R.drawable.img_1, R.drawable.img_3),
-                            ReviewsState("userName", R.drawable.img_1, R.drawable.img_3),
-                            ReviewsState("userName", R.drawable.img_1, R.drawable.img_3),
-                            ReviewsState("userName", R.drawable.img_1, R.drawable.img_3),
-                            ReviewsState("userName", R.drawable.img_1, R.drawable.img_3)
+                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_11_1),
+                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_17_1),
+                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_6_1),
+                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_8_1),
+                            ReviewsState("userName", R.drawable.img_profile_default_28, R.drawable.img_15_1)
+
                         )
 
                         LazyRow(modifier = Modifier.padding(start = 16.dp, top = 24.dp))
@@ -287,12 +327,12 @@ fun DetailScreen(
                         }
                     }
 
-                    items(merchandiseLists) { merchandise ->
+                    item() {
                         Image(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                            painter = painterResource(id = merchandise),
+                            painter = painterResource(id = itemDetail),
                             contentDescription = "",
                             contentScale = ContentScale.FillWidth
                         )
@@ -309,22 +349,3 @@ fun DetailScreen(
 
 }
 
-@Preview
-@Composable
-fun DetailScreenPreview() {
-    AngkorShoppingTheme {
-
-        val info = MerchandiseInfo(
-            "AngkorMall",
-            R.drawable.img_2,
-            "YALE T-Shirt",
-            20.00,
-            "White",
-            1,
-            true,
-            "#Top #Sleeveless"
-        )
-
-        DetailScreen(info)
-    }
-}
