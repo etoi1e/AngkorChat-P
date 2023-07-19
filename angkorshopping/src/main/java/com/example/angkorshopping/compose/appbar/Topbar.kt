@@ -71,8 +71,7 @@ fun TopBar() {
                 modifier = Modifier
                     .padding(6.dp)
                     .size(24.dp)
-                    .clip(CircleShape)
-                    ,
+                    .clip(CircleShape),
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_search_line_bk_28),
                 contentDescription = "Search",
             )
@@ -81,8 +80,7 @@ fun TopBar() {
                 modifier = Modifier
                     .padding(6.dp)
                     .size(24.dp)
-                    .clip(CircleShape)
-                   ,
+                    .clip(CircleShape),
                 painter = painterResource(id = R.drawable.ic_tap_shop_active_28),
                 contentDescription = "More",
             )
@@ -91,10 +89,9 @@ fun TopBar() {
                 modifier = Modifier
                     .padding(6.dp)
                     .size(24.dp)
-                    .clip(CircleShape)
-                    ,
+                    .clip(CircleShape),
                 painter = painterResource(id = R.drawable.ic_menu_line_bk_28),
-                contentDescription = "More",
+                contentDescription = "More"
             )
 
             Spacer(modifier = Modifier.width(10.dp))
