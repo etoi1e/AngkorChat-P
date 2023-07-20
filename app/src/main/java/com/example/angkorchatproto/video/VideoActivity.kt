@@ -114,7 +114,6 @@ class VideoActivity : BaseActivity() {
             agoraEngine = null
         }.start()
     }
-
     private fun setupRemoteVideo(uid: Int) {
         val container = findViewById<FrameLayout>(R.id.remote_video_view_container)
         remoteSurfaceView = SurfaceView(baseContext)
@@ -130,6 +129,7 @@ class VideoActivity : BaseActivity() {
         // Display RemoteSurfaceView.
         remoteSurfaceView?.visibility = View.VISIBLE
     }
+
 
     private fun checkSelfPermission(): Boolean
     {

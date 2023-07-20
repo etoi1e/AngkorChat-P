@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.speech.tts.Voice
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -37,6 +38,8 @@ import com.example.angkorchatproto.JoinVO
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.base.BaseActivity
+import com.example.angkorchatproto.callscreen.VideoCallScreen
+import com.example.angkorchatproto.callscreen.VoiceCallScreen
 import com.example.angkorchatproto.chat.adapter.ChatAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeAdapter
 import com.example.angkorchatproto.chat.adapter.ChatImogeShortcutAdapter
@@ -137,9 +140,9 @@ class ChatActivity : BaseActivity() {
             sendProfile = UserVO(
                 result.data?.getStringExtra("name")!!,
                 result.data?.getStringExtra("email")!!,
-                result.data?.getStringExtra("profile")!!,
+                result.data?.getStringExtra("profileDummy")!!,
                 result.data?.getStringExtra("phone")!!,
-                result.data?.getStringExtra("id")!!,
+                ""
             )
 
 
@@ -710,8 +713,18 @@ class ChatActivity : BaseActivity() {
                 }
 
 
+                var setProfile = "ic_profile_default"
+
+                if(profileDummy != null){
+                    setProfile = profileDummy
+                }
+
+                if(profileFromProfile != null){
+                    setProfile = profileFromProfile
+                }
+
                 val comment = ChatModel.Comment(
-                    profile = profileImg,
+                    profile = setProfile,
                     sender = myNumber,
                     message = binding.etMessageChat.text.toString(),
                     time = nowTime,
@@ -888,18 +901,42 @@ class ChatActivity : BaseActivity() {
         }
 
         binding.imgVideoChat.setOnClickListener {
-            val intent = Intent(this, VideoActivity::class.java)
-            intent.putExtra("mode", "send")
-            intent.putExtra("phoneNumber", receiverNumber)
-            intent.putExtra("token", receiverToken)
+            val intent = Intent(this@ChatActivity,VideoCallScreen::class.java)
+
+            var sendProfile = ""
+            if(profileDummy!=null){
+                sendProfile = profileDummy
+            }
+            if(profileFromProfile!=null){
+                sendProfile = profileFromProfile
+            }
+
+            intent.putExtra("profile",sendProfile)
+            intent.putExtra("name",receiverName)
             startActivity(intent)
+//            val intent = Intent(this, VideoActivity::class.java)
+//            intent.putExtra("mode", "send")
+//            intent.putExtra("phoneNumber", receiverNumber)
+//            intent.putExtra("token", receiverToken)
+//            startActivity(intent)
         }
 
         //전화 걸기
         binding.imgVoiceChat.setOnClickListener {
-            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$receiver"))
+            val intent = Intent(this@ChatActivity,VoiceCallScreen::class.java)
+
+            var sendProfile = ""
+            if(profileDummy!=null){
+                sendProfile = profileDummy
+            }
+            if(profileFromProfile!=null){
+                sendProfile = profileFromProfile
+            }
+
+            intent.putExtra("profile",sendProfile)
+            intent.putExtra("name",receiverName)
             startActivity(intent)
-            finish()
+
         }
 
         //햄버거 메뉴 클릭 시

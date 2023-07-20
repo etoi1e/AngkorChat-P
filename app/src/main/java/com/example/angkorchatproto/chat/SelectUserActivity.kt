@@ -44,7 +44,7 @@ class SelectUserActivity : BaseActivity() {
         mSuggestList.add(UserVO("Adam Smith", "Working...", "dummy_profile_04", "010-1111-1111", "dummyAdam"))
         mSuggestList.add(UserVO("Brother", "Paw", "dummy_profile_07", "010-2222-2222", "dummyBro"))
         mSuggestList.add(UserVO("Cindy", "Hello, I'm Cindy", "dummy_profile_01", "010-3333-3333", "dummyMom"))
-        mSuggestList.add(UserVO("Dad", "", "ic_profile_default_72", "010-4444-4444", "dummyDad"))
+        mSuggestList.add(UserVO("Dad", "", "dummy_profile_08", "010-4444-4444", "dummyDad"))
         mSuggestList.add(UserVO("Emma", "", "dummy_profile_03", "010-5555-5555", "dummyEmma"))
         mSuggestList.add(UserVO("Jessica", "❤", "dummy_profile_02", "010-6666-6666", "dummyJessica"))
         mSuggestList.add(UserVO("John Kim", "Hiking", "dummy_profile_05", "010-7777-7777", "dummyJohn"))

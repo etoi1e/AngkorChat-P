@@ -69,7 +69,7 @@ class ChatRoomAdapter(
             tvMessageChatList = itemView.findViewById(R.id.tvMessageChatList)
             tvTimeChatList = itemView.findViewById(R.id.tvTimeChatList)
             tvCountChatChatList = itemView.findViewById(R.id.tvCountChatChatList)
-            layout = itemView.findViewById(R.id.layout)
+            layout = itemView.findViewById(R.id.layoutChatroom)
 
 
         }
@@ -82,7 +82,7 @@ class ChatRoomAdapter(
         chatRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                notifyDataSetChanged()
+
 
             }
 
@@ -129,7 +129,7 @@ class ChatRoomAdapter(
         if (profile == "dummy_profile_01") {
             holder.tvNameChatList.text = "Cindy"
         }
-        if (profile == "ic_profile_default_72") {
+        if (profile == "dummy_profile_08") {
             holder.tvNameChatList.text = "Dad"
         }
         if (profile == "dummy_profile_03") {
@@ -215,10 +215,39 @@ class ChatRoomAdapter(
 //
 //
 //
+
+        var sendSender = ""
+        if (profile == "dummy_profile_04") {
+            sendSender = "010-1111-1111"
+        }
+        if (profile == "dummy_profile_07") {
+            sendSender = "010-2222-2222"
+        }
+        if (profile == "dummy_profile_01") {
+            sendSender = "010-3333-3333"
+        }
+        if (profile == "dummy_profile_08") {
+            sendSender = "010-4444-4444"
+        }
+        if (profile == "dummy_profile_03") {
+            sendSender = "010-5555-5555"
+        }
+        if (profile == "dummy_profile_02") {
+            sendSender = "010-6666-6666"
+        }
+        if (profile == "dummy_profile_05") {
+            sendSender = "010-7777-7777"
+        }
+        if (profile == "dummy_profile_06") {
+            sendSender = "010-8888-8888"
+        }
+
+
         holder.layout.setOnClickListener {
+
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("name", holder.tvNameChatList.text)
-            intent.putExtra("number", chatInfoList[position].sender)
+            intent.putExtra("number", sendSender)
             intent.putExtra("profileDummy", profile)
             context.startActivity(intent)
         }

@@ -27,6 +27,7 @@ import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
 import com.example.angkorchatproto.base.BaseActivity
+import com.example.angkorchatproto.callscreen.VoiceCallScreen
 import com.example.angkorchatproto.chat.adapter.MediaImgAdapter
 import com.example.angkorchatproto.databinding.ActivityProfileBinding
 import com.example.angkorchatproto.utils.FBdataBase
@@ -164,17 +165,23 @@ class ProfileActivity : BaseActivity() {
 
         //전화걸기
         binding.imgCallProfile.setOnClickListener {
-            if (profile == "union") {
-                Toast.makeText(
-                    this@ProfileActivity,
-                    "Call function is not supported",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
-                startActivity(intent)
-                finish()
-            }
+//            if (profile == "union") {
+//                Toast.makeText(
+//                    this@ProfileActivity,
+//                    "Call function is not supported",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                val intent = Intent(ACTION_CALL, Uri.parse("tel:$number"))
+//                startActivity(intent)
+//                finish()
+//            }
+
+            val intent = Intent(this@ProfileActivity,VoiceCallScreen::class.java)
+            intent.putExtra("profile",profile)
+            intent.putExtra("name",userName)
+            startActivity(intent)
+
         }
 
         binding.rvPhotoListProfile.adapter = ProfileAdapter(this@ProfileActivity, imgList)

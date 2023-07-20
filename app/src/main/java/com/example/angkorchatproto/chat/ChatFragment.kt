@@ -4,7 +4,6 @@ package com.example.angkorchatproto.chat
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,7 @@ class ChatFragment : Fragment() {
     lateinit var adapter: ChatRoomAdapter
     val myNumber = "05555215554"
     val chatRef = FBdataBase.getChatRef()
-    var chatRoomsKeys = ArrayList<String>()
+    val chatRoomsKeys = ArrayList<String>()
     val chatInfoList = ArrayList<ChatModel.Comment>()
     var chatCount = ArrayList<String>()
 
@@ -37,9 +36,8 @@ class ChatFragment : Fragment() {
 
         binding = FragmentChatBinding.inflate(inflater, container, false)
 
-        //현재 사용자 번호 불러오기
-        val shared = requireContext().getSharedPreferences("loginNumber", 0)
-
+//        //현재 사용자 번호 불러오기
+//        val shared = requireContext().getSharedPreferences("loginNumber", 0)
 
 
         //사용자가 포함된 채팅창 호출
@@ -48,10 +46,9 @@ class ChatFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     chatRoomsKeys.clear()
                     chatInfoList.clear()
-
-
                     //같은 키를 가진 채팅방 마지막 1개만 출력하기
                     for (item in snapshot.children) {
+
                         if (!chatRoomsKeys.contains(item.key.toString())) {
 
                             chatRoomsKeys.add(item.key.toString())
@@ -65,8 +62,8 @@ class ChatFragment : Fragment() {
                                     override fun onDataChange(snapshot: DataSnapshot) {
 
                                         for (data in snapshot.children) {
-                                            val item = data.getValue<ChatModel.Comment>()
 
+                                            val item = data.getValue<ChatModel.Comment>()
 
                                             if (item != null) {
                                                 chatInfoList.add(item)
@@ -75,9 +72,10 @@ class ChatFragment : Fragment() {
                                         }
 
                                         adapter.notifyDataSetChanged()
-                                        chatRoomsKeys.add(item.key.toString())
 
-                                        if(chatInfoList.size != 0){
+
+
+                                        if (chatInfoList.size != 0) {
                                             binding.boxNoChat.visibility = View.GONE
                                         }
 
@@ -96,6 +94,8 @@ class ChatFragment : Fragment() {
                     TODO("Not yet implemented")
                 }
             })
+
+
 
 
         adapter =

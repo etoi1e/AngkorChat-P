@@ -304,15 +304,17 @@ class ChatAdapter(
 
             }
 
-
             //프로필 전송
             if(message.sendProfile != null){
+            val resourceID =
+                context.resources.getIdentifier(message.sendProfile.profile, "drawable", "com.example.angkorchatproto")
+
                 holder.myProfileLayout.visibility = View.VISIBLE
                 holder.tvMySendProfileName.text = message.sendProfile.name
 
                 if(message.sendProfile.profile != ""){
                     Glide.with(context)
-                        .load(message.sendProfile.profile)
+                        .load(resourceID)
                         .into(holder.ivMySendProfile)
                 }else{
                     //프로필 사진 없는 경우 기본 프로필 적용

@@ -60,7 +60,7 @@ class FriendsFragment : Fragment() {
 
 
         //즐겨찾는 친구 더미 목록
-        favoriteList.add(UserVO("Dad", "", "ic_profile_default_72", "010-4444-4444", "dummyDad"))
+        favoriteList.add(UserVO("Dad", "", "dummy_profile_08", "010-4444-4444", "dummyDad"))
         favoriteList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-8888", "dummyMom"))
 
 
@@ -68,7 +68,7 @@ class FriendsFragment : Fragment() {
         allList.add(UserVO("Adam Smith", "Working...", "dummy_profile_04", "010-1111-1111", "dummyAdam"))
         allList.add(UserVO("Brother", "Paw", "dummy_profile_07", "010-2222-2222", "dummyBro"))
         allList.add(UserVO("Cindy", "Hello, I'm Cindy", "dummy_profile_01", "010-3333-3333", "dummyMom"))
-        allList.add(UserVO("Dad", "", "ic_profile_default_72", "010-4444-4444", "dummyDad"))
+        allList.add(UserVO("Dad", "", "dummy_profile_08", "010-4444-4444", "dummyDad"))
         allList.add(UserVO("Emma", "", "dummy_profile_03", "010-5555-5555", "dummyEmma"))
         allList.add(UserVO("Jessica", "❤", "dummy_profile_02", "010-6666-6666", "dummyJessica"))
         allList.add(UserVO("John Kim", "Hiking", "dummy_profile_05", "010-7777-7777", "dummyJohn"))

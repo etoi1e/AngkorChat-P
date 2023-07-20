@@ -109,8 +109,6 @@ class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
 //                .into(holder.imgProfile)
 //        }else
 
-        Log.d("TAG-profile", profile.toString())
-
 
         if (profile == "") {
             Glide.with(context)
