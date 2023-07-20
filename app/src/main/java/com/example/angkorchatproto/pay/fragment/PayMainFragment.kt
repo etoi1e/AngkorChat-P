@@ -39,12 +39,22 @@ class PayMainFragment : Fragment() {
             }
         }
 
+        if (binding.btnPayCode.isChecked) {
+            binding.btnScan.isChecked = false
+        }
+
+
+        //탭 옮기기
         binding.btnPayCode.setOnClickListener {
             if (mSelectTab == 1) {
                 mSelectTab = 0
                 binding.btnPayCode.isChecked = true
                 binding.btnScan.isChecked = false
                 mNavController?.popBackStack()
+
+            } else {
+                binding.btnPayCode.isChecked = true
+                binding.btnScan.isChecked = false
             }
         }
         binding.btnScan.setOnClickListener {
@@ -53,8 +63,15 @@ class PayMainFragment : Fragment() {
                 binding.btnPayCode.isChecked = false
                 binding.btnScan.isChecked = true
                 mNavController?.navigate(R.id.action_payMainCodeFragment_to_payMainScanFragment)
+            } else {
+                binding.btnPayCode.isChecked = false
+                binding.btnScan.isChecked = true
             }
         }
+
+
+
+
         binding.ivMenu.setOnClickListener {
             if (binding.dl.isDrawerOpen(GravityCompat.END)) {
                 binding.dl.closeDrawer(GravityCompat.END)

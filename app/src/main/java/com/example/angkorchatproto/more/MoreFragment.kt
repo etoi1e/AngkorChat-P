@@ -2,20 +2,24 @@ package com.example.angkorchatproto.more
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentMoreBinding
 import com.example.angkorchatproto.more.adapter.ServiceAdapter
 import com.example.angkorchatproto.pay.PayActivity
+import com.example.angkorchatproto.pay.room.AccountInfo
 import com.example.angkorchatproto.pay.room.AppDatabase
 import com.example.angkorchatproto.settings.SettingsActivity
 import java.text.DecimalFormat
+import java.time.LocalDateTime
 
 class MoreFragment : Fragment() {
     lateinit var binding: FragmentMoreBinding
@@ -36,6 +40,7 @@ class MoreFragment : Fragment() {
 
     var checkAccount = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
@@ -46,6 +51,10 @@ class MoreFragment : Fragment() {
 
         //Local DB 연결
         val db = AppDatabase.getInstance(requireContext().applicationContext)
+        //동일 계좌 생성
+
+
+
         if (db != null) {
             val accountNumber = db.paymentDao().getAccountNumber(myNumber)
             if (accountNumber != "" && accountNumber != null ) {
@@ -56,20 +65,39 @@ class MoreFragment : Fragment() {
                 val accountPoint = numberFormatter.format(db.paymentDao().getPoint(accountNumber))
                 if (binding.tvPayPoint.text != "$accountPoint P") {
                     binding.tvPayPoint.text = "$accountPoint P"
-
                 }
+            }
+            else{
+                    val newAccountNumber = "1111-2222-3333-4444"
+                    val time = LocalDateTime.now().toString()
+
+                    val newAccount =
+                        AccountInfo(0,"0", newAccountNumber, myNumber, 3000, 10000, "new","", "", "", "", time)
+
+                    db.paymentDao().insertAccount(newAccount)
+
+                    checkAccount = true
+
+                    val numberFormatter = DecimalFormat("###,###")
+                    //계좌 있는 경우 정보 가져와서 삽입
+                    val accountPoint = numberFormatter.format(db.paymentDao().getPoint(accountNumber))
+                    if (binding.tvPayPoint.text != "$accountPoint P") {
+                        binding.tvPayPoint.text = "10,000 P"
+                    }
+
+
+
             }
 
         val point = binding.tvPayPoint.text.toString()
         val oldPoint = point.replace("P", "")
 
-            val newPoint = db.paymentDao().getPoint(accountNumber).toString()
-            if (oldPoint != newPoint) {
+
+            if (oldPoint == "0") {
                 //프래그먼트 새로고침
                 val ft = requireFragmentManager().beginTransaction()
                 ft.detach(this).attach(this).commit()
-                Log.d("TAG-old", oldPoint)
-                Log.d("TAG-new", newPoint)
+
             }
         }
 
@@ -83,7 +111,7 @@ class MoreFragment : Fragment() {
     ): View {
 
         binding = FragmentMoreBinding.inflate(inflater, container, false)
-        binding.tvPayPoint.text = "No Point"
+        binding.tvPayPoint.text = "10,000P"
 
         binding.ivSetting.setOnClickListener {
             val intent = Intent(requireContext(), SettingsActivity::class.java)

@@ -1058,7 +1058,7 @@ class ChatActivity : BaseActivity() {
 
 
     private fun setImogeRecyclerView() {
-        setImogeGridRecyclerView(0, "")
+        setImogeGridRecyclerView(R.array.nunuImoge, "nunu")
         setImogeShortcutRecyclerView()
     }
 

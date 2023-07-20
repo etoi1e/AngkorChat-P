@@ -29,7 +29,7 @@ class JoinActivity : BaseActivity() {
         //Language 밑줄
         val underLine = findViewById<TextView>(R.id.tvJoinLanguage)
         underLine.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-        
+
         //Login 클릭시 페이지 이동
         binding.btnJoinLogin.setOnClickListener {
             val intent = Intent(this@JoinActivity, LoginActivity::class.java)
@@ -38,15 +38,17 @@ class JoinActivity : BaseActivity() {
         }
     }
 
-    fun permissionCheck (){
+    fun permissionCheck() {
         TedPermission.create()
             .setPermissionListener(object : PermissionListener {
                 override fun onPermissionGranted() {
-                   Toast.makeText(this@JoinActivity,"Permission Granted",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@JoinActivity, "Permission Granted", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
                 override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-                    Toast.makeText(this@JoinActivity,"Permission Denied",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@JoinActivity, "Permission Denied", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
             })
@@ -55,7 +57,9 @@ class JoinActivity : BaseActivity() {
                 Manifest.permission.READ_PHONE_NUMBERS,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.CALL_PHONE,
-                Manifest.permission.INTERNET)
+                Manifest.permission.INTERNET,
+                Manifest.permission.CAMERA
+            )
             .check()
     }
 
