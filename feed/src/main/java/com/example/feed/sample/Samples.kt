@@ -6,6 +6,7 @@ import com.example.model.Feed
 import com.example.model.Notification
 import com.example.model.StoryCover
 import com.example.model.User
+import kotlin.random.Random
 
 val sampleUsers = listOf(
     User(
@@ -63,6 +64,138 @@ val sampleUsers = listOf(
         subtitle = "Subtitle"
     ),
 )
+
+
+val sampleMessages = listOf(
+    """25 years later, she still regretted that specific moment.""",
+    """You bite up because of your lower jaw.""",
+    """I'd rather be a bird than a fish.""",
+    """The ants enjoyed the barbecue more than the family.""",
+    """Pat ordered a ghost pepper pie.""",
+    """I received a heavy fine but it failed to crush my spirit.""",
+    """Too many prisons have become early coffins.""",
+    """She thought there'd be sufficient time if she hid her watch.""",
+    """The beauty of the sunset was obscured by the industrial cranes.""",
+    """David proudly graduated from high school top of his class at age 97.""",
+    """The sky is clear; the stars are twinkling.""",
+    """The irony of the situation wasn't lost on anyone in the room.""",
+    """Sometimes you have to just give up and win by cheating.""",
+    """You're good at English when you know the difference between a man eating chicken and a man-eating chicken.""",
+    """He had a vague sense that trees gave birth to dinosaurs.""",
+    """As the rental car rolled to a stop on the dark road, her fear increased by the moment.""",
+    """This book is sure to liquefy your brain.""",
+    """The shark-infested South Pine channel was the only way in or out.""",
+    """He is good at eating pickles and telling women about his emotional problems.""",
+    """Watching the geriatric men’s softball team brought back memories of 3 yr olds playing t-ball.""",
+    """Nothing seemed out of place except the washing machine in the bar.""",
+    """The beach was crowded with snow leopards.""",
+    """It's important to remember to be aware of rampaging grizzly bears.""",
+    """Pink horses galloped across the sea.""",
+    """The sunblock was handed to the girl before practice, but the burned skin was proof she did not apply it.""",
+    """In that instant, everything changed.""",
+    """He had unknowingly taken up sleepwalking as a nighttime hobby.""",
+    """Today we gathered moss for my uncle's wedding.""",
+    """He had a hidden stash underneath the floorboards in the back room of the house.""",
+    """The pet shop stocks everything you need to keep your anaconda happy.""",
+    """The glacier came alive as the climbers hiked closer.""",
+    """My Mum tries to be cool by saying that she likes all the same things that I do.""",
+    """Poison ivy grew through the fence they said was impenetrable.""",
+    """Behind the window was a reflection that only instilled fear.""",
+    """Baby wipes are made of chocolate stardust.""",
+    """Last Friday I saw a spotted striped blue worm shake hands with a legless lizard.""",
+    """The estate agent quickly marked out his territory on the dance floor.""",
+    """Mary plays the piano.""",
+    """If my calculator had a history, it would be more embarrassing than my browser history.""",
+    """It turns out you don't need all that stuff you insisted you did."""
+)
+
+var commentId = -1
+
+fun randomCommentGenerator(postId: Int, reply: Float = 1f): Sequence<Comment> = generateSequence {
+    val random = Random(postId)
+
+    commentId++
+
+    Comment(
+        id = commentId,
+        user = sampleUsers.random(),
+        elapsedTime = "1h",
+        content = sampleMessages.random(),
+        likes = random.nextInt(100),
+        isLike = random.nextBoolean(),
+        replies = if(random.nextFloat() < reply) {
+            randomCommentGenerator(1000000 + commentId, reply / 10).take(Random.nextInt(5)).toList()
+        } else {
+            null
+        }
+    )
+}
+
+
+var feedId = 100
+
+val photos = listOf(
+    R.drawable.blackpink,
+    R.drawable.egg,
+    R.drawable.lemon,
+    R.drawable.photos_1_1,
+    R.drawable.photos_1_2,
+    R.drawable.photos_1_3,
+    R.drawable.profile_1,
+    R.drawable.profile_2,
+    R.drawable.profile_3,
+    R.drawable.profile_4,
+    R.drawable.reels_sample_1,
+    R.drawable.reels_sample_2,
+    R.drawable.reels_sample_3,
+    R.drawable.reels_sample_4,
+    R.drawable.reels_sample_5,
+    R.drawable.reels_sample_6,
+    R.drawable.story_1,
+    R.drawable.zhonya_photo,
+    R.drawable.sample_image_1,
+    R.drawable.sample_image_2,
+    R.drawable.sample_photos_1,
+    R.drawable.sample_photos_2,
+    R.drawable.sample_photos_3,
+    R.drawable.sample_photos_4,
+    R.drawable.sample_photos_5,
+    R.drawable.sample_photos_6,
+    R.drawable.sample_photos_7,
+    R.drawable.sample_photos_8,
+    R.drawable.sample_photos_9,
+    R.drawable.sample_photos_10,
+    R.drawable.sample_photos_11,
+    R.drawable.sample_photos_12,
+    R.drawable.sample_photos_13,
+    R.drawable.sample_photos_14,
+    R.drawable.sample_photos_15,
+    R.drawable.sample_photos_16,
+    R.drawable.sample_photos_17,
+    R.drawable.sample_photos_18,
+    R.drawable.sample_photos_19,
+    R.drawable.sample_photos_20,
+    R.drawable.sample_photos_21,
+    R.drawable.sample_photos_22,
+    R.drawable.sample_photos_23,
+)
+
+fun randomFeedGenerator(): Sequence<Feed> = generateSequence {
+    Feed(
+        id = feedId++,
+        user = sampleUsers.random(),
+        authorInfo = "Lusail Stadium ・ 1h ・ \uD83C\uDF0E",
+        content = sampleMessages.shuffled().take(Random.nextInt(10)).joinToString("\n"),
+        photos = photos.shuffled().take(Random.nextInt(5)),
+        map = null,
+        withUser = sampleUsers.shuffled().take(Random.nextInt(3)),
+        hearts = Random.nextInt(2000000),
+        replys = Random.nextInt(5000),
+        isFavorite = Random.nextBoolean(),
+        quote = null,
+        comments = randomCommentGenerator(0).take(Random.nextInt(20)).toList()
+    )
+}
 
 val sampleComment = Comment(
     id = 1,
@@ -187,7 +320,7 @@ val sampleFeeds = listOf(
         replys = 2342,
         isFavorite = true,
         quote = null,
-        comments = sampleComments
+        comments = randomCommentGenerator(0).take(5).toList()
     ),
     Feed(
         id = 1,
@@ -197,7 +330,8 @@ val sampleFeeds = listOf(
         photos = listOf(R.drawable.blackpink, R.drawable.profile_3),
         hearts = 1000123,
         replys = 10,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(1).take(5).toList()
     ),
     Feed(
         id = 2,
@@ -210,7 +344,8 @@ val sampleFeeds = listOf(
         """.trimIndent(),
         hearts = 1003,
         replys = 10,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(2).take(5).toList()
     ),
     Feed(
         id = 3,
@@ -224,6 +359,7 @@ val sampleFeeds = listOf(
         replys = 10,
         isFavorite = true,
         quote = null,
+        comments = randomCommentGenerator(3).take(5).toList()
     ),
     Feed(
         id = 4,
@@ -232,7 +368,8 @@ val sampleFeeds = listOf(
         photos = listOf(R.drawable.profile_1, R.drawable.profile_3),
         hearts = 1000123,
         replys = 10,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(4).take(5).toList()
     ),
     Feed(
         id = 7,
@@ -244,7 +381,8 @@ val sampleFeeds = listOf(
         photos = listOf(R.drawable.profile_4),
         hearts = 1000123,
         replys = 10,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(7).take(5).toList()
     ),
     Feed(
         id = 8,
@@ -253,7 +391,8 @@ val sampleFeeds = listOf(
         content = "But I must explain to you how all this mistaken idea of denouncing pleasure But I must explain to you how all this mistaken idea of denouncing pleasure",
         hearts = 1003,
         replys = 10,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(8).take(5).toList()
     ),
     Feed(
         id = 9,
@@ -279,7 +418,8 @@ val sampleFeeds = listOf(
         """.trimIndent(),
         hearts = 1003,
         replys = 10,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(9).take(5).toList()
     ),
     Feed(
         id = 6,
@@ -289,7 +429,8 @@ val sampleFeeds = listOf(
         content = "But I must explain to you how all this mistaken idea of denouncing pleasure But I must explain to you how all this mistaken idea of denouncing pleasure",
         hearts = 3000,
         replys = 750,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(6).take(5).toList()
     ),
     Feed(
         id = 20,
@@ -299,7 +440,8 @@ val sampleFeeds = listOf(
         content = "But I must explain to you how all this mistaken idea of denouncing pleasure But I must explain to you how all this mistaken idea of denouncing pleasure",
         hearts = 3000,
         replys = 750,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(20).take(5).toList()
     ),
     Feed(
         id = 21,
@@ -308,7 +450,8 @@ val sampleFeeds = listOf(
         photos = listOf(R.drawable.sample_image_1),
         hearts = 3000,
         replys = 750,
-        isFavorite = false
+        isFavorite = false,
+        comments = randomCommentGenerator(21).take(5).toList()
     )
 )
 
