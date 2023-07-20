@@ -11,8 +11,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +27,7 @@ import com.example.feed.compose.feed.Feed
 import com.example.feed.compose.story.StoryCovers
 import com.example.feed.compose.suggestion.SuggestedUsers
 import com.example.feed.compose.topbar.MainTopAppBar
+import com.example.feed.sample.randomFeedGenerator
 import com.example.feed.sample.sampleFeeds
 import com.example.feed.sample.sampleStoryCovers
 import com.example.feed.sample.sampleUsers
@@ -53,6 +56,17 @@ fun FeedScreen(
         rememberLauncherForActivityResult(contract = OpenNotificationContract()) {
 
         }
+
+    val randomFeeds = remember {
+        mutableStateListOf<Feed>()
+    }
+
+    LaunchedEffect(Unit) {
+        randomFeeds.apply {
+            clear()
+            addAll(randomFeedGenerator().take(100).toList())
+        }
+    }
 
     BackHandler(onBack = onBack)
 
@@ -100,6 +114,21 @@ fun FeedScreen(
                 }
 
                 items(feedSliced.second, key = { it.id }) {
+                    Feed(
+                        modifier = Modifier.clickable {
+                            feedDetailContract.launch(it)
+                        },
+                        feed = it,
+                        onQuoteClick = { feedEditorContract.launch(it) },
+                        onUnfriendClick = { /*TODO*/ },
+                        onReportClick = { /*TODO*/ },
+                        onHeartsClick = { /*TODO*/ },
+                        onCommentsClick = { /*TODO*/ },
+                        onReplysClick = { /*TODO*/ },
+                    )
+                }
+
+                items(randomFeeds, key = { it.id }) {
                     Feed(
                         modifier = Modifier.clickable {
                             feedDetailContract.launch(it)
