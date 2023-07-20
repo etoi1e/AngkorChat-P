@@ -23,7 +23,7 @@ class FeedFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 FeedScreen(
-                    feeds = sampleFeeds + sampleFeeds.shuffled().map { it.copy(id = it.id + sampleFeeds.size) },
+                    feeds = sampleFeeds,
                     storyCovers = sampleStoryCovers,
                     suggestedUsers = sampleUsers,
                     onBack = { requireActivity().finish() }

@@ -40,7 +40,7 @@ val sampleUsers = listOf(
     ),
     User(
         id = 5,
-        profileResId = R.drawable.profile_3,
+        profileResId = R.drawable.profile_2,
         name = "leomessi",
         subtitle = "Subtitle"
     ),
@@ -54,6 +54,12 @@ val sampleUsers = listOf(
         id = 7,
         profileResId = R.drawable.zhonya,
         name = "Zhonya's Hourglass",
+        subtitle = "Subtitle"
+    ),
+    User(
+        id = 8,
+        profileResId = R.drawable.profile_4,
+        name = "cristiano",
         subtitle = "Subtitle"
     ),
 )
@@ -229,10 +235,48 @@ val sampleFeeds = listOf(
         isFavorite = false
     ),
     Feed(
-        id = 5,
+        id = 7,
+        user = sampleUsers[8],
+        authorInfo = "Phnom Penh ・ 1h ・ \uD83C\uDF0E",
+        content = """
+            Victory is a State of Mind. A long tradition of crafting trunks photographed by @annieleibovitz for @louisvuitton
+        """.trimIndent(),
+        photos = listOf(R.drawable.profile_4),
+        hearts = 1000123,
+        replys = 10,
+        isFavorite = false
+    ),
+    Feed(
+        id = 8,
         user = sampleUsers[1],
         authorInfo = "Phnom Penh ・ 1h ・ \uD83C\uDF0E",
         content = "But I must explain to you how all this mistaken idea of denouncing pleasure But I must explain to you how all this mistaken idea of denouncing pleasure",
+        hearts = 1003,
+        replys = 10,
+        isFavorite = false
+    ),
+    Feed(
+        id = 9,
+        user = sampleUsers[3],
+        authorInfo = "Phnom Penh ・ 1h ・ \uD83C\uDF0E",
+        content = """
+            11K FOLLOWERS Giveaway! You can WIN a USD${'$'}75 gift card to use on anything you want from @thedaydesigner! Swipe to see the
+            one I have myself! It's so beautiful!
+            4 STEPS to enter:
+            [1] Follow @positivethoughts.ca and
+            @thedavdesigner (unfollowing = vou will be
+            disqualified from giveaways) [2] Tag 1 friend and tell them one of your New Years
+            resolution or something nice! Each tag is one entry! [3 Bonus 5 entries: share in story for 24 hours and
+            tag me 4 Bonus 10 entries: visit my YouTube (link in bio) and watch the January plan with me giveaway video
+            there and follow some easy steps there! If you don't win, you can still buy something at 10% off with my code POSITIVETHOUGHTS10 until March
+            31, 2022! Stickers are from @prettylittlestudios! They are super
+            cute gift boxes! Use POSITIVE10 for 10% off! No duplicate tags / no tagging vourself / no
+            spamming / no giveaway accounts.
+            INFO: W Giveaway ends Sunday January 9th at mid-night
+            (12am EST).
+            Winner will be chosen at random! V This promotion is in no way sponsored,
+            administered or associated with Instagram, Inc.
+        """.trimIndent(),
         hearts = 1003,
         replys = 10,
         isFavorite = false
@@ -243,6 +287,25 @@ val sampleFeeds = listOf(
         authorInfo = "Phnom Penh ・ 1h ・ \uD83C\uDF0E",
         photos = listOf(R.drawable.zhonya_photo),
         content = "But I must explain to you how all this mistaken idea of denouncing pleasure But I must explain to you how all this mistaken idea of denouncing pleasure",
+        hearts = 3000,
+        replys = 750,
+        isFavorite = false
+    ),
+    Feed(
+        id = 20,
+        user = sampleUsers[5],
+        authorInfo = "Phnom Penh ・ 1h ・ \uD83C\uDF0E",
+        photos = listOf(R.drawable.sample_image_2),
+        content = "But I must explain to you how all this mistaken idea of denouncing pleasure But I must explain to you how all this mistaken idea of denouncing pleasure",
+        hearts = 3000,
+        replys = 750,
+        isFavorite = false
+    ),
+    Feed(
+        id = 21,
+        user = sampleUsers[4],
+        authorInfo = "Phnom Penh ・ 1h ・ \uD83C\uDF0E",
+        photos = listOf(R.drawable.sample_image_1),
         hearts = 3000,
         replys = 750,
         isFavorite = false
