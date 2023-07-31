@@ -63,7 +63,7 @@ RecyclerView.Adapter<Bdayadapter.ViewHolder>(){
             holder.btnChatBday.setOnClickListener {
                 val intent = Intent(context, ChatActivity::class.java)
                 intent.putExtra("name", item.name)
-                intent.putExtra("number", "Emma")
+                intent.putExtra("number", "01055555555")
                 intent.putExtra("profileDummy", "dummy_profile_03")
                 context.startActivity(intent)
             }
