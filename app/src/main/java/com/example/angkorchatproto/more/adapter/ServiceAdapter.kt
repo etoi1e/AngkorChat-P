@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.digitalangkor.mobility.activity.AngkorMobilityActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.ItemMoreServiceBinding
 import com.example.angkorchatproto.more.AngkorFriends
@@ -77,7 +78,6 @@ class ServiceAdapter(
                 val intent = Intent(mContext,AngkorFriends::class.java)
                 mContext?.startActivity(intent)
             }
-
             if(mMenuName?.get(position) == "Eats"){
                 //Eats
                 mContext?.startActivity(Intent(mContext, AngkorEatsActivity::class.java))
@@ -101,11 +101,14 @@ class ServiceAdapter(
             if(mMenuName?.get(position) == "Echoes"){
                 //Echoes
                 mContext?.startActivity(Intent(mContext, AngkorEchoesActivity::class.java))
-
             }
             if(mMenuName?.get(position) == "Bank"){
                 //Bank
                 mContext?.startActivity(Intent(mContext, AngkorBankActivity::class.java))
+            }
+            if(mMenuName?.get(position) == "Move"){
+                //Move
+                mContext?.startActivity(Intent(mContext, AngkorMobilityActivity::class.java))
             }
 
 

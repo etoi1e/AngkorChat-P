@@ -10,6 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.databinding.FragmentMoreBinding
@@ -32,16 +35,17 @@ class MoreFragment : Fragment() {
         R.drawable.ic_play_line_bk_24,
         R.drawable.ic_reservation_line_bk_24,
         R.drawable.ic_note_line_bk_24,
-        R.drawable.ic_money_line_bk_24
+        R.drawable.ic_money_line_bk_24,
+        R.drawable.ic_location_line_bk_24
     )
     private var serviceTitle = arrayListOf(
-        "Friends", "Eats", "Webtoon", "Games", "Play", "Check", "Echoes", "Bank"
+        "Friends", "Eats", "Webtoon", "Games", "Play", "Check", "Echoes", "Bank","Move"
     )
 
     var checkAccount = false
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun onResume() {
         super.onResume()
 
@@ -54,10 +58,9 @@ class MoreFragment : Fragment() {
         //동일 계좌 생성
 
 
-
         if (db != null) {
             val accountNumber = db.paymentDao().getAccountNumber(myNumber)
-            if (accountNumber != "" && accountNumber != null ) {
+            if (accountNumber != "" && accountNumber != null) {
                 checkAccount = true
 
                 val numberFormatter = DecimalFormat("###,###")
@@ -66,31 +69,42 @@ class MoreFragment : Fragment() {
                 if (binding.tvPayPoint.text != "$accountPoint P") {
                     binding.tvPayPoint.text = "$accountPoint P"
                 }
+            } else {
+                val newAccountNumber = "1111-2222-3333-4444"
+                val time = LocalDateTime.now().toString()
+
+                val newAccount =
+                    AccountInfo(
+                        0,
+                        "0",
+                        newAccountNumber,
+                        myNumber,
+                        3000,
+                        10000,
+                        "new",
+                        "",
+                        "",
+                        "",
+                        "",
+                        time
+                    )
+
+                db.paymentDao().insertAccount(newAccount)
+
+                checkAccount = true
+
+                val numberFormatter = DecimalFormat("###,###")
+                //계좌 있는 경우 정보 가져와서 삽입
+                val accountPoint = numberFormatter.format(db.paymentDao().getPoint(accountNumber))
+                if (binding.tvPayPoint.text != "$accountPoint P") {
+                    binding.tvPayPoint.text = "10,000 P"
+                }
+
+
             }
-            else{
-                    val newAccountNumber = "1111-2222-3333-4444"
-                    val time = LocalDateTime.now().toString()
 
-                    val newAccount =
-                        AccountInfo(0,"0", newAccountNumber, myNumber, 3000, 10000, "new","", "", "", "", time)
-
-                    db.paymentDao().insertAccount(newAccount)
-
-                    checkAccount = true
-
-                    val numberFormatter = DecimalFormat("###,###")
-                    //계좌 있는 경우 정보 가져와서 삽입
-                    val accountPoint = numberFormatter.format(db.paymentDao().getPoint(accountNumber))
-                    if (binding.tvPayPoint.text != "$accountPoint P") {
-                        binding.tvPayPoint.text = "10,000 P"
-                    }
-
-
-
-            }
-
-        val point = binding.tvPayPoint.text.toString()
-        val oldPoint = point.replace("P", "")
+            val point = binding.tvPayPoint.text.toString()
+            val oldPoint = point.replace("P", "")
 
 
             if (oldPoint == "0") {
@@ -170,5 +184,6 @@ class MoreFragment : Fragment() {
             })
         binding.rvServicesMenu.adapter = serviceAdapter
     }
+
 
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imgProfileBday"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_profile_default_72"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="10dp" />
+
+    <TextView
+        android:id="@+id/tvNameBday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="Cindy"
+        android:textColor="@color/textBlack"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imgProfileBday"
+        app:layout_constraintTop_toTopOf="@+id/imgProfileBday" />
+
+    <TextView
+        android:id="@+id/tvDateBday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="Hello, AngkorChat!"
+        android:textColor="#555555"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tvNameBday"
+        app:layout_constraintTop_toBottomOf="@+id/tvNameBday" />
+
+    <ImageView
+        android:id="@+id/imgBdayIcon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNameBday"
+        app:layout_constraintStart_toEndOf="@+id/tvNameBday"
+        app:layout_constraintTop_toTopOf="@+id/tvNameBday"
+        app:srcCompat="@drawable/img_confetti_40" />
+
+    <Button
+        android:id="@+id/btnChatBday"
+        android:layout_width="40dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/stroke_box_yellow"
+        android:text="Chat"
+        android:textAllCaps="false"
+        android:textColor="@color/mainYellow"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

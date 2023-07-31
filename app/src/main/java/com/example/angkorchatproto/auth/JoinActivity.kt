@@ -52,13 +52,15 @@ class JoinActivity : BaseActivity() {
                 }
 
             })
-            .setDeniedMessage("If you reject permission, you can not use")
+            .setDeniedMessage("If you reject permission, you can not use this app")
             .setPermissions(
                 Manifest.permission.READ_PHONE_NUMBERS,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.CALL_PHONE,
                 Manifest.permission.INTERNET,
-                Manifest.permission.CAMERA
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
             )
             .check()
     }

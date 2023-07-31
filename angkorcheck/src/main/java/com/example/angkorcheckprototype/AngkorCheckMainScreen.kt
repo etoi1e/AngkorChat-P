@@ -28,8 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.angkorcheckprototype.appbar.AngkorCheckBottomNavigationBar
-import com.example.angkorcheckprototype.appbar.SearchBar
+import com.example.angkorcheckprototype.card.appbar.AngkorCheckBottomNavigationBar
+import com.example.angkorcheckprototype.card.appbar.SearchBar
 import com.example.angkorcheckprototype.card.HotelCard
 import com.example.angkorcheckprototype.card.HotelCardLarge
 import com.example.angkorcheckprototype.card.HotelCardSmall

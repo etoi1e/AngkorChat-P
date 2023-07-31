@@ -316,6 +316,7 @@ class ChatActivity : BaseActivity() {
 
         val usersRef = FBdataBase.getUserRef().child(receiver)
 
+        Log.d("TAG-receiver",receiver)
 
         //상대방 이름 출력
         val receiverName = intent.getStringExtra("name").toString()
@@ -713,7 +714,7 @@ class ChatActivity : BaseActivity() {
                 }
 
 
-                var setProfile = "ic_profile_default"
+                var setProfile = "ic_profile_default_72"
 
                 if(profileDummy != null){
                     setProfile = profileDummy

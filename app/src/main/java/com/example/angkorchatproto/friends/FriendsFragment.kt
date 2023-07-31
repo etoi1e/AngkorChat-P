@@ -3,28 +3,34 @@ package com.example.angkorchatproto.friends
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.angkorchatproto.profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
+import com.example.angkorchatproto.chat.ChatActivity
 import com.example.angkorchatproto.databinding.FragmentFriendsBinding
-
+import java.time.LocalDate
 
 
 class FriendsFragment : Fragment() {
 
     lateinit var binding: FragmentFriendsBinding
-    lateinit var favoriteAdapter: FriendsAdapter
+    lateinit var bDayFriendsAdapter: FriendsAdapter
+    private lateinit var favoriteAdapter: FriendsAdapter
     lateinit var friendAdapter: FriendsAdapter
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +38,7 @@ class FriendsFragment : Fragment() {
 
 
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
+        var bDayFriendsList = arrayListOf<UserVO>()
         var favoriteList = arrayListOf<UserVO>()
         var allList = arrayListOf<UserVO>()
 
@@ -53,10 +60,39 @@ class FriendsFragment : Fragment() {
 
         }
 
+        //Search 버튼 클릭
+        binding.imgSearchFriends.setOnClickListener {
+            if (binding.searchLayout.visibility == View.GONE) {
+                binding.searchLayout.visibility = View.VISIBLE
+            }else{
+                binding.searchLayout.visibility = View.GONE
+
+            }
+        }
+
 //        //로그인한 계정 번호 불러오기
 //        //SharedPreferences
 //        val shared = requireContext().getSharedPreferences("loginNumber", 0)
 //        val userNumber = shared.getString("userNumber", "").toString()
+
+        binding.bDayLayout.setOnClickListener {
+            val intent = Intent(requireContext(),BdayFriendsActivity::class.java)
+            requireContext().startActivity(intent)
+
+        }
+
+        binding.btnSelfChat.setOnClickListener {
+            val intent = Intent(requireContext(),ChatActivity::class.java)
+            intent.putExtra("name", "Me")
+            intent.putExtra("number", "Me")
+            intent.putExtra("profileDummy", "ic_profile_default_72")
+            requireContext().startActivity(intent)
+        }
+
+        val thisMonth = LocalDate.now().month
+        val thisDay = LocalDate.now().dayOfMonth
+
+
 
 
         //즐겨찾는 친구 더미 목록
@@ -64,15 +100,17 @@ class FriendsFragment : Fragment() {
         favoriteList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-8888", "dummyMom"))
 
 
+
         //전체목록
-        allList.add(UserVO("Adam Smith", "Working...", "dummy_profile_04", "010-1111-1111", "dummyAdam"))
+        allList.add( UserVO("Adam Smith","Working...","dummy_profile_04","010-1111-1111","dummyAdam"))
         allList.add(UserVO("Brother", "Paw", "dummy_profile_07", "010-2222-2222", "dummyBro"))
-        allList.add(UserVO("Cindy", "Hello, I'm Cindy", "dummy_profile_01", "010-3333-3333", "dummyMom"))
+        allList.add(UserVO("Cindy","Hello, I'm Cindy","dummy_profile_01","010-3333-3333","dummyMom" ))
         allList.add(UserVO("Dad", "", "dummy_profile_08", "010-4444-4444", "dummyDad"))
         allList.add(UserVO("Emma", "", "dummy_profile_03", "010-5555-5555", "dummyEmma"))
         allList.add(UserVO("Jessica", "❤", "dummy_profile_02", "010-6666-6666", "dummyJessica"))
         allList.add(UserVO("John Kim", "Hiking", "dummy_profile_05", "010-7777-7777", "dummyJohn"))
         allList.add(UserVO("Mom", "Summer!", "dummy_profile_06", "010-8888-8888", "dummyMom"))
+
 
 
         //즐겨찾는 친구 Adapter
@@ -177,7 +215,7 @@ class FriendsFragment : Fragment() {
 
                 //텍스트 입력/수정시에 호출
                 override fun onQueryTextChange(s: String): Boolean {
-                    friendAdapter.getFilter().filter(s)
+                    friendAdapter.filter.filter(s)
                     binding.tvFriendsFriends.text = "Result"
                     binding.tvFavoriteFriends.visibility = View.GONE
                     binding.rvFavoriteFriends.visibility = View.GONE

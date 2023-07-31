@@ -130,9 +130,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
+            android:src="@drawable/ic_enter_line_prime_20"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_enter_line_prime_20" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvReplyText"
@@ -150,10 +150,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_close_line_gray_20"
             app:layout_constraintBottom_toBottomOf="@+id/imageView13"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView13"
-            android:src="@drawable/ic_close_line_gray_20" />
+            app:layout_constraintTop_toTopOf="@+id/imageView13" />
 
         <ImageView
             android:id="@+id/ivReplyImage"
@@ -658,12 +658,13 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            style="@style/MyButtonStyle"
             android:id="@+id/btnSendPhotoPreview"
+            style="@style/MyButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/style_login_btn"
+            android:drawableEnd="@drawable/ic_send_fill_wh_24"
             android:fontFamily="@font/font"
             android:gravity="center"
             android:paddingLeft="36dp"
@@ -671,7 +672,6 @@
             android:text="Send"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:drawableEnd="@drawable/ic_send_fill_wh_24"
             app:iconGravity="end"
             app:iconPadding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -3,9 +3,6 @@ package com.example.angkorchatproto.friends
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +12,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.Resource
 import com.example.angkorchatproto.profile.ProfileActivity
 import com.example.angkorchatproto.R
 import com.example.angkorchatproto.UserVO
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.io.Resources
-import java.net.URL
+
 
 class FriendsAdapter(val context: Context, val friendList: ArrayList<UserVO>) :
     RecyclerView.Adapter<FriendsAdapter.ViewHolder>(), Filterable {

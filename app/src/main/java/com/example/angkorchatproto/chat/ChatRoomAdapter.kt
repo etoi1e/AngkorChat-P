@@ -94,6 +94,7 @@ class ChatRoomAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
 
         val chatRoom = chatInfoList[position]
@@ -143,6 +144,10 @@ class ChatRoomAdapter(
         }
         if (profile == "dummy_profile_06") {
             holder.tvNameChatList.text = "Mom"
+        }
+
+        if (profile == "ic_profile_default_72"){
+            holder.tvNameChatList.text = "Me"
         }
 
 
@@ -240,6 +245,9 @@ class ChatRoomAdapter(
         }
         if (profile == "dummy_profile_06") {
             sendSender = "010-8888-8888"
+        }
+        if (profile == "ic_profile_default_72"){
+            sendSender = "Me"
         }
 
 

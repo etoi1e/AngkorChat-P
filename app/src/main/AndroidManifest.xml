@@ -42,6 +42,13 @@
         android:theme="@style/Theme.AngKorChatProto"
         tools:targetApi="31">
         <activity
+            android:name=".friends.BdayFriendsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".callscreen.VideoCallScreen"
             android:exported="false">
             <meta-data
