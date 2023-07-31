@@ -316,7 +316,7 @@ class ChatActivity : BaseActivity() {
 
         val usersRef = FBdataBase.getUserRef().child(receiver)
 
-        Log.d("TAG-receiver",receiver)
+        Log.d("TAG-receiver", receiver)
 
         //상대방 이름 출력
         val receiverName = intent.getStringExtra("name").toString()
@@ -325,11 +325,18 @@ class ChatActivity : BaseActivity() {
 
         }
 
+        //그룹챗
+        if (receiver == "GroupChat") {
+
+            binding.rvChatListChat.setBackgroundResource(R.drawable.chatting_background_nunu)
+
+        }
+
         var profileImg = intent.getStringExtra("profile")
         var profileDummy = intent.getStringExtra("profileDummy")
         var profileFromProfile = intent.getStringExtra("profileFromProfile")
 
-        if(profileDummy != null) {
+        if (profileDummy != null) {
             val resourceID =
                 resources.getIdentifier(profileDummy, "drawable", "com.example.angkorchatproto")
             Glide.with(this@ChatActivity)
@@ -338,9 +345,13 @@ class ChatActivity : BaseActivity() {
         }
 
 
-        if(profileFromProfile != null) {
+        if (profileFromProfile != null) {
             val resourceID =
-                resources.getIdentifier(profileFromProfile, "drawable", "com.example.angkorchatproto")
+                resources.getIdentifier(
+                    profileFromProfile,
+                    "drawable",
+                    "com.example.angkorchatproto"
+                )
             Glide.with(this@ChatActivity)
                 .load(resourceID)
                 .into(binding.imgProfileChat)
@@ -716,11 +727,11 @@ class ChatActivity : BaseActivity() {
 
                 var setProfile = "ic_profile_default_72"
 
-                if(profileDummy != null){
+                if (profileDummy != null) {
                     setProfile = profileDummy
                 }
 
-                if(profileFromProfile != null){
+                if (profileFromProfile != null) {
                     setProfile = profileFromProfile
                 }
 
@@ -902,18 +913,18 @@ class ChatActivity : BaseActivity() {
         }
 
         binding.imgVideoChat.setOnClickListener {
-            val intent = Intent(this@ChatActivity,VideoCallScreen::class.java)
+            val intent = Intent(this@ChatActivity, VideoCallScreen::class.java)
 
             var sendProfile = ""
-            if(profileDummy!=null){
+            if (profileDummy != null) {
                 sendProfile = profileDummy
             }
-            if(profileFromProfile!=null){
+            if (profileFromProfile != null) {
                 sendProfile = profileFromProfile
             }
 
-            intent.putExtra("profile",sendProfile)
-            intent.putExtra("name",receiverName)
+            intent.putExtra("profile", sendProfile)
+            intent.putExtra("name", receiverName)
             startActivity(intent)
 //            val intent = Intent(this, VideoActivity::class.java)
 //            intent.putExtra("mode", "send")
@@ -924,18 +935,18 @@ class ChatActivity : BaseActivity() {
 
         //전화 걸기
         binding.imgVoiceChat.setOnClickListener {
-            val intent = Intent(this@ChatActivity,VoiceCallScreen::class.java)
+            val intent = Intent(this@ChatActivity, VoiceCallScreen::class.java)
 
             var sendProfile = ""
-            if(profileDummy!=null){
+            if (profileDummy != null) {
                 sendProfile = profileDummy
             }
-            if(profileFromProfile!=null){
+            if (profileFromProfile != null) {
                 sendProfile = profileFromProfile
             }
 
-            intent.putExtra("profile",sendProfile)
-            intent.putExtra("name",receiverName)
+            intent.putExtra("profile", sendProfile)
+            intent.putExtra("name", receiverName)
             startActivity(intent)
 
         }

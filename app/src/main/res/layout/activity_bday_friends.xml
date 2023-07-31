@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/view5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_left_line_28" />
+        android:src="@drawable/ic_arrow_left_line_28" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
@@ -91,7 +91,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvFriendsFriends"
+                        android:id="@+id/rvTodayFriends"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 

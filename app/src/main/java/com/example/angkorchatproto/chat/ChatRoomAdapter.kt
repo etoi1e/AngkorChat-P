@@ -150,6 +150,10 @@ class ChatRoomAdapter(
             holder.tvNameChatList.text = "Me"
         }
 
+        if (profile == "profile_group"){
+            holder.tvNameChatList.text = "Group Chat"
+        }
+
 
 //        //상대방 번호
 //        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -250,6 +254,10 @@ class ChatRoomAdapter(
             sendSender = "Me"
         }
 
+        if (profile == "profile_group"){
+            sendSender = "Group Chat"
+        }
+
 
         holder.layout.setOnClickListener {
 
@@ -258,6 +266,7 @@ class ChatRoomAdapter(
             intent.putExtra("number", sendSender)
             intent.putExtra("profileDummy", profile)
             context.startActivity(intent)
+
         }
 //
 //
