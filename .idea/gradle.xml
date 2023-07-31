@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/angkorwebtoon" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/feed" />
+            <option value="$PROJECT_DIR$/mobility" />
           </set>
         </option>
       </GradleProjectSettings>

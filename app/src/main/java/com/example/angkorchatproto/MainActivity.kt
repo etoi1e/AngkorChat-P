@@ -1,7 +1,11 @@
 package com.example.angkorchatproto
 
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import com.digitalangkor.mobility.activity.AngkorMobilityActivity
+import com.digitalangkor.mobility.screen.AngkorMobilityMainScreen
 import com.example.angkorchatproto.base.BaseActivity
 import com.example.angkorchatproto.chat.ChatFragment
 import com.example.angkorchatproto.friends.FriendsFragment
@@ -17,6 +21,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+
+        startActivity(Intent(this, AngkorMobilityActivity::class.java))
         setContentView(binding.root)
 
         binding.bottomNavigationView.setItemIconTintList(null);
