@@ -84,6 +84,7 @@ internal val webtoons = listOf(
     )
 )
 
+
 class AngkorWebtoonActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,8 +104,9 @@ class AngkorWebtoonActivity : ComponentActivity() {
             AnimatedVisibility(visible = !isSplash, enter = fadeIn(), exit = fadeOut()) {
                 AngkorWebtoonMainScreen(
                     bannerImageResources = listOf(
-                        R.drawable.img_main_banner_h_232,
-                        R.drawable.img_banner_2
+                        R.drawable.banner_1,
+                        R.drawable.banner_2,
+                        R.drawable.banner_3
                     ).shuffled().take(5),
                     webtoons = webtoons
                 )

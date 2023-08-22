@@ -1,13 +1,8 @@
 package com.example.angkorwebtoonprototype.main
 
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -20,8 +15,10 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.angkorwebtoonprototype.AngkorWebtoonDetailActivity
 import com.example.angkorwebtoonprototype.R
 import com.example.angkorwebtoonprototype.appbar.AngkorWebtoonAppBar
 import com.example.angkorwebtoonprototype.banner.TopBanner
@@ -44,6 +41,51 @@ fun AngkorWebtoonMainScreen(
             derivedStateOf { webtoons.shuffled() }
         }
     }
+
+    val angkorToons = listOf(
+        Webtoon(
+            imageResId = R.drawable.eg_1_0,
+            title = "[ENG]AngkorToon Ep.1",
+            writer = "Digital Angkor",
+            ep = "eg_1"
+        ),
+        Webtoon(
+            imageResId = R.drawable.eg_2_0,
+            title = "[ENG]AngkorToon Ep.2",
+            writer = "Digital Angkor",
+            ep = "eg_2"
+        ),
+        Webtoon(
+            imageResId = R.drawable.eg_3_0,
+            title = "[ENG]AngkorToon Ep.3",
+            writer = "Digital Angkor",
+            ep = "eg_3"
+        ),
+        Webtoon(
+            imageResId = R.drawable.kr_1_0,
+            title = "[KR]AngkorToon Ep.1",
+            writer = "Digital Angkor",
+            ep = "kr_1"
+        ),
+
+        Webtoon(
+            imageResId = R.drawable.kr_2_0,
+            title = "[KR]AngkorToon Ep.2",
+            writer = "Digital Angkor",
+            ep = "kr_2"
+        ),
+        Webtoon(
+            imageResId = R.drawable.kr_3_0,
+            title = "[KR]AngkorToon Ep.3",
+            writer = "Digital Angkor",
+            ep = "kr_3"
+        )
+    )
+
+    val context = LocalContext.current
+
+    val intent = Intent(context,AngkorWebtoonDetailActivity::class.java)
+
 
     AngkorWebtoonPrototypeTheme {
         Scaffold(
@@ -70,23 +112,48 @@ fun AngkorWebtoonMainScreen(
                     pageSpacing = 16.dp,
                     state = pagerState
                 ) { page ->
-                    LazyVerticalGrid(
-                        modifier = Modifier.fillMaxSize(),
-                        columns = GridCells.Fixed(3),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = 12.dp,
-                            bottom = scaffoldPaddingValues.calculateBottomPadding()
-                        ),
-                    ) {
-                        items(webtoonsList[page].value) { webtoon ->
-                            Webtoon(webtoon = webtoon) {
 
+                    if (page == 0) {
+                        LazyVerticalGrid(
+                            modifier = Modifier.fillMaxSize(),
+                            columns = GridCells.Fixed(3),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(
+                                start = 16.dp,
+                                end = 16.dp,
+                                top = 12.dp,
+                                bottom = scaffoldPaddingValues.calculateBottomPadding()
+                            ),
+                        ) {
+                            items(angkorToons) { webtoon ->
+                                Webtoon(webtoon = webtoon) {
+                                    intent.putExtra("ep",webtoon.ep)
+                                    context.startActivity(intent)
+                                }
+                            }
+                        }
+
+                    }
+
+                    if (page != 0) {
+                        LazyVerticalGrid(
+                            modifier = Modifier.fillMaxSize(),
+                            columns = GridCells.Fixed(3),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(
+                                start = 16.dp,
+                                end = 16.dp,
+                                top = 12.dp,
+                                bottom = scaffoldPaddingValues.calculateBottomPadding()
+                            ),
+                        ) {
+                            items(webtoonsList[page].value) { webtoon ->
+                                Webtoon(webtoon = webtoon) {
+                                }
                             }
                         }
                     }
+
                 }
             }
         }

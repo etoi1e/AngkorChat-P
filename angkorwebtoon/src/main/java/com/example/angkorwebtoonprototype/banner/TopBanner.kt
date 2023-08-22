@@ -111,6 +111,6 @@ internal fun TopBannerIndicatorDot(
 @Composable
 internal fun PopularGamesPreview() {
     AngkorWebtoonPrototypeTheme {
-        TopBanner(bannerImageResources = List(5) { R.drawable.img_main_banner_h_232 })
+        TopBanner(bannerImageResources = List(5) { R.drawable.eg_2_0 })
     }
 }

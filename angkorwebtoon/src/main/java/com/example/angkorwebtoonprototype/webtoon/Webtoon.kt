@@ -2,13 +2,9 @@ package com.example.angkorwebtoonprototype.webtoon
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +24,8 @@ import com.example.angkorwebtoonprototype.ui.theme.AngkorWebtoonPrototypeTheme
 data class Webtoon(
     @DrawableRes val imageResId: Int,
     val title: String,
-    val writer: String
+    val writer: String,
+    val ep: String? = null
 )
 
 @Composable
@@ -67,14 +65,18 @@ fun Webtoon(
 @Composable
 internal fun WebtoonPreview() {
     AngkorWebtoonPrototypeTheme {
-        Surface(modifier = Modifier
-            .width(104.dp)
-            .padding(top = 16.dp)) {
-            Webtoon(webtoon = Webtoon(
-                imageResId = R.drawable.img_main_banner_h_232,
-                title = "Webtoon title",
-                writer = "Writer"
-            )) {
+        Surface(
+            modifier = Modifier
+                .width(104.dp)
+                .padding(top = 16.dp)
+        ) {
+            Webtoon(
+                webtoon = Webtoon(
+                    imageResId = R.drawable.img_main_banner_h_232,
+                    title = "Webtoon title",
+                    writer = "Writer"
+                )
+            ) {
 
             }
         }
