@@ -17,5 +17,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.50"
-        app:srcCompat="@drawable/img_logo_200" />
+        app:srcCompat="@drawable/img_logo_w_200" />
 </androidx.constraintlayout.widget.ConstraintLayout>

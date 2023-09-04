@@ -11,7 +11,7 @@
         android:layout_width="200dp"
         android:layout_height="154dp"
         android:layout_marginBottom="11dp"
-        android:src="@drawable/img_logo_200"
+        android:src="@drawable/img_logo_w_200"
         app:layout_constraintBottom_toTopOf="@+id/tvJoinLanguage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
